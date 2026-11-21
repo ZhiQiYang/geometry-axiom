@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tests import _bridge
+from tests.architecture_contract import load_manifest
 from tests.test_geo261_native_kernel import native
 from tests.test_geo261_wood_contacts import record_native_execution
 
@@ -24,7 +25,7 @@ MODULE = ROOT / "geometry-templates/woodworking/native"
 
 def product_sources():
     """Manifest C sources and their conservative quoted-include closure (LF-normalised)."""
-    manifest = json.loads((ROOT / "geometry-core/domain-decoupling/product-architecture.json").read_text(encoding="utf-8"))
+    manifest = load_manifest(ROOT / "geometry-core/domain-decoupling/product-architecture.json")
     pending = [ROOT / item["path"] for item in manifest["sources"] if item["language"] == "c"]
     pending += [ROOT / "current_geometry.c", ROOT / "geometry-web/web_bridge.c"]
     seen, texts = set(), {}

@@ -1,5 +1,11 @@
 # 非瀏覽器CI確定性分片（2026-11-02）
 
+## R386 後續來源格式
+
+完成片段遷移後，套件宣告／精確計數改讀 `suites.d/`，新成本改讀 `native-costs.d/` 與 `registry-evidence/native/`；下文四份歷史原件及其原值保留。正式六片拒絕缺成本，不以歷史 scalar replay 的 1000 ms 預設替新 suite 補值。新增流程、真 CI census／成本匯入、來源到期承繼、確定性遷移及與單次建置補丁的關係見 [FRAGMENTED-REGISTRIES.md](FRAGMENTED-REGISTRIES.md)。
+
+## 原配置與歷史證據
+
 目前配置為六個native矩陣job，每個`timeout-minutes: 35`保持，各片收據仍須嚴格小於1200秒。2026-11-02依P-186授權建立的三片為歷史安排；R348在2026-11-12的慢runner收據超時後，先改為下方的完整三輪／四片規劃；本次另保留#378完整第四輪、#380追加套件證據，改為六片配置，正式CI驗收另核對。原始main `405f8c5e1a637a16cbe47470faf5ae1fa02b8676` 的[GitHub native job](https://github.com/ZhiQiYang/geometry-axiom/actions/runs/40185639126/job/124015759512)量測繼續保留；不延長期限、不豁免失敗。
 
 `native_shard_timings.json`保留完整來源SHA／run／job／原log SHA256及原main的224個suite實測毫秒；這224筆是上述main來源的量測，不改造為其他分支的套件數。初版按耗時遞減、名稱破同分，指派至目前累計最小的片（再以片號破同分）；此規則仍供明確傳入`weights`的呼叫使用。正式預設沿用R348情境分配器，輸入完整四輪量測與#380兩套獨立觀測上界。片內保留原完整runner的順序；未量測新suite仍用1000ms且必分到某片，但當前預算測試要求量測集合完整覆蓋registry，新增套件須同步補齊量測。配置不依本機cache、即時耗時、亂數或Python hash seed。

@@ -126,16 +126,13 @@ elif mode == 'R379_OMIT_R14_SOURCE_FROM_DIGEST':
         native_shards.TIMINGS.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R379_DROP_R14_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_r14_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r14_expected
+    original_expected = run_all.load_expected
+    def missing_r14_expected():
+        data, error = original_expected()
+        for name in ('node:r14_app', 'node:r14_host', 'py:test_r14_browser_receipt'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r14_expected
 elif mode == 'R17_DROP_SUITE_EVIDENCE':
     native_shards.added_suite_costs = lambda: {
         **native_shards._legacy_added_suite_costs(), **native_shards.added_r14_suite_costs()}
@@ -146,17 +143,14 @@ elif mode == 'R17_OMIT_SOURCE_FROM_DIGEST':
         native_shards.ADDED_EVIDENCE.read_bytes().replace(b'\r\n', b'\n') + b'\0' +
         native_shards.ADDED_R14_EVIDENCE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
 elif mode == 'R17_DROP_EXPECTED_ENTRIES':
-    original_expected_read = pathlib.Path.read_text
-    def missing_r17_expected(path, *args, **kwargs):
-        value = original_expected_read(path, *args, **kwargs)
-        if path.resolve() == run_all.EXPECTED_FILE.resolve():
-            data = json.loads(value)
-            for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
-                         'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
-                data['suites'].pop(name)
-            value = json.dumps(data)
-        return value
-    pathlib.Path.read_text = missing_r17_expected
+    original_expected = run_all.load_expected
+    def missing_r17_expected():
+        data, error = original_expected()
+        for name in ('py:test_boundary_pair_host', 'node:boundary_pair_ui',
+                     'node:boundary_pair_project', 'node:boundary_pair_browser_scope'):
+            data['suites'].pop(name)
+        return data, error
+    run_all.load_expected = missing_r17_expected
 if mode in current_workflow_replacements or mode in evidence_modes:
     # Mutate only this child's in-memory file read; never rewrite the checkout.
     original_read = pathlib.Path.read_text

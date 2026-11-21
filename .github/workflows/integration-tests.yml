@@ -52,16 +52,53 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  native-complete:
-    name: native complete coverage
+  registry-contract:
+    name: registry contract
     runs-on: ubuntu-latest
-    needs: native
-    if: always()
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Verify fragmented registries and their named withdrawals
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python3 -B tests/registry_migrate.py check --self-test --report '${{ runner.temp }}/registry-contract.json'
+      - name: Preserve registry contract proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: registry-contract
+          path: ${{ runner.temp }}/registry-contract.json
+          if-no-files-found: error
+          retention-days: 14
+
+  native-complete:
+    name: native complete coverage
+    runs-on: ubuntu-latest
+    needs: [native, registry-contract]
+    if: always()
+    timeout-minutes: 5
+    steps:
+      - name: Require registry contract success
+        env:
+          REGISTRY_RESULT: ${{ needs.registry-contract.result }}
+        run: test "$REGISTRY_RESULT" = success
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          fetch-depth: 2
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -114,6 +151,8 @@ jobs:
             /geometry-web/**/*.cjs
             /geometry-web/**/*.mjs
             /geometry-web/**/*.py
+            /geometry-web/cdp_sections.d/
+            /geometry-web/canvas-registry/
             /tests/
             !/tests/evidence/
       - name: Prove the path classifier on fixed cases
@@ -331,6 +370,9 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
       - name: Recompute path scope with the same classifier as the browser gate
         id: scope
         env:

@@ -49,7 +49,14 @@ NATIVE_ONLY = {'doc', 'test'}
 # browser-canvas-complete 另跑 tests/test_canvas_shards.js）。由此出發追 tests/ 的參照閉包。
 SEED_GLOBS = ('package.json', '.github/scripts/canvas_evidence.py', 'geometry-web/**/*.js',
               'geometry-web/**/*.cjs', 'geometry-web/**/*.mjs', 'geometry-web/**/*.py')
-SEED_TESTS = ('tests/test_canvas_shards.js',)
+SEED_TESTS = ('tests/test_canvas_shards.js',
+              'tests/diagnostics/canvas_registry_contract_check.cjs')
+# The layout switch and migrator affect browser metadata as well as native.
+# List stable entry points, never the names of individual future fragments.
+BROWSER_REGISTRY_INPUTS = frozenset((
+    'tests/registry-layout.json', 'tests/registry_migrate.py',
+    'tests/diagnostics/registry_migration_contract_check.py',
+))
 TESTS_REF = re.compile(r"(?<![\w-])(?:\.\./)*tests/[\w./-]*[\w-]")
 RELATIVE_REF = re.compile(r"""['"](\.{1,2}/[\w./-]+)['"]""")
 PY_IMPORT = re.compile(r"^\s*(?:from|import)\s+(?:tests\.)?(\w+)", re.M)
@@ -122,7 +129,8 @@ def classify_path(path, served, closure):
     # tests/ 先於 *.md：tests/helpers/、tests/fixtures/ 與瀏覽器閉包內的 .md 也要全跑（#391 審查 F1）。
     if path.startswith('tests/'):
         name = path.rsplit('/', 1)[-1]
-        if (path in closure or any(d.endswith('/') and path.startswith(d) for d in closure)
+        if (path in BROWSER_REGISTRY_INPUTS or path in closure
+                or any(d.endswith('/') and path.startswith(d) for d in closure)
                 or path.startswith(('tests/helpers/', 'tests/fixtures/')) or 'browser' in name):
             return 'browser-test-support'
         return 'test'
@@ -176,6 +184,16 @@ def selftest():
         (['geometry-web/cdp_test.js'], True), (['geometry-web/space_model_test.js'], True),
         (['current_geometry.c'], True), (['.github/workflows/integration-tests.yml'], True),
         (['.github/scripts/ci_path_scope.py'], True),
+        (['tests/suites.d/py__test_new_suite.json'], False),
+        (['tests/native-costs.d/py__test_new_suite.json'], False),
+        (['tests/registry-evidence/native/new-receipt.json'], False),
+        (['geometry-web/cdp_sections.d/PNEW.json'], True),
+        (['geometry-web/canvas_sections/PNEW.js'], True),
+        (['geometry-web/canvas-registry/new-receipt.json'], True),
+        (['tests/registry-layout.json'], True),
+        (['tests/registry_migrate.py'], True),
+        (['tests/diagnostics/canvas_registry_contract_check.cjs'], True),
+        (['geometry-core/domain-decoupling/product-architecture.d/entries/new.json'], True),
         (['BACKLOG.md', 'current_geometry.c'], True), (['BACKLOG.md', 'tests/run_tests.py'], False),
         ([], True),
     ]

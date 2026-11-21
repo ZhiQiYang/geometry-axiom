@@ -140,6 +140,30 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(result["evidence"]["completionVerified"])
         self.assertEqual(result["evidence"]["scope"]["mode"], "full")
+        # The matching old table cannot rescue an incomplete migration. Use
+        # the real registry loader, with its archive deliberately absent.
+        source_root = Path(gate.__file__).resolve().parent.parent
+        for name in ("canvas_registry.js", "cdp_floor.js"):
+            (self.root / "geometry-web" / name).write_bytes((source_root / "geometry-web" / name).read_bytes())
+        for index, (relative, directory) in enumerate((
+                ("geometry-web/canvas-registry", True),
+                ("geometry-web/cdp_sections.d", True),
+                ("geometry-web/canvas_sections", True),
+                ("tests/registry-layout.json", False),
+                ("tests/.registry-migration-pending", True))):
+            with self.subTest(marker=relative):
+                marker = self.root / relative
+                marker.parent.mkdir(parents=True, exist_ok=True)
+                marker.mkdir() if directory else marker.write_text("{}\n", encoding="utf-8")
+                self.output = self.base / ("incomplete-migration-" + str(index))
+                try:
+                    self.assertTrue((self.root / "geometry-web/cdp_sections.golden.json").is_file())
+                    self.assertFalse((self.root / "geometry-web/canvas-registry/legacy.json").exists())
+                    code, result, _ = self.run_fake(row=self.cdp, command=["node", "geometry-web/cdp_test.js"])
+                    self.assertNotEqual(code, 0, "R386_RELEASE_NO_LEGACY_FALLBACK " + relative)
+                    self.assertFalse(result["executionVerified"])
+                finally:
+                    marker.rmdir() if directory else marker.unlink()
 
     def test_incomplete_failed_skipped_or_miscounted_cdp_rejects_exit_zero(self):
         for key, value in (("completed", False), ("failedAssertions", 1), ("passedAssertions", 0),

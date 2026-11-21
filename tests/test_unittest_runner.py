@@ -19,6 +19,7 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).parent))
 import run_all
 import native_shards
+import native_registry
 import native_score_reference
 from native_shards import parse_shard, partition_suites, timing_weights, validate_partition
 import native_shard_receipts
@@ -234,7 +235,8 @@ class NativeShardCoverage(unittest.TestCase):
         for flag in ('--only', '--extra-py', '--allow-skip', '--simulate-missing', '--update-expected'):
             self.assertNotIn(flag, command, marker)
         self.assertNotIn('continue-on-error:', native + complete, marker)
-        for line in ('    name: native complete coverage', '    needs: native', '    if: always()'):
+        for line in ('    name: native complete coverage',
+                     '    needs: [native, registry-contract]', '    if: always()'):
             self.assertIn('\n' + line + '\n', '\n' + complete, marker)
         command = next((line.strip() for line in complete.splitlines()
                         if line.strip().startswith('run: python3 -B tests/native_shard_receipts.py ')), '')
@@ -249,6 +251,31 @@ class NativeShardCoverage(unittest.TestCase):
                       '            /*\n'
                       '            !/evidence/\n', complete,
                       'R379_NATIVE_COVERAGE_SPARSE_CHECKOUT')
+        # The new registry proof has its own five-minute budget. An always()
+        # coverage job must propagate a failed, cancelled or skipped proof.
+        registry_marker = 'R386_REGISTRY_SEPARATE_JOB'
+        workflow = (Path(__file__).parent.parent / '.github/workflows/integration-tests.yml').read_text(
+            encoding='utf-8')
+        registry = BrowserPathScopeWiring._job(workflow, 'registry-contract')
+        self.assertIsNotNone(registry, registry_marker)
+        for line in ('    name: registry contract', '    timeout-minutes: 5',
+                     '          fetch-depth: 2', '          filter: blob:none',
+                     '          sparse-checkout-cone-mode: false', '          sparse-checkout: |',
+                     '            /*', '            !/evidence/', "          node-version: '24'",
+                     '          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}',
+                     '          EVENT_NAME: ${{ github.event_name }}',
+                     '          PR_HEAD: ${{ github.event.pull_request.head.sha }}',
+                     "        run: python3 -B tests/registry_migrate.py check --self-test --report '${{ runner.temp }}/registry-contract.json'",
+                     '          name: registry-contract',
+                     '          path: ${{ runner.temp }}/registry-contract.json',
+                     '          if-no-files-found: error', '          retention-days: 14'):
+            self.assertIn('\n' + line + '\n', '\n' + registry, registry_marker)
+        self.assertNotIn('continue-on-error:', registry, registry_marker)
+        self.assertNotIn('registry_migrate.py', complete, registry_marker)
+        for line in ('      - name: Require registry contract success',
+                     '          REGISTRY_RESULT: ${{ needs.registry-contract.result }}',
+                     '        run: test "$REGISTRY_RESULT" = success'):
+            self.assertIn('\n' + line + '\n', '\n' + complete, registry_marker)
 
     def test_partition_covers_actual_suite_registry_once(self):
         suites = run_all.build_suites()
@@ -368,22 +395,18 @@ class NativeShardCoverage(unittest.TestCase):
 
     def test_profile_balances_measured_work(self):
         suites = run_all.build_suites()
-        weights = timing_weights()
-        parts = partition_suites(suites, 3, weights)
-        loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
-        self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
-        self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
         # Keep the historical 224-row and supplemental relative-weight checks.
         # Freeze the original two-run/three-shard regression and its two
         # mutation proofs. It is historical coverage, not the current CI plan.
-        profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R380_ADDED_SUITES, set(added) - R379_ADDED_SUITES - R17_ADDED_SUITES,
+        retained_added = set(added) & (R380_ADDED_SUITES | R379_ADDED_SUITES | R17_ADDED_SUITES)
+        self.assertEqual(R380_ADDED_SUITES, retained_added - R379_ADDED_SUITES - R17_ADDED_SUITES,
                          'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES, retained_added - R380_ADDED_SUITES - R17_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
-        self.assertEqual(R17_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES,
+        self.assertEqual(R17_ADDED_SUITES, retained_added - R380_ADDED_SUITES - R379_ADDED_SUITES,
                          'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        profiles = native_shards.measured_profiles()
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual({s.name for s in suites}, historical_names | set(added),
                          'R348_MEASURED_PROFILE_COVERS_REGISTRY')
@@ -392,9 +415,17 @@ class NativeShardCoverage(unittest.TestCase):
         # Main's historical 317-suite proof retains its original universe.
         # R379's independent 318-suite proof has a separate test and mutation
         # target below. The live six-shard proof still covers all 320 suites.
-        main_history = [s for s in suites if s.name not in R379_ADDED_SUITES | R17_ADDED_SUITES]
+        main_history = [s for s in suites if s.name in historical_names | R380_ADDED_SUITES]
         self.assertEqual(historical_names | R380_ADDED_SUITES,
                          {s.name for s in main_history}, 'R380_HISTORICAL_317_REGISTRY')
+        # Preserve the scalar 324-suite historical replay. New independently
+        # evidenced suites belong to the live six-shard proof below.
+        scalar_history = [s for s in suites if s.name in historical_names | retained_added]
+        weights = timing_weights()
+        parts = partition_suites(scalar_history, 3, weights)
+        loads = [sum(weights.get(s.name, 1000) for s in part) for part in parts]
+        self.assertLess(max(loads), 600000, '固定main實測配置應低於每片10分鐘，留建置與新套件餘量')
+        self.assertLessEqual(max(loads)-min(loads), max(weights.values()))
         with mock.patch.object(native_shards, 'measured_profiles', return_value=profiles[:2]):
             current_parts = partition_suites(main_history, 3)
         owners = {s.name: i for i, part in enumerate(current_parts) for s in part}
@@ -404,7 +435,7 @@ class NativeShardCoverage(unittest.TestCase):
         current_weights = dict(weights)
         current_weights.update({name: row['planning_weight_ms']
                                 for name, row in profile.get('supplemental', {}).items()})
-        historical_parts = partition_suites(suites, 3, current_weights)
+        historical_parts = partition_suites(scalar_history, 3, current_weights)
         current_loads = [sum(current_weights.get(s.name, 1000) for s in p) for p in historical_parts]
         self.assertLess(max(current_loads), 650000, 'R348_SHARD_SUPPLEMENTAL_PROFILE_CEILING')
         # Preserve both original measurements and the original 100s + 30s
@@ -483,7 +514,9 @@ class NativeShardCoverage(unittest.TestCase):
         # for unrelated main mutants, without sharing any 0/1/0 result.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R379_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R17_ADDED_SUITES,
+        self.assertEqual(R379_ADDED_SUITES,
+                         set(added) & (R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES)
+                         - R380_ADDED_SUITES - R17_ADDED_SUITES,
                          'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
@@ -561,7 +594,8 @@ class NativeShardCoverage(unittest.TestCase):
                           'py:test_r14_browser_receipt': 2000},
                          {name: bounds.get(name) for name in R379_ADDED_SUITES},
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
-        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES, set(bounds),
+        self.assertEqual(R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES,
+                         set(bounds) & (R379_ADDED_SUITES | R380_ADDED_SUITES | R17_ADDED_SUITES),
                          'R379_ADDED_SUITE_OBSERVED_UPPER_BOUNDS')
         # R17 (PR #419) is a third independent /1 source. It passes the same
         # field, provenance, all-passed and margin checks, and must not repeat a
@@ -614,6 +648,8 @@ class NativeShardCoverage(unittest.TestCase):
                     self.assertNotEqual(native_shards.profile_digest(), digest, marker)
         source_bytes = [path.read_bytes().replace(b'\r\n', b'\n') for path in
                         (native_shards.TIMINGS, native_shards.ADDED_EVIDENCE, r14_path, r17_path)]
+        if native_registry.active(run_all.ROOT):
+            source_bytes.append(native_registry.source_digest(run_all.ROOT).encode('ascii'))
         self.assertEqual(hashlib.sha256(b'\0'.join(source_bytes)).hexdigest(),
                          digest, 'R379_PROFILE_DIGEST_BINDS_R14_SOURCE')
 
@@ -669,7 +705,10 @@ class NativeShardCoverage(unittest.TestCase):
             expected_file = directory / 'expected.json'
             expected_file.write_text(json.dumps(expected), encoding='utf-8')
             expected_sha = hashlib.sha256(expected_file.read_bytes()).hexdigest()
-            plans = partition_suites(suites, 6)
+            # Explicit synthetic fixture weights are not production CI costs.
+            fixture_profiles = [{s.name: 1 for s in suites}] * 2
+            with mock.patch.object(native_shards, 'measured_profiles', return_value=fixture_profiles):
+                plans = partition_suites(suites, 6)
             reports = []
             for i, part in enumerate(plans, 1):
                 rows = []
@@ -692,6 +731,7 @@ class NativeShardCoverage(unittest.TestCase):
                         mock.patch.object(run_all, 'build_suites', return_value=suites), \
                         mock.patch.object(run_all, 'load_expected', return_value=(expected, '')), \
                         mock.patch.object(run_all, 'EXPECTED_FILE', expected_file), \
+                        mock.patch.object(native_shards, 'measured_profiles', return_value=fixture_profiles), \
                         mock.patch.object(native_shard_receipts.subprocess, 'check_output', return_value='f' * 40), \
                         contextlib.redirect_stdout(io.StringIO()):
                     native_shard_receipts.main()

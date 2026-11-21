@@ -5,6 +5,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
+const registry = require('../geometry-web/canvas_registry.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
@@ -14,10 +15,11 @@ const d18CardStaggerExtension = require('./diagnostics/d18_grid_card_stagger_can
 
 const ROOT = path.resolve(__dirname, '..');
 const plan = shards.loadPlan(), golden = shards.loadGolden();
-const beforeR335 = {plan:r335Extension.projectPlan(plan),golden:r335Extension.projectGolden(golden)};
+const legacy = registry.legacyView(ROOT);
+const beforeR335 = {plan:r335Extension.projectPlan(legacy.plan),golden:r335Extension.projectGolden(legacy.golden)};
 const COUNT = plan.shards.length;
 const COMMIT = 'a'.repeat(40);
-const REAL = {planSha256: shards.lfSha256(fs.readFileSync(shards.PLAN_PATH)), goldenSha256: shards.lfSha256(fs.readFileSync(shards.GOLDEN_PATH))};
+const REAL = shards.sourceDigests();
 const clone = value => JSON.parse(JSON.stringify(value));
 const sum = sections => Object.values(sections).reduce((a, b) => a + b, 0);
 
@@ -80,7 +82,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
   // D18 finding 5 adds exactly one P70 assertion; project it out too.
-  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(r335Extension.projectGolden(context.golden))))));
+  const golden=d18CardStaggerExtension.projectGolden(r20ReasonsExtension.projectGolden(r06LegacyExtension.projectGolden(r400Extension.projectGolden(pfExtension.projectGolden(r335Extension.projectGolden(legacy.golden))))));
   // #353 run 41634950590 attempt 2: 91 sections, P353=355, full total=4002.
   assert.equal(golden.sections.P353, 355, 'R369_P353_GOLDEN: carry the already measured section');
   // #360 and R06 add independent sections. Keep the original 4002/91 contract
@@ -190,7 +192,9 @@ test('執行時的計畫或 golden 與彙總 checkout 不同必紅；golden 多�
   assert.match(shards.validatePlan(plan, grown).join('\n'), /golden 的段 P999 沒有排進任何一片/);
   red(complete(), /分片計畫：golden 的段 P999/, {...context, golden: grown});
   // R369-DIGEST: exact source bytes, not a copied expected hash.
-  const architecture = JSON.parse(fs.readFileSync(path.join(ROOT, 'geometry-core/domain-decoupling/product-architecture.json'), 'utf8'));
+  const architecture = JSON.parse(require('node:child_process').execFileSync(process.env.PYTHON || 'python3', [
+    '-B', '-c', 'import json,sys; sys.path.insert(0,"tests"); from architecture_contract import load_manifest; print(json.dumps(load_manifest("geometry-core/domain-decoupling/product-architecture.json")))',
+  ], {cwd: ROOT, encoding: 'utf8'}));
   for (const relative of ['geometry-web/cdp_test.js', 'geometry-web/parameter_workflow_test.js',
     'geometry-web/canvas_shards.js', 'geometry-web/grid_card_entry_test.js']) {
     const entry = architecture.exclusions.find(row => row.path === relative);
@@ -371,10 +375,10 @@ test('workflow：canvas 兩片並行、每片仍 35 分鐘，彙總核對收據�
   for (const line of footers) {
     const emitted=[];
     new Function('_log','scope','transportFailureTrace','passN','failN','skipped','sectionPass','sectionFail',
-      'sectionOrder','goldenCompare','excN','unexpectedExcN','startedAt','shardHandoff','currentSection','e',line)(
+      'sectionOrder','goldenCompare','excN','unexpectedExcN','startedAt','shardHandoff','currentSection','e','sectionTimer',line)(
       value=>emitted.push(JSON.parse(value.slice('CDP_RESULT '.length))),{mode:'partial'},
       {apiFirst:()=>first,apiFailures:()=>failureList,apiComplete:()=>true,first:()=>null},
-      50,0,[],{R06:50},{},order,'matched',1,0,Date.now(),handoff,'R06',{message:'controlled-fixture'});
+      50,0,[],{R06:50},{},order,'matched',1,0,Date.now(),handoff,'R06',{message:'controlled-fixture'},{finish:()=>({R06:1})});
     assert.equal(emitted.length,1,'R06_CANVAS_TRACE');
     assert.deepEqual(emitted[0].firstTransportFailure,first,'R06_CANVAS_TRACE');
     assert.deepEqual(emitted[0].apiTransportFailures,failureList,'R06_CANVAS_TRACE: preserve the complete R06 API trace');
@@ -474,10 +478,12 @@ test('current numeric plan partitions every current key exactly once without fix
   const second=evidencePlan.units.find(unit=>unit.id==='2/2').sections;
   assert.deepEqual(second.slice(second.indexOf('P83'),second.indexOf('P86')+1),['P83','P86']);
   assert.deepEqual(second.slice(second.indexOf('R06')-1,second.indexOf('R06')+2),['P82','R06','P80']);
-  for(const relative of ['geometry-web/canvas_shards.json','geometry-web/canvas_shards.js',
+  assert.equal(evidencePlan.sourceHashes['geometry-web/canvas_shards.json'],REAL.planSha256,'R367_AGGREGATE_PLAN_DIGEST');
+  assert.equal(evidencePlan.sourceHashes['geometry-web/cdp_sections.golden.json'],REAL.goldenSha256,'R367_AGGREGATE_GOLDEN_DIGEST');
+  for(const relative of [...registry.load(ROOT).sourceFiles,'geometry-web/canvas_shards.js',
     'geometry-web/grid_card_entry_test.js','geometry-web/identity_ledger_browser_test.js',
     'geometry-web/cutting_plan_test.js','geometry-web/assembly_bay_repeat_test.js']) {
-    assert.equal(evidencePlan.sourceHashes[relative],shards.lfSha256(fs.readFileSync(path.join(ROOT,relative))),
+    assert.equal(evidencePlan.sourceHashes[relative],relative.endsWith('.zip')?registry.sha(fs.readFileSync(path.join(ROOT,relative))):shards.lfSha256(fs.readFileSync(path.join(ROOT,relative))),
       'R367_SOURCE_CLOSURE: '+relative);
   }
 });

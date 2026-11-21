@@ -57,7 +57,7 @@ def main():
     plans = partition_suites(suites, args.parts)
     validate_partition(suites, plans)
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
-    expected_sha = hashlib.sha256(run_all.EXPECTED_FILE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+    expected_sha = run_all.expected_digest()
     paths = sorted(args.input.glob('shard-*.json'))
     if len(paths) != args.parts:
         raise ValueError('缺少原始分片收據')

@@ -8,14 +8,14 @@
     python tests/run_all.py --shard 1/6     # deterministic measured-cost partition (CI native runs 6 shards); aggregate every shard for full coverage
     python tests/run_all.py --allow-skip    # skips no longer affect the exit code
     python tests/run_all.py --simulate-missing GEOMETRY_MODEL_BASE   # run as if that variable were unset [DEMO run, never exit 0]
-    python tests/run_all.py --update-expected   # full run only: rewrite tests/run_all.expected.json from what was discovered
+    python tests/run_all.py --update-expected   # full run only: update active per-suite exact counts from discovery
 
 Exit codes (lowest number wins): 1 any test failed / suite crashed / timed out / discovered count differs from
-run_all.expected.json / unregistered test file; 2 environment problem (stale or missing binary, SAC block, node missing,
+the active expected registry / unregistered test file; 2 environment problem (stale or missing binary, SAC block, node missing,
 canvas shim did not redirect, run_tests exit 2, another run_all or build is running); 3 only skips (unless --allow-skip);
 4 a --simulate-missing demo that would otherwise have been 0; 0 everything that was selected passed.
 A complete run (no --only / --extra-py / --simulate-missing / --shard) that exits 0 means: every suite ran, every suite found exactly
-the number of tests listed in tests/run_all.expected.json, none failed, none was skipped (the only exemption is the named
+the number of tests listed in the active suite registry, none failed, none was skipped (the only exemption is the named
 allowlist ALLOWED_SKIPS, e.g. the POSIX-only /dev/full test on Windows).  Partial/demo runs say so in their last lines.
 
 NOT covered: required production-owner integration and real-browser gates in
@@ -40,6 +40,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 import binaries  # noqa: E402
+import native_registry  # noqa: E402
 from native_shards import parse_shard, partition_suites, profile_digest, validate_partition
 
 IS_WIN = os.name == 'nt'
@@ -48,8 +49,9 @@ RUNNER = HERE / '_unittest_runner.py'
 EXPECTED_FILE = HERE / 'run_all.expected.json'
 
 # ---------------------------------------------------------------- registries
-# Every tests/test_*.py MUST appear here (value = native binaries it needs; [] is a deliberate "needs none").
-# A test file that is on disk but not listed makes run_all fail and name it.
+# Legacy bootstrap snapshot. After deterministic migration, execution/count
+# declarations come exclusively from tests/suites.d; additions do not edit these
+# tables. The explicit browser gates and fixture exclusions below still apply.
 PY_NEEDS = {
     'test_boundary_pair_host': ['bridge'],
     'test_r14_browser_receipt': [],
@@ -623,18 +625,34 @@ def node_exe():
 
 # ------------------------------------------------------------------ registry checks
 
-def check_registry():
+def check_registry(*, allow_pending=False):
     """Problems (list of str) between what is on disk under tests/ and what this file registers."""
     problems = []
+    if native_registry.active(ROOT):
+        try:
+            records = native_registry.load_registry(ROOT, allow_pending=allow_pending)
+        except ValueError as exc:
+            return [str(exc)]
+        registered_files = {file for row in records for file in row['files']}
+        registered_py = {Path(file).stem for file in registered_files
+                         if file.startswith('tests/') and len(Path(file).parts) == 2 and file.endswith('.py')}
+        registered_js = {file for file in registered_files
+                         if file.startswith('tests/') and len(Path(file).parts) == 2
+                         and Path(file).suffix in ('.js', '.cjs', '.mjs')}
+    else:
+        registered_py = set(PY_NEEDS)
+        registered_js = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
+                         set(NODE_PURE_TEST_FILES.values()) | set(NODE_MODEL_TEST_FILES.values()) |
+                         set(NODE_NATIVE_TEST_FILES.values()))
     disk_py = {p.stem for p in HERE.glob('test_*.py')}
-    for stem in sorted(disk_py - set(PY_NEEDS) - set(PY_BROWSER_GATES)):
+    for stem in sorted(disk_py - registered_py - set(PY_BROWSER_GATES)):
         problems.append('tests/%s.py 沒有登記在 run_all.py 的 PY_NEEDS（沒有二進位需求也要明確登記成 []）；未登記的檔不會被跑' % stem)
-    for stem in sorted((set(PY_NEEDS) | set(PY_BROWSER_GATES)) - disk_py):
+    # Registry files that are runner entrypoints, rather than test_*.py suites,
+    # are checked by load_registry's file existence guard.
+    for stem in sorted(({s for s in registered_py if s.startswith('test_')} | set(PY_BROWSER_GATES)) - disk_py):
         problems.append('PY_NEEDS 登記了 %s，但 tests/%s.py 不存在' % (stem, stem))
     disk_js = {'tests/' + p.name for pattern in ('*.js', '*.cjs', '*.mjs') for p in HERE.glob(pattern)}
-    known = (set(NODE_TEST_FILES) | {NODE_SCRIPT_FILE} | set(NODE_DOCUMENT_SCRIPT_FILES.values()) |
-             set(NODE_PURE_TEST_FILES.values()) | set(NODE_MODEL_TEST_FILES.values()) |
-             set(NODE_NATIVE_TEST_FILES.values()) | set(NODE_EXCLUDED))
+    known = registered_js | set(NODE_EXCLUDED)
     for rel in sorted(disk_js - known):
         problems.append('%s 沒有登記在 run_all.py（NODE_TEST_FILES／NODE_SCRIPT_FILE／NODE_DOCUMENT_SCRIPT_FILES／NODE_PURE_TEST_FILES／NODE_MODEL_TEST_FILES／NODE_NATIVE_TEST_FILES／NODE_EXCLUDED）；未登記的檔不會被跑' % rel)
     for rel in sorted(known - disk_js):
@@ -648,7 +666,10 @@ def check_registry():
     return problems
 
 
-def build_suites():
+def build_suites(*, allow_pending=False):
+    if native_registry.active(ROOT):
+        return [Suite(row['name'], **native_registry.resolved_execution(row, ROOT))
+                for row in native_registry.load_registry(ROOT, allow_pending=allow_pending)]
     py = sys.executable
     suites = [
         Suite('c:integrity', 'integrity', None, ['integrity'], 300, label='tests/test_core_integrity.c'),
@@ -1007,8 +1028,13 @@ def run_suite(suite, env, infos):
 
 # ------------------------------------------------------------------ expected counts
 
-def load_expected():
+def load_expected(*, allow_pending=False):
     """(data or None, error message or '')"""
+    if native_registry.active(ROOT):
+        try:
+            return native_registry.expected(ROOT, allow_pending=allow_pending), ''
+        except ValueError as exc:
+            return None, str(exc)
     try:
         data = json.loads(EXPECTED_FILE.read_text(encoding='utf-8'))
     except OSError:
@@ -1018,6 +1044,16 @@ def load_expected():
     if not isinstance(data.get('suites'), dict):
         return None, '%s 缺少 "suites" 物件' % EXPECTED_FILE.name
     return data, ''
+
+
+def expected_digest(*, allow_pending=False):
+    if native_registry.active(ROOT) and EXPECTED_FILE == HERE / 'run_all.expected.json':
+        return native_registry.expected_digest(ROOT, allow_pending=allow_pending)
+    return hashlib.sha256(EXPECTED_FILE.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+
+
+def expected_source():
+    return 'tests/suites.d' if native_registry.active(ROOT) else str(EXPECTED_FILE)
 
 
 def compare_expected(rows, suites, expected, err, full, universe=None):
@@ -1033,7 +1069,7 @@ def compare_expected(rows, suites, expected, err, full, universe=None):
             continue   # extras are unregistered by design; crashed/env rows are already red/exit 2
         e = entries.get(r.name)
         if e is None:
-            msg = '沒有登記在 %s（新 suite 必須明確登記預期數；--update-expected）' % EXPECTED_FILE.name
+            msg = '沒有登記在 %s（新 suite 必須由真實census登記預期數）' % expected_source()
         elif not s.counted:
             msg = '' if e.get('mode') == 'exit-code-only' else 'expected 對這個「僅結束碼」suite 登記成 %r，應為 exit-code-only' % e.get('mode')
         elif e.get('mode') != 'count' or not isinstance(e.get('count'), int):
@@ -1049,7 +1085,7 @@ def compare_expected(rows, suites, expected, err, full, universe=None):
         registered = {s.name for s in universe} if universe is not None else by_name
         for name in entries:
             if name not in registered:
-                problems.append((name, '%s 登記了這個 suite，但 run_all 已沒有它' % EXPECTED_FILE.name))
+                problems.append((name, '%s 登記了這個 suite，但 run_all 已沒有它' % expected_source()))
     return problems
 
 
@@ -1084,8 +1120,11 @@ def update_expected(rows, suites, registry_errors):
                  'exit-code-only 表示該 suite 只有結束碼、沒有可數的 test。',
         'suites': suites_out,
     }
-    EXPECTED_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
-    print('\n已重寫 %s：' % EXPECTED_FILE)
+    if native_registry.active(ROOT):
+        native_registry.update_expected(ROOT, suites_out)
+    else:
+        EXPECTED_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+    print('\n已重寫 %s：' % expected_source())
     changed = False
     for name, e in suites_out.items():
         before = old_entries.get(name)
@@ -1161,6 +1200,8 @@ def print_table(rows):
 
 def partial_flags(args):
     flags = []
+    if getattr(args, 'measure_suite', None):
+        flags.append('--measure-suite ' + args.measure_suite)
     if args.only:
         flags.append('--only ' + ' --only '.join(args.only))
     for extra in args.extra_py:
@@ -1183,24 +1224,32 @@ def main(argv=None):
     parser.add_argument('--simulate-missing', action='append', default=[], metavar='ENVVAR',
                         help='模擬缺少某環境變數（僅供驗證 skip 是否可見；示範跑，exit code 絕不為 0）')
     parser.add_argument('--update-expected', action='store_true',
-                        help='完整跑之後重寫 tests/run_all.expected.json（不能與 --only／--extra-py／--simulate-missing 併用）')
+                        help='完整跑之後重寫active suite expected（不能與 --only／--extra-py／--simulate-missing 併用）')
     parser.add_argument('--shard', type=parse_shard, metavar='i/n',
                         help='依固定CI耗時分片，1起算；各片仍嚴格核對expected，完整驗收須彙總全部片')
     parser.add_argument('--report', type=Path, help='寫出本次原始suite執行收據，供跨片完整性核對')
+    parser.add_argument('--measure-suite', metavar='EXACT_NAME',
+                        help='只量測一個已登記suite，收據acceptance=false；缺成本時可取原件，不是正式分片')
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
     partial = partial_flags(args)
+    if args.measure_suite and (not args.report or args.shard or args.only or args.extra_py
+                              or args.simulate_missing or args.update_expected or args.allow_skip):
+        print('--measure-suite須帶--report，不能與分片、篩選、模擬、更新expected或放行skip混用')
+        return 2
     if args.shard and (args.only or args.extra_py or args.simulate_missing):
         print('--shard不能與--only／--extra-py／--simulate-missing混用')
         return 2
     if args.update_expected and partial:
         print('--update-expected 只能在完整跑使用；你同時給了：%s' % '、'.join(partial))
         return 2
-    registry_errors = check_registry()
+    registry_errors = check_registry(allow_pending=bool(args.measure_suite))
 
-    suites = build_suites()
+    suites = build_suites(allow_pending=bool(args.measure_suite))
+    if args.measure_suite:
+        suites = [s for s in suites if s.name == args.measure_suite]
     args._shard_universe = list(suites) if args.shard else None
     if args.shard:
         index, count = args.shard
@@ -1244,6 +1293,12 @@ def main(argv=None):
 
 def run(args, suites, registry_errors, partial):
     started = time.monotonic()
+    measurement = bool(getattr(args, 'measure_suite', None))
+    binding_before, binding_stable = None, False
+    if measurement and native_registry.active(ROOT):
+        declaration = next(row for row in native_registry.load_registry(ROOT, allow_pending=True)
+                           if row['name'] == suites[0].name)
+        binding_before = native_registry.measurement_binding(ROOT, declaration)
     # which binaries the selected suites need (a binary whose every env variable is simulated-missing is not needed)
     simulated = set(args.simulate_missing)
     ignored = {b.name for b in binaries.REGISTRY if b.envs and all(v in simulated for v in b.envs)}
@@ -1304,13 +1359,31 @@ def run(args, suites, registry_errors, partial):
 
     full = not partial
     expected_problems = []
+    census_pending, expected_candidate = False, None
     updated = None
     if args.update_expected:
         updated = update_expected(rows, suites, registry_errors)
     else:
-        expected, exp_err = load_expected()
+        expected, exp_err = load_expected(allow_pending=measurement)
+        if (measurement and expected and len(suites) == 1 and len(rows) == 1
+                and expected['suites'].get(suites[0].name) == {'mode': 'pending-ci-census'}):
+            # No existing count is replaced. This new suite has no accepted
+            # baseline; only a non-acceptance measurement may emit its census.
+            census_pending = True
+            expected_candidate = {'mode': 'count', 'count': rows[0].total, 'unit': UNIT[suites[0].kind]}
+            expected['suites'][suites[0].name] = expected_candidate
         expected_problems = compare_expected(rows, suites, expected, exp_err, full,
                                              universe=getattr(args, '_shard_universe', None))
+        if census_pending and rows[0].total <= 0:
+            rows[0].expected_problem = '首次CI census不可是0個測試'
+            expected_problems.append((suites[0].name, rows[0].expected_problem))
+    if binding_before is not None:
+        declaration = next(row for row in native_registry.load_registry(ROOT, allow_pending=True)
+                           if row['name'] == suites[0].name)
+        binding_stable = native_registry.measurement_binding(ROOT, declaration) == binding_before
+        if not binding_stable:
+            rows[0].expected_problem = 'R386_NATIVE_MEASUREMENT_SOURCE_CHANGED'
+            expected_problems.append((suites[0].name, rows[0].expected_problem))
 
     print()
     print_table(rows)
@@ -1322,7 +1395,7 @@ def run(args, suites, registry_errors, partial):
             for d in r.details[:8]:
                 print('    - %s' % d)
     if expected_problems:
-        print('\n預期數不符（%s）：' % EXPECTED_FILE.name)
+        print('\n預期數不符（%s）：' % expected_source())
         for name, msg in expected_problems:
             print('  %s：%s' % (name, msg))
     if registry_errors:
@@ -1367,14 +1440,22 @@ def run(args, suites, registry_errors, partial):
     print('\nexit %d：%s' % (code, meaning))
     if getattr(args, 'report', None):
         universe = getattr(args, '_shard_universe', None) or suites
-        report = dict(schema='geometry-native-shard/1', shard=args.shard,
+        measurement = bool(getattr(args, 'measure_suite', None))
+        report = dict(schema='geometry-native-measurement/1' if measurement else 'geometry-native-shard/1',
+                      shard=args.shard,
                       commit_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
                       universe=[s.name for s in universe], selected=[s.name for s in suites],
                       rows=[report_row(row) for row in rows],
                       exit_code=code, seconds=time.monotonic()-started,
                       registry_errors=registry_errors, expected_problems=expected_problems,
-                      expected_sha256=hashlib.sha256(EXPECTED_FILE.read_bytes().replace(b'\r\n', b'\n')).hexdigest(),
-                      timings_sha256=profile_digest())
+                      expected_sha256=expected_digest(allow_pending=measurement),
+                      timings_sha256=None if measurement else profile_digest())
+        if measurement:
+            report.update(acceptance=False, census_pending=census_pending, expected_candidate=expected_candidate,
+                          suite_binding=binding_before, source_stable=binding_stable,
+                          ci_run_id=os.environ.get('GITHUB_RUN_ID'),
+                          ci_run_attempt=os.environ.get('GITHUB_RUN_ATTEMPT'),
+                          ci_job=os.environ.get('GITHUB_JOB'))
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     return code

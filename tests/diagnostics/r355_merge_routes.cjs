@@ -98,7 +98,14 @@ test('R355-MERGE-GATES: scope/card selectors cannot narrow complete or shard cov
   assert.throws(()=>config({...env,GEOMETRY_CDP_SHARD:'2/2',GEOMETRY_CDP_UPDATE_GOLDEN:'1'}),/never updates golden/,'R355_SHARD_CANNOT_UPDATE_GOLDEN');
 });
 test('R355-MERGE-PLAN: only P128 is added, after P352 and before P353/P359',()=>{
-  const plan=JSON.parse(fs.readFileSync(process.env.R355_PLAN_SOURCE||path.join(root,'geometry-web/canvas_shards.json')));
+  const registry=require('../../geometry-web/canvas_registry.js');
+  const migrated=[path.dirname(registry.META),registry.DIRECTORY,registry.MODULES,
+    'tests/registry-layout.json','tests/.registry-migration-pending'].some(relative=>{
+      try{fs.lstatSync(path.join(root,relative));return true;}
+      catch(error){if(error.code==='ENOENT')return false;throw error;}
+    });
+  const plan=process.env.R355_PLAN_SOURCE?JSON.parse(fs.readFileSync(process.env.R355_PLAN_SOURCE)):
+    migrated?registry.legacyView(root).plan:JSON.parse(fs.readFileSync(path.join(root,'geometry-web/canvas_shards.json')));
   assert.equal(plan.shards.length,2);
   const all=plan.shards.flatMap(s=>s.sections);
   assert.equal(all.filter(n=>n==='P128').length,1,'R355_PLAN_P128_ONCE');

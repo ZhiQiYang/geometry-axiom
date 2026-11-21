@@ -124,9 +124,10 @@ test('validateGolden 擋下格式錯誤', () => {
 });
 
 test('已提交的 cdp_sections.golden.json 結構合格,且 total 等於各段加總(無 min 段時)', () => {
-  const file = path.join(__dirname, '..', 'geometry-web', 'cdp_sections.golden.json');
+  const registry = require('../geometry-web/canvas_registry.js');
+  const file = path.join(__dirname, '..', registry.META);
   assert.ok(fs.existsSync(file), '已提交的 golden 不可缺失');
-  const g = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const g = registry.loadGolden();
   assert.deepEqual(F.validateGolden(g), []);
   const values = Object.values(g.sections);
   if (values.every(v => Number.isInteger(v))) assert.equal(g.total, values.reduce((a, b) => a + b, 0));
