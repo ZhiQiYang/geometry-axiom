@@ -23,6 +23,7 @@ import tempfile
 import threading
 
 import space_modeling
+from model_update import _source_identity as validate_model_source_identity
 from geometry_app import model_native, source_closure
 from modeling import ModelError, canonical_bytes, verify_package
 from modeling.base import load_base
@@ -175,7 +176,8 @@ def _program(value, *, base=False):
 
 
 def _validator_pins():
-    paths = {Path(__file__).resolve(), ROOT / "geometry-web" / "space_modeling.py", ROOT / "tests" / "binaries.py"}
+    paths = {Path(__file__).resolve(), ROOT / "geometry-web" / "space_modeling.py",
+             ROOT / "geometry-web" / "model_update.py", ROOT / "tests" / "binaries.py"}
     paths.update(path for _, path in source_closure.source_paths(ROOT))
     try:
         if not source_closure.current_identity()["fresh"]:
@@ -397,7 +399,7 @@ def _inventory(graph, final):
 
 def _model(record, base, index):
     path = ("manifest", "models", index)
-    _keys(record, ("id", "name", "created_at", "source", "input", "result"), path=path)
+    _keys(record, ("id", "name", "created_at", "source", "input", "result"), ("sourceIdentity",), path=path)
     if (type(record["id"]) is not str or not IDENTIFIER.fullmatch(record["id"]) or
             type(record["name"]) is not str or not record["name"].strip() or len(record["name"]) > 200):
         _fail("SCENARIO_MODEL", "Saved model identity is invalid.", path=path)
@@ -423,7 +425,7 @@ def _model(record, base, index):
         placement = next((p for p in model_base["placements"] if p["id"] == inputs.get("placement_id")), None)
         if (placement is None or source["placement_id"] != inputs.get("placement_id") or
                 (source["boundary_id"] != placement["boundary_id"] and
-                 not (source["boundary_id"] is None and placement["boundary_id"] == 0))):
+                 not ("profile_runs" not in inputs and source["boundary_id"] is None and placement["boundary_id"] == 0))):
             _fail("SCENARIO_MODEL_REPLAY", "Saved model source identity disagrees with its native input.", path=path)
     elif source["placement_id"] is not None:
         placement = next((p for p in model_base["placements"] if p["id"] == source["placement_id"]), None)
@@ -441,6 +443,13 @@ def _model(record, base, index):
                 placement["n"][:2] != [0, 0] or abs(placement["n"][2]) != 1):
             _fail("SCENARIO_MODEL_REPLAY", "Saved model projection disagrees with its native source.", path=path)
     rebuilt = space_modeling.preview(inputs, base_executable=base, max_cells=200000)
+    try:
+        # The F1b producer and isolated scenario replay share the exact K3
+        # covered-root whitelist. Content roots such as profile-run have no pin.
+        validate_model_source_identity(record)
+    except ModelError as exc:
+        _fail("SCENARIO_MODEL_IDENTITY", "Saved model identity roots are invalid: " + exc.code + ".",
+              path=(*path, "sourceIdentity"))
     # Conforming older packages may retain supported axiom pins, another
     # generator, presentation and diagnostic wording. Verify each ORIGINAL
     # package before comparing its exact geometric semantics to saved input.
@@ -454,7 +463,10 @@ def _model(record, base, index):
     if (saved["schema"] != rebuilt["schema"] or saved["source_sha256"] != rebuilt["source_sha256"] or
             source["scene_hash"] != rebuilt["source_sha256"]):
         _fail("SCENARIO_MODEL_REPLAY", "Saved model source or schema differs from independent replay.", path=path)
-    for key in ("space", "volume", "clearance", "walls", *(("timbers",) if "timbers" in inputs else ())):
+    if "profile_runs" in inputs and canonical_bytes(saved["source_snapshot"]) != canonical_bytes(rebuilt["source_snapshot"]):
+        _fail("SCENARIO_MODEL_REPLAY", "Saved raw/canonical source receipt differs from independent replay.", path=path)
+    for key in ("space", "volume", "clearance", "walls", *(("timbers",) if "timbers" in inputs else ()),
+                *(("profile_runs",) if "profile_runs" in inputs else ())):
         original, replayed = saved[key], rebuilt[key]
         if (original is None) != (replayed is None):
             _fail("SCENARIO_MODEL_REPLAY", "Saved model package presence differs from independent replay.",

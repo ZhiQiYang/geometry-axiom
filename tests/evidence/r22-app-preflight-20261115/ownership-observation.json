@@ -1,0 +1,75 @@
+{
+  "observedUtc": "2026-11-15 21:36:55 UTC",
+  "basisMain": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc",
+  "openPRs": [
+    {
+      "number": 421,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/421",
+      "head": "53ca7981dacce887f623a437a7b14b037e76ccaf",
+      "branch": "codex/issue54-manual-correction-20261115",
+      "base": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc",
+      "draft": true
+    },
+    {
+      "number": 420,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/420",
+      "head": "a63ed964302c16c964a294baecd6155626116294",
+      "branch": "codex/r01-card-unbind-ui-20261116",
+      "base": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc",
+      "draft": true
+    },
+    {
+      "number": 419,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/419",
+      "head": "735144edeb0cd5918b1e5c365dd6f63a63d9cd62",
+      "branch": "claude/r17-host-app-20261115",
+      "base": "e76e41cdcbc66e16dc4726df362e65ce6c53cf4d",
+      "draft": true
+    },
+    {
+      "number": 417,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/417",
+      "head": "3426b8cea683a143c79101564d09ab22db55e002",
+      "branch": "claude/l4-walk-reasons-20261115",
+      "base": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc",
+      "draft": false
+    },
+    {
+      "number": 396,
+      "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/396",
+      "head": "085d9ef182a6bd0ee390d06aea775f41d0052fc4",
+      "branch": "grokbot/taskB-r11-exact",
+      "base": "fd96b8bf7094bd57e74e3226aeba1f24a73b74fc",
+      "draft": true
+    }
+  ],
+  "pr420CurrentChangedFiles": [
+    "BACKLOG.md",
+    "geometry-core/domain-decoupling/product-architecture.json",
+    "geometry-web/canvas_shards.js",
+    "geometry-web/canvas_shards.json",
+    "geometry-web/cdp_sections.golden.json",
+    "geometry-web/docs/DOM-CONTRACT.md",
+    "geometry-web/grid-system-workspace.css",
+    "geometry-web/grid-system-workspace.js",
+    "geometry-web/grid_card_entry_mutations.json",
+    "geometry-web/grid_card_entry_test.js",
+    "geometry-web/reference-ui.js",
+    "tests/diagnostics/r420_canvas_extension.cjs",
+    "tests/run_all.expected.json",
+    "tests/test_canvas_shards.js",
+    "tests/test_identity_canvas_merge.js",
+    "需求帳.md"
+  ],
+  "pr421Review": {
+    "url": "https://github.com/ZhiQiYang/geometry-axiom/pull/421#issuecomment-6901701313",
+    "approvedHead": "53ca7981dacce887f623a437a7b14b037e76ccaf",
+    "scope": "prior component/native delivery only; new head requires new review"
+  },
+  "sourceURLs": [
+    "https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches/main",
+    "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls?state=open&per_page=100",
+    "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls/420/files?per_page=100"
+  ],
+  "note": "Read-only GitHub observations; no shared branch, product file, runner, golden, shard or registry edits. Not execution evidence."
+}

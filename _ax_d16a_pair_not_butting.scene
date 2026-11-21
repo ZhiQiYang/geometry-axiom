@@ -1,0 +1,9 @@
+# D16a P1-A：矩形房 e0 與 e2 兩支不互頂，成組整筆拒絕。
+requires boundary-pair/1
+surface 1 origin 0 0 2500 u +x v +y outline 0,0 1000,0 1000,1000 0,1000
+boundary-pair begin 1 2
+timber 1 27 20 role boundary
+timber 2 27 20 role boundary
+place 1 on 1 at-face e0 +u +n
+place 2 on 1 at-face e2 +u +n
+boundary-pair end

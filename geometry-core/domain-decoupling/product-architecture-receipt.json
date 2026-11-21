@@ -1,8 +1,8 @@
 {
   "schema": "geometry-architecture-ci-receipt/1",
-  "sourceHead": "c2f5881c15bd1d96deb3bedf4768e281a3168d49",
+  "sourceHead": "a20b0997c428617adc08e72246f8d7634cf0536f",
   "adoptedMain": "8f82b207e87c086705a1d8b7a00e2f215c07cbcf",
-  "runId": "43676814697",
+  "runId": "43688551032",
   "runAttempt": "1",
   "complete": true,
   "commands": [
@@ -21,7 +21,7 @@
       "exitCode": 0,
       "stdout": "architecture-cli.stdout",
       "stderr": "architecture-cli.stderr",
-      "stdoutSha256": "f92d4110d26c21a3048ce484365019266ad5294025f0bf053942e3e67ea47e88",
+      "stdoutSha256": "b447a48b612923a89ff799f4651c17adc4a4c8e152f5084b1f19efaf00a120e3",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
@@ -36,7 +36,7 @@
       "stdout": "architecture-unit.stdout",
       "stderr": "architecture-unit.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "0be0dd9a08c64f039ed474c4b4d8465c5a0059ca49e39f80ea6531977872f18b",
+      "stderrSha256": "c4e6baf4f90ced12df5859b13f4b0585db547c8e91c8b751b0c875648d7396d5",
       "testsRun": 205
     },
     {
@@ -51,17 +51,17 @@
       "stdout": "architecture-product.stdout",
       "stderr": "architecture-product.stderr",
       "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderrSha256": "c28c32b6903e28fadf82d6d27570ffb83487b81390f92b8956a49d28d2369dbf",
+      "stderrSha256": "8fbd71d1df1e0246bf9154fec7eb8b9f9a6ae986dc98628b464da596abe4ffa4",
       "testsRun": 18
     }
   ],
-  "manifestLfSha256": "595722c360d6ba62db57fdf937999c67e4a153fb535b1a6d2615ae7393014937",
+  "manifestLfSha256": "293f3e3228ad3cdd9eff6a6e398e37fc0c896a497a0feb5b3f78a4702fa16ff4",
   "scannerLfSha256": "bbd54265d0df88497228e1c362c904a495ed7ea986a3568adbeeb753e19d8f5e",
   "testScriptsLfSha256": {
     "tests/test_architecture_contract.py": "17ffb47f6f18db4967087459bb6d563e4d7487b0e30b23101b38fe5d36a7f9e3",
     "tests/test_product_architecture.py": "ba001185b4fd58a5cec8045cff72c1cf9c899733c94f94f28f161db05564a9a0"
   },
-  "scanSha256": "f92d4110d26c21a3048ce484365019266ad5294025f0bf053942e3e67ea47e88",
+  "scanSha256": "b447a48b612923a89ff799f4651c17adc4a4c8e152f5084b1f19efaf00a120e3",
   "ownedCount": 352,
   "exclusionCount": 288,
   "edgeCount": 833,
@@ -257,7 +257,7 @@
     },
     {
       "path": "geometry-core/card-reference/run_axiom_mutations.py",
-      "lfSha256": "ff07ce4d59c573d12213afc4f546b7ba9f186cdaf1fdaee240af6a7fc39e936b"
+      "lfSha256": "9b31dd0ca40f96a974e7cac46a732047e2b8730fcf6f7a5fe35aec6865a08b86"
     },
     {
       "path": "geometry-core/card-reference/run_mutations.py",
@@ -1029,7 +1029,7 @@
     },
     {
       "path": "geometry-core/modeling/__init__.py",
-      "lfSha256": "8691493dde052ef546cdec60953a4954034b6cf971f50beb76e8bda2b399c036"
+      "lfSha256": "222a37a421bfe2622a2da1fda40c4cfbe837184fead3e460a7fd43ab01dd817b"
     },
     {
       "path": "geometry-core/modeling/_host.py",
@@ -1185,7 +1185,7 @@
     },
     {
       "path": "geometry-guide/公理層-閱讀器.html",
-      "lfSha256": "780c60fbb52f632cbaf77b57eddabb7569fcdec36a4c0e3d0356a79804f6a172"
+      "lfSha256": "a5469c15ece827cbef6f0697aa1777e5d8facd3c2c74fcc230a88cce1d9b2c0e"
     },
     {
       "path": "geometry-templates/rectangular-grid/geometry_rectangular/__init__.py",
@@ -2628,5 +2628,5 @@
       "lfSha256": "a0b797a44918be0d5aac2a3a947bdab9d445abbf0111839508c99643f17cc651"
     }
   ],
-  "inputLfClosureSha256": "1ee3ccac296db58f96372ede491c3595f76e4a9b1247e4c5512d32ea6a470a24"
+  "inputLfClosureSha256": "cd1e9696ad25603c2ea63cd005fecd1cebb61d5602892ff2e1ab500f88c80ccd"
 }

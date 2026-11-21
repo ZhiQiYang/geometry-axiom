@@ -11,3 +11,10 @@ evidence/architecture-gate-99455b9f/** -text
 evidence/geo261-cloud-*.txt -text -whitespace
 evidence/geo261-final-0da1f08c/** -text -whitespace
 evidence/geo261-final-*/** -text -whitespace
+
+# R214: raw receipts and frozen migration inputs must survive every checkout byte-for-byte.
+.github/evidence/** -text
+tests/mutants_results.json -text diff
+geometry-core/domain-decoupling/PRODUCT-ARCHITECTURE.md -text diff
+geometry-core/domain-decoupling/product-architecture-receipt.json -text diff
+geometry-core/domain-decoupling/product-architecture-scan.json -text diff

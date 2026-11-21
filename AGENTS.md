@@ -178,15 +178,23 @@ heredoc 會把 `
   裁判與夾具（bridge 含 `tests/*.py`、`tests/*.c`、`tests/fixtures/**/*.scene`、根目錄 `*.scene`）、
   工具與執行收據；同平台另核對編譯命令／指紋，快取執行檔存在時也核對其指紋與 bytes。完整條件見 `tests/MUTATION-EVIDENCE.md`。
   merge commit 的 SHA 改變本身不使證據過期，但不能只憑「合入 main」或部分檔案未變就保證新鮮，仍以原 `--check` 為準。
-  需要重驗時，在 PR 分支手動觸發 `Mutation evidence`（`.github/workflows/mutation-evidence.yml`）；成功後先核對
-  `summary.json` 的來源 head、`ledger_sha256`，以及 survived／invalid／stale／blocked／unrun 全為 0，再把
-  `mutation-complete-evidence` 的 `mutants_results.json` 與 `pr357-architecture-refresh` 的下列三份架構衍生檔
-  **原樣**提交回分支，採入後依 `tests/MUTATION-EVIDENCE.md` 執行原 `--check` 與正式驗證。
-- **衍生檔衝突**：`tests/mutants_results.json`、`geometry-core/domain-decoupling/` 下的
-  `product-architecture-scan.json`、`product-architecture-receipt.json`、`PRODUCT-ARCHITECTURE.md`，以及正典閱讀器 HTML
-  是產生物。衝突時不手動拼接內容，改用新 head 重產（突變與三份架構衍生檔走 Mutation evidence，閱讀器走下方「正典重建與驗證」）。
-  同目錄的 `product-architecture.json` 是來源 manifest，不是產生物；它的衝突或來源 pin 不符須先審查、修正來源，
-  再跑原 scanner 與架構驗證。`.github/scripts/architecture_evidence.py` 不會重建或修復這份來源 manifest。
+  原始帳本在 Git 保留為固定歷史 seed；新證據採入 `.github/evidence/mutations/` 的逐筆引用與內容雜湊檔。
+  先執行 `python -B .github/scripts/evidence_records.py materialize --root .`，才以原 `--check` 檢查當前視圖；
+  Geometry native 亦先物化，再由原 120 秒 mutation-check 檢查固定路徑，不接受環境變數改指別份帳本。
+  需要真重跑時仍在 PR 分支觸發 `Mutation evidence`；完整原件通過原 supervisor 的 binary／raw／全表檢查後，
+  用 `evidence_records.py adopt` 採入 `mutation-complete-evidence`，不得直接提交物化後的舊帳本路徑。
+  採入先驗完整新帳本；仍 fresh 的舊記錄保留原引用，stale／unrun 才採新原件。不能改 execution.head 或改雜湊續綠。
+  收據與目前輸入相符，不等於此次又核驗了執行檔 bytes；原執行與本次 freshness 分開記錄。細節見 `tests/MUTATION-EVIDENCE.md`。
+- **架構證據與衍生檔衝突**：`tests/mutants_results.json` 及 `geometry-core/domain-decoupling/` 下的
+  `product-architecture-scan.json`、`product-architecture-receipt.json`、`PRODUCT-ARCHITECTURE.md` 保留固定歷史 bytes，
+  不再在 PR 內覆寫。架構的新收據、報告、scan 與六份原始輸出原樣採入 `.github/evidence/architecture/`；
+  完整輸入鍵不同就必須真跑原三命令，不能挑另一份綠燈。`Geometry integration` 的 `repo evidence freshness`
+  對實際 checkout（PR 為合併結果）核完整來源、inventory、原件雜湊與突變全表；沒有吻合證據就失敗。
+  只有架構輸入改變時，觸發獨立 `Architecture evidence`（`.github/workflows/architecture-evidence.yml`），
+  採入 `architecture-repo-evidence` 後再驗證；這個成功不代表重新跑過突變，也不解除原 native／browser／終審守門。
+  不同突變的引用各自合併；同筆引用衝突不可用 ours／theirs 掩蓋，先在合併結果以原守門核對，必要時真重跑。
+  同目錄的 `product-architecture.json` 仍是來源 manifest；它的衝突或來源 pin 不符須先審查、修正來源，
+  再跑原 scanner 與架構驗證，產生器不會修復來源 manifest。正典閱讀器 HTML 衝突仍走下方「正典重建與驗證」。
 - **合併**：由本機 Claude 合併（使用者 2026-10-14 授權）。合併前要同時滿足下列條件——這些是 Claude 自訂的守門，
   不是使用者原話：最新一則【ChatGPT 審查】結論為「可合併」，且正文寫著當下 head 與 main 的完整 SHA；
   checks 全部通過，或只有 browser 依上面的路徑規則略過；該審查之後沒有新的阻擋留言；沒有 CHANGES_REQUESTED。

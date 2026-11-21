@@ -79,6 +79,10 @@ typedef struct {
  * the old recursion lifetime: large placement scratch starts after sources. */
 bool wood_member_reference_compute(const WoodMemberReferenceContext *,size_t,bool *needs_placement);
 bool wood_member_reference_place(const WoodMemberReferenceContext *,size_t);
+/* D16a/R6(f): the member candidate J_i=E_i from its own outer edge and section
+ * only. It never reads the peer, so the value graph stays acyclic; the joint
+ * contact and legal-interval checks run after both values are complete. */
+bool wood_member_reference_pair_candidate(const WoodMemberReferenceContext *,size_t);
 GeoPoint2 wood_member_anchor_corner(const GeoFrame *,int,int,const GeoRect2 *);
 /* The consumer selects ordered same-world facts. These policies do not read
  * storage, derive new support sources, or mutate the caller on refusal. */

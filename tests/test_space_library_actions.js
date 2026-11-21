@@ -118,7 +118,7 @@ function line(prefix) {
   return source.slice(start, source.indexOf('\n', start));
 }
 
-function fixture({beforeActivate, afterActivate, dumpText, lineReply, priorSteps = 0, preview = false} = {}) {
+function fixture({beforeActivate, afterActivate, dumpText, dumpReply, profileReply, profileError, lineReply, priorSteps = 0, preview = false} = {}) {
   const history = new P.ContextHistory(() => ({id: 'project-a', models: [], sources: new Map()}));
   history.frame.ids.set(1, 'face-key-1');
   const base = 'surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000\n';
@@ -143,7 +143,11 @@ function fixture({beforeActivate, afterActivate, dumpText, lineReply, priorSteps
         afterActivate?.(history, evidence);
         return reply;
       }
-      if (command === 'dump-deidentified') return {ok: true, text: dumpText ?? base};
+      if (command === 'dump-deidentified') return {ok: true, text: dumpText ?? base, revision: evidence.nativeRevision, ...dumpReply};
+      if (command === 'section-profile-read') {
+        if (profileError) throw Error(profileError);
+        return {ok: true, revision: evidence.nativeRevision, ...profileReply};
+      }
       throw Error('unexpected command ' + command);
     },
   };
@@ -156,7 +160,7 @@ function fixture({beforeActivate, afterActivate, dumpText, lineReply, priorSteps
   // Earlier edits fill the undo history before the source is read (PR #376 M1).
   for (let i = 0; i < priorSteps; i++) history.observe('line spec prior ' + i, {ok: true, history_changed: true});
   if (preview) { state.result = {}; state.previewRevision = state.revision; state.phase = 'preview'; }
-  state.source = {kind: 'scene', context_id: 'project-a', boundary_id: 1, face_key: 'face-key-1', base_scene: base, history_token: fns.sourceHistoryToken()};
+  state.source = {kind: 'scene', context_id: 'project-a', boundary_id: 1, face_key: 'face-key-1', base_scene: base, history_token: fns.sourceHistoryToken(), profileRevision: evidence.nativeRevision};
   return {state, history, calls, messages, ...fns};
 }
 const coreStep = h => h.observe('line spec other 1', {ok: true, history_changed: true});
@@ -166,8 +170,10 @@ test('activation keeps a current scene source usable for the next step', async (
   const before = f.state.source.history_token;
   await f.activateIdentity();
   assert.equal(f.history.undo.length, 1, 'activation is one undo step');
-  assert.notEqual(f.state.source.history_token, before);
+  assert.notEqual(f.state.source.history_token, before, 'R430_ACTIVATION_HISTORY_REPINNED');
   assert.equal(f.sameSourceHistory(f.state.source.history_token), true, 'source is current after activation');
+  assert.equal(f.state.source.profileRevision, 8, 'R430_ACTIVATION_PROFILE_REVISION_REPINNED');
+  assert.deepEqual(f.calls.slice(-2), ['dump-deidentified', 'section-profile-read'], 'R430_ACTIVATION_READS_BOTH_NATIVE_RECEIPTS');
   assert.equal(f.state.ledgerActive, true);
   assert.deepEqual(f.messages.at(-1), {text: '已啟用物件身分追蹤。重新預覽後建立的模型才會帶來源身分。', kind: 'success'});
 });
@@ -178,12 +184,19 @@ test('anything beyond the single activation step leaves the source stale', async
     ['edit after activation', {afterActivate: h => coreStep(h)}],
     ['scene text changed', {dumpText: 'surface 1 changed\n'}],
     ['native revision jumped', {lineReply: {before_revision: 9, revision: 10}}],
+    ['dump revision mismatched', {dumpReply: {revision: 9}}],
+    ['dump revision absent', {dumpReply: {revision: undefined}}],
+    ['profile revision mismatched', {profileReply: {revision: 9}}],
+    ['profile revision absent', {profileReply: {revision: undefined}}],
+    ['profile read rejected', {profileReply: {ok: false}}],
+    ['profile transport failed', {profileError: 'section-profile transport failure'}],
   ]) {
     const f = fixture(options);
     const before = f.state.source.history_token;
     await f.activateIdentity();
     assert.equal(f.state.source.history_token, before, label + ': token kept');
     assert.equal(f.sameSourceHistory(f.state.source.history_token), false, label + ': still stale');
+    assert.equal(f.state.source.profileRevision, 7, 'R430_ACTIVATION_REJECTS_MIXED_NATIVE_REVISION: ' + label);
     assert.equal(f.state.ledgerActive, true, label + ': ledger still activated');
     assert.deepEqual(f.messages.at(-1), {text: '已啟用物件身分追蹤。來源讀取後另有變更，請重新「使用目前面」再預覽。', kind: 'warning'}, label);
   }

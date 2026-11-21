@@ -8,6 +8,7 @@
 typedef struct WoodAssemblySourceResult {
     WoodAssemblyBaySourceKey key;size_t key_size;struct WoodAssemblySourceResult *next;
     char *text;size_t text_size;char path[192];
+    char *returned;size_t returned_size;int returned_index;
     AsmBinding binding;AsmInstance instance;WoodAssemblyDefinition generated;
 } WoodAssemblySourceResult;
 struct WoodAssemblySources {
@@ -120,13 +121,19 @@ static bool wood_assembly_apply_slot(WoodAssemblySources *s,uint32_t id,uint32_t
     geo_json_free(&j);if(!ok||found!=1||used+3>=sizeof text)return false;text[used++]=']';text[used++]='}';text[used]=0;
     memcpy(binding->content,text,used+1);return true;
 }
+/* The binding and rule definitions an instance decode reads. The full decode
+ * and the bay-record reuse both request them from K through this one path. */
+static bool wood_assembly_instance_sources(WoodAssemblySources *s,uint32_t binding,uint32_t rule_id,uint32_t version)
+{
+    if(wood_assembly_binding(&s->base,binding)&&!wood_assembly_load_binding(s,binding))return false;
+    return !wood_assembly_rule(&s->base,rule_id,version)||wood_assembly_load_rule(s,rule_id,version);
+}
 static bool wood_assembly_decode_instance(WoodAssemblySources *s,GeoJson *j,int token,uint32_t id,AsmInstance *out)
 {
     int source=geo_json_member(j,token,"source"),rule=geo_json_member(j,source,"rule");uint32_t actual,binding,rule_id,version;
     if(!wood_eng_u32(j,geo_json_member(j,source,"id"),&actual,true)||actual!=id||!wood_eng_u32(j,geo_json_member(j,source,"bindingId"),&binding,true)||
        !wood_eng_u32(j,geo_json_member(j,rule,"id"),&rule_id,true)||!wood_eng_u32(j,geo_json_member(j,rule,"version"),&version,true))return false;
-    if(wood_assembly_binding(&s->base,binding)&&!wood_assembly_load_binding(s,binding))return false;
-    if(wood_assembly_rule(&s->base,rule_id,version)&&!wood_assembly_load_rule(s,rule_id,version))return false;
+    if(!wood_assembly_instance_sources(s,binding,rule_id,version))return false;
     return wood_assembly_instance_definition_parse(&s->context,j,token,out);
 }
 static bool wood_assembly_load_instance(WoodAssemblySources *s,uint32_t id,AsmInstance **out)
@@ -354,11 +361,40 @@ static bool wood_assembly_bay_load_generated(WoodAssemblySources *s,uint32_t id,
         wood_assembly_bay_identity_read(&j,geo_json_member(&j,0,"identity"),&actual)&&wood_assembly_identity_equal(actual,identity)&&wood_assembly_decode_instance(s,&j,geo_json_member(&j,0,"instance"),id,&decoded);geo_json_free(&j);
     if(!ok||!decoded.bay_repeat)return false;int selected=wood_assembly_mapping_index(&decoded,identity);if(selected<0)return false;r->instance=decoded;*index=selected;return true;
 }
+/* Issue 381. K is asked for the bay-generated definition on every use; nothing
+ * here answers in its place. When the record K returns is byte-for-byte the one
+ * this candidate-local slot decoded last, the decoded instance is kept instead
+ * of parsing the same bytes again. The binding and rule definitions that decode
+ * reads are still requested, so their returned records and dependency edges stay
+ * in force, and the kept instance is used only while they still satisfy the
+ * fixed-rule condition the decode checked. Every other case takes the full decode. */
+static bool wood_assembly_bay_returned_again(const WoodAssemblySourceResult *r,const GeoSourceValue *value)
+{
+    return r->returned&&value->kind==GEO_SOURCE_DEFINITION&&value->as.definition.schema&&!strcmp(value->as.definition.schema,"wood.assembly.bay-generated/1")&&
+        value->as.definition.content&&value->as.definition.content_size==r->returned_size&&!memcmp(r->returned,value->as.definition.content,r->returned_size);
+}
+static bool wood_assembly_bay_sources_fixed(WoodAssemblySources *s,const AsmInstance *a)
+{
+    const AsmRuleVersion *rule=wood_assembly_rule(&s->context,a->rule_id,a->rule_version);const AsmBinding *binding=wood_assembly_binding(&s->context,a->binding_id);
+    return rule&&!strcmp(rule->fingerprint,a->rule_hash)&&binding&&binding->rule_id==a->rule_id&&binding->rule_version==a->rule_version;
+}
+static void wood_assembly_bay_keep_returned(WoodAssemblySourceResult *r,const GeoSourceValue *value,int index)
+{
+    size_t size=value->as.definition.content_size;char *copy=realloc(r->returned,size?size:1);
+    if(!copy){free(r->returned);r->returned=NULL;r->returned_size=0;return;}
+    memcpy(copy,value->as.definition.content,size);r->returned=copy;r->returned_size=size;r->returned_index=index;
+}
 static bool wood_assembly_bay_record(WoodAssemblySources *s,uint32_t id,AsmIdentity identity,AsmInstance **out,int *index)
 {
     GeoSourceValue value;if(!wood_assembly_bay_get(s,WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION,id,identity,GEO_DEPENDENCY_DEFINITION_REQUIRED,&value))return false;
     WoodAssemblyBaySourceKey key;GeoSourceRef ref=wood_assembly_bay_source_ref(s->token,WOOD_ASSEMBLY_SOURCE_BAY_GENERATED_DEFINITION,id,identity,&key);WoodAssemblySourceResult *r=wood_assembly_result(s,&ref);
-    if(!r||!wood_assembly_bay_load_generated(s,id,identity,r,&value,index))return false;*out=&r->instance;return true;
+    if(!r)return false;
+    if(wood_assembly_bay_returned_again(r,&value)){
+        if(!wood_assembly_instance_sources(s,r->instance.binding_id,r->instance.rule_id,r->instance.rule_version))return false;
+        if(wood_assembly_bay_sources_fixed(s,&r->instance)){*index=r->returned_index;*out=&r->instance;return true;}
+    }
+    if(!wood_assembly_bay_load_generated(s,id,identity,r,&value,index))return false;
+    wood_assembly_bay_keep_returned(r,&value,*index);*out=&r->instance;return true;
 }
 static bool wood_assembly_bay_result(WoodAssemblySourceResult *r,GeoSourceValue *out)
 {
@@ -415,4 +451,4 @@ bool wood_assembly_sources_bind(WoodAssemblySources *s,WoodAssemblyContext *w)
     w->evaluation=&s->hooks;return true;
 }
 void wood_assembly_sources_destroy(WoodAssemblySources *s)
-{if(!s)return;WoodAssemblySourceResult *r=s->results;while(r){WoodAssemblySourceResult *next=r->next;free(r->text);free(r);r=next;}free(s->shadow);free(s);}
+{if(!s)return;WoodAssemblySourceResult *r=s->results;while(r){WoodAssemblySourceResult *next=r->next;free(r->text);free(r->returned);free(r);r=next;}free(s->shadow);free(s);}

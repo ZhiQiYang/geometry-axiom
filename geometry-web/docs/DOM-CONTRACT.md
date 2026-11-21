@@ -1,5 +1,18 @@
 # DOM 合約(測試依賴清單)
 
+## R17 host／App 第一片：兩支互頂（P335）
+
+- 沿面內「角材 T／新增角材」入口，`#tbPlacementMode` 在 `single` 與 `boundary-pair` 間切換；`#tbSinglePlacement` 與 `#tbBoundaryPair` 互斥顯示。沒有新增常駐工具列鈕、候選工作區或保存列。pair 模式合併原單支的位置／截面／角色說明，只有一段固定說明；GEO-219 減項見 BACKLOG。
+- `#tbBoundaryPair` 內兩列 `[data-boundary-pair-member="1"|"2"]`，各含 `[data-field="anchor"|"A"|"B"|"dir"|"side"]`；ID 為 `tbPair1Anchor/A/B/Dir/Side` 與 `tbPair2…`。外邊選單 value 是 `e<i>`，只列同一原生承載面的普通外輪廓 FIXED 邊；軸向讀原生 `surfaces.outerEdges`，固定性讀邊界資料，不由 JS 建立另一套幾何裁判。兩支都是 boundary；不提供角色、priority、through／between 或解除成組。
+- `#tbPairPick1/#tbPairPick2` 指定下一次點邊的槽位。pair 模式下點外環只填槽並高亮 `.fe-pair-edge`；第二點也不能送出定義。孔邊、來源線、FREE／衍生邊均不變更槽位。正負延伸方向與深度側分開；點擊位置不改 `+n/-n`。
+- `#tbPairOperation` 顯示新增或同組重宣告，`#tbPairStatus` 是有界狀態／拒絕原因。`#tbPairPreview` 才準備完整原生候選；`#tbPairCancel` 放棄本入口草稿／本入口持有的候選。新 id 由原生配號，兩列是無序成員，不以輸入順序決定接頭。
+- 選中任一既有組員，`#tbSelected` 顯示兩個 id，`#tbPairEdit` 開同組完整重宣告，`#tbSelDelete` 與左欄 ✕、畫布 Delete／右鍵刪除同走整組預覽。表單另有 `#tbPairDelete`。不得走舊單支 delete→timber→place，也不得以 history group 模擬候選原子性；重宣告保留原 id／World 次序，整組刪除不連坐刪除下游。
+- 共用 `.reference-impact` 顯示原生 `boundaryPairs` 與 `timberImpacts`。`[data-impact-pair="a:b"]`、`[data-impact-pair-member="id"]`、`[data-impact-timber-detail="id"]` 列兩成員／全部受影響下游的來源、角色、截面、舊新區間／姿態與實際端面接觸；`.impact-violation` 逐條列哪支、條文、預期／實際。`#impact-confirm` 僅在完整且零違規候選可用，`#impact-cancel` 返回原表單。一般上游預覽仍走原 adapter；不能用 `boundaryPairs` 是否存在猜測確認命令種類。
+- `/boundary-pair/read` 與 `/boundary-pair/preview` 分別使用 `boundary-pair-read/1`、`boundary-pair-transaction/1`。preview 固定原生 revision／contextKey，操作只收 create、redeclare、delete。`/api` 的 `boundary-pair-confirm <token> <ownerKey>`／`boundary-pair-cancel <token> <ownerKey>` 沿現行回執機制，不重送未知確認。候選的工作世代／session／owner 與同一原生 token 必須相符；已有角材候選時拒絕新預覽，不取消他人的候選。
+- 取消／缺件／違規／過期都零寫入；有變更的確認恰一筆歷史，原樣重宣告零筆。復原／重做還原整組。未提交輸入只在本頁記憶體，保存及切換會明示尚未保存並要求先確認或取消；冷開不能復活 token。
+- 已確認組沿 `.scene` 的 `requires boundary-pair/1` 與完整 begin…end 保存，`.gcanvas` 使用既有 `/19` 共享封套及明確 required capability。只承接 #410 的 literal 尺寸子集；以 `boundary_pair_native.complete=false`／`host-app-literal-entry` 有限描述驗讀，不把完整能力加入原生支援清單。工程／參數組員仍拒絕，不能降級成兩次普通 place。
+- 真瀏覽器段 `P335` 由 `boundary_pair_workflow_test.js` 經 `cdp_test.js` 執行，可用 `GEOMETRY_BOUNDARY_PAIR_ONLY=1` 單跑；分片接線位於實際來源 `geometry-web/canvas_shards.json`。正式 `geometry-web/cdp_sections.golden.json` 必須由同版完整 capture 產生；2026-11-15 已以 `GEOMETRY_CDP_UPDATE_GOLDEN=1` 的完整模式實跑（5020／0、completed）寫入 `P335=192`，原 95 段計數逐段不變。不能把預期斷言數手填成執行產物；既有段、計數、時限及斷言不變。
+
 ## 2026-10-09 收尾核收更新（各 scope 分列）
 
 完整候選 SHA f3b8285729b42cd22451c98cba1e2ec4514517f3，核對時 clean；各 scope 的受測版本、執行身分及原始證據見[收尾總索引](../../tests/evidence/cloud-takeover-20261009/UI-CLOSEOUT.md)。
@@ -28,7 +41,33 @@
 
 `#spBuildModel` 使用真模型執行器，`#spModelCanvas` 重用 GeometryModelViewer。`#spTimbers/#spPanels/#spEnvelope` 各自切換呈現；包絡不计材料量，局部軸明標 u,v,w。`#spModelSummary` 核對構件身分、尺寸、方位及範圍。既有「3D 模型庫」的 `[data-sp-open-run]` 只列已定位拉伸件，唯讀專案仍可開啟 3D；編輯及交易控制禁用。未定位件在斷面工作區開啟。
 
-完整場景使用 `geometry-canvas/16` 與 `section-profile/1`。工作區不另存材料網格副本；重開依原生來源重建。`#spTeach` 是可關閉並記住的首次教學卡，沒有新增常駐工具列。
+原生斷面場景以 `geometry-canvas/16` 與 `section-profile/1` 承載，其他既有功能可要求更高格式。斷面工作區不另存材料網格副本；重開依原生來源重建。含 Q38j 保存空間模型時另走下節 `/20` 與完整模型驗證。`#spTeach` 是可關閉並記住的首次教學卡，沒有新增常駐工具列。
+
+## R12／Q38j 斷面拉伸併入空間（2026-11-15 實作候選）
+
+基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。產品與資料契約見 [Q38J-APP.md](Q38J-APP.md)；本節記 DOM 與 source census，真瀏覽器、完整整合及正式突變證據待最終收據，不表示已到 L4。
+
+| 既有／新增掛點 | 契約 |
+|---|---|
+| `#btnNewSectionProfile`、`#spProfileSelect/#spNewProfile/#spNewMember/#spNewRun` | 沿原一般建立入口準備斷面、構件與 run；本片不新增全域按鈕或另一斷面工作區 |
+| `[data-fp-build][data-fp-placement]`、`#smUseCurrent` | 沿原面屬性／工作區入口取得同版來源；候選以 profile-read revision、去身分 dump、context 及 history 夾讀核對 |
+| `#smTimberSettings` | 唯一「一併納入」details；角材與拉伸件共用。原 `#smTimberCandidateDetails` 保留 ID，但改為普通清單容器，不再有另一個角材 disclosure |
+| `#smProfileCandidates [data-sm-profile-run]` | 同一來源快照全部 world runs，依 id 排列，初始不勾選；顯示 run id、斷面名、長度、構件數及定位摘要。不得依宿主或位置自動選取 |
+| `#smProfileUnavailable` | 列已定位／未定位數；local run 不能選，不以缺席候選冒充零件不存在 |
+| `#smProfileReview/#smProfileReviewList/#smProfileVolume` | 列 run／構件數、逐構件材料量及獨立總量，標來源快照、包絡不計材料、未扣重疊；已選零構件 run 顯示數量及零材料量，不能寫成未納入 |
+| `#smShowTimbers` | 原 ID 改文案為「角材與拉伸件」，共同控制兩類 geometry；不顯示 profile reference 包絡，不改選擇或保存內容 |
+| `#smPreview/#smConfirmFaces/#smCreate/#smClose` | 沿原預覽／核對／建立／關閉；來源或設定改變使候選失效。取消不寫 World、模型或歷史；確認只增加一筆完整模型及一筆 local history |
+| `#smCurrentSourceUpdate`、`#muDialog` | 沿原模型「修改模型 → 採用現行來源…」入口，不增另一個模型更新工作區 |
+| `#muProfiles [data-mu-profile-run]`、`#muProfileCount/#muProfileUnavailable` | F1b 重新逐條明選；plan 的 `selection.profile_runs` 必填，`[]` 明確移除舊 runs。開啟另一模型清除前次候選；faces 不帶此欄 |
+| `#muIdentity/#muName` | covered 根延續證明與 run 延續未知分開呈現；勾選 run 當下就更新，不能把 profile-run 當 K3 pin，也不把原 covered 根一律抹成 unknown |
+| `#muPreview/#muDiff/#muFullDetails/#muConfirmed/#muApply/#muClose` | 顯示完整 source/input/summary、六類包與實際材料幾何差異；取消零寫入，確認前重新核源及真 producer，整筆替換同 model id，可一步復原／重做 |
+| `[data-source-untracked="profile-run:ID"]`、`[data-source-model-continuity]` | 來源檢查保留 profile 的內容新鮮度與延續未知；其他 covered 根仍依原 K3 判讀 |
+
+`/model/capabilities.space_preview_schemas` 須另含 `/3`，僅 `section-profile/1` 不足；建立與含 profile 的 F1b 都不能降級略過明選。完整專案／方案葉含 profile 模型時使用 `geometry-canvas/20`，保留 `/1`–`/19` 及 `/19` 各 owner／有限 native reader 守門。全部包由同一 input 來源推導，生成殼／牆可含設定宣告；只有 profile 包要求 `definitions.base_scene` 恰同來源快照與 `extensions:[]`。
+
+瀏覽器專項為 `space_model_test.js` 的 `profile-space` group，完整 Space 及 `GEOMETRY_SPACE_PROFILE_ONLY=1` 均呼叫 `profile_space_test.js`。其 `CASES` 與 `space_test_floor.js` 的 source census 為 **60 個不同具名斷言**，另保留 setup 2、browser-health 2。原 Space groups 的 expected 不改；完整成功必須每組恰合且 `completed:true`。`tests/test_profile_space_browser_contract.js` 只驗來源接線、語法與 census，不代表跑過瀏覽器。
+
+原 `geometry-web/cdp_sections.golden.json` 與 `geometry-web/canvas_shards.json` 本片保持不變；新組屬 Space，不新增 canvas P 段。這是來源清單與格式同步，尚須新候選的真執行、完整 census 與正式 evidence 核對，不能手填成功或用局部次數相加。
 
 ## #123 已採納介面切片（2026-10-09，來源對照；驗收另記）
 
@@ -195,9 +234,9 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 ## GEO-208 角材結構建模（目前合約）
 
 - `#timber-space-v1` 連線完成後自動開「角材骨架範例」，`#smTryTimberFrame` 可隨時載入。範例不改使用者世界。服務 `/model/capabilities` 宣告 `space_preview_schemas`；確認支援 `/2` 才顯示「角材結構建模版」。舊服務明示未啟用，納入角材的請求不降級送出。
-- `#smIncludeTimbers` 為建模選擇；`#smTimberCount`、`#smTimberCandidates` 顯示精確所選放置的角材與尺寸／世界高度。`#smTimberEmpty`、`#smBackToTimbers` 提供零支引導。候選與場景快照一致後才能採用。
-- `#smShowTimbers` 只控制真實角材 mesh 顯示；`#smShowRoof` 只作用於空間殼。`#smTimberVolume` 獨立列材料量，`#smTimberReview`／`#smTimberReviewList` 在建立前核對支數及高度。`#smExportKind` 的 `timbers` 選項匯出完整角材套件。
-- 新請求的 `input.timbers` 是非空 typed roots；省略時沿用 preview `/1`，有角材時為 `/2`，保存為 `geometry-canvas/4`。舊 `/1–3` 可讀且不補入角材；匯入在替換目前專案前完成五種套件驗證與保存輸入重建。
+- `#smIncludeTimbers` 為建模選擇；`#smTimberCount`、`#smTimberCandidates` 顯示精確所選放置的角材與尺寸／世界高度。`#smTimberEmpty`、`#smBackToTimbers` 提供零支引導。候選與場景快照一致後才能採用；Q38j 將清單併入唯一 `#smTimberSettings`「一併納入」。
+- `#smShowTimbers` 控制角材與拉伸件的真實 geometry mesh；`#smShowRoof` 只作用於空間殼。`#smTimberVolume` 仍只列角材材料量，`#smTimberReview`／`#smTimberReviewList` 在建立前核對支數及高度。`#smExportKind` 的 `timbers` 選項仍只匯出完整角材套件。
+- 新請求的 `input.timbers` 是非空 typed roots；沒有 profile 時，省略角材沿用 preview `/1`、有角材為 `/2`；有明選 profile 則為 `/3`，角材包仍須獨立驗證。`geometry-canvas/4` 是原角材格式，現行依內容選格式，含 profile 模型用 `/20`。舊 `/1–3` 可讀且不補入角材；匯入在替換目前專案前驗證全部明選套件與保存輸入重建，不以 `/2` 標籤決定是否驗角材。
 - 詳見 `TIMBER-IN-SPACE.md`；測試為 backend、project-store、model-viewer 及 `space_model_test.js`，`GEOMETRY_TIMBER_ONLY=1` 可單跑角材瀏覽器段。
 
 ## GEO-207 平面投影定義（版本及角材擴充見 GEO-208）
@@ -1053,6 +1092,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 ## GEO-215 無限網格與配置
 
 - `#infiniteGridWorkspace` 為完整編輯工作區；建立新來源或配置時使用它，主畫布已選物件的常用修改另見上方 2026-09-28 就地編輯契約。`#igGridView` 可平移、縮放與拾取 cell；攝影機不寫入模型。`#igDensity` 明示抽樣。
+- R01 整卡解除：已保存整卡來源的 `#igCardRef` 內有收合的 `#igCardUnbind`；`#igCardUnbindParameter`／`#igCardUnbindDirect` 明選轉逐欄引用／當下直接值。尚有原始草稿或來源已變更時拒絕，不隱含提交草稿。兩者只送一項原生 `unbind-grid-card-reference`，使用 `.reference-impact`／`#impact-confirm`，確認與取消均帶本次 engineering token。`[data-impact-card-capture]` 顯示原生 direct 捕捉來源、兩軸值與取值步驟。既有整卡時停用 `#igCard` 的空來源選項；解除確認後才可逐軸編輯。取消不改場景、metadata 或 history。
 - `#igName`、`#igMainAlong`（GEO-222 起為 `role=radiogroup` 的分段選擇，內含 `input[name=igMainAlong][value=none|u|v]`，元素本身仍可讀寫 `.value`）與 `#igUSource`／`#igVSource` 定義來源（2a 起兩者與 `#igMainAlong` 一樣是 `role=radiogroup` 的分段選擇，內含 `input[name=igUSource|igVSource][value=repeat|repeat-panel|none]`，元素本身仍可讀寫 `.value`，未知的還原值照舊保留並要求明選）；`#igSaveSource` 預覽後確認。只新增 repeat／repeat-panel／none，沒有條數。
 - GEO-229：`#igUStagger`／`#igVStagger` 是「相鄰格子相位差 mm」。空白或 0 不寫入 stagger。非零時工作區把該軸畫成停在另一軸格子邊界的段，段帶 `data-ig-segment-band`。底部檢查器不加輸入欄；非零時既有「第 0 線座標」那一行帶出數字。不新增工作區或常駐說明。有相位差的主格上 `#subgridNew` 停用。
 - `#igNewBinding` 選邊界建立配置。`#igBoundaryView` 與 `#igVertex` 選實際外環或孔環頂點；`#igCellI`／`#igCellJ` 使用十進位字串及 BigInt，`[data-ig-anchor]` 選 cell 內九宮位置。`#igSaveBinding` 保存明確引用。
@@ -1159,3 +1199,16 @@ DSL、工程規格、參數卡及斷面工作區沿同一 `appendSectionProfileI
 `#gridRuleFocusKey`、`#gridRuleCellI`、`#gridRuleCellJ` 保留原始 signed 字串及焦點；`#gridRuleExact[data-rule-exact]` 完整查詢真正 cell，`[data-rule-focus-status]` 回報完成、零可見或 native 拒絕。由該按鈕發起的鍵盤查詢，在原生 disabled 與檢查器重建後，只有同一 editor、query generation、raw tuple 且使用者未另行操作時才以 `preventScroll` 還原按鈕焦點；切換欄位、點其他位置、按鍵或離開畫面後不搶回焦點。遲到 exact 回應須仍擁有同一 editor、query generation 與 raw tuple；sampling 重繪沿用 inspector 保存規律。
 
 既有 `#tbAnchor`／`#refGuideSource` 使用含 applied grid、system、rule、signed cell、axis、inner index 的完整 RuleLineRef。來源與配置只讀視圖的 `[data-ig-source-rule]`／`[data-ig-result-rule]` 保持 `data-ig-rule-ref="none"`，不製造可放置引用。角材需手動截面及角色，`newid` 與 native 準備跨 await 都受共用 operation lease 防護。
+
+## #128 PF-4A：既有宿主的鋪排來源主格
+
+入口沿既有物件面 → 屬性 `[data-fi-tab="prop"]` → `[data-face-settings]` → `[data-panel-fill-open]`，唯一表單仍是 `[data-pf-workspace]`。主格控制併入原宿主設定；沒有第二份確認列、全域 PF 按鈕或新的頂層分頁。GEO-219 減項見 BACKLOG GEO-255 的 PF-4A 更新。
+
+- `[data-pf-grid-setup]` 只在原生宣告 `create-from-fill-grid`、目前選取正式 fill 與正式宿主時出現。尚未建立主格時，`[data-pf-field="createGrid"]` 明勾建立；`[data-pf-field="gridMainAlong"]` 必須明選 `u`／`v`／`none`，空值不能預覽。`none` 傳為 JSON `null`，不暗設偏好。前端不配置 grid id、不傳展開座標。
+- 已有同來源主格時，`[data-pf-grid-existing]` 取代建立勾選，顯示原生 id 與跟隨來源的語意。此入口只建立，不改既有主格的來源或偏好。同一定義不送新的表單候選；原生 repeated-create 仍由既有 batch 協議回 `history_changed:false`。
+- 沿用 `[data-pf-action="preview"|"confirm"|"cancel"]`。`[data-pf-native-changes]` 增列 `fill-grid`；`[data-pf-grid-impact]` 與 `[data-pf-guide-impact]` 列出原生前後主格／參考線紀錄，既有宿主與角材影響列仍完整呈現。缺能力、來源閉包或前後依賴的候選不能確認。
+- `[data-pf-grid-result="gridId"]` 將定義來源與有效值分開：fill／host／mainAlong 是保存定義，signed lattice k、panel-row band、side、stagger 與兩軸精確十進位字串是原生求值。來源修改仍走同一份完整預覽；取消不修改主格或其引用。
+- 面內復原／重做使用 `#faceUndoButton`／`#faceRedoButton`；面內工作區遮住背景控制，不能以背景 `#btnUndo`／`#btnRedo` 冒稱一般入口。正式保存／重開沿原 `.gcanvas` 專案入口。
+- `panel_fill_grid_workflow_test.js` 為 `cdp_test.js` 的 **P1284** 外掛，緊接既有 **P128**、先於 P353／P359；P359 仍是最後一段。新段需由原 full CDP 實跑產生 golden，再連同 `geometry-web/canvas_shards.json` 的唯一歸屬核對。既有 P128=381 及其餘每段計數不得更改；未取得新段完整收據前，不得宣告 canvas 通過。
+
+本片沒有 PF-4 的 D29 獨立值快照、PF-6 R45 建議集合／外層可組合 builder、PF-5 空間整合。全域 `complete:false` 保留；段計數、原生／Node 測試均不是 L4 實機核對的替代品。

@@ -245,8 +245,83 @@ def _timbers(value, base, placement_id, options):
                          missing=exc.missing, diagnostics=diagnostics) from exc
 
 
+def _profile_runs(value, base, options):
+    """R59: one complete material request from the same saved source snapshot."""
+    if type(value) is not list or not value:
+        _fail("SPACE_PROFILE_RUNS", "納入拉伸件時請明選非空清單；不納入請省略 profile_runs 欄位。",
+              path=["profile_runs"], clause="I73")
+    available = {run["id"]: run for run in base.get("profile_runs", [])}
+    roots, seen = [], set()
+    for index, ref in enumerate(value):
+        path = ["profile_runs", index]
+        _keys(ref, ("kind", "id"), path=path)
+        identifier = ref["id"]
+        if ref["kind"] != "profile-run" or type(identifier) is not int or not 0 <= identifier <= 0xFFFFFFFF:
+            _fail("SPACE_PROFILE_RUNS", "拉伸件引用須為 kind=profile-run 及合法整數編號（包含 0）。",
+                  path=path, clause="I73")
+        if identifier in seen:
+            _fail("SPACE_PROFILE_RUNS", f"拉伸件 #{identifier} 重複選取。", path=path, clause="I73")
+        run = available.get(identifier)
+        if run is None:
+            _fail("SPACE_PROFILE_RUNS", f"拉伸件 #{identifier} 不存在於來源快照。", path=path, clause="I73")
+        if run.get("coordinate_space") != "world":
+            _fail("SPACE_PROFILE_RUNS", f"拉伸件 #{identifier} 尚未定位，沒有世界位置。", path=path, clause="D39")
+        roots.append({"kind": "profile-run", "id": identifier})
+        seen.add(identifier)
+    roots.sort(key=lambda ref: ref["id"])
+    definitions = {"base_scene": base["base_scene"], "extensions": []}
+    request = {"roots": roots, "role": "geometry", "target": "solid-set", "allow_partial": False}
+    labels = "、".join(f"#{ref['id']}" for ref in roots)
+    try:
+        package = verify_package(build_package(definitions, request, **options), **options)
+        derived = package["derived"]
+        if (package["definitions"] != definitions or package["request"] != request or
+                derived["status"] != "COMPLETE"):
+            _fail("SPACE_PROFILE_RUNS_INCOMPLETE", "拉伸件套件必須由同一來源完整求值。", clause="I73")
+        members = {ref["id"]: set() for ref in roots}
+        envelopes = {ref["id"]: 0 for ref in roots}
+        for obj in derived["objects"]:
+            root = obj.get("root", {})
+            details = obj.get("section_profile", {})
+            identifier = root.get("id")
+            if (root.get("kind") != "profile-run" or type(identifier) is not int or identifier not in seen or
+                    obj.get("status") != "COMPLETE" or obj.get("closure") != "closed" or
+                    details.get("run_id") != identifier or details.get("coordinate_space") != "world"):
+                _fail("SPACE_PROFILE_RUNS_INCOMPLETE", "拉伸件物件必須完整、封閉且具有世界座標與來源。", clause="R59")
+            member_id = details.get("member_id")
+            if obj.get("role") == "reference":
+                if (member_id is not None or obj.get("member_path") != [] or details.get("kind") != "envelope" or
+                        details.get("dimensions_mm") is not None or details.get("material_volume_mm3") != "0"):
+                    _fail("SPACE_PROFILE_RUNS_INCOMPLETE", f"拉伸件 #{identifier} 的包絡只能是零材料量的參考。", clause="R59")
+                envelopes[identifier] += 1
+            else:
+                dimensions = details.get("dimensions_mm")
+                if (obj.get("role") != "geometry" or type(member_id) is not int or
+                        not 0 <= member_id <= 0xFFFFFFFF or obj.get("member_path") != [member_id] or
+                        member_id in members[identifier] or details.get("kind") not in ("timber", "panel") or
+                        type(dimensions) is not list or len(dimensions) != 3 or
+                        any(type(size) is not int or size <= 0 for size in dimensions)):
+                    _fail("SPACE_PROFILE_RUNS_INCOMPLETE", f"拉伸件 #{identifier} 的構件身分或尺寸不完整。", clause="R59")
+                volume = str(dimensions[0] * dimensions[1] * dimensions[2])
+                if details.get("material_volume_mm3") != volume or obj.get("volume_mm3") != volume:
+                    _fail("SPACE_PROFILE_RUNS_INCOMPLETE", f"拉伸件 #{identifier} 的構件材料量須等於三維尺寸乘積。", clause="R37")
+                members[identifier].add(member_id)
+        if any(envelopes[ref["id"]] != 1 or members[ref["id"]] !=
+               {member["id"] for member in available[ref["id"]]["members"]} for ref in roots):
+            _fail("SPACE_PROFILE_RUNS_INCOMPLETE", "每條拉伸件須恰有一個包絡及全部原生構件。", clause="I73")
+        return package
+    except ModelError as exc:
+        diagnostics = deepcopy(exc.diagnostics or [exc.diagnostic()])
+        for diagnostic in diagnostics:
+            diagnostic["message"] = f"拉伸件 {labels}：{diagnostic.get('message', exc.message)}"
+            diagnostic["path"] = ["profile_runs", *diagnostic.get("path", [])]
+        raise ModelError(exc.status, exc.code, exc.clause, f"拉伸件 {labels} 無法完整建模：{exc.message}",
+                         path=["profile_runs", *exc.path], root=exc.root,
+                         missing=exc.missing, diagnostics=diagnostics) from exc
+
+
 def _plan(data, base, declarations, *, historical_walls=False):
-    _keys(data, ("base_scene", "mode", "placement_id", "settings", "obstacles"), ("timbers",))
+    _keys(data, ("base_scene", "mode", "placement_id", "settings", "obstacles"), ("timbers", "profile_runs"))
     selected = _uid(data["placement_id"], "來源面編號")
     source = next((p for p in base["placements"] if p["id"] == selected), None)
     if source is None:
@@ -319,6 +394,9 @@ def _plan(data, base, declarations, *, historical_walls=False):
 
 
 def _faces(data, base):
+    if "profile_runs" in data:
+        _fail("SPACE_PROFILE_RUNS_MODE", "第一版只在由平面輪廓建立空間時納入拉伸件。",
+              path=["profile_runs"], status="UNSUPPORTED", clause="I32")
     _keys(data, ("base_scene", "mode", "uses", "obstacles"))
     if type(data["uses"]) is not list or not data["uses"]:
         _fail("SPACE_FACES", "請至少選取一個已有面，並設定朝向與用途。", clause="D21")
@@ -410,7 +488,7 @@ def replay_stored(data, expected, *, base_executable=None, max_cells=200000):
     if type(expected) is not dict:
         _fail("SPACE_STORED_REPLAY", "保存的空間結果必須為完整記錄。", path=["result"], clause="I31")
     saved_semantics, rebuilt_semantics = deepcopy(expected), deepcopy(rebuilt)
-    for key in ("space", "volume", "clearance", "walls", "timbers"):
+    for key in ("space", "volume", "clearance", "walls", "timbers", "profile_runs"):
         package = expected.get(key)
         if package is not None:
             # Keep the existing exchange-package version/provenance contract.
@@ -447,6 +525,7 @@ def _preview(data, *, base_executable=None, max_cells=200000, historical_walls=F
         {**root, "shell_id": shell_id, "obstacles": obstacles}]}
     options = {"base_executable": base_executable, "max_cells": max_cells}
     timbers = _timbers(data["timbers"], base, data["placement_id"], options) if "timbers" in data else None
+    profile_runs = _profile_runs(data["profile_runs"], base, options) if "profile_runs" in data else None
     space = _package(definitions, root, "enclosure", "surface-set", options)
     volume = clearance = None
     diagnostics = []
@@ -488,6 +567,20 @@ def _preview(data, *, base_executable=None, max_cells=200000, historical_walls=F
     if timbers is not None:
         result.update(schema="geometry-space-preview/2", timbers=timbers)
         summary.update(timber_count=len(data["timbers"]), timber_volume_mm3=_volume(timbers))
+    if profile_runs is not None:
+        result.update(schema="geometry-space-preview/3", profile_runs=profile_runs)
+        # D63: preserve the exact selected input separately from the native
+        # canonical source shared by every derived package. Never approximate
+        # load_base's normalization in the browser by deleting arbitrary lines.
+        result["source_snapshot"] = {
+            "schema": "geometry-space-source/1",
+            "input_sha256": hashlib.sha256(data["base_scene"].encode("utf-8")).hexdigest(),
+            "canonical_scene": base["base_scene"],
+        }
+        members = [obj for obj in profile_runs["derived"]["objects"] if obj["role"] == "geometry"]
+        summary.update(profile_run_count=len(data["profile_runs"]), profile_member_count=len(members),
+                       profile_material_volume_mm3=str(sum(int(obj["section_profile"]["material_volume_mm3"]) for obj in members)),
+                       profile_overlap_checked=False)
     return result
 
 

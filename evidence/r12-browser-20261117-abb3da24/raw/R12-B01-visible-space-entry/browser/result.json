@@ -1,0 +1,130 @@
+{
+  "url": "http://127.0.0.1:54751/",
+  "scope": {
+    "mode": "partial",
+    "filters": [
+      "GEOMETRY_SPACE_PROFILE_ONLY"
+    ],
+    "included": [
+      "profile-space"
+    ],
+    "omitted": [
+      "space-height-library",
+      "projection-lifecycle",
+      "projection-placement",
+      "font-layout",
+      "space-flow",
+      "projection-close",
+      "timber-material",
+      "timber-source-guards"
+    ],
+    "url": "http://127.0.0.1:54751/",
+    "feedbackDirectory": "/tmp/r12-browser-resources-h81zsdjd/feedback"
+  },
+  "completed": false,
+  "groups": {
+    "setup": {
+      "expected": 2,
+      "passed": 2,
+      "failed": 0,
+      "completed": true
+    },
+    "profile-space": {
+      "expected": 60,
+      "passed": 8,
+      "failed": 1,
+      "completed": false
+    },
+    "browser-health": {
+      "expected": 2,
+      "passed": 0,
+      "failed": 0,
+      "completed": false
+    }
+  },
+  "completenessProblems": [
+    "Space run did not finish",
+    "Group profile-space did not complete",
+    "Group profile-space: expected 60 passed assertions, got 8 passed / 1 failed",
+    "Group browser-health did not complete",
+    "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+  ],
+  "passed": 10,
+  "failed": 3,
+  "exceptions": [],
+  "consoleErrors": [],
+  "coverage": "Trusted pointer/keyboard controls with programmatic fixture setup, state observation and failure injection; counts are assertions, not end-to-end scenarios.",
+  "results": [
+    {
+      "name": "server serves the intended space-model release",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "current release explicitly supports timber preview and engineering sources",
+      "ok": true,
+      "group": "setup"
+    },
+    {
+      "name": "R12_SECTION_ENTRY",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SECTION_PREVIEW_ZERO_WRITE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SECTION_OUTLINE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SECTION_MEMBERS",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_PREVIEW_ZERO_WRITE",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_ONE_HISTORY",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_WORLD_BOUNDS",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_RUN_LOCAL_AND_CORNER",
+      "ok": true,
+      "group": "profile-space"
+    },
+    {
+      "name": "R12_SPACE_ENTRY",
+      "ok": false,
+      "group": "profile-space"
+    },
+    {
+      "name": "complete browser flow",
+      "ok": false,
+      "detail": "Error: R12_SPACE_ENTRY undefined\n    at check (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:145:64)\n    at /tmp/r12-browser-source-7692a_pf/repo/geometry-web/profile_space_test.js:265:7\n    at async Object.run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_test_floor.js:35:9)\n    at async run (/tmp/r12-browser-source-7692a_pf/repo/geometry-web/space_model_test.js:1264:5)"
+    },
+    {
+      "name": "space group completeness",
+      "ok": false,
+      "detail": [
+        "Space run did not finish",
+        "Group profile-space did not complete",
+        "Group profile-space: expected 60 passed assertions, got 8 passed / 1 failed",
+        "Group browser-health did not complete",
+        "Group browser-health: expected 2 passed assertions, got 0 passed / 0 failed"
+      ]
+    }
+  ]
+}

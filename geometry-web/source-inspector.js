@@ -90,12 +90,16 @@
   }
   function modelRoots(record){
     const input=record?.input;if(record?.source?.kind!=='scene'||!input||typeof input.base_scene!=='string')return [];
-    return [...new Set([...(input.mode==='plan'&&input.placement_id!=null?[key('placement',input.placement_id)]:input.mode==='faces'&&Array.isArray(input.uses)?input.uses.map(u=>key('placement',u.placement_id)):[]),...(input.obstacles||[]).map(o=>key(o.kind,o.id)),...(input.timbers||[]).map(t=>key(t.kind,t.id))])];
+    // Content closure only: profile-run has no durable identity pin (D59).
+    return [...new Set([...(input.mode==='plan'&&input.placement_id!=null?[key('placement',input.placement_id)]:input.mode==='faces'&&Array.isArray(input.uses)?input.uses.map(u=>key('placement',u.placement_id)):[]),...(input.obstacles||[]).map(o=>key(o.kind,o.id)),...(input.timbers||[]).map(t=>key(t.kind,t.id)),...(input.profile_runs||[]).map(r=>key(r.kind,r.id))])];
   }
   function modelTimberIds(record){
     const refs=record?.input?.timbers;if(refs===undefined)return [];
     if(!Array.isArray(refs)||refs.length>512||refs.some(r=>!r||Object.keys(r).length!==2||r.kind!=='timber'||!id(r.id))||new Set(refs.map(r=>r.id)).size!==refs.length)throw Error('保存模型的明選角材身分無效或重複。');
     return refs.map(r=>r.id);
+  }
+  function untrackedModelRoots(record){
+    return (record?.input?.profile_runs||[]).map(ref=>({kind:'profile-run',id:ref.id}));
   }
   function checkDimensionSources(row,baseline){
     if(row.assembly)return; // Owned members use the fixed binding/owner checks.
@@ -120,11 +124,14 @@
     for(const e of edges)if(['dimension','material-version'].includes(e.relation)&&/^[AB](?: override)?(?: ← |$)/.test(e.field)&&!seen.has(e.field[0]))throw Error('快照尺寸來源資料未完整提供。');
   }
   function continuityOf(record,graph){
-    if(!record?.sourceIdentity?.roots)return {token:'unknown',text:'物件延續性未知',listed:[]};
+    const untracked=untrackedModelRoots(record);
+    const scoped=value=>({...value,untrackedModelRoots:untracked,
+      text:untracked.length?(value.token==='proved'?'已追蹤根延續已證明；拉伸件延續未知':value.text+'；拉伸件延續未知'):value.text});
+    if(!record?.sourceIdentity?.roots)return scoped({token:'unknown',text:'物件延續性未知',listed:[]});
     let ledger=typeof IdentityLedger!=='undefined'&&IdentityLedger?IdentityLedger:null;
     if(!ledger&&typeof module==='object'&&module.exports)ledger=require('./identity-ledger.js');
-    if(!ledger||typeof ledger.judgeRoots!=='function')return {token:'unknown',text:'物件延續性未知',listed:[]};
-    return ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph||null)});
+    if(!ledger||typeof ledger.judgeRoots!=='function')return scoped({token:'unknown',text:'物件延續性未知',listed:[]});
+    return scoped(ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph||null)}));
   }
   function deriveModelSchedule(record,result,timberSchedule,project){
     if(typeof project?.validateSpaceModel!=='function'||typeof timberSchedule?.derive!=='function')throw Error('保存快照料單能力尚未核對。');
@@ -212,7 +219,8 @@
       }
       const last=index(await read());if(!current(ctx,token,seq))return null;
       if(first.data.revision!==last.data.revision||first.data.sourceFingerprint!==last.data.sourceFingerprint)throw Error('來源已更新，請重新檢查。');
-      return {graph:last,baseline,packageBaseline,packageSourceSha,revision:last.data.revision,context:ctx,stamp:token};
+      return {graph:last,baseline,packageBaseline,packageSourceSha,revision:last.data.revision,context:ctx,stamp:token,
+        untrackedModelRoots:untrackedModelRoots(record)};
     }
     return {inspect,cancel(){++sequence;controller?.abort();},valid(result){return context()===result.context&&stamp()===result.stamp;}};
   }
@@ -243,10 +251,15 @@
       if(snapshotOnly){body.innerHTML=`${scheduleHTML()}${refresh()}`;return;}
       if(!result)return;const g=result.graph,n=g.nodes.get(start);
       const state=record?freshness(result.baseline,g,modelRoots(record)):null;
-      if(!n){body.innerHTML=`${scheduleHTML()}<p${state?` data-source-freshness="${state.status}"`:''}>${esc(state?.message||'來源缺失或目前型別尚未提供，無法可靠追溯。')}</p>${refresh()}`;return;}
+      const untracked=record?untrackedModelRoots(record).map(ref=>{
+        const content=freshness(result.baseline,g,[key(ref.kind,ref.id)]).contentStatus;
+        return `<p data-source-untracked="profile-run:${ref.id}">拉伸件 #${ref.id} · ${{consistent:'內容一致',changed:'內容已改',missing:'來源缺失',unchecked:'內容未確認'}[content]} · 延續未知</p>`;
+      }).join(''):'';
+      const continuity=record&&untracked?`<p data-source-model-continuity="${esc(continuityOf(record,g).token)}">${esc(continuityOf(record,g).text)}</p>`:'';
+      if(!n){body.innerHTML=`${scheduleHTML()}${continuity}${untracked}<p${state?` data-source-freshness="${state.status}"`:''}>${esc(state?.message||'來源缺失或目前型別尚未提供，無法可靠追溯。')}</p>${refresh()}`;return;}
       const sources=nearby(g,start),uses=nearby(g,start,{direction:'uses'});
       const rows=(entries,title)=>`<h4>${title}</h4><ol>${entries.rows.map((r,i)=>`<li><span>${esc(labels[r.edge.relation])} · ${esc(r.edge.field)}</span><button type="button" data-source-path="${esc(r.key)}">${esc(r.node?.label||'來源缺失')} · ${esc(r.key)}</button>${r.node?`<button type="button" data-source-locate="${esc(r.key)}" aria-label="定位 ${esc(r.node.label)}">定位</button>`:''}</li>`).join('')||'<li>目前沒有已知關係</li>'}</ol>${entries.truncated?'<p>已達容量／深度上限；關係清單不完整。</p>':''}`;
-      body.innerHTML=`${scheduleHTML()}${state?`<p data-source-freshness="${state.status}">${esc(state.message)}</p>${state.changes.map(c=>`<p>${esc(c.key)} · ${esc(c.kind)}</p>`).join('')}<h4>已核對的目前來源 · 與保存快照尺寸分開</h4>`:''}<p>${esc(n.label)} · ${esc(n.key)}${n.version?' · 固定 v'+n.version:''}</p><code title="原生來源指紋">${esc(n.definitionFingerprint)}</code>${rows(sources,'直接與間接來源')}${rows(uses,'修改可能涉及（未試算）')}${supportHTML(g,n)}${refresh()}`;
+      body.innerHTML=`${scheduleHTML()}${continuity}${untracked}${state?`<p data-source-freshness="${state.status}">${esc(state.message)}</p>${state.changes.map(c=>`<p>${esc(c.key)} · ${esc(c.kind)}</p>`).join('')}<h4>已核對的目前來源 · 與保存快照尺寸分開</h4>`:''}<p>${esc(n.label)} · ${esc(n.key)}${n.version?' · 固定 v'+n.version:''}</p><code title="原生來源指紋">${esc(n.definitionFingerprint)}</code>${rows(sources,'直接與間接來源')}${rows(uses,'修改可能涉及（未試算）')}${supportHTML(g,n)}${refresh()}`;
     }
     const unavailable=message=>{result=null;schedule=null;selectedTimber=null;onSchedule(null);body.innerHTML=`<p>${esc(message)}</p>${refresh()}`;};
     async function load(exportRequested=false){
@@ -295,5 +308,5 @@
     }
     body.addEventListener('click',onClick);body.addEventListener('change',onChange);if(snapshotOnly)detail.open=true;else if(detail.open)load();return {detail,selectSnapshot,cancel(){onSchedule(null);if(navigationLease&&(record||!navigationLease.transferred))navigationLease.cancelled=true;active=false;++loadSequence;session.cancel();detail.removeEventListener('toggle',onToggle);body.removeEventListener('click',onClick);body.removeEventListener('change',onChange);}};
   }
-  return {key,index,nearby,resolveLocation,modelRoots,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
+  return {key,index,nearby,resolveLocation,modelRoots,untrackedModelRoots,continuityOf,modelTimberIds,deriveModelSchedule,modelScheduleCSV,freshness,createSession,mount,LIMIT,DEPTH};
 });

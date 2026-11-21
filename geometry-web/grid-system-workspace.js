@@ -110,6 +110,11 @@
       baseRef:s.baseRef,inputRefs:[...s.inputPins.values()].map(copy),rawForm:form,
       ...(s.draftSchema===F.GRID_RULE_SCHEMA?{ruleDraft:ruleDraftValue(s)}:{})};
   }
+  /* 這份輸入若存成新的草稿會超過份數上限，回傳給使用者看的說明；否則回傳 null。
+     已經存在的草稿(hasDraft)照常更新，不受上限影響。原本這種情況只顯示集合檢查的內部訊息。 */
+  function draftCapacityError(count,hasDraft,max){
+    return !hasDraft&&count>=max?`未完成的網格草稿已有 ${max} 份（上限），這份輸入沒有保存。請先完成或捨棄其中一份。`:null;
+  }
   function flush(s=state){
     if(!current(s)||s.busy)return;
     if(s.initializing)throw Error('網格原始輸入仍在還原，請待邊界讀取完成後保存。');
@@ -120,6 +125,7 @@
     for(const ref of owned?.inputRefs||[])if(ref.lost && s.inputPins.has(pinKey(ref)))s.inputPins.get(pinKey(ref)).lost=true;
     const form=rawForm(s),hasDraft=!!owned;
     if(!hasDraft&&!s.ruleDraft&&JSON.stringify(form)===s.initialRaw&&!!(s.mode==='source'?s.source:s.binding))return;
+    const full=draftCapacityError(ReferenceWorkspace.readGridDrafts().drafts.length,hasDraft,F.MAX_GRID_DRAFTS);if(full)throw Error(full);
     const value=rawValue(s);ReferenceWorkspace.setGridDraft(s.draftId,value,s.contextToken);s.rawError=null;return value;
   }
   function capture(s){if(!current(s)||s.initializing||s.busy)return;try{flush(s);}catch(error){s.rawError=error.message;}}
@@ -452,6 +458,15 @@
     dialog.innerHTML = `<header class="ig-header"><button id="igClose" type="button" class="btn ig-back">${icon('arrowLeft')} 返回畫布</button><span class="ig-sep" aria-hidden="true"></span><nav class="ig-crumb" aria-label="目前位置"><span class="ig-crumb-lead ig-crumb-project" data-project-name>${esc(projectName())}</span><span class="ig-crumb-lead" aria-hidden="true">/</span><span class="ig-crumb-lead">無限網格</span><span class="ig-crumb-lead" aria-hidden="true">/</span><h1 id="igTitle">${s.mode === 'binding' ? s.binding ? `網格配置 ${s.binding.id}` : '建立網格配置' : s.source ? esc(s.source.name) : '建立無限網格'}</h1></nav></header><div class="ig-layout"><main class="ig-main"><p id="igWorkspaceLesson" class="studio-first-lesson" hidden></p><div class="ig-canvas"><svg id="igGridView" viewBox="0 0 ${W} ${H}" role="img" aria-label="可平移縮放的無限網格，點選 cell"></svg><p id="igViewNote" class="ig-hint">拖曳平移 · 滾輪縮放 · 點格子選取；點定義圖的尺寸或卡片標題可定位欄位。</p><div class="ig-zoombar"><button id="igZoomOut" type="button" class="btn" aria-label="縮小網格">${icon('minus')}</button><span id="igZoom" class="ig-zoom"></span><button id="igZoomIn" type="button" class="btn" aria-label="放大網格">${icon('plus')}</button><span class="ig-zoom-sep"></span><button id="igFit" type="button" class="btn">回到基準</button></div></div><p id="igDensity" class="ig-density" role="status" hidden></p><section id="igBoundarySection"${s.mode === 'binding' ? '' : ' hidden'}><h2>邊界實際頂點 <small>u →　v ↓</small></h2><p>點圓點選擇外環或孔環頂點；橙色圓點是目前的對齊頂點。</p><svg id="igBoundaryView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界外環及孔環的實際頂點"></svg></section><section id="igResultSection"${s.binding ? '' : ' hidden'}><h2>目前已保存的配置結果</h2><p id="igResultNote"></p><svg id="igResultView" viewBox="0 0 ${W} 360" role="img" aria-label="邊界內實際裁切的配置格線"></svg></section></main><aside class="ig-inspector"><div class="ig-settings"><section id="igSourceForm"${s.mode === 'binding' ? ' hidden' : ''}><div class="ig-src-head"><span id="igSourcePill" class="ig-pill" data-tone="idle"></span><span class="ig-src-kind">無限網格 · 來源</span></div><label class="ig-name">名稱<input id="igName" value="${esc(source.name)}" autocomplete="off" aria-describedby="igNameErr"><span class="ig-pf-err" id="igNameErr"></span></label><div class="ig-card-ref" id="igCardRef"><label class="ig-card-pick"><span>長度來源</span><select id="igCard" aria-describedby="igCardNote">${cardOptions(source.cardReference?.parameterId)}</select></label><div class="ig-card-map" id="igCardMap" hidden><label><span>u 長度</span><select id="igCardU"></select></label><button type="button" class="btn ig-card-swap" id="igCardSwap">對調 u ↔ v</button><label><span>v 長度</span><select id="igCardV"></select></label></div><p class="ig-card-note" id="igCardNote" role="status"></p></div><div id="paramGridLessonSlot"></div><div id="igDefinition" class="ig-def" role="group" aria-label="網格定義圖"><div id="igDefStage" class="ig-def-stage"></div></div><div class="ig-axes">${axes.map(a => axisForm(a, source[a + 'Definition'])).join('')}</div><div class="ig-field"><span class="ig-field-title" id="igMainAlongTitle">主支方向</span><div id="igMainAlong" class="ig-segment" role="radiogroup" aria-labelledby="igMainAlongTitle">${[['none','不設定'],['u','沿 u'],['v','沿 v']].map(([v, l]) => `<label><input type="radio" name="igMainAlong" value="${v}"${(source.mainAlong || 'none') === v ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div><p id="igMainNote" class="ig-note"></p></div><button id="igSaveSource" class="primary-button" type="button">${s.source ? '預覽來源變更' : '預覽並建立'}</button>${s.source ? `<button id="igNewBinding" class="btn" type="button">＋ 選邊界建立配置</button><section class="ig-related"><h3>使用此來源的配置</h3>${s.bindings.filter(b => b.system === s.source.id).map(b => `<button type="button" class="btn" data-ig-open-binding="${b.id}">配置 ${b.id} · 面 ${b.boundary}</button>`).join('') || '<p>尚未配置，可以先保存來源。</p>'}</section>` : ''}</section><section id="igBindingForm"${s.mode !== 'binding' ? ' hidden' : ''}><h2>對齊邊界與 cell</h2><label>來源<select id="igSystem" style="min-height:44px"><option value="">明選目前來源</option>${(s.sources||[]).map(row=>`<option value="${row.id}"${String(row.id)===s.systemRaw?' selected':''}>${esc(row.name)} · ${row.id}</option>`).join('')}</select></label><button type="button" id="igEditSource" class="grid-text-button">編輯來源</button><label>1 · 邊界<select id="igBoundary"><option value="">選擇已有邊界（可尚未放置）</option>${s.boundaries.map(b => `<option value="${b.id}"${s.binding?.boundary === b.id ? ' selected' : ''}>面 ${b.id}${b.placed ? ' · 已放置' : ' · 尚未放置'}</option>`).join('')}</select></label><p id="igVertexSummary">2 · 點選右側邊界的實際頂點。</p><label>頂點<select id="igVertex"><option value="">先選邊界</option></select></label><p>3 · 點選網格的一格，或填入精確索引。</p><div class="ig-pair"><label>cell i<input id="igCellI" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[0] ?? '0')}"></label><label>cell j<input id="igCellJ" type="text" inputmode="numeric" value="${esc(s.binding?.cell?.[1] ?? '0')}"></label></div><button id="igLocateCell" class="btn" type="button">定位這一格</button><p>4 · 格子裡的對齊位置</p><div class="ig-anchor" role="group" aria-label="格子內的對齊位置">${GridAnchorPositions.positions.map(({name:t,u,v})=>`<button type="button" data-ig-anchor="${u},${v}" aria-pressed="false">${t}</button>`).join('')}</div><details class="ig-rational"><summary>其他精確比例</summary><div class="ig-pair"><label>u 分子<input id="igAnchorUN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>u 分母<input id="igAnchorUD" type="text" inputmode="numeric" maxlength="4096" value="1"></label><label>v 分子<input id="igAnchorVN" type="text" inputmode="numeric" maxlength="4096" value="0"></label><label>v 分母<input id="igAnchorVD" type="text" inputmode="numeric" maxlength="4096" value="1"></label></div></details><p id="igAlignmentSummary" class="ig-summary"></p><button id="igSaveBinding" class="primary-button" type="button">${s.binding ? '預覽配置變更' : '預覽並建立配置'}</button><section id="igApplicationSection"${s.binding ? '' : ' hidden'}><h3>套用到承載面</h3><label>承載面（僅列同一邊界）<select id="igSurface"></select></label><p id="igApplyNote"></p><button id="igApplyBinding" type="button" class="btn">預覽套用</button><div id="igApplications"></div></section><details id="igKeyedEditor"${s.binding ? '' : ' hidden'}><summary>以頂點身分修改邊界</summary><p>保留每個頂點的身分。修改會重新檢查此邊界的所有配置與構件。</p><div id="igKeyedVertices"></div><div class="ig-pair">${['Left','Right','Top','Bottom'].map((a,k)=>`<label>向${['左','右','上','下'][k]}擴大 mm<input id="igGrow${a}" type="number" step="1" min="0" value="0"></label>`).join('')}</div><button id="igGrowBoundary" type="button" class="btn">將四側擴大填入頂點草稿</button><button id="igSaveBoundary" type="button" class="primary-button">預覽邊界變更</button></details>${s.binding ? `<button id="igDeleteBinding" class="btn danger" type="button">刪除此配置</button>` : ''}</section><section id="igInfo" class="ig-info" aria-live="off"><div class="ig-info-head"><h3 id="igInfoTitle">格資訊</h3><span id="igInfoCell"></span></div><div id="igInfoRows"></div></section></div><footer class="ig-footer"><p id="igStatus" role="status" aria-live="polite">所有變更先預覽，確認後才保存到目前場景。</p></footer></aside></div>`;
     $('igVertexSummary').after($('igBoundarySection'));
     mountRuleEditor(s);
+    if(s.mode==='source'&&s.source?.cardReference){
+      // Replace the unusable per-axis option with an explicit whole-card action.
+      $('igCard').options[0].disabled=true;
+      const unbind=document.createElement('details');unbind.id='igCardUnbind';
+      unbind.innerHTML='<summary>解除整組引用</summary><div class="ig-rule-actions"><button id="igCardUnbindParameter" class="btn" type="button">改為逐欄引用</button><button id="igCardUnbindDirect" class="btn" type="button">改為當下直接值</button></div>';
+      $('igCardRef').append(unbind);
+      for(const [id,mode] of [['igCardUnbindParameter','parameter'],['igCardUnbindDirect','direct']])
+        $(id).onclick=()=>operation(s,()=>unbindCard(s,mode));
+    }
     placeStudioLesson(dialog.querySelector('#igWorkspaceLesson'), 'grid:infinite-first', '這裡定無限格線；要套到邊界時再建立配置。');
     const footer = dialog.querySelector('.ig-footer'), notes = document.createElement('div'), actions = document.createElement('div');
     notes.className = 'ig-footer-notes'; actions.className = 'ig-footer-actions';
@@ -645,7 +660,7 @@
       else if (!dimension(fu) || !dimension(fv)) { text = '只有尺寸欄位能當長度。'; tone = 'error'; }
       else if (!cardLength('u') || !cardLength('v')) { text = '所選欄位不是整數，不能當長度。'; tone = 'error'; }
       else text = `兩軸長度由「${card.name}」（#${card.id}）提供：u = ${fu.name}（#${fu.id}，${fieldText(fu)}）、v = ${fv.name}（#${fv.id}，${fieldText(fv)}）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。`;
-    } else if (s?.source?.cardReference) { text = '這個網格目前由整張參數卡提供長度；解除整卡還沒有在這裡提供，請保留整卡。'; tone = 'error'; }
+    } else if (s?.source?.cardReference) { text = '這個網格仍引用整張參數卡；請先處理原始草稿，再由「解除整組引用」明選轉換方式。'; tone = 'error'; }
     note.textContent = text; note.dataset.tone = tone;
   }
   const cardKey = id => `parameter-field:${$('igCard').value}:${$(id).value}`;
@@ -853,7 +868,7 @@
     const result = {name, mainAlong, hex: Array.from(bytes, b => b.toString(16).padStart(2,'0')).join('')};
     const card = cardOn() ? {parameterId:Number($('igCard').value), uFieldId:Number($('igCardU').value), vFieldId:Number($('igCardV').value)} : null;
     if (card && ![card.parameterId, card.uFieldId, card.vFieldId].every(n => Number.isSafeInteger(n) && n >= 0 && n <= 4294967295)) throw Error('請重新選取整張參數卡與兩軸欄位。');
-    if (!card && s.source?.cardReference) throw Error('這個網格目前由整張參數卡提供長度；解除整卡還沒有在這裡提供，請保留整卡。');
+    if (!card && s.source?.cardReference) throw Error('這個網格仍引用整張參數卡；請先處理原始草稿，再由「解除整組引用」明選轉換方式。');
     if (card && ($('igCardU').value === '' || $('igCardV').value === '')) throw Error('請分別選 u 與 v 各用卡片上的哪一個尺寸欄位。');
     if (card && (!cardField('u') || !cardField('v'))) throw Error('所選參數卡或欄位已不存在，請重新選取。');
     if (card && (!dimension(cardField('u')) || !dimension(cardField('v')))) throw Error('只有尺寸欄位能當長度。');
@@ -1137,6 +1152,29 @@
     const parts=axes.map(a=>{const v=d[a+'Definition'],token=key=>{if(v.cardLength&&key===(v.source==='repeat'?'step':'panel'))return 'card';const r=v.parameterRefs?.[key];return r?`param:${r.parameterId}:${r.fieldId}`:v[key];};if(v.source==='none')return `${a} none`;const body=v.source==='repeat'?`repeat ${token('phase')} ${token('step')}`:`repeat-panel ${token('panel')} gap ${token('gap')} from ${token('anchor')}`;const stag=v.parameterRefs?.stagger?` stagger ${token('stagger')}`:(v.stagger!=null?` stagger ${v.stagger}`:'');return `${a} ${body}${stag}`;});
     const card=d.cardReference?` card-reference ${d.cardReference.parameterId} ${d.cardReference.uFieldId} ${d.cardReference.vFieldId}`:'';
     return `grid-system ${id} name-hex ${d.hex} main-along ${d.mainAlong}${card} ${parts.join(' ')}`;
+  }
+  async function unbindCard(s,mode) {
+    if(s.mode!=='source'||!s.source?.cardReference||!['parameter','direct'].includes(mode))throw Error('請重新開啟已引用整張參數卡的網格。');
+    ReferenceWorkspace.assertEditable();
+    requireOnlyDraft(s,null);
+    if(s.orphaned||s.rawError||ReferenceWorkspace.readGridDrafts().drafts.some(d=>d.draftId===s.draftId)||JSON.stringify(rawForm(s))!==s.initialRaw)
+      throw Error('請先預覽並確認來源變更，或捨棄原始草稿，再解除整組引用。');
+    const read=await apiRequest('engineering-read');
+    if(!current(s))return;
+    if(!read.ok)throw Error(read.error||'無法讀取目前來源。');
+    if(!['parameters/1','grid-card-reference/1'].every(cap=>read.state?.capabilities?.includes(cap)))throw Error('目前服務不支援整卡解除，請更新服務後重試。');
+    // engineering-read supplies the revision/capabilities, not geometry.
+    // Read the source through objects after this revision; a later change is
+    // rejected by the native preview's expectedRevision check.
+    await stillSame(s);
+    status('正在預覽整組解除，場景尚未改動…');
+    const preview=await EngineeringAdapter.preview({expectedRevision:read.revision,
+      operations:[{op:'unbind-grid-card-reference',id:s.source.id,mode}]});
+    if(!current(s)){await EngineeringAdapter.cancel({token:preview.token});return;}
+    const done=await confirmGridCardUnbindImpact(preview,{mode,gridSystemId:s.source.id,isCurrent:()=>current(s)&&!s.nativeChanged});
+    if(!current(s))return;
+    if(!done.ok)throw Error(done.error||'未套用');
+    await reopen(s);
   }
   async function saveSource(s) {
     if(s.orphaned)throw Error(ruleUnsupported(s));

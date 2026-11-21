@@ -11,9 +11,9 @@ typedef struct {
 } PfUiError;
 static bool g_pf_ui_exact;
 static const char *g_pf_ui_stage;
-/* At most one incomplete-view diagnostic per record and stage, plus the
- * transaction diagnostic. Each World has at most FS_MAX records of each kind. */
-static PfUiError g_pf_ui_errors[6 * FS_MAX + 1];
+/* One diagnostic per record and stage, plus the transaction diagnostic:
+ * three PF record kinds and at most WOOD_GRID_MAX source grids per World. */
+static PfUiError g_pf_ui_errors[6 * FS_MAX + 2 * WOOD_GRID_MAX + 1];
 static size_t g_pf_ui_error_count;
 static void pf_json_i64(int64_t value)
 {
@@ -99,12 +99,39 @@ static void dp_json_host(const World *w,const DerivedPlacement *d)
         fputs("]}",stdout);}
     fputs("]}}",stdout);
 }
+static void pf_json_fill_grid(const World *w,const ReferenceGrid *g)
+{
+    printf("{\"id\":%u,\"definition\":{\"id\":%u,\"hostId\":%u,\"fillId\":%u,\"mainAlong\":",
+        g->id,g->id,g->placement_id,g->fill_id);
+    if(g->main_along==1)fputs("\"u\"",stdout);else if(g->main_along==2)fputs("\"v\"",stdout);else fputs("null",stdout);
+    fputs("},\"derived\":",stdout);
+    const PlacementSurface *host=world_find_placement(w,g->placement_id);
+    if(!host||host->derived_fill_id!=g->fill_id||!pf_find(w,g->fill_id)||(g->fill_side!=1&&g->fill_side!=-1)){
+        pf_ui_error("fill-grid",g->id,"FILL_GRID_SOURCE_UNAVAILABLE","D10/R44: source grid has no complete same-fill host evaluation");
+        fputs("null}",stdout);return;
+    }
+    int stagger=g->axis[0].stagger_set?0:g->axis[1].stagger_set?1:-1;
+    printf("{\"indexSpace\":\"lattice\",\"bandIndexSpace\":\"panel-row\",\"side\":%d,\"staggerAxis\":",g->fill_side);
+    if(stagger<0)fputs("null",stdout);else js_string(stagger?"v":"u");
+    fputs(",\"staggerDelta\":",stdout);pf_json_i64(stagger<0?0:g->axis[stagger].stagger*(stagger?g->fill_side:1));
+    fputs(",\"axes\":{",stdout);
+    for(int a=0;a<2;++a){int side=a?g->fill_side:1;
+        printf("%s\"%c\":{\"baseCoordinate\":",a?",":"",a?'v':'u');pf_json_i64(g->lattice_base[a]*side);
+        fputs(",\"pitch\":",stdout);pf_json_i64(g->lattice_step[a]*side);
+        fputs(",\"baseIndex\":",stdout);pf_json_i64(g->lattice_index[a]);putchar('}');
+    }
+    fputs("}}}",stdout);
+}
 static void json_panel_fill_state(const World *w)
 {
     fputs("{\"finishSurfaces\":[",stdout);
     for(uint64_t i=0;i<w->wood.finish_surfaces.count;++i){if(i)putchar(',');json_finish_surface(w,&w->wood.finish_surfaces.items[i]);}
     putchar(']');pf_json_state(w);fputs(",\"derivedPlacements\":[",stdout);
-    for(uint64_t i=0;i<w->wood.finish_surfaces.host_count;++i){if(i)putchar(',');dp_json_host(w,&w->wood.finish_surfaces.hosts[i]);}fputs("]}",stdout);
+    for(uint64_t i=0;i<w->wood.finish_surfaces.host_count;++i){if(i)putchar(',');dp_json_host(w,&w->wood.finish_surfaces.hosts[i]);}
+    fputs("],\"fillGrids\":[",stdout);bool first=true;
+    for(size_t i=0;i<w->wood.grid_applications.count;++i){const ReferenceGrid *g=&w->wood.grid_applications.items[i];
+        if(!g->from_fill)continue;if(!first)putchar(',');first=false;pf_json_fill_grid(w,g);}
+    fputs("]}",stdout);
 }
 static void pf_ui_scope(const World *before,const World *after)
 {
@@ -114,6 +141,12 @@ static void pf_ui_scope(const World *before,const World *after)
     fputs("],\"fillIds\":[",stdout);first=true;
     for(uint64_t i=0;i<before->wood.finish_surfaces.fill_count;++i){printf("%s%u",first?"":",",before->wood.finish_surfaces.fills[i].id);first=false;}
     if(after)for(uint64_t i=0;i<after->wood.finish_surfaces.fill_count;++i){uint32_t id=after->wood.finish_surfaces.fills[i].id;if(pf_find(before,id))continue;printf("%s%u",first?"":",",id);first=false;}
+    fputs("],\"fillGridIds\":[",stdout);first=true;
+    for(size_t i=0;i<before->wood.grid_applications.count;++i){const ReferenceGrid *g=&before->wood.grid_applications.items[i];
+        if(!g->from_fill)continue;printf("%s%u",first?"":",",g->id);first=false;}
+    if(after)for(size_t i=0;i<after->wood.grid_applications.count;++i){const ReferenceGrid *g=&after->wood.grid_applications.items[i];
+        const ReferenceGrid *old=world_find_grid(before,g->id);if(!g->from_fill||(old&&old->from_fill))continue;
+        printf("%s%u",first?"":",",g->id);first=false;}
     fputs("]}",stdout);
 }
 static void json_panel_fill_ui_contract(const World *before,const World *after,uint64_t revision,bool valid,FsDiagnosticKind failure_kind,const char *error)
@@ -121,7 +154,7 @@ static void json_panel_fill_ui_contract(const World *before,const World *after,u
     FsDiagnosticKind saved_kind=g_fs_diagnostic;
     char saved[sizeof g_engineering_error];snprintf(saved,sizeof saved,"%s",g_engineering_error);
     g_pf_ui_exact=true;g_pf_ui_error_count=0;
-    fputs(",\"uiContract\":{\"schema\":\"panel-fill-workspace/1\",\"supportedActions\":[\"read\",\"edit-definitions\",\"read-layout\",\"read-support\"],\"scope\":",stdout);
+    fputs(",\"uiContract\":{\"schema\":\"panel-fill-workspace/1\",\"supportedActions\":[\"read\",\"edit-definitions\",\"read-layout\",\"read-support\",\"create-from-fill-grid\"],\"scope\":",stdout);
     pf_ui_scope(before,after);printf(",\"revision\":\"%llu\"",(unsigned long long)revision);
     g_pf_ui_stage=after?"before":"state";
     fputs(after?",\"before\":":",\"state\":",stdout);json_panel_fill_state(before);
@@ -158,6 +191,16 @@ static void json_panel_fill_changes(const World *before,const World *after)
         printf("%s{\"record\":\"derived-placement\",\"id\":%u,\"change\":\"%s\"}",first?"":",",z->id,!a?"created":memcmp(a,z,sizeof *a)?"modified":"derived");first=false;}
     for(uint64_t i=0;i<before->wood.finish_surfaces.host_count;++i){const DerivedPlacement *a=&before->wood.finish_surfaces.hosts[i];if(dp_find(after,a->id))continue;
         printf("%s{\"record\":\"derived-placement\",\"id\":%u,\"change\":\"deleted\"}",first?"":",",a->id);first=false;}
+    for(size_t i=0;i<after->wood.grid_applications.count;++i){const ReferenceGrid *z=&after->wood.grid_applications.items[i],*a=world_find_grid(before,z->id);
+        if(!z->from_fill)continue;
+        if(a&&a->from_fill&&!reference_grid_changed(before,after,z->id))continue;
+        printf("%s{\"record\":\"fill-grid\",\"id\":%u,\"change\":\"%s\"}",first?"":",",z->id,
+            !a?"created":a->placement_id!=z->placement_id||a->fill_id!=z->fill_id||a->main_along!=z->main_along?"modified":"derived");first=false;
+    }
+    for(size_t i=0;i<before->wood.grid_applications.count;++i){const ReferenceGrid *a=&before->wood.grid_applications.items[i],*z=world_find_grid(after,a->id);
+        if(!a->from_fill||(z&&z->from_fill))continue;
+        printf("%s{\"record\":\"fill-grid\",\"id\":%u,\"change\":\"deleted\"}",first?"":",",a->id);first=false;
+    }
     putchar(']');
 }
 static void json_panel_fill_preview(void)
@@ -198,12 +241,19 @@ static void cmd_panel_fill_read(void)
     fputs(",\"state\":",stdout);json_panel_fill_state(&g_world);
     json_panel_fill_ui_contract(&g_world,NULL,g_definition_revision,true,FS_DIAGNOSTIC_INVALID,"");fputs("}\n",stdout);
 }
+static bool pf_actions_operation(World *candidate,GeoJson *j,int t)
+{
+    char op[40];
+    if(geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op)&&!strcmp(op,"create-from-fill-grid"))
+        return fs_create_fill_grid(candidate,&g_world,j,t); /* PF4A_NATIVE_CREATE_ROUTE */
+    return fs_operation(candidate,j,t);
+}
 static void cmd_panel_fill_preview(const char *path)
 {
     g_fs_diagnostic=FS_DIAGNOSTIC_INVALID;
     batch_preview(path,"panel-fill-transaction/1","Expected panel-fill-transaction/1, expectedRevision and operations",
         "Panel-fill definitions changed; read and preview again","Cannot allocate panel-fill candidate","panel-fill-transaction",3,
-        fs_operation,json_panel_fill_preview);
+        pf_actions_operation,json_panel_fill_preview);
 }
 static void cmd_panel_fill_confirm(const char *arg)
 { batch_confirm(arg,3,"Missing, invalid or unrelated panel-fill token","Panel-fill preview expired; preview again"); }
