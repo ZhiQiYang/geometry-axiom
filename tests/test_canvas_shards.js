@@ -7,6 +7,7 @@ const fs = require('fs'), os = require('os'), path = require('path');
 const shards = require('../geometry-web/canvas_shards.js');
 const pfExtension = require('./diagnostics/r355_canvas_extension.cjs');
 const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
+const touchExtension = require('./diagnostics/r433_touch_canvas_extension.cjs');
 const r400Extension = require('./diagnostics/r400_canvas_extension.cjs');
 const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cjs');
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
@@ -21,10 +22,12 @@ const ROOT = path.resolve(__dirname, '..');
 // P353. Project exactly it (plan position and raw golden line) out first, so every
 // main oracle below judges the same plan, golden and raw bytes it was written for.
 const plan = shards.loadPlan(), golden = shards.loadGolden();
-const rawPlan = plan, rawGolden = golden;
-const pf4aBase = {plan: pf4aExtension.projectPlan(plan), golden: pf4aExtension.projectGolden(golden)};
+// Keep the complete current pair for receipt/coverage tests; old oracles
+// receive only the exact P1162 projection back to their unchanged 99 sections.
+const rawPlan = touchExtension.projectPlan(plan), rawGolden = touchExtension.projectGolden(golden);
+const pf4aBase = {plan: pf4aExtension.projectPlan(rawPlan), golden: pf4aExtension.projectGolden(rawGolden)};
 function projectPf4aRaw(rawSource) {
-  const raw = String(rawSource).replace(/\r\n/g, '\n');
+  const raw = touchExtension.projectRaw(rawSource);
   const parsed = JSON.parse(raw), count = parsed.sections.P1284;
   const withoutLine = raw.replace('    "P420": 124,\n    "P1284": ' + count + '\n', '    "P420": 124\n');
   assert.notEqual(withoutLine, raw, 'PF4A_P1284_RAW_LAST_LINE_REQUIRED');
@@ -128,6 +131,34 @@ function red(receipts, pattern, ctx = context) {
 const moveSection = (r, name, from) => { r.sections[name] = from.sections[name]; r.sectionOrder.unshift(name); r.passedAssertions = sum(r.sections); };
 
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
+  // R433 owns exactly one measured section. Preserve every historical oracle
+  // below and separately verify the full current 100-section registry.
+  assert.deepEqual(shards.validatePlan(context.plan,context.golden),[],'R433_CURRENT_PLAN_COMPLETE');
+  assert.equal(Object.keys(context.golden.sections).length,100,'R433_MAIN99_PLUS_ONE_SECTION');
+  assert.equal(context.golden.total,rawGolden.total+context.golden.sections.P1162,'R433_EXACT_COUNT_UNION');
+  assert.equal(Object.keys(rawGolden.sections).length,99,'R433_MAIN99_RETAINED');
+  assert.equal(rawGolden.total,5693,'R433_MAIN99_TOTAL_RETAINED');
+  assert.deepEqual(context.plan.shards[0],rawPlan.shards[0],'R433_FIRST_SHARD_UNCHANGED');
+  assert.deepEqual(context.plan.boundaries,rawPlan.boundaries,'R433_HANDOFF_UNCHANGED');
+  assert.equal(context.plan.shards[1].sections.at(-1),'P359','R433_STORAGE_RESET_LAST');
+  assert.equal(shards.lfSha256(Buffer.from(touchExtension.projectRaw(fs.readFileSync(shards.GOLDEN_PATH,'utf8')))),
+    'cfbe3dc18bf983b3ea3d468c456c8dfddf33e893e5ed85916edfaa2be7e87bca','R433_MAIN99_RAW_BYTES_UNCHANGED');
+  for(const fault of ['missing','duplicate','first-shard','moved']){
+    const probe=clone(context.plan),right=probe.shards[1].sections,at=right.indexOf('P1162');
+    if(fault==='duplicate')right.push('P1162');
+    else {right.splice(at,1);if(fault==='first-shard')probe.shards[0].sections.push('P1162');
+      else if(fault==='moved')right.splice(right.indexOf('P359'),0,'P1162');}
+    assert.throws(()=>touchExtension.projectPlan(probe),/R433_EXACT_(OWNER|NEIGHBORS)/,'R433_REJECT_OWNER_OR_ORDER '+fault);
+  }
+  for(const value of [0,undefined,-1,1.5,'17',true]){
+    const probe=clone(context.golden);if(value===undefined)delete probe.sections.P1162;else probe.sections.P1162=value;
+    if(value===0)probe.total-=context.golden.sections.P1162;
+    assert.throws(()=>touchExtension.projectGolden(probe),/R433_FULL_BROWSER_RECEIPT_REQUIRED/,'R433_REJECT_UNMEASURED_COUNT '+value);
+  }
+  const wrongTotal=clone(context.golden);wrongTotal.total++;
+  assert.throws(()=>touchExtension.projectGolden(wrongTotal),/R433_TOTAL_CONSERVATION/,'R433_REJECT_WRONG_TOTAL');
+  const drift=fs.readFileSync(shards.GOLDEN_PATH,'utf8').replace('    "P360": 13,\n','    "P360": 13, \n');
+  assert.throws(()=>touchExtension.projectRaw(drift),/R433_MAIN99_RAW_BYTES_UNCHANGED/,'R433_REJECT_OLD_RAW_DRIFT');
   // Train 3 (#426 + #419 + #420): the R396 P1161 owner checks run on the committed plan
   // with only #420's P420 stripped (exact tail and count checked by train3_canvas_tail.cjs);
   // the historical assertions below then run on the plan with R17's P335 projected out.
@@ -182,7 +213,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(context.golden));
+  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(rawGolden));
   const beforeWorkspace=projectWorkspaceGolden(r335Extension.projectGolden(beforeR420));
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
@@ -219,7 +250,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(Object.keys(beforeWorkspace.sections).length, 95, 'R355_R356_MERGED_SECTIONS: main 93 plus P116 plus P128');
   assert.equal(Object.keys(pf4aBase.golden.sections).length, 98, 'R420_ONE_ADDITIVE_SECTION: train 3 also keeps P335 and P1161');
   assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
-  assert.equal(context.golden.total, pf4aBase.golden.total + context.golden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

@@ -6,6 +6,7 @@ const driver=require('../geometry-web/cdp_test.js'),plugin=require('../geometry-
 const shards=require('../geometry-web/canvas_shards.js'),evidence=require('./helpers/canvas_shards.js');
 const extension=require('./diagnostics/r335_canvas_extension.cjs');
 const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
+const touchExtension=require('./diagnostics/r433_touch_canvas_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
 // sections. Strip them first (P420 by its exact count and tail position, P1161
 // by #396's own oracle) so the R335 checks below judge the same 96-section input.
@@ -13,7 +14,7 @@ const train3=require('./diagnostics/train3_canvas_tail.cjs'),workspace=require('
 const train3Inputs=()=>{
   // PF-4A (#128) P1284 is a later independent section; project it out exactly first.
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'PF4A_RAW_PLAN_COMPLETE');
-  const rawPlan=pf4aExtension.projectPlan(shards.loadPlan()),rawGolden=pf4aExtension.projectGolden(shards.loadGolden());
+  const rawPlan=pf4aExtension.projectPlan(touchExtension.projectPlan(shards.loadPlan())),rawGolden=pf4aExtension.projectGolden(touchExtension.projectGolden(shards.loadGolden()));
   assert.deepEqual(shards.validatePlan(rawPlan,rawGolden),[],'TRAIN3_RAW_PLAN_COMPLETE');
   return workspace.project(train3.withoutGolden(rawGolden,'P420'),train3.withoutPlan(rawPlan,'P420'));
 };
