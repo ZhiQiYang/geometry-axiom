@@ -1,0 +1,376 @@
+{
+ "steps": [
+  {
+   "name": "01-example",
+   "dumpLen": 532,
+   "models": [],
+   "spaceLines": []
+  },
+  {
+   "name": "02-space-dialog",
+   "dumpLen": 532,
+   "models": [],
+   "spaceLines": [],
+   "status": "在這裡確認平面投影用途與觀看方向，再指定牆底，即可預覽空間。"
+  },
+  {
+   "name": "03-projection-confirmed",
+   "dumpLen": 532,
+   "models": [],
+   "spaceLines": [],
+   "status": "已確認用途與觀看方向，現有設定已保留。指定牆底後按「更新預覽」；定義會隨專案保存。"
+  },
+  {
+   "name": "04-preview",
+   "dumpLen": 532,
+   "models": [],
+   "spaceLines": [],
+   "status": "預覽已完成。核對面清單並勾選確認後，即可建立空間。",
+   "badge": "已封閉 · 可計算體積",
+   "main": " 模型預覽面 #1已封閉 · 可計算體積 ◇先用現成範例，走一次完整流程輪廓、牆高與牆厚已填好。預覽完成後，確認各面並按「建立空間」。開始試用 4 × 3 m 房間 →範例獨立預覽，不會改動畫布裡的面。 立體俯視仰視正視置中拖曳旋轉 · 滾輪縮放 · Shift 拖曳平移 立體檢視。只改視角，不改幾何。空間邊界材料牆角材與拉伸件顯示頂面頂面僅在檢視中隱藏，幾何仍保留。 空間體積32.4 m³尚未扣除障礙物扣除後淨空32.4 m³只扣除明確選取的柱樑材料牆體積3.888 m³依指定厚度與外側方向角材體積合計0.00583736 m³各支材料量，非布林聯集下一步：核對各面並建立 → 來源與名稱面 #1 · 目前專案放置面 #1 · 圖面 z = 2500 mm · 3 支角材啟用物件身分追蹤後，日後可證明來源延續啟用物件身分追蹤空間邊界平面投影 · 俯視（沿 −Z）輪廓內為室內淨空，材料牆朝外"
+  },
+  {
+   "name": "05-cancel-back-to-canvas",
+   "dumpLen": 532,
+   "models": [],
+   "spaceLines": [],
+   "modelCount": "3D 模型 0"
+  },
+  {
+   "name": "07-created",
+   "dumpLen": 532,
+   "models": [
+    {
+     "id": "c3d67140-f5a7-4456-b3ac-4e530fb70f80",
+     "name": "面 1空間",
+     "settings": {
+      "bottom": 0,
+      "height": 2700,
+      "edges": [
+       0,
+       1,
+       2,
+       3
+      ],
+      "floor": "boundary",
+      "ceiling": "boundary",
+      "holes": "none",
+      "wall_thickness": 100
+     },
+     "timbers": 3,
+     "projection": {
+      "kind": "space-boundary-plan",
+      "view": "top",
+      "region": "interior",
+      "wallSide": "outside"
+     },
+     "summary": {
+      "bottom": 0,
+      "clearance_mm3": "32400000000",
+      "closed": true,
+      "face_count": 6,
+      "generated_faces": [
+       {
+        "label": "外環第 1 邊",
+        "orientation": 1,
+        "placement_id": 2,
+        "purpose": "boundary"
+       },
+       {
+        "label": "外環第 2 邊",
+        "orientation": 1,
+        "placement_id": 3,
+        "purpose": "boundary"
+       },
+       {
+        "label": "外環第 3 邊",
+        "orientation": 1,
+        "placement_id": 4,
+        "purpose": "boundary"
+       },
+       {
+        "label": "外環第 4 邊",
+        "orientation": 1,
+        "placement_id": 5,
+        "purpose": "boundary"
+       },
+       {
+        "label": "底面",
+        "orientation": -1,
+        "placement_id": 6,
+        "purpose": "boundary"
+       },
+       {
+        "label": "頂面",
+        "orientation": 1,
+        "placement_id": 7,
+        "purpose": "boundary"
+       }
+      ],
+      "missing": [],
+      "source_placement": 1,
+      "source_z": 2500,
+      "timber_count": 3,
+      "timber_volume_mm3": "5837360",
+      "top": 2700,
+      "volume_mm3": "32400000000",
+      "wall_diagnostics": [],
+      "wall_volume_mm3": "3888000000"
+     },
+     "walls": "object",
+     "bytes": 54500
+    }
+   ],
+   "spaceLines": [],
+   "status": "「面 1空間」已加入目前專案，尚未保存成檔案。請按「保存專案 .gcanvas」，之後可完整重開。",
+   "library": "已建立空間 1"
+  },
+  {
+   "name": "08-undo",
+   "dumpLen": 532,
+   "models": [],
+   "spaceLines": [],
+   "toasts": [
+    "尚未檢查",
+    "✓ 已復原",
+    "有未保存的變更",
+    "從空白處拖曳，框選角材",
+    "尚未檢查",
+    "已復原"
+   ],
+   "modelButton": "3D 模型 0"
+  },
+  {
+   "name": "09-redo",
+   "dumpLen": 532,
+   "models": [
+    {
+     "id": "c3d67140-f5a7-4456-b3ac-4e530fb70f80",
+     "name": "面 1空間",
+     "settings": {
+      "bottom": 0,
+      "height": 2700,
+      "edges": [
+       0,
+       1,
+       2,
+       3
+      ],
+      "floor": "boundary",
+      "ceiling": "boundary",
+      "holes": "none",
+      "wall_thickness": 100
+     },
+     "timbers": 3,
+     "projection": {
+      "kind": "space-boundary-plan",
+      "view": "top",
+      "region": "interior",
+      "wallSide": "outside"
+     },
+     "summary": {
+      "bottom": 0,
+      "clearance_mm3": "32400000000",
+      "closed": true,
+      "face_count": 6,
+      "generated_faces": [
+       {
+        "label": "外環第 1 邊",
+        "orientation": 1,
+        "placement_id": 2,
+        "purpose": "boundary"
+       },
+       {
+        "label": "外環第 2 邊",
+        "orientation": 1,
+        "placement_id": 3,
+        "purpose": "boundary"
+       },
+       {
+        "label": "外環第 3 邊",
+        "orientation": 1,
+        "placement_id": 4,
+        "purpose": "boundary"
+       },
+       {
+        "label": "外環第 4 邊",
+        "orientation": 1,
+        "placement_id": 5,
+        "purpose": "boundary"
+       },
+       {
+        "label": "底面",
+        "orientation": -1,
+        "placement_id": 6,
+        "purpose": "boundary"
+       },
+       {
+        "label": "頂面",
+        "orientation": 1,
+        "placement_id": 7,
+        "purpose": "boundary"
+       }
+      ],
+      "missing": [],
+      "source_placement": 1,
+      "source_z": 2500,
+      "timber_count": 3,
+      "timber_volume_mm3": "5837360",
+      "top": 2700,
+      "volume_mm3": "32400000000",
+      "wall_diagnostics": [],
+      "wall_volume_mm3": "3888000000"
+     },
+     "walls": "object",
+     "bytes": 54500
+    }
+   ],
+   "spaceLines": [],
+   "modelButton": "3D 模型 1"
+  }
+ ],
+ "spaceButtons": [
+  "以此面建立空間",
+  "依此平面建立空間"
+ ],
+ "heightDefault": "3000",
+ "heightHelp": "空間建模的牆高預設 3000 mm，建立後仍可修改。「六面盒」另以 2500 mm 作為整盒預設高度；兩個入口的工作預設各自獨立，請依同一工程的尺寸調整。牆頂＝牆底＋牆高。",
+ "timberCount": "3",
+ "includeTimbers": true,
+ "openWritesNothing": true,
+ "projectionDiff": [],
+ "bottom": "0",
+ "height": "2700",
+ "previewWritesNothing": true,
+ "cancelZeroWrite": true,
+ "afterCancelInFace": true,
+ "reopenHeight": "2700",
+ "reopenBottom": "0",
+ "createEnabledBeforeCheck": false,
+ "createEnabled": true,
+ "createDiff": [],
+ "modelButton": "3D 模型 1",
+ "undoEqualsBeforeCreate": true,
+ "redoEqualsCreated": true,
+ "inputKeys": [
+  "base_scene",
+  "mode",
+  "obstacles",
+  "placement_id",
+  "settings",
+  "timbers"
+ ],
+ "resultKeys": [
+  "clearance",
+  "diagnostics",
+  "ok",
+  "schema",
+  "source_sha256",
+  "space",
+  "summary",
+  "timbers",
+  "volume",
+  "walls"
+ ],
+ "libraryText": "專案空間 3D 模型庫 模型保存在目前專案中；保存 .gcanvas 後可再次開啟。 返回建模 ▱ 面 1空間 封閉空間 · 6 個面 · 32.4 m³ · 角材 3 支 2026/11/21 上午1:53:53 · 來源面 #1 開啟 3D 修改模型 移除 來源／影響",
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenAt2500": {
+  "dumpEqual": false,
+  "modelButton": "3D 模型 0",
+  "models": []
+ },
+ "reopenEqual": true,
+ "reopenDumpOnlyBefore": [],
+ "reopenDumpOnlyAfter": [],
+ "reopenModels": [
+  {
+   "id": "c3d67140-f5a7-4456-b3ac-4e530fb70f80",
+   "name": "面 1空間",
+   "settings": {
+    "bottom": 0,
+    "height": 2700,
+    "edges": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "floor": "boundary",
+    "ceiling": "boundary",
+    "holes": "none",
+    "wall_thickness": 100
+   },
+   "timbers": 3,
+   "projection": {
+    "kind": "space-boundary-plan",
+    "view": "top",
+    "region": "interior",
+    "wallSide": "outside"
+   },
+   "summary": {
+    "bottom": 0,
+    "clearance_mm3": "32400000000",
+    "closed": true,
+    "face_count": 6,
+    "generated_faces": [
+     {
+      "label": "外環第 1 邊",
+      "orientation": 1,
+      "placement_id": 2,
+      "purpose": "boundary"
+     },
+     {
+      "label": "外環第 2 邊",
+      "orientation": 1,
+      "placement_id": 3,
+      "purpose": "boundary"
+     },
+     {
+      "label": "外環第 3 邊",
+      "orientation": 1,
+      "placement_id": 4,
+      "purpose": "boundary"
+     },
+     {
+      "label": "外環第 4 邊",
+      "orientation": 1,
+      "placement_id": 5,
+      "purpose": "boundary"
+     },
+     {
+      "label": "底面",
+      "orientation": -1,
+      "placement_id": 6,
+      "purpose": "boundary"
+     },
+     {
+      "label": "頂面",
+      "orientation": 1,
+      "placement_id": 7,
+      "purpose": "boundary"
+     }
+    ],
+    "missing": [],
+    "source_placement": 1,
+    "source_z": 2500,
+    "timber_count": 3,
+    "timber_volume_mm3": "5837360",
+    "top": 2700,
+    "volume_mm3": "32400000000",
+    "wall_diagnostics": [],
+    "wall_volume_mm3": "3888000000"
+   },
+   "walls": "object",
+   "bytes": 54500
+  }
+ ],
+ "reopenModelsEqual": true,
+ "reopenModelButton": "3D 模型 1",
+ "reopenLibraryText": "專案空間 3D 模型庫 模型保存在目前專案中；保存 .gcanvas 後可再次開啟。 返回建模 ▱ 面 1空間 封閉空間 · 6 個面 · 32.4 m³ · 角材 3 支 2026/11/21 上午1:53:53 · 來源面 #1 開啟 3D 修改模型 移除 來源／影響",
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
