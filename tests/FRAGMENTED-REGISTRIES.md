@@ -63,6 +63,8 @@ python3 -B tests/run_all.py --build --only py:test_gdi_contract
 
 開工基底的 `native_shard_timings.json` 和三份追加證據保留原路徑，原 bytes 另存內容定址來源。工具也辨識後續已採納的 `native_shard_added_receipts.json` v1，沿用其原 count-mode／exit／來源／margin 條件；不是把來源數固定成四個。新增 suite 不再改這些歷史檔或 loader 常數。歷史 scalar 三片重播的預設權重只屬原歷史測法；正式六片遇到未量測 suite 必須拒絕，不能用 1000 ms 補值。
 
+main #438（R03）新增的 `native_shard_added_evidence_r03.json` 是另一種歷史來源：`native-shard-workspace-suite-evidence/2`，明寫 `kind: workspace`，不是 GitHub CI 收據。遷移時它歸為 `historical-workspace`：頂層 JSON 照樣原 bytes 內容定址存進 `registry-evidence/native/`；它指名的 stdout／receipt／child 原件留在 `tests/native_shard_evidence/` 原位，每次讀 registry 都複製到隔離目錄，交給 main 原封不動的 `native_shard_workspace.load()` 全量驗（來源 pin、binary 指紋、row、餘裕）。可信 base 推導時原件取自 base 的 Git 物件。這只是承認已採納的歷史來源，新 suite 仍走真 CI。
+
 首次遷移另產生不可追加的 `tests/registry-evidence/native-legacy.json`，其來源逐 byte 對明示 base 的 Git 原件核實。只有該 catalog 原本具名的套件可使用 historical 成本類型；新 suite 必須走真 CI，不能自行新增一份看似歷史 JSON 規避來源驗真。
 
 原 `node:tests-js` 是整體計數的既存 suite，沒有每檔真原件就不能虛構個別 count/cost。新 JS 檔宣告成自己的 node suite，不再追加既有 aggregate 名單。
