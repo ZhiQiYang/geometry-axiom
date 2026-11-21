@@ -1,0 +1,148 @@
+{
+ "steps": [
+  {
+   "name": "01-face-underlay-tab",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "underlay": null
+  },
+  {
+   "name": "03-import-cancel",
+   "outline": "boundary 1 outline 0,0 4000,0 4000,3000 0,3000",
+   "underlay": null
+  },
+  {
+   "name": "05-page2-applied-new-face",
+   "outline": "boundary 2 outline 0,0 4000,0 4000,3000 0,3000",
+   "underlay": {
+    "page": 2,
+    "mmPerPx": 11.11111111111111,
+    "opacity": 0.5,
+    "locked": false,
+    "name": null
+   }
+  },
+  {
+   "name": "06-calibrated",
+   "outline": "boundary 2 outline 0,0 4000,0 4000,3000 0,3000",
+   "underlay": {
+    "page": 2,
+    "mmPerPx": 9.999999917520057,
+    "opacity": 0.5,
+    "locked": false,
+    "name": null
+   }
+  },
+  {
+   "name": "08-trace-draft",
+   "outline": "boundary 2 outline 0,0 4000,0 4000,3000 0,3000",
+   "underlay": {
+    "page": 2,
+    "mmPerPx": 9.999999917520057,
+    "opacity": 0.5,
+    "locked": false,
+    "name": null
+   }
+  },
+  {
+   "name": "09-trace-applied",
+   "outline": "boundary 2 outline 3000,1800 3000,800 2200,800 2200,200 500,200 500,1800",
+   "underlay": {
+    "page": 2,
+    "mmPerPx": 9.999999917520057,
+    "opacity": 0.5,
+    "locked": false,
+    "name": null
+   }
+  },
+  {
+   "name": "10-undo",
+   "outline": "boundary 2 outline 0,0 4000,0 4000,3000 0,3000",
+   "underlay": {
+    "page": 2,
+    "mmPerPx": 9.999999917520057,
+    "opacity": 0.5,
+    "locked": false,
+    "name": null
+   }
+  },
+  {
+   "name": "11-redo",
+   "outline": "boundary 2 outline 3000,1800 3000,800 2200,800 2200,200 500,200 500,1800",
+   "underlay": {
+    "page": 2,
+    "mmPerPx": 9.999999917520057,
+    "opacity": 0.5,
+    "locked": false,
+    "name": null
+   }
+  }
+ ],
+ "pageCount": "",
+ "importCancelZeroWrite": true,
+ "underlayAfterCancel": null,
+ "selectedPage": "2",
+ "targetOptions": [
+  "new:建立描繪用面（預設矩形）",
+  "1:套用至面 1"
+ ],
+ "focusAfterApply": {
+  "t": "face",
+  "id": 2
+ },
+ "applyDiff": [
+  "boundary 2 outline 0,0 4000,0 4000,3000 0,3000",
+  "canvas-pos boundary 2 280 296"
+ ],
+ "snapOn": true,
+ "traceDraftZeroWrite": true,
+ "expectedTraceMm": [
+  [
+   600,
+   1800
+  ],
+  [
+   3000,
+   1800
+  ],
+  [
+   3000,
+   800
+  ],
+  [
+   2200,
+   800
+  ],
+  [
+   2200,
+   200
+  ],
+  [
+   600,
+   200
+  ]
+ ],
+ "undoEqualsBeforeTrace": true,
+ "redoEqualsTrace": true,
+ "underlayBeforeSave": {
+  "page": 2,
+  "mmPerPx": 9.999999917520057,
+  "opacity": 0.5,
+  "locked": false,
+  "name": null
+ },
+ "saved": "download",
+ "errsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "reopenOutlineEqual": true,
+ "underlayReopened": {
+  "page": 2,
+  "mmPerPx": 9.999999917520057,
+  "opacity": 0.5,
+  "locked": false,
+  "name": null
+ },
+ "errsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}

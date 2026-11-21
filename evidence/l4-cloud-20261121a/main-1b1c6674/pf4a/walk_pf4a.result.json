@@ -1,0 +1,524 @@
+{
+ "steps": [
+  {
+   "name": "2-fill-and-host",
+   "status": "已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。",
+   "fills": [
+    {
+     "finishSurfaceId": 1,
+     "gap": 3,
+     "id": 1,
+     "lengthAlong": "v",
+     "origin": [
+      0,
+      0
+     ],
+     "panel": {
+      "id": "material-2d264acb-63c4-42ac-91a3-1ff1de1a0081",
+      "version": 1
+     },
+     "pattern": "straight",
+     "threshold": {
+      "fieldId": 1,
+      "parameterId": 1
+     }
+    }
+   ],
+   "hosts": [
+    {
+     "fillId": 1,
+     "h": 30,
+     "id": 1
+    }
+   ],
+   "grids": 0,
+   "revision": 95
+  },
+  {
+   "name": "3-grid-preview",
+   "status": "候選尚未套用；請核對原生結果後確認。",
+   "impact": "主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t不存在\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":{\"ok\":true,\"mode\":\"sample\",\"exact\":false,\"rect\":[172,194,572,494],\"axes\":{\"u\":{\"defined\":true,\"firstIndex\":\"1\",\"lastIndex\":\"4\",\"total\":\"4\",\"stride\":\"1\",\"lines\":[{\"index\":\"1\",\"coordinate\":204,\"segments\":[{\"a\":[204,194],\"b\":[204,494]}]},{\"index\":\"2\",\"coordinate\":307,\"segments\":[{\"a\":[307,194],\"b\":[307,494]}]},{\"index\":\"3\",\"coordinate\":410,\"segments\":[{\"a\":[410,194],\"b\":[410,494]}]},{\"index\":\"4\",\"coordinate\":513,\"segments\":[{\"a\":[513,194],\"b\":[513,494]}]}]},\"v\":{\"defined\":true,\"firstIndex\":\"0\",\"lastIndex\":\"1\",\"total\":\"2\",\"stride\":\"1\",\"lines\":[{\"index\":\"0\",\"coordinate\":201,\"segments\":[{\"a\":[172,201],\"b\":[572,201]}]},{\"index\":\"1\",\"coordinate\":404,\"segments\":[{\"a\":[172,404],\"b\":[572,404]}]}]}}},\"u\":[204,307,410,513],\"uDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"u\"},\"v\":[201,404],\"vDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"v\"},\"indices\":{\"u\":[\"1\",\"2\",\"3\",\"4\"],\"v\":[\"0\",\"1\"]},\"lattice\":{\"u\":{\"defined\":true,\"pitch\":103,\"baseIndex\":\"0\",\"baseCoordinate\":101},\"v\":{\"defined\":true,\"pitch\":203,\"baseIndex\":\"0\",\"baseCoordinate\":201}},\"lines\":[{\"axis\":\"u\",\"index\":\"1\",\"coordinate\":204,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[204,194],[204,494]]]},{\"axis\":\"u\",\"index\":\"2\",\"coordinate\":307,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[307,194],[307,494]]]},{\"axis\":\"u\",\"index\":\"3\",\"coordinate\":410,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[410,194],[410,494]]]},{\"axis\":\"u\",\"index\":\"4\",\"coordinate\":513,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[513,194],[513,494]]]},{\"axis\":\"v\",\"index\":\"0\",\"coordinate\":201,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,201],[572,201]]]},{\"axis\":\"v\",\"index\":\"1\",\"coordinate\":404,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,404],[572,404]]]}],\"dependencies\":{\"children\":[],\"guides\":[],\"timbers\":[]}}\n參考線\t確認前原生紀錄\t候選原生紀錄",
+   "changes": "原生列出 3 筆變更：鋪排 #1・原生派生結果變動、派生宿主 #1・原生派生結果變動、來源主格 #1・新增。"
+  },
+  {
+   "name": "3-cancel",
+   "status": null,
+   "inFace": true
+  },
+  {
+   "name": "4-confirm",
+   "status": "已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。",
+   "gridLines": [
+    "grid 1 on 1 from-fill 1 main-along u"
+   ],
+   "grids": [
+    {
+     "id": 1,
+     "definition": {
+      "id": 1,
+      "hostId": 1,
+      "fillId": 1,
+      "mainAlong": "u"
+     },
+     "derived": {
+      "indexSpace": "lattice",
+      "bandIndexSpace": "panel-row",
+      "side": 1,
+      "staggerAxis": null,
+      "staggerDelta": "0",
+      "axes": {
+       "u": {
+        "baseCoordinate": "101",
+        "pitch": "103",
+        "baseIndex": "0"
+       },
+       "v": {
+        "baseCoordinate": "201",
+        "pitch": "203",
+        "baseIndex": "0"
+       }
+      }
+     }
+    }
+   ],
+   "undoDelta": 1,
+   "revision": [
+    95,
+    96
+   ]
+  },
+  {
+   "name": "4-noop",
+   "status": "定義沒有變更；不建立候選，也不新增歷史。",
+   "statusAttr": "editing",
+   "form": {
+    "createGridChecked": null,
+    "mainAlong": null,
+    "gridSetup": "來源主格 #1 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。"
+   }
+  },
+  {
+   "name": "5-source-edit-preview",
+   "impact": "主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":{\"ok\":true,\"mode\":\"sample\",\"exact\":false,\"rect\":[172,194,572,494],\"axes\":{\"u\":{\"defined\":true,\"firstIndex\":\"1\",\"lastIndex\":\"4\",\"total\":\"4\",\"stride\":\"1\",\"lines\":[{\"index\":\"1\",\"coordinate\":204,\"segments\":[{\"a\":[204,194],\"b\":[204,494]}]},{\"index\":\"2\",\"coordinate\":307,\"segments\":[{\"a\":[307,194],\"b\":[307,494]}]},{\"index\":\"3\",\"coordinate\":410,\"segments\":[{\"a\":[410,194],\"b\":[410,494]}]},{\"index\":\"4\",\"coordinate\":513,\"segments\":[{\"a\":[513,194],\"b\":[513,494]}]}]},\"v\":{\"defined\":true,\"firstIndex\":\"0\",\"lastIndex\":\"1\",\"total\":\"2\",\"stride\":\"1\",\"lines\":[{\"index\":\"0\",\"coordinate\":201,\"segments\":[{\"a\":[172,201],\"b\":[572,201]}]},{\"index\":\"1\",\"coordinate\":404,\"segments\":[{\"a\":[172,404],\"b\":[572,404]}]}]}}},\"u\":[204,307,410,513],\"uDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"u\"},\"v\":[201,404],\"vDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"v\"},\"indices\":{\"u\":[\"1\",\"2\",\"3\",\"4\"],\"v\":[\"0\",\"1\"]},\"lattice\":{\"u\":{\"defined\":true,\"pitch\":103,\"baseIndex\":\"0\",\"baseCoordinate\":101},\"v\":{\"defined\":true,\"pitch\":203,\"baseIndex\":\"0\",\"baseCoordinate\":201}},\"lines\":[{\"axis\":\"u\",\"index\":\"1\",\"coordinate\":204,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[204,194],[204,494]]]},{\"axis\":\"u\",\"index\":\"2\",\"coordinate\":307,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[307,194],[307,494]]]},{\"axis\":\"u\",\"index\":\"3\",\"coordinate\":410,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[410,194],[410,494]]]},{\"axis\":\"u\",\"index\":\"4\",\"coordinate\":513,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[513,194],[513,494]]]},{\"axis\":\"v\",\"index\":\"0\",\"coordinate\":201,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,201],[572,201]]]},{\"axis\":\"v\",\"index\":\"1\",\"coordinate\":404,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,404],[572,404]]]}],\"dependencies\":{\"children\":[],\"guides\":[],\"timbers\":[]}}\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":{\"ok\":true,\"mode\":\"sample\",\"exact\":false,\"rect\":[172,194,572,494],\"axes\":{\"u\":{\"defined\":true,\"firstIndex\":\"1\",\"lastIndex\":\"4\",\"total\":\"4\",\"stride\":\"1\",\"lines\":[{\"index\":\"1\",\"coordinate\":214,\"segments\":[{\"a\":[214,194],\"b\":[214,494]}]},{\"index\":\"2\",\"coordinate\":317,\"segments\":[{\"a\":[317,194],\"b\":[317,494]}]},{\"index\":\"3\",\"coordinate\":420,\"segments\":[{\"a\":[420,194],\"b\":[420,494]}]},{\"index\":\"4\",\"coordinate\":523,\"segments\":[{\"a\":[523,194],\"b\":[523,494]}]}]},\"v\":{\"defined\":true,\"firstIndex\":\"0\",\"lastIndex\":\"1\",\"total\":\"2\",\"stride\":\"1\",\"lines\":[{\"index\":\"0\",\"coordinate\":201,\"segments\":[{\"a\":[172,201],\"b\":[572,201]}]},{\"index\":\"1\",\"coordinate\":404,\"segments\":[{\"a\":[172,404],\"b\":[572,404]}]}]}}},\"u\":[214,317,420,523],\"uDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"u\"},\"v\":[201,404],\"vDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"v\"},\"indices\":{\"u\":[\"1\",\"2\",\"3\",\"4\"],\"v\":[\"0\",\"1\"]},\"lattice\":{\"u\":{\"defined\":true,\"pitch\":103,\"baseIndex\":\"0\",\"baseCoordinate\":111},\"v\":{\"defined\":true,\"pitch\":203,\"baseIndex\":\"0\",\"baseCoordinate\":201}},\"lines\":[{\"axis\":\"u\",\"index\":\"1\",\"coordinate\":214,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[214,194],[214,494]]]},{\"axis\":\"u\",\"index\":\"2\",\"coordinate\":317,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[317,194],[317,494]]]},{\"axis\":\"u\",\"index\":\"3\",\"coordinate\":420,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[420,194],[420,494]]]},{\"axis\":\"u\",\"index\":\"4\",\"coordinate\":523,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[523,194],[523,494]]]},{\"axis\":\"v\",\"index\":\"0\",\"coordinate\":201,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,201],[572,201]]]},{\"axis\":\"v\",\"index\":\"1\",\"coordinate\":404,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,404],[572,404]]]}],\"dependencies\":{\"children\":[],\"guides\":[],\"timbers\":[]}}\n參考線\t確認前原生紀錄\t候選原生紀錄",
+   "changes": "原生列出 3 筆變更：鋪排 #1・定義修改、派生宿主 #1・原生派生結果變動、來源主格 #1・原生派生結果變動。"
+  },
+  {
+   "name": "5-source-edit-confirm",
+   "fills": [
+    {
+     "finishSurfaceId": 1,
+     "gap": 3,
+     "id": 1,
+     "lengthAlong": "v",
+     "origin": [
+      10,
+      0
+     ],
+     "panel": {
+      "id": "material-2d264acb-63c4-42ac-91a3-1ff1de1a0081",
+      "version": 1
+     },
+     "pattern": "straight",
+     "threshold": {
+      "fieldId": 1,
+      "parameterId": 1
+     }
+    }
+   ],
+   "grids": [
+    {
+     "id": 1,
+     "definition": {
+      "id": 1,
+      "hostId": 1,
+      "fillId": 1,
+      "mainAlong": "u"
+     },
+     "derived": {
+      "indexSpace": "lattice",
+      "bandIndexSpace": "panel-row",
+      "side": 1,
+      "staggerAxis": null,
+      "staggerDelta": "0",
+      "axes": {
+       "u": {
+        "baseCoordinate": "111",
+        "pitch": "103",
+        "baseIndex": "0"
+       },
+       "v": {
+        "baseCoordinate": "201",
+        "pitch": "203",
+        "baseIndex": "0"
+       }
+      }
+     }
+    }
+   ],
+   "undoDelta": 1
+  },
+  {
+   "name": "6-cold-open",
+   "gridSetup": "來源主格 #1 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。",
+   "fillOrigin0": "10"
+  }
+ ],
+ "checks": {
+  "PREP_FILL_AND_HOST_FORMAL": {
+   "ok": true,
+   "detail": {
+    "revision": 95,
+    "complete": false,
+    "finish": 1,
+    "fills": [
+     {
+      "finishSurfaceId": 1,
+      "gap": 3,
+      "id": 1,
+      "lengthAlong": "v",
+      "origin": [
+       0,
+       0
+      ],
+      "panel": {
+       "id": "material-2d264acb-63c4-42ac-91a3-1ff1de1a0081",
+       "version": 1
+      },
+      "pattern": "straight",
+      "threshold": {
+       "fieldId": 1,
+       "parameterId": 1
+      }
+     }
+    ],
+    "hosts": [
+     {
+      "fillId": 1,
+      "h": 30,
+      "id": 1
+     }
+    ],
+    "grids": []
+   }
+  },
+  "GRID_ENTRY_VISIBLE": {
+   "ok": true,
+   "detail": {
+    "selectHost": "1",
+    "gridSetup": true
+   }
+  },
+  "PREVIEW_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "PREVIEW_SHOWS_SOURCE_GRID": {
+   "ok": true,
+   "detail": {
+    "status": "候選尚未套用；請核對原生結果後確認。",
+    "impact": "主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t不存在\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":{\"ok\":true,\"mode\":\"sample\",\"exact\":false,\"rect\":[172,194,572,494],\"axes\":{\"u\":{\"defined\":true,\"firstIndex\":\"1\",\"lastIndex\":\"4\",\"total\":\"4\",\"stride\":\"1\",\"lines\":[{\"index\":\"1\",\"coordinate\":204,\"segments\":[{\"a\":[204,194],\"b\":[204,494]}]},{\"index\":\"2\",\"coordinate\":307,\"segments\":[{\"a\":[307,194],\"b\":[307,494]}]},{\"index\":\"3\",\"coordinate\":410,\"segments\":[{\"a\":[410,194],\"b\":[410,494]}]},{\"index\":\"4\",\"coordinate\":513,\"segments\":[{\"a\":[513,194],\"b\":[513,494]}]}]},\"v\":{\"defined\":true,\"firstIndex\":\"0\",\"lastIndex\":\"1\",\"total\":\"2\",\"stride\":\"1\",\"lines\":[{\"index\":\"0\",\"coordinate\":201,\"segments\":[{\"a\":[172,201],\"b\":[572,201]}]},{\"index\":\"1\",\"coordinate\":404,\"segments\":[{\"a\":[172,404],\"b\":[572,404]}]}]}}},\"u\":[204,307,410,513],\"uDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"u\"},\"v\":[201,404],\"vDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"v\"},\"indices\":{\"u\":[\"1\",\"2\",\"3\",\"4\"],\"v\":[\"0\",\"1\"]},\"lattice\":{\"u\":{\"defined\":true,\"pitch\":103,\"baseIndex\":\"0\",\"baseCoordinate\":101},\"v\":{\"defined\":true,\"pitch\":203,\"baseIndex\":\"0\",\"baseCoordinate\":201}},\"lines\":[{\"axis\":\"u\",\"index\":\"1\",\"coordinate\":204,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[204,194],[204,494]]]},{\"axis\":\"u\",\"index\":\"2\",\"coordinate\":307,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[307,194],[307,494]]]},{\"axis\":\"u\",\"index\":\"3\",\"coordinate\":410,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[410,194],[410,494]]]},{\"axis\":\"u\",\"index\":\"4\",\"coordinate\":513,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[513,194],[513,494]]]},{\"axis\":\"v\",\"index\":\"0\",\"coordinate\":201,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,201],[572,201]]]},{\"axis\":\"v\",\"index\":\"1\",\"coordinate\":404,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,404],[572,404]]]}],\"dependencies\":{\"children\":[],\"guides\":[],\"timbers\":[]}}\n參考線\t確認前原生紀錄\t候選原生紀錄",
+    "changes": "原生列出 3 筆變更：鋪排 #1・原生派生結果變動、派生宿主 #1・原生派生結果變動、來源主格 #1・新增。"
+   }
+  },
+  "CANCEL_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "PREVIEW2_SAME_AS_PREVIEW1": {
+   "ok": true,
+   "detail": {
+    "pv1": "主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t不存在\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":{\"ok\":true,\"mode\":\"sample\",\"exact\":false,\"rect\":[172,194,572,494],\"axes\":{\"u\":{\"defined\":true,\"firstIndex\":\"1\",\"lastIndex\":\"4\",\"total\":\"4\",\"stride\":\"1\",\"lines\":[{\"index\":\"1\",\"coordinate\":204,\"segments\":[{\"a\":[204,194],\"b\":[204,494]}]},{\"index\":\"2\",\"coordinate\":307,\"segments\":[{\"a\":[307,194],\"b\":[307,494]}]},{\"index\":\"3\",\"coordinate\":410,\"segments\":[{\"a\":[410,194],\"b\":[410,494]}]},{\"index\":\"4\",\"coordinate\":513,\"segments\":[{\"a\":[513,194],\"b\":[513,494]}]}]},\"v\":{\"defined\":true,\"firstIndex\":\"0\",\"lastIndex\":\"1\",\"total\":\"2\",\"stride\":\"1\",\"lines\":[{\"index\":\"0\",\"coordinate\":201,\"segments\":[{\"a\":[172,201],\"b\":[572,201]}]},{\"index\":\"1\",\"coordinate\":404,\"segments\":[{\"a\":[172,404],\"b\":[572,404]}]}]}}},\"u\":[204,307,410,513],\"uDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"u\"},\"v\":[201,404],\"vDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"v\"},\"indices\":{\"u\":[\"1\",\"2\",\"3\",\"4\"],\"v\":[\"0\",\"1\"]},\"lattice\":{\"u\":{\"defined\":true,\"pitch\":103,\"baseIndex\":\"0\",\"baseCoordinate\":101},\"v\":{\"defined\":true,\"pitch\":203,\"baseIndex\":\"0\",\"baseCoordinate\":201}},\"lines\":[{\"axis\":\"u\",\"index\":\"1\",\"coordinate\":204,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[204,194],[204,494]]]},{\"axis\":\"u\",\"index\":\"2\",\"coordinate\":307,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[307,194],[307,494]]]},{\"axis\":\"u\",\"index\":\"3\",\"coordinate\":410,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[410,194],[410,494]]]},{\"axis\":\"u\",\"index\":\"4\",\"coordinate\":513,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[513,194],[513,494]]]},{\"axis\":\"v\",\"index\":\"0\",\"coordinate\":201,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,201],[572,201]]]},{\"axis\":\"v\",\"index\":\"1\",\"coordinate\":404,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,404],[572,404]]]}],\"dependencies\":{\"children\":[],\"guides\":[],\"timbers\":[]}}\n參考線\t確認前原生紀錄\t候選原生紀錄",
+    "pv2": "主格與引用的參考線\n主格\t確認前原生紀錄\t候選原生紀錄\n#1\t不存在\t{\"id\":1,\"surface\":1,\"bindingId\":null,\"indexSpace\":\"lattice\",\"fillId\":1,\"fillSide\":1,\"bandIndexSpace\":\"panel-row\",\"evaluatedFill\":{\"side\":1,\"staggerAxis\":null,\"staggerDelta\":0,\"bandIndexSpace\":\"panel-row\"},\"sourceSystem\":null,\"origin\":[0,0],\"kind\":\"main\",\"parentId\":null,\"cell\":null,\"divisions\":null,\"bounds\":{\"u\":[172,572],\"v\":[194,494]},\"mainAlong\":\"u\",\"geometryMode\":\"sample\",\"geometryExact\":false,\"query\":{\"ok\":true,\"mode\":\"sample\",\"exact\":false,\"rect\":[172,194,572,494],\"axes\":{\"u\":{\"defined\":true,\"firstIndex\":\"1\",\"lastIndex\":\"4\",\"total\":\"4\",\"stride\":\"1\",\"lines\":[{\"index\":\"1\",\"coordinate\":204,\"segments\":[{\"a\":[204,194],\"b\":[204,494]}]},{\"index\":\"2\",\"coordinate\":307,\"segments\":[{\"a\":[307,194],\"b\":[307,494]}]},{\"index\":\"3\",\"coordinate\":410,\"segments\":[{\"a\":[410,194],\"b\":[410,494]}]},{\"index\":\"4\",\"coordinate\":513,\"segments\":[{\"a\":[513,194],\"b\":[513,494]}]}]},\"v\":{\"defined\":true,\"firstIndex\":\"0\",\"lastIndex\":\"1\",\"total\":\"2\",\"stride\":\"1\",\"lines\":[{\"index\":\"0\",\"coordinate\":201,\"segments\":[{\"a\":[172,201],\"b\":[572,201]}]},{\"index\":\"1\",\"coordinate\":404,\"segments\":[{\"a\":[172,404],\"b\":[572,404]}]}]}}},\"u\":[204,307,410,513],\"uDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"u\"},\"v\":[201,404],\"vDefinition\":{\"mode\":\"from-fill\",\"fillId\":1,\"axis\":\"v\"},\"indices\":{\"u\":[\"1\",\"2\",\"3\",\"4\"],\"v\":[\"0\",\"1\"]},\"lattice\":{\"u\":{\"defined\":true,\"pitch\":103,\"baseIndex\":\"0\",\"baseCoordinate\":101},\"v\":{\"defined\":true,\"pitch\":203,\"baseIndex\":\"0\",\"baseCoordinate\":201}},\"lines\":[{\"axis\":\"u\",\"index\":\"1\",\"coordinate\":204,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[204,194],[204,494]]]},{\"axis\":\"u\",\"index\":\"2\",\"coordinate\":307,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[307,194],[307,494]]]},{\"axis\":\"u\",\"index\":\"3\",\"coordinate\":410,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[410,194],[410,494]]]},{\"axis\":\"u\",\"index\":\"4\",\"coordinate\":513,\"role\":\"secondary\",\"priority\":3,\"segments\":[[[513,194],[513,494]]]},{\"axis\":\"v\",\"index\":\"0\",\"coordinate\":201,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,201],[572,201]]]},{\"axis\":\"v\",\"index\":\"1\",\"coordinate\":404,\"role\":\"primary\",\"priority\":2,\"segments\":[[[172,404],[572,404]]]}],\"dependencies\":{\"children\":[],\"guides\":[],\"timbers\":[]}}\n參考線\t確認前原生紀錄\t候選原生紀錄"
+   }
+  },
+  "CONFIRM_ONE_HISTORY": {
+   "ok": true,
+   "detail": {
+    "base": 5,
+    "after": 6
+   }
+  },
+  "CONFIRM_LIVE_FROM_FILL": {
+   "ok": true,
+   "detail": [
+    "grid 1 on 1 from-fill 1 main-along u"
+   ]
+  },
+  "UNDO_ONE_STEP": {
+   "ok": true,
+   "detail": []
+  },
+  "REDO_SAME_GRID": {
+   "ok": true,
+   "detail": [
+    "grid 1 on 1 from-fill 1 main-along u"
+   ]
+  },
+  "NOOP_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "SOURCE_EDIT_CANCEL_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "SOURCE_EDIT_ONE_HISTORY_SAME_GRID_ID": {
+   "ok": true,
+   "detail": {
+    "grids": [
+     1
+    ],
+    "fill": {
+     "finishSurfaceId": 1,
+     "gap": 3,
+     "id": 1,
+     "lengthAlong": "v",
+     "origin": [
+      10,
+      0
+     ],
+     "panel": {
+      "id": "material-2d264acb-63c4-42ac-91a3-1ff1de1a0081",
+      "version": 1
+     },
+     "pattern": "straight",
+     "threshold": {
+      "fieldId": 1,
+      "parameterId": 1
+     }
+    }
+   }
+  },
+  "SOURCE_EDIT_GRID_FOLLOWS": {
+   "ok": true,
+   "detail": {
+    "before": {
+     "u": {
+      "baseCoordinate": "101",
+      "pitch": "103",
+      "baseIndex": "0"
+     },
+     "v": {
+      "baseCoordinate": "201",
+      "pitch": "203",
+      "baseIndex": "0"
+     }
+    },
+    "after": {
+     "u": {
+      "baseCoordinate": "111",
+      "pitch": "103",
+      "baseIndex": "0"
+     },
+     "v": {
+      "baseCoordinate": "201",
+      "pitch": "203",
+      "baseIndex": "0"
+     }
+    }
+   }
+  },
+  "COLD_SCENE_EXACT": {
+   "ok": true,
+   "detail": {
+    "before": [
+     "grid 1 on 1 from-fill 1 main-along u"
+    ],
+    "cold": [
+     "grid 1 on 1 from-fill 1 main-along u"
+    ]
+   }
+  },
+  "COLD_GRID_SOURCE_EXACT": {
+   "ok": true,
+   "detail": {
+    "before": [
+     {
+      "id": 1,
+      "definition": {
+       "id": 1,
+       "hostId": 1,
+       "fillId": 1,
+       "mainAlong": "u"
+      },
+      "derived": {
+       "indexSpace": "lattice",
+       "bandIndexSpace": "panel-row",
+       "side": 1,
+       "staggerAxis": null,
+       "staggerDelta": "0",
+       "axes": {
+        "u": {
+         "baseCoordinate": "111",
+         "pitch": "103",
+         "baseIndex": "0"
+        },
+        "v": {
+         "baseCoordinate": "201",
+         "pitch": "203",
+         "baseIndex": "0"
+        }
+       }
+      }
+     }
+    ],
+    "cold": [
+     {
+      "id": 1,
+      "definition": {
+       "id": 1,
+       "hostId": 1,
+       "fillId": 1,
+       "mainAlong": "u"
+      },
+      "derived": {
+       "indexSpace": "lattice",
+       "bandIndexSpace": "panel-row",
+       "side": 1,
+       "staggerAxis": null,
+       "staggerDelta": "0",
+       "axes": {
+        "u": {
+         "baseCoordinate": "111",
+         "pitch": "103",
+         "baseIndex": "0"
+        },
+        "v": {
+         "baseCoordinate": "201",
+         "pitch": "203",
+         "baseIndex": "0"
+        }
+       }
+      }
+     }
+    ]
+   }
+  }
+ },
+ "browser": "153.0.8010.12",
+ "materialStatus": [
+  "-: 有未保存的變更",
+  "ewStatus: 已套用到目前工程。按「保存專案」後，才會寫入專案檔案。"
+ ],
+ "boundary": [
+  "boundary 1 outline 172,194 572,194 572,494 172,494"
+ ],
+ "threshold": "1:1",
+ "formAtGridStep": {
+  "selectHost": "1",
+  "gridSetup": true
+ },
+ "mainAlongOptions": [
+  [
+   "",
+   "請明選"
+  ],
+  [
+   "u",
+   "沿 u"
+  ],
+  [
+   "v",
+   "沿 v"
+  ],
+  [
+   "none",
+   "未設定"
+  ]
+ ],
+ "mainAlongDefault": "",
+ "faceListAfterGrid": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+ "formAfterGrid": {
+  "createGridChecked": null,
+  "mainAlong": null,
+  "gridSetup": "來源主格 #1 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。"
+ },
+ "objectCardsAfterGrid": [
+  "boundary:1 面 1未放置 · 用途未指定一般面，尚未指定用途，尚未放置未放置400×300 mm · 4 頂點進入 ›",
+  "placement:1 承載面 1自帶矩形 · 無邊界無邊界1×1 mm · 4 頂點檢查 ›",
+  "parameter:1 ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+ ],
+ "savedName": "未命名專案.gcanvas",
+ "savedSha256": "75f7a00f6f98329b32392937f841af217450ad4c24e21ff293c60ea0135427f8",
+ "savedSha256Correction": {
+  "wrongValue": "ac7659b6e055b303c0e6d86f477bf9f3e09a76e4973251e9323f2e163c690700",
+  "cause": "ui.js sha() hashed String(Buffer) (UTF-8 decoded) instead of raw bytes; recomputed from the committed .gcanvas bytes (L4_GCANVAS_RAW_SHA256)",
+  "bytes": 2782
+ },
+ "errsMain": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "coldForm": {
+  "gridSetup": "來源主格 #1 已引用此鋪排；有效值隨來源重算。本入口不替換其來源或主支偏好。",
+  "fillOrigin0": "10"
+ },
+ "errsCold": [],
+ "coldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImRhNmUyMzdlNGE3YzIwZWUyZjM5NWEyYjcyNzcwZjk4YTlmYjQyNWFhMzZlMjFlOGM1ZmQ3ZTQzNmRkODE0YTgiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC0yZDI2NGFjYi02M2M0LTQyYWMtOTFhMy0xZmYxZGUxYTAwODEiLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjIwMCwibW9kZWwiOm51bGwsIm5hbWUiOiJMNCDpnaLmnZAgMTAww5cyMDAiLCJub3RlcyI6bnVsbCwidGhpY2tuZXNzIjoiNiIsInZlcnNpb24iOjEsIndpZHRoIjoxMDB9fQ==\nboundary 1 outline 172,194 572,194 572,494 172,494\nrequires panel-fill/1\nfinish-surface 1 on boundary 1 origin 0 0 0 u +x v +y n +z side +n name-hex 4c3420e5ae8ce68890e99da2\npanel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a332c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b31302c305d2c2270616e656c223a7b226964223a226d6174657269616c2d32643236346163622d363363342d343261632d393161332d316666316465316130303831222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a317d7d\nderived-placement 1 definition-hex 7b2266696c6c4964223a312c2268223a33302c226964223a317d\ngrid 1 on 1 from-fill 1 main-along u\ncanvas-pos boundary 1 172 194\ncanvas-pos parameter 1 60 660\ncanvas-pos placement 1 -101 1022\n",
+ "coldPf": {
+  "revision": 100,
+  "complete": false,
+  "finish": 1,
+  "fills": [
+   {
+    "finishSurfaceId": 1,
+    "gap": 3,
+    "id": 1,
+    "lengthAlong": "v",
+    "origin": [
+     10,
+     0
+    ],
+    "panel": {
+     "id": "material-2d264acb-63c4-42ac-91a3-1ff1de1a0081",
+     "version": 1
+    },
+    "pattern": "straight",
+    "threshold": {
+     "fieldId": 1,
+     "parameterId": 1
+    }
+   }
+  ],
+  "hosts": [
+   {
+    "fillId": 1,
+    "h": 30,
+    "id": 1
+   }
+  ],
+  "grids": [
+   {
+    "id": 1,
+    "definition": {
+     "id": 1,
+     "hostId": 1,
+     "fillId": 1,
+     "mainAlong": "u"
+    },
+    "derived": {
+     "indexSpace": "lattice",
+     "bandIndexSpace": "panel-row",
+     "side": 1,
+     "staggerAxis": null,
+     "staggerDelta": "0",
+     "axes": {
+      "u": {
+       "baseCoordinate": "111",
+       "pitch": "103",
+       "baseIndex": "0"
+      },
+      "v": {
+       "baseCoordinate": "201",
+       "pitch": "203",
+       "baseIndex": "0"
+      }
+     }
+    }
+   }
+  ]
+ },
+ "summary": {
+  "pass": 16,
+  "fail": []
+ }
+}

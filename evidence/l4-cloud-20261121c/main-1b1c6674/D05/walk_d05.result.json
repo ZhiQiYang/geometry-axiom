@@ -1,0 +1,66 @@
+{
+ "feedbackDir": "(scratch，不在 repo)",
+ "recordsBefore": 0,
+ "panelOpenByF8": true,
+ "pickedTarget1": "path < svg < span[data-icon=\"undo\"] < button#btnUndo",
+ "panelClosedAfterCancel": true,
+ "recordsAfterCancel": 0,
+ "sceneUnchangedAfterPick": true,
+ "panelOpenByButton": true,
+ "pickedTarget2": "「保存」 span < button.project-save[data-project-action=\"save\"] < div#projectBar",
+ "msgAfterSend": "記錄中…",
+ "toastsAfterSend": [
+  "有未保存的變更",
+  "尚未檢查",
+  "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移"
+ ],
+ "recordsAfterSend": 1,
+ "toastsAfterQuick": [
+  "有未保存的變更",
+  "尚未檢查",
+  "物件畫布：空白拖曳框選 · Shift 加選 · 單張卡片可拖移 · 空白鍵/中鍵拖曳平移"
+ ],
+ "recordsAfterQuick": 2,
+ "sceneUnchanged": true,
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "added": [
+  {
+   "files": [
+    "events.jsonl",
+    "meta.json",
+    "page.html",
+    "report.md",
+    "world.scene"
+   ]
+  },
+  {
+   "files": [
+    "events.jsonl",
+    "meta.json",
+    "page.html",
+    "report.md",
+    "world.scene"
+   ]
+  }
+ ],
+ "cliList": [
+  "F-…  [open] 問題  主畫布(工具 select)",
+  "F-…  [open] 不符預期  主畫布(工具 select)"
+ ],
+ "cliShow": [
+  {
+   "note": "L4 核對 D05：送出這一筆（20261121c）",
+   "target": "元素:`span < button.project-save[data-project-action=\"save\"] < div#projectBar` 「保存」 位置 [1336, 17, 28, 20](元素用途查 geometry-web/docs/DOM-CONTRACT.md)",
+   "hasWorldScene": true,
+   "lines": 58
+  },
+  {
+   "note": "快速標記:使用者按 Shift+F8,當下覺得不對)",
+   "target": "button#fileMenuBtn",
+   "hasWorldScene": true,
+   "lines": 58
+  }
+ ]
+}

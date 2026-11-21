@@ -1,0 +1,886 @@
+{
+ "schema": "r03-l4-oracle-compare/1",
+ "oracle": {
+  "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+  "repoFileSha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+ },
+ "input": {
+  "path": "walk_r03.phase1.result.json",
+  "sha256": "048810328348523e4fd9fc8a9849812bb8045c25a8ab7cd746ab7192fcdff29d"
+ },
+ "room": {
+  "outer": [
+   [
+    122,
+    194
+   ],
+   [
+    3862,
+    194
+   ],
+   [
+    3862,
+    2194
+   ],
+   [
+    122,
+    2194
+   ]
+  ]
+ },
+ "layout": {
+  "A": "x",
+  "a_start": "min",
+  "b_start": "min"
+ },
+ "params": {
+  "P": 915,
+  "L": 1830,
+  "gap": 2,
+  "w": 27,
+  "M": 367,
+  "X": 8,
+  "min_piece": 27
+ },
+ "recipePreference": {
+  "corner": "min-min",
+  "lengthAlong": "v"
+ },
+ "summary": {
+  "appMembers": 33,
+  "oracleMembers": 33,
+  "everyMemberMatches": true,
+  "multisetEqual": true,
+  "oracleCheckFailures": [],
+  "oracleConflicts": [],
+  "oracleCoreLimits": [],
+  "mainContinuous": true,
+  "trimOnlyAtOppositeWallNotCentered": true,
+  "rcBoundaryHasBoundaryMembers": true
+ },
+ "members": [
+  {
+   "appRow": 0,
+   "role": "邊界材",
+   "kind": "boundary",
+   "appRect": [
+    122,
+    194,
+    3862,
+    221
+   ],
+   "appLength": 3740,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    122,
+    194,
+    3862,
+    221
+   ],
+   "oracleLength": 3740,
+   "match": true
+  },
+  {
+   "appRow": 1,
+   "role": "邊界材",
+   "kind": "boundary",
+   "appRect": [
+    122,
+    2167,
+    3862,
+    2194
+   ],
+   "appLength": 3740,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    122,
+    2167,
+    3862,
+    2194
+   ],
+   "oracleLength": 3740,
+   "match": true
+  },
+  {
+   "appRow": 2,
+   "role": "主支",
+   "kind": "main",
+   "appRect": [
+    1025,
+    221,
+    1052,
+    2167
+   ],
+   "appLength": 1946,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1025,
+    221,
+    1052,
+    2167
+   ],
+   "oracleLength": 1946,
+   "match": true
+  },
+  {
+   "appRow": 3,
+   "role": "主支",
+   "kind": "main",
+   "appRect": [
+    1942,
+    221,
+    1969,
+    2167
+   ],
+   "appLength": 1946,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1942,
+    221,
+    1969,
+    2167
+   ],
+   "oracleLength": 1946,
+   "match": true
+  },
+  {
+   "appRow": 4,
+   "role": "主支",
+   "kind": "main",
+   "appRect": [
+    2859,
+    221,
+    2886,
+    2167
+   ],
+   "appLength": 1946,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    2859,
+    221,
+    2886,
+    2167
+   ],
+   "oracleLength": 1946,
+   "match": true
+  },
+  {
+   "appRow": 5,
+   "role": "主支",
+   "kind": "main",
+   "appRect": [
+    3776,
+    221,
+    3803,
+    2167
+   ],
+   "appLength": 1946,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3776,
+    221,
+    3803,
+    2167
+   ],
+   "oracleLength": 1946,
+   "match": true
+  },
+  {
+   "appRow": 6,
+   "role": "平行邊界材",
+   "kind": "rc_parallel",
+   "appRect": [
+    122,
+    221,
+    149,
+    2167
+   ],
+   "appLength": 1946,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    122,
+    221,
+    149,
+    2167
+   ],
+   "oracleLength": 1946,
+   "match": true
+  },
+  {
+   "appRow": 7,
+   "role": "平行邊界材",
+   "kind": "rc_parallel",
+   "appRect": [
+    3835,
+    221,
+    3862,
+    2167
+   ],
+   "appLength": 1946,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3835,
+    221,
+    3862,
+    2167
+   ],
+   "oracleLength": 1946,
+   "match": true
+  },
+  {
+   "appRow": 8,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    149,
+    544,
+    1025,
+    571
+   ],
+   "appLength": 876,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    149,
+    544,
+    1025,
+    571
+   ],
+   "oracleLength": 876,
+   "match": true
+  },
+  {
+   "appRow": 9,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    149,
+    911,
+    1025,
+    938
+   ],
+   "appLength": 876,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    149,
+    911,
+    1025,
+    938
+   ],
+   "oracleLength": 876,
+   "match": true
+  },
+  {
+   "appRow": 10,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    149,
+    1278,
+    1025,
+    1305
+   ],
+   "appLength": 876,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    149,
+    1278,
+    1025,
+    1305
+   ],
+   "oracleLength": 876,
+   "match": true
+  },
+  {
+   "appRow": 11,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    149,
+    1645,
+    1025,
+    1672
+   ],
+   "appLength": 876,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    149,
+    1645,
+    1025,
+    1672
+   ],
+   "oracleLength": 876,
+   "match": true
+  },
+  {
+   "appRow": 12,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1052,
+    544,
+    1942,
+    571
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1052,
+    544,
+    1942,
+    571
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 13,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1052,
+    911,
+    1942,
+    938
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1052,
+    911,
+    1942,
+    938
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 14,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1052,
+    1278,
+    1942,
+    1305
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1052,
+    1278,
+    1942,
+    1305
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 15,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1052,
+    1645,
+    1942,
+    1672
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1052,
+    1645,
+    1942,
+    1672
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 16,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1969,
+    544,
+    2859,
+    571
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1969,
+    544,
+    2859,
+    571
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 17,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1969,
+    911,
+    2859,
+    938
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1969,
+    911,
+    2859,
+    938
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 18,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1969,
+    1278,
+    2859,
+    1305
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1969,
+    1278,
+    2859,
+    1305
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 19,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    1969,
+    1645,
+    2859,
+    1672
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1969,
+    1645,
+    2859,
+    1672
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 20,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    2886,
+    544,
+    3776,
+    571
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    2886,
+    544,
+    3776,
+    571
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 21,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    2886,
+    911,
+    3776,
+    938
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    2886,
+    911,
+    3776,
+    938
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 22,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    2886,
+    1278,
+    3776,
+    1305
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    2886,
+    1278,
+    3776,
+    1305
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 23,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    2886,
+    1645,
+    3776,
+    1672
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    2886,
+    1645,
+    3776,
+    1672
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 24,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    3803,
+    544,
+    3835,
+    571
+   ],
+   "appLength": 32,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3803,
+    544,
+    3835,
+    571
+   ],
+   "oracleLength": 32,
+   "match": true
+  },
+  {
+   "appRow": 25,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    3803,
+    911,
+    3835,
+    938
+   ],
+   "appLength": 32,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3803,
+    911,
+    3835,
+    938
+   ],
+   "oracleLength": 32,
+   "match": true
+  },
+  {
+   "appRow": 26,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    3803,
+    1278,
+    3835,
+    1305
+   ],
+   "appLength": 32,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3803,
+    1278,
+    3835,
+    1305
+   ],
+   "oracleLength": 32,
+   "match": true
+  },
+  {
+   "appRow": 27,
+   "role": "記號副支",
+   "kind": "secondary:mark",
+   "appRect": [
+    3803,
+    1645,
+    3835,
+    1672
+   ],
+   "appLength": 32,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3803,
+    1645,
+    3835,
+    1672
+   ],
+   "oracleLength": 32,
+   "match": true
+  },
+  {
+   "appRow": 28,
+   "role": "板縫副支",
+   "kind": "secondary:seam",
+   "appRect": [
+    149,
+    2012,
+    1025,
+    2039
+   ],
+   "appLength": 876,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    149,
+    2012,
+    1025,
+    2039
+   ],
+   "oracleLength": 876,
+   "match": true
+  },
+  {
+   "appRow": 29,
+   "role": "板縫副支",
+   "kind": "secondary:seam",
+   "appRect": [
+    1052,
+    2012,
+    1942,
+    2039
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1052,
+    2012,
+    1942,
+    2039
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 30,
+   "role": "板縫副支",
+   "kind": "secondary:seam",
+   "appRect": [
+    1969,
+    2012,
+    2859,
+    2039
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    1969,
+    2012,
+    2859,
+    2039
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 31,
+   "role": "板縫副支",
+   "kind": "secondary:seam",
+   "appRect": [
+    2886,
+    2012,
+    3776,
+    2039
+   ],
+   "appLength": 890,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    2886,
+    2012,
+    3776,
+    2039
+   ],
+   "oracleLength": 890,
+   "match": true
+  },
+  {
+   "appRow": 32,
+   "role": "板縫副支",
+   "kind": "secondary:seam",
+   "appRect": [
+    3803,
+    2012,
+    3835,
+    2039
+   ],
+   "appLength": 32,
+   "AxB": "27 × 33",
+   "oracleRect": [
+    3803,
+    2012,
+    3835,
+    2039
+   ],
+   "oracleLength": 32,
+   "match": true
+  }
+ ],
+ "oracleUnmatched": [],
+ "mainContinuity": {
+  "mains": [
+   [
+    1025,
+    221,
+    1052,
+    2167
+   ],
+   [
+    1942,
+    221,
+    1969,
+    2167
+   ],
+   [
+    2859,
+    221,
+    2886,
+    2167
+   ],
+   [
+    3776,
+    221,
+    3803,
+    2167
+   ]
+  ],
+  "eachSpansBoundaryToBoundary": true,
+  "oneMemberPerLine": true,
+  "oracleMainCount": 4,
+  "ok": true
+ },
+ "trim": {
+  "uSeamsFromMains": [
+   1038,
+   1955,
+   2872,
+   3789
+  ],
+  "uSeamsOracle": [
+   1038,
+   1955,
+   2872,
+   3789
+  ],
+  "vSeamsFromSeamSecondaries": [
+   2025
+  ],
+  "vSeamsOracle": [
+   2025
+  ],
+  "uPieces": [
+   915,
+   915,
+   915,
+   915,
+   72
+  ],
+  "vPieces": [
+   1830,
+   168
+  ],
+  "note": "起鋪角 min-min：u、v 都從最小座標牆開始；只有最後一片（對牆）可小於整板。置中會讓兩端都是裁片。",
+  "ok": true
+ },
+ "rcBoundary": {
+  "boundary": [
+   [
+    122,
+    194,
+    3862,
+    221
+   ],
+   [
+    122,
+    2167,
+    3862,
+    2194
+   ]
+  ],
+  "rcParallel": [
+   [
+    122,
+    221,
+    149,
+    2167
+   ],
+   [
+    3835,
+    221,
+    3862,
+    2167
+   ]
+  ],
+  "ok": true
+ },
+ "case3700": {
+  "outline": [
+   [
+    420,
+    120
+   ],
+   [
+    4120,
+    120
+   ],
+   [
+    4120,
+    2120
+   ],
+   [
+    420,
+    2120
+   ]
+  ],
+  "oracleMembers": 28,
+  "oracleCheckFailures": [],
+  "oracleSeamsA": [
+   1336,
+   2253,
+   3170,
+   4079
+  ],
+  "oracleSeamsB": [
+   1951
+  ],
+  "appStatus": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+  "appConfirmDisabled": true
+ }
+}

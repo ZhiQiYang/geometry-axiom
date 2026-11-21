@@ -1,0 +1,44 @@
+{
+  "steps": [
+    {
+      "name": "cold-reopen-poll",
+      "modelCount": 1,
+      "waitedMs": 5823,
+      "status": [
+        "-: 已保存",
+        "-: 從空白處拖曳，框選物件"
+      ],
+      "dialogs": [],
+      "errs": [],
+      "models": [
+        {
+          "id": "820039c2-ba5f-4ccf-94e1-abf24a906457",
+          "schema": "geometry-space-preview/3",
+          "profileRuns": [
+            {
+              "id": 3,
+              "kind": "profile-run"
+            }
+          ],
+          "profileVolume": "6415200"
+        }
+      ]
+    },
+    {
+      "name": "library-text",
+      "text": "▱面 1空間封閉空間 · 6 個面 · 54 m³ · 角材 1 支 · 拉伸件 1 條 · 來源快照2026/11/21 上午12:58:08 · 來源面 #1開啟 3D修改模型移除來源／影響尚未檢查▱Q38j L 形斷面 · 拉伸件 #02000 mm · 3 個構件 · 已定位，世界座標開啟 3D／編輯▱Q38j L 形斷面 · 拉伸件 #21000 mm · 3 個構件 · 已定位，世界座標開啟 3D／編輯▱Q38j L 形斷面 · 拉伸件 #32400 mm · 3 個構件 · 已定位，世界座標開啟 3D／編輯"
+    },
+    {
+      "name": "tampered-open",
+      "statusBar": "未能完成開啟專案：拉伸件清單、構件數、材料量或未扣重疊註記不一致。",
+      "currentKept": true,
+      "modelCount": 1,
+      "status": [
+        "-: 已保存",
+        "-: 從空白處拖曳，框選物件"
+      ],
+      "dialogs": [],
+      "errs": []
+    }
+  ]
+}

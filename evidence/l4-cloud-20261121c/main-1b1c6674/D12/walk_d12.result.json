@@ -1,0 +1,168 @@
+{
+ "A": {
+  "steps": [
+   {
+    "name": "A01-example",
+    "dumpLen": 532,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "guide 1 1 v spec:主支1中線"
+    ]
+   },
+   {
+    "name": "A03-spec-saved",
+    "dumpLen": 546,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "guide 1 1 v spec:主支1中線"
+    ],
+    "dialogs": [
+     "共用空間基準 關閉 定義一次，各面引用。前／上共用 X，前／側共用 Z，上／側共用 Y；面外的線仍保留。 1 · 具名尺寸 名稱 尺寸（mm） 儲存具名尺寸 2 · 基準面 尚未建立基準。 基準 ID 世界軸 X Y Z 位置引用式 引用參數 選擇尺寸欄位 可用具名尺寸、參數與比例；含參數的結果須為整數 mm。 儲存基準 3 · 讓承載面引用 基準 承載面 承載面 1 · 天花 z=2500 加入共用參考線 已儲存。所有引用已重新驗證。"
+    ]
+   },
+   {
+    "name": "A04-datum-saved",
+    "dumpLen": 565,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線"
+    ],
+    "dialogs": [
+     "共用空間基準 關閉 定義一次，各面引用。前／上共用 X，前／側共用 Z，上／側共用 Y；面外的線仍保留。 1 · 具名尺寸 名稱 尺寸（mm） 儲存具名尺寸 2 · 基準面 基準 1 · X=1200 mm · spec:基準X · 0 條引用 編輯基準 1 刪除基準 1 基準 ID 世界軸 X Y Z 位置引用式 引用參數 選擇尺寸欄位 可用具名尺寸、參數與比例；含參數的結果須為整數 mm。 儲存基準 3 · 讓承載面引用 基準 基準 1 · X=1200 mm 承載面 承載面 1 · 天花 z=2500 加入共用參考線 已儲存。所有引用已重新驗證。"
+    ]
+   },
+   {
+    "name": "A05-guide-added",
+    "dumpLen": 583,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線",
+     "guide 2 1 datum 1"
+    ],
+    "dialogs": [
+     "共用空間基準 關閉 定義一次，各面引用。前／上共用 X，前／側共用 Z，上／側共用 Y；面外的線仍保留。 1 · 具名尺寸 名稱 尺寸（mm） 儲存具名尺寸 2 · 基準面 基準 1 · X=1200 mm · spec:基準X · 1 條引用 編輯基準 1 刪除基準 1 基準 ID 世界軸 X Y Z 位置引用式 引用參數 選擇尺寸欄位 可用具名尺寸、參數與比例；含參數的結果須為整數 mm。 儲存基準 3 · 讓承載面引用 基準 基準 1 · X=1200 mm 承載面 承載面 1 · 天花 z=2500 加入共用參考線 線 2 → 基準 1／面 1 · 可見 1 段 已儲存。所有引用已重新驗證。"
+    ]
+   },
+   {
+    "name": "A06-guide-added-again",
+    "dumpLen": 601,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線",
+     "guide 2 1 datum 1",
+     "guide 3 1 datum 1"
+    ]
+   },
+   {
+    "name": "A07-undo1",
+    "dumpLen": 583,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線",
+     "guide 2 1 datum 1"
+    ]
+   },
+   {
+    "name": "A08-undo2",
+    "dumpLen": 565,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線"
+    ]
+   },
+   {
+    "name": "A09-redo1",
+    "dumpLen": 583,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線",
+     "guide 2 1 datum 1"
+    ]
+   },
+   {
+    "name": "A09-redo2",
+    "dumpLen": 601,
+    "datumLines": [
+     "spec 主支1中線 500",
+     "spec 基準X 1200",
+     "datum 1 x spec:基準X",
+     "guide 1 1 v spec:主支1中線",
+     "guide 2 1 datum 1",
+     "guide 3 1 datum 1"
+    ]
+   }
+  ],
+  "specImpact": false,
+  "datumImpact": false,
+  "datumOptions": [
+   "1:基準 1 · X=1200 mm"
+  ],
+  "surfaceOptions": [
+   "1:承載面 1 · 天花 z=2500"
+  ],
+  "afterAdd1Dialogs": [
+   "共用空間基準 關閉 定義一次，各面引用。前／上共用 X，前／側共用 Z，上／側共用 Y；面外的線仍保留。 1 · 具名尺寸 名稱 尺寸（mm） 儲存具名尺寸 2 · 基準面 基準 1 · X=1200 mm · spec:基準X · 1 條引用 編輯基準 1 刪除基準 1 基準 ID 世界軸 X Y Z 位置引用式 引用參數 選擇尺寸欄位 可用具名尺寸、參數與比例；含參數的結果須為整數 mm。 儲存基準 3 · 讓承載面引用 基準 基準 1 · X=1200 mm 承載面 承載面 1 · 天花 z=2500 加入共用參考線 線 2 → 基準 1／面 1 · 可見 1 段 已儲存。所有引用已重新驗證。"
+  ],
+  "add1Diff": [
+   "guide 2 1 datum 1"
+  ],
+  "add2Diff": [
+   "guide 3 1 datum 1"
+  ],
+  "history": {
+   "undo1EqOneGuide": true,
+   "undo2EqBeforeGuide": true,
+   "redo1EqOneGuide": true,
+   "redo2EqTwoGuides": true
+  },
+  "saved": "download",
+  "errs": [
+   "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+  ],
+  "reopenEqual": true
+ },
+ "B": {
+  "exportKinds": [
+   "space:空間邊界",
+   "volume:空間實體",
+   "clearance:扣除後淨空",
+   "walls:材料牆",
+   "timbers:角材結構"
+  ],
+  "exportFile": {
+   "name": "download",
+   "bytes": 11693,
+   "schema": "geometry-model-package/1",
+   "profile": "orthogonal-model/1",
+   "units": "mm",
+   "status": "COMPLETE",
+   "objects": [
+    {
+     "role": "enclosure",
+     "closure": "closed",
+     "volume_mm3": "32400000000",
+     "vertices": 8,
+     "triangles": 12
+    }
+   ]
+  },
+  "viewWritesNothing": true,
+  "errs": [
+   "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？",
+   "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+  ]
+ }
+}
