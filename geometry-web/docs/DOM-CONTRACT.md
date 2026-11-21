@@ -8,6 +8,7 @@
 - `#tbPairOperation` 顯示新增或同組重宣告，`#tbPairStatus` 是有界狀態／拒絕原因。`#tbPairPreview` 才準備完整原生候選；`#tbPairCancel` 放棄本入口草稿／本入口持有的候選。新 id 由原生配號，兩列是無序成員，不以輸入順序決定接頭。
 - 選中任一既有組員，`#tbSelected` 顯示兩個 id，`#tbPairEdit` 開同組完整重宣告，`#tbSelDelete` 與左欄 ✕、畫布 Delete／右鍵刪除同走整組預覽。表單另有 `#tbPairDelete`。不得走舊單支 delete→timber→place，也不得以 history group 模擬候選原子性；重宣告保留原 id／World 次序，整組刪除不連坐刪除下游。
 - 共用 `.reference-impact` 顯示原生 `boundaryPairs` 與 `timberImpacts`。`[data-impact-pair="a:b"]`、`[data-impact-pair-member="id"]`、`[data-impact-timber-detail="id"]` 列兩成員／全部受影響下游的來源、角色、截面、舊新區間／姿態與實際端面接觸；`.impact-violation` 逐條列哪支、條文、預期／實際。`#impact-confirm` 僅在完整且零違規候選可用，`#impact-cancel` 返回原表單。一般上游預覽仍走原 adapter；不能用 `boundaryPairs` 是否存在猜測確認命令種類。
+- D16a／P1-A 已知的端面接觸預期由 `reference-ui.js` 顯示為「兩個真實端面須法向相反、位於同一平面，且有正長度接觸。」；以條文及完整原文配對，未知條文或新增限制照原文保留。只轉換畫面文字，不改原生診斷物件、實際數值、確認資格或保存內容。P335 的 `C02_P1_A_NAMES_D16A` 同時核原文回覆與中文顯示；段計數仍為 192。
 - `/boundary-pair/read` 與 `/boundary-pair/preview` 分別使用 `boundary-pair-read/1`、`boundary-pair-transaction/1`。preview 固定原生 revision／contextKey，操作只收 create、redeclare、delete。`/api` 的 `boundary-pair-confirm <token> <ownerKey>`／`boundary-pair-cancel <token> <ownerKey>` 沿現行回執機制，不重送未知確認。候選的工作世代／session／owner 與同一原生 token 必須相符；已有角材候選時拒絕新預覽，不取消他人的候選。
 - 取消／缺件／違規／過期都零寫入；有變更的確認恰一筆歷史，原樣重宣告零筆。復原／重做還原整組。未提交輸入只在本頁記憶體，保存及切換會明示尚未保存並要求先確認或取消；冷開不能復活 token。
 - 已確認組沿 `.scene` 的 `requires boundary-pair/1` 與完整 begin…end 保存，`.gcanvas` 使用既有 `/19` 共享封套及明確 required capability。只承接 #410 的 literal 尺寸子集；以 `boundary_pair_native.complete=false`／`host-app-literal-entry` 有限描述驗讀，不把完整能力加入原生支援清單。工程／參數組員仍拒絕，不能降級成兩次普通 place。
