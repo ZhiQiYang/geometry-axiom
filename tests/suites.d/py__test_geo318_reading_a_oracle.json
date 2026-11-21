@@ -1,0 +1,29 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo318_reading_a_oracle.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo318_reading_a_oracle.py",
+    "needs": [
+      "core",
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 21,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo318_reading_a_oracle.py"
+  ],
+  "name": "py:test_geo318_reading_a_oracle",
+  "order": "legacy/000155",
+  "schema": "geometry-native-suite/1"
+}

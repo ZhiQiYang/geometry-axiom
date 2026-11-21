@@ -1,0 +1,22 @@
+{
+  "execution": {
+    "cmd": [
+      "tests/test_document_format.js"
+    ],
+    "extra_env": {},
+    "kind": "node-script",
+    "label": "tests/test_document_format.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/test_document_format.js"
+  ],
+  "name": "node:document_format",
+  "order": "legacy/000255",
+  "schema": "geometry-native-suite/1"
+}

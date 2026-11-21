@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_parameters_deleted_unbind.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_parameters_deleted_unbind.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 14,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_parameters_deleted_unbind.py"
+  ],
+  "name": "py:test_parameters_deleted_unbind",
+  "order": "legacy/000203",
+  "schema": "geometry-native-suite/1"
+}

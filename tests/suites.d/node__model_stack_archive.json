@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_model_stack_archive.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_model_stack_archive.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 1,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_model_stack_archive.cjs"
+  ],
+  "name": "node:model_stack_archive",
+  "order": "legacy/000296",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/framing-template/core-probe/test_gen_scenes.py",
+    "reason": "Dedicated framing-template core-probe unit-test driver test_gen_scenes.py: unittest suite for gen_scenes, parse_results and scene_reader that also runs run_probe.sh against a fake bash core; imports only those three siblings and the standard library; test tooling, not a product-loaded module or current product entry point.",
+    "sha256": "411fc68a0418209746b430d9082c78a7a1437b2863a81aef7a803c7fbe1c32b1"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

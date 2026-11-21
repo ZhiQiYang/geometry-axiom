@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_mutation_anchors.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_mutation_anchors.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 3,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_mutation_anchors.py"
+  ],
+  "name": "py:test_mutation_anchors",
+  "order": "legacy/000190",
+  "schema": "geometry-native-suite/1"
+}

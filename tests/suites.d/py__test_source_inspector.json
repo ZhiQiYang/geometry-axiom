@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_source_inspector.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_source_inspector.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 18,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_source_inspector.py"
+  ],
+  "name": "py:test_source_inspector",
+  "order": "legacy/000233",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,183 @@
+{
+  "observations": [
+    {
+      "child_log": {
+        "bytes": 115,
+        "path": "native_shard_evidence/r03/py_test_framing_template.unittest.log",
+        "sha256": "c0b21e65189c51b9b977eb91404361268c602dc4c8a1261cde64bc6c03691274"
+      },
+      "child_report": {
+        "bytes": 351,
+        "path": "native_shard_evidence/r03/py_test_framing_template.child.json",
+        "sha256": "b07009fffb807619959c32c83a2958c1b532405ce69fb284a161683f6c820a80"
+      },
+      "command": [
+        "{python}",
+        "tests/_unittest_runner.py",
+        "tests/test_framing_template.py"
+      ],
+      "planning_upper_ms": 60000,
+      "receipt": {
+        "bytes": 936,
+        "path": "native_shard_evidence/r03/py_test_framing_template.json",
+        "sha256": "67507c0aeba7466b9e4779ba1b47558e6d6ac55b2704a1146d672ca9e88bb8dc"
+      },
+      "row": {
+        "allowed_skips": 0,
+        "counted": true,
+        "crashed": false,
+        "env_problem": false,
+        "expected_problem": "",
+        "failed": 0,
+        "name": "py:test_framing_template",
+        "passed": 15,
+        "process_exit_code": 0,
+        "ran": true,
+        "seconds": 10.74466609954834,
+        "skipped": 0,
+        "total": 15
+      },
+      "stdout": {
+        "bytes": 0,
+        "path": "native_shard_evidence/r03/py_test_framing_template.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "test_file": "tests/test_framing_template.py",
+      "timeout_seconds": 1200
+    },
+    {
+      "child_log": null,
+      "child_report": null,
+      "command": [
+        "{node}",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_framing_recipe_project_store.js"
+      ],
+      "planning_upper_ms": 5000,
+      "receipt": {
+        "bytes": 838,
+        "path": "native_shard_evidence/r03/node_framing_recipe_project_store.json",
+        "sha256": "462d444a7be68ae4cfa9a5edf88db9f16742803373e5aa791f1ff34c47018700"
+      },
+      "row": {
+        "allowed_skips": 0,
+        "counted": true,
+        "crashed": false,
+        "env_problem": false,
+        "expected_problem": "",
+        "failed": 0,
+        "name": "node:framing_recipe_project_store",
+        "passed": 9,
+        "process_exit_code": 0,
+        "ran": true,
+        "seconds": 0.3311786651611328,
+        "skipped": 0,
+        "total": 9
+      },
+      "stdout": {
+        "bytes": 944,
+        "path": "native_shard_evidence/r03/node_framing_recipe_project_store.log",
+        "sha256": "8a4fdabac93b397e32f15478862e7a6af262c61acf2859cd2523d8680bbb80a8"
+      },
+      "test_file": "tests/test_framing_recipe_project_store.js",
+      "timeout_seconds": 300
+    },
+    {
+      "child_log": null,
+      "child_report": null,
+      "command": [
+        "{node}",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_framing_template_session.js"
+      ],
+      "planning_upper_ms": 5000,
+      "receipt": {
+        "bytes": 832,
+        "path": "native_shard_evidence/r03/node_framing_template_session.json",
+        "sha256": "2955aa653410690c5993036310b5bb82dca782ce085b33b70d29ccb1adab92ed"
+      },
+      "row": {
+        "allowed_skips": 0,
+        "counted": true,
+        "crashed": false,
+        "env_problem": false,
+        "expected_problem": "",
+        "failed": 0,
+        "name": "node:framing_template_session",
+        "passed": 12,
+        "process_exit_code": 0,
+        "ran": true,
+        "seconds": 0.3639545440673828,
+        "skipped": 0,
+        "total": 12
+      },
+      "stdout": {
+        "bytes": 1294,
+        "path": "native_shard_evidence/r03/node_framing_template_session.log",
+        "sha256": "bf47750c248800f048e0815c8f8b562d33a536493e550a71c2b7ae1924153766"
+      },
+      "test_file": "tests/test_framing_template_session.js",
+      "timeout_seconds": 300
+    },
+    {
+      "child_log": null,
+      "child_report": null,
+      "command": [
+        "{node}",
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_framing_template_browser_scope.js"
+      ],
+      "planning_upper_ms": 5000,
+      "receipt": {
+        "bytes": 841,
+        "path": "native_shard_evidence/r03/node_framing_template_browser_scope.json",
+        "sha256": "fa59fa6b192c5b8720d5221225092ab5eddabca369a279e88abcf45b098bdea5"
+      },
+      "row": {
+        "allowed_skips": 0,
+        "counted": true,
+        "crashed": false,
+        "env_problem": false,
+        "expected_problem": "",
+        "failed": 0,
+        "name": "node:framing_template_browser_scope",
+        "passed": 4,
+        "process_exit_code": 0,
+        "ran": true,
+        "seconds": 0.212202787399292,
+        "skipped": 0,
+        "total": 4
+      },
+      "stdout": {
+        "bytes": 527,
+        "path": "native_shard_evidence/r03/node_framing_template_browser_scope.log",
+        "sha256": "0eecf6ae76da950c7d2fb3f5f24d241ce760209438865a00207fa1b42702d7e3"
+      },
+      "test_file": "tests/test_framing_template_browser_scope.js",
+      "timeout_seconds": 300
+    }
+  ],
+  "schema": "native-shard-workspace-suite-evidence/2",
+  "source": {
+    "base_sha": "fa83e6ad8444c569b9f2f5e91f2de9a5622a92cb",
+    "kind": "workspace",
+    "manifest": {
+      "bytes": 312032,
+      "path": "native_shard_evidence/r03/source-manifest.json",
+      "sha256": "bd146de845143091d108852fce5ca70591c302cdd476de2d33f9e37de615bef7"
+    },
+    "note": "Local exact-workspace passing children; not GitHub CI. Bounds use at least 3x observed seconds plus 1s, floor 60s for native and 5s for Node. Historical CI receipts are unchanged; formal six-shard wall-clock acceptance remains required.",
+    "recorded_at": "2026-11-17T00:19:38.165880+00:00",
+    "runner": {
+      "cgroup_cpu_max": "unavailable",
+      "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C",
+      "node": "v24.22.1",
+      "nproc": 9,
+      "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+    }
+  }
+}

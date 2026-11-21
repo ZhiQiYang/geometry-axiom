@@ -1,0 +1,46 @@
+name: Native suite measurement
+
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: Exact registered suite name (measurement is not six-shard acceptance)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Measure one native suite
+    runs-on: ubuntu-latest
+    # Same upper bound as an existing native shard. This job never certifies
+    # complete native coverage and cannot replace native-complete.
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Run the exact suite and preserve its original result
+        env:
+          MEASURE_SUITE: ${{ inputs.suite }}
+        run: |
+          ulimit -s 16384
+          python3 -B tests/run_all.py --build --measure-suite "$MEASURE_SUITE" --report '${{ runner.temp }}/native-suite-measure/report.json'
+      - name: Collect the exact suite logs beside its report
+        if: always()
+        run: |
+          mkdir -p '${{ runner.temp }}/native-suite-measure/logs'
+          cp -a /tmp/geometry-tests/run_all-logs/. '${{ runner.temp }}/native-suite-measure/logs/'
+      - name: Preserve original measurement and suite logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-suite-measurement
+          path: ${{ runner.temp }}/native-suite-measure/
+          if-no-files-found: error
+          retention-days: 14

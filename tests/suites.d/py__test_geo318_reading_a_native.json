@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_geo318_reading_a_native.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_geo318_reading_a_native.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_geo318_reading_a_native.py"
+  ],
+  "name": "py:test_geo318_reading_a_native",
+  "order": "legacy/000154",
+  "schema": "geometry-native-suite/1"
+}

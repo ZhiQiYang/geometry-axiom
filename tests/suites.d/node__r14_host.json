@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r14_host.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r14_host.js",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 15,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_r14_host.js"
+  ],
+  "name": "node:r14_host",
+  "order": "legacy/000338",
+  "schema": "geometry-native-suite/1"
+}

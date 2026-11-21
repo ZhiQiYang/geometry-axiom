@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_grid_definition_diagram.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_grid_definition_diagram.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_grid_definition_diagram.js"
+  ],
+  "name": "node:grid_definition_diagram",
+  "order": "legacy/000331",
+  "schema": "geometry-native-suite/1"
+}

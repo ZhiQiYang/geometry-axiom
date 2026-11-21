@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_identity_host_gate_shape.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_identity_host_gate_shape.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 5,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_identity_host_gate_shape.py"
+  ],
+  "name": "py:test_identity_host_gate_shape",
+  "order": "legacy/000175",
+  "schema": "geometry-native-suite/1"
+}

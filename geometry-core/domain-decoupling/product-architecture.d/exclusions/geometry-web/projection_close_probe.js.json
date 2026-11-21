@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/projection_close_probe.js",
+    "reason": "Dedicated acceptance/test driver projection_close_probe.js; invoked by test harnesses, not by product runtime or served application entry points.",
+    "sha256": "168a321b1521e5837d260d62e3961278ec240394b685deab576c2838658406a9"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

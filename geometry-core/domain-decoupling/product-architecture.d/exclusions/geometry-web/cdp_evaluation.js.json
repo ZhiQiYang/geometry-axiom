@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/cdp_evaluation.js",
+    "reason": "Dedicated acceptance/test driver cdp_evaluation.js; invoked by test harnesses, not by product runtime or served application entry points.",
+    "sha256": "ed20878b55f5c0b1c0209a9bd7731cc5dff99c6c9d1317b5bbfdce6dea9d3e7e"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

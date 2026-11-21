@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_evidence_parameter_adoption.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_evidence_parameter_adoption.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_evidence_parameter_adoption.cjs"
+  ],
+  "name": "node:evidence_parameter_adoption",
+  "order": "legacy/000328",
+  "schema": "geometry-native-suite/1"
+}

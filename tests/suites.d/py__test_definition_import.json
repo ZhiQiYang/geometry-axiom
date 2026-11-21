@@ -1,0 +1,28 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_definition_import.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_definition_import.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "count": 13,
+    "mode": "count",
+    "unit": "test"
+  },
+  "files": [
+    "tests/test_definition_import.py"
+  ],
+  "name": "py:test_definition_import",
+  "order": "legacy/000022",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_canvas_shards.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_canvas_shards.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 41,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_canvas_shards.js"
+  ],
+  "name": "node:canvas_shards",
+  "order": "legacy/000306",
+  "schema": "geometry-native-suite/1"
+}

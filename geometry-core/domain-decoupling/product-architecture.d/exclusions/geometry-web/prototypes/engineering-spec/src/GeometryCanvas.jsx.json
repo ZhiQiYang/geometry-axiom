@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/prototypes/engineering-spec/src/GeometryCanvas.jsx",
+    "reason": "Separate engineering-spec UI prototype GeometryCanvas.jsx; its AGENTS.md explicitly excludes production geometry-web integration. Exact historical/prototype file, not a directory exemption.",
+    "sha256": "b56cbcb4b64bc1130af73f741cfbe76a81d6c80e9d1a5d1b7ff15f7a71fa8d1c"
+  },
+  "schema": "geometry-architecture-entry/1"
+}
