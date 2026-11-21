@@ -1,0 +1,395 @@
+{
+  "steps": [
+    {
+      "name": "setup-card-grid",
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": {
+            "parameterId": 1,
+            "uFieldId": 4,
+            "vFieldId": 5
+          },
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "effectiveStep": 915,
+            "stepSource": "card"
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "effectiveStep": 1830,
+            "stepSource": "card"
+          }
+        }
+      ],
+      "hist": {
+        "undo": 7,
+        "redo": 0,
+        "group": null
+      }
+    },
+    {
+      "name": "open-source",
+      "form": {
+        "card": "板材 915×1830（#1，2 個尺寸欄） [1]",
+        "cardU": "寬 = 915（#4） [4]",
+        "cardV": "長 = 1830（#5） [5]",
+        "uStep": "915",
+        "vStep": "1830",
+        "uStepSource": "直接輸入 []",
+        "vStepSource": "直接輸入 []",
+        "unbindPresent": true,
+        "note": "兩軸長度由「板材 915×1830」（#1）提供：u = 寬（#4，915）、v = 長（#5，1830）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。",
+        "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。"
+      }
+    },
+    {
+      "name": "parameter-preview",
+      "impact": "確認連動變更 目前場景尚未改動。以下核對兩軸長度來源、網格及其依賴的原／新結果；尺寸單位為 mm。確認後整組解除，可一次復原。 網格系統 1 · 整組解除 → 兩個逐欄參數引用 網格來源 · 1 網格系統 1 原：「無限網格」；主支方向未設定；u 無限重複：間距 915 mm（整張參數卡），第 0 線 0 mm；v 無限重複：間距 1830 mm（整張參數卡），第 0 線 0 mm；長度來自整張參數卡「板材 915×1830」（卡 #1；u = 寬（欄 #4）、v = 長（欄 #5）） 新：「無限網格」；主支方向未設定；u 無限重複：間距 915 mm，第 0 線 0 mm；逐欄來源 間距 → 參數卡 #1／欄 #4；v 無限重複：間距 1830 mm，第 0 線 0 mm；逐欄來源 間距 → 參數卡 #1／欄 #5 原來源 1：下一 ruleKey 1；0 項來源規則。 候選來源 1：下一 ruleKey 1；0 項來源規則。 解除後，兩軸分別引用原本的參數欄位，仍隨該欄位更新。 本次解除的原生前後摘要中，網格幾何、參考線與角材幾何保持原狀。 取消，保留原狀 確認套用",
+      "dumpUnchangedDuringPreview": true
+    },
+    {
+      "name": "parameter-cancel",
+      "dumpSame": true,
+      "revisionSame": true,
+      "rev0": 27,
+      "rev1": 27,
+      "histBefore": {
+        "undo": 7,
+        "redo": 0,
+        "group": null
+      },
+      "histAfter": {
+        "undo": 7,
+        "redo": 0,
+        "group": null
+      },
+      "histSame": true,
+      "form": {
+        "card": "板材 915×1830（#1，2 個尺寸欄） [1]",
+        "cardU": "寬 = 915（#4） [4]",
+        "cardV": "長 = 1830（#5） [5]",
+        "uStep": "915",
+        "vStep": "1830",
+        "uStepSource": "直接輸入 []",
+        "vStepSource": "直接輸入 []",
+        "unbindPresent": true,
+        "note": "兩軸長度由「板材 915×1830」（#1）提供：u = 寬（#4，915）、v = 長（#5，1830）。第 0 線、縫寬、面材起點與相鄰格錯開仍逐軸設定。",
+        "status": "已取消；場景保持原狀"
+      },
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": {
+            "parameterId": 1,
+            "uFieldId": 4,
+            "vFieldId": 5
+          },
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "effectiveStep": 915,
+            "stepSource": "card"
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "effectiveStep": 1830,
+            "stepSource": "card"
+          }
+        }
+      ]
+    },
+    {
+      "name": "parameter-confirm",
+      "impact": "確認連動變更 目前場景尚未改動。以下核對兩軸長度來源、網格及其依賴的原／新結果；尺寸單位為 mm。確認後整組解除，可一次復原。 網格系統 1 · 整組解除 → 兩個逐欄參數引用 網格來源 · 1 網格系統 1 原：「無限網格」；主支方向未設定；u 無限重複：間距 915 mm（整張參數卡），第 0 線 0 mm；v 無限重複：間距 1830 mm（整張參數卡），第 0 線 0 mm；長度來自整張參數卡「板材 915×1830」（卡 #1；u = 寬（欄 #4）、v = 長（欄 #5）） 新：「無限網格」；主支方向未設定；u 無限重複：間距 915 mm，第 0 線 0 mm；逐欄來源 間距 → 參數卡 #1／欄 #4；v 無限重複：間距 1830 mm，第 0 線 0 mm；逐欄來源 間距 → 參數卡 #1／欄 #5 原來源 1：下一 ruleKey 1；0 項來源規則。 候選來源 1：下一 ruleKey 1；0 項來源規則。 解除後，兩軸分別引用原本的參數欄位，仍隨該欄位更新。 本次解除的原生前後摘要中，網格幾何、參考線與角材幾何保持原狀。 取消，保留原狀 確認套用",
+      "dumpChanged": true,
+      "histBefore": {
+        "undo": 7,
+        "redo": 0,
+        "group": null
+      },
+      "histAfter": {
+        "undo": 8,
+        "redo": 0,
+        "group": null
+      },
+      "oneStep": true,
+      "form": {
+        "card": "逐軸設定（各軸自己的間距或面材） []",
+        "cardU": " []",
+        "cardV": " []",
+        "uStep": "915",
+        "vStep": "1830",
+        "uStepSource": "板材 915×1830.寬 · #1:4 · 915 mm [1:4]",
+        "vStepSource": "板材 915×1830.長 · #1:5 · 1830 mm [1:5]",
+        "unbindPresent": false,
+        "note": "",
+        "status": "變更已套用目前場景，可復原或重做；頂列保存完整專案。"
+      },
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": null,
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 915,
+            "parameterRefs": {
+              "step": {
+                "kind": "parameter",
+                "parameterId": 1,
+                "fieldId": 4
+              }
+            }
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830,
+            "parameterRefs": {
+              "step": {
+                "kind": "parameter",
+                "parameterId": 1,
+                "fieldId": 5
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "undo",
+      "backToBefore": true,
+      "hist": {
+        "undo": 7,
+        "redo": 1,
+        "group": null
+      },
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": {
+            "parameterId": 1,
+            "uFieldId": 4,
+            "vFieldId": 5
+          },
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "effectiveStep": 915,
+            "stepSource": "card"
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "effectiveStep": 1830,
+            "stepSource": "card"
+          }
+        }
+      ]
+    },
+    {
+      "name": "redo",
+      "backToConfirmed": true,
+      "hist": {
+        "undo": 8,
+        "redo": 0,
+        "group": null
+      },
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": null,
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 915,
+            "parameterRefs": {
+              "step": {
+                "kind": "parameter",
+                "parameterId": 1,
+                "fieldId": 4
+              }
+            }
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830,
+            "parameterRefs": {
+              "step": {
+                "kind": "parameter",
+                "parameterId": 1,
+                "fieldId": 5
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cold-reopen-parameter",
+      "dumpSame": true,
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": null,
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 915,
+            "parameterRefs": {
+              "step": {
+                "kind": "parameter",
+                "parameterId": 1,
+                "fieldId": 4
+              }
+            }
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830,
+            "parameterRefs": {
+              "step": {
+                "kind": "parameter",
+                "parameterId": 1,
+                "fieldId": 5
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "cold-reopen-parameter-form",
+      "form": {
+        "card": "逐軸設定（各軸自己的間距或面材） []",
+        "cardU": " []",
+        "cardV": " []",
+        "uStep": "915",
+        "vStep": "1830",
+        "uStepSource": "板材 915×1830.寬 · #1:4 · 915 mm [1:4]",
+        "vStepSource": "板材 915×1830.長 · #1:5 · 1830 mm [1:5]",
+        "unbindPresent": false,
+        "note": "",
+        "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。"
+      }
+    },
+    {
+      "name": "direct-cancel",
+      "impact": "確認連動變更 目前場景尚未改動。以下核對兩軸長度來源、網格及其依賴的原／新結果；尺寸單位為 mm。確認後整組解除，可一次復原。 網格系統 1 · 整組解除 → 當下直接整數 網格來源 · 1 網格系統 1 原：「無限網格」；主支方向未設定；u 無限重複：間距 915 mm（整張參數卡），第 0 線 0 mm；v 無限重複：間距 1830 mm（整張參數卡），第 0 線 0 mm；長度來自整張參數卡「板材 915×1830」（卡 #1；u = 寬（欄 #4）、v = 長（欄 #5）） 新：「無限網格」；主支方向未設定；u 無限重複：間距 915 mm，第 0 線 0 mm；v 無限重複：間距 1830 mm，第 0 線 0 mm 原來源 1：下一 ruleKey 1；0 項來源規則。 候選來源 1：下一 ruleKey 1；0 項來源規則。 解除後，兩軸保存下列原生取值；之後修改原參數卡，不會改變這兩個直接長度。 網格系統 1：原參數卡 #1；u 欄 #4 → 915 mm，v 欄 #5 → 1830 mm；取值時點：本次解除時（候選第 1 步）。 本次解除的原生前後摘要中，網格幾何、參考線與角材幾何保持原狀。 取消，保留原狀 確認套用",
+      "captures": [
+        "網格系統 1：原參數卡 #1；u 欄 #4 → 915 mm，v 欄 #5 → 1830 mm；取值時點：本次解除時（候選第 1 步）。"
+      ],
+      "dumpSame": true,
+      "histSame": true
+    },
+    {
+      "name": "direct-confirm",
+      "oneStep": true,
+      "hist": {
+        "undo": 9,
+        "redo": 0,
+        "group": null
+      },
+      "form": {
+        "card": "逐軸設定（各軸自己的間距或面材） []",
+        "cardU": " []",
+        "cardV": " []",
+        "uStep": "915",
+        "vStep": "1830",
+        "uStepSource": "直接輸入 []",
+        "vStepSource": "直接輸入 []",
+        "unbindPresent": false,
+        "note": "",
+        "status": "變更已套用目前場景，可復原或重做；頂列保存完整專案。"
+      },
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": null,
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 915
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830
+          }
+        }
+      ]
+    },
+    {
+      "name": "direct-undo",
+      "backToBefore": true
+    },
+    {
+      "name": "direct-redo",
+      "backToConfirmed": true
+    },
+    {
+      "name": "cold-reopen-direct",
+      "dumpSame": true,
+      "grids": [
+        {
+          "id": 1,
+          "name": "無限網格",
+          "cardReference": null,
+          "u": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 915
+          },
+          "v": {
+            "source": "repeat",
+            "phase": 0,
+            "step": 1830
+          }
+        }
+      ]
+    },
+    {
+      "name": "cold-reopen-direct-form",
+      "form": {
+        "card": "逐軸設定（各軸自己的間距或面材） []",
+        "cardU": " []",
+        "cardV": " []",
+        "uStep": "915",
+        "vStep": "1830",
+        "uStepSource": "直接輸入 []",
+        "vStepSource": "直接輸入 []",
+        "unbindPresent": false,
+        "note": "",
+        "status": "來源／配置原始輸入會隨專案保存，未確認前不改場景。"
+      }
+    }
+  ],
+  "savedParameter": "download",
+  "errsA": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+  ],
+  "savedDirect": "download",
+  "errsB": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+  ],
+  "dumps": {
+    "cardBound": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iuadv+adkCA5MTXDlzE4MzAiLCJuZXh0RmllbGRJZCI6Nn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjQsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjUsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\nrequires grid-card-reference/1\ngrid-system 1 name-hex e784a1e99990e7b6b2e6a0bc main-along none card-reference 1 4 5 u repeat 0 card v repeat 0 card\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 422\n",
+    "parameterUnbound": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iuadv+adkCA5MTXDlzE4MzAiLCJuZXh0RmllbGRJZCI6Nn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjQsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjUsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex e784a1e99990e7b6b2e6a0bc main-along none u repeat 0 param:1:4 v repeat 0 param:1:5\ncanvas-pos parameter 1 60 60\ncanvas-pos grid-system 1 -101 422\n",
+    "directCardBound": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iuadv+adkCA5MTXDlzE4MzAiLCJuZXh0RmllbGRJZCI6Nn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjQsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjUsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\nrequires grid-card-reference/1\ngrid-system 1 name-hex e784a1e99990e7b6b2e6a0bc main-along none card-reference 1 4 5 u repeat 0 card v repeat 0 card\ncanvas-pos parameter 1 -468 -52\ncanvas-pos grid-system 1 -677 -345\n",
+    "directUnbound": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6Iuadv+adkCA5MTXDlzE4MzAiLCJuZXh0RmllbGRJZCI6Nn0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjQsIm5hbWUiOiLlr6wiLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiI5MTUiLCJvcCI6ImxpdGVyYWwiLCJ1bml0IjoibW0ifX0=\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjUsIm5hbWUiOiLplbciLCJ0eXBlIjowLCJleHByZXNzaW9uIjp7ImRlbiI6IjEiLCJudW0iOiIxODMwIiwib3AiOiJsaXRlcmFsIiwidW5pdCI6Im1tIn19\nparameters end\ngrid-system 1 name-hex e784a1e99990e7b6b2e6a0bc main-along none u repeat 0 915 v repeat 0 1830\ncanvas-pos parameter 1 -468 -52\ncanvas-pos grid-system 1 -677 -345\n"
+  },
+  "errsC": []
+}
