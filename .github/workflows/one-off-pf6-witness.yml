@@ -1,96 +1,51 @@
-name: PF-6 原生與三項具名撤回
+name: PF-6 普通合流紀錄
 on:
   push:
-    branches:
-      - codex/r02-pf6-witness-20261121
+    branches: [codex/r02-pf6-witness-20261121]
 permissions:
   contents: read
 jobs:
-  product:
+  merge:
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ec86dbcc05153696bbc19d12df8da2306d2e64f5
+          fetch-depth: 0
           persist-credentials: false
-      - name: 產品與基底 T 的同一份 26 項斷言
+      - name: 核對兩個父提交，以 Git 一般合流取得雙方原文
         shell: bash
         run: |
           set -euo pipefail
-          ulimit -s 16384
           test "$(git rev-parse HEAD)" = ec86dbcc05153696bbc19d12df8da2306d2e64f5
-          test "$(git rev-parse HEAD^{tree})" = 5b7734e193cf615bba870125e15e61ad50c1cea9
-          echo '417b0dc1b68abdb42d8d467a4ec1b637b5091224065f2038555690e966b89ae8  tests/test_panel_fill_builder.py' | sha256sum --check
-          mkdir -p "$RUNNER_TEMP/pf6-product"
-          python3 -B tests/binaries.py build bridge
-          python3 -B -m unittest -v tests.test_panel_fill_builder 2>&1 | tee "$RUNNER_TEMP/pf6-product/builder.log"
-          grep -Eq '^Ran 26 tests in ' "$RUNNER_TEMP/pf6-product/builder.log"
-          grep -Fx OK "$RUNNER_TEMP/pf6-product/builder.log"
-      - name: 既有四套件與 I24 清冊
-        shell: bash
-        run: |
-          set -euo pipefail
-          ulimit -s 16384
-          for spec in identity_ledger_review:19 panel_fill_grid_source:13 panel_fill_grid_transaction:13 panel_fill_host:32 geo314_commit_paths:12; do
-            suite="${spec%:*}"
-            count="${spec#*:}"
-            log="$RUNNER_TEMP/pf6-product/$suite.log"
-            python3 -B -m unittest -v "tests.test_$suite" 2>&1 | tee "$log"
-            grep -Eq "^Ran $count tests in " "$log"
-            grep -Fx OK "$log"
-          done
+          main=3ef07683b76837fd08f8737ac5f515a3e46d6b6b
+          test "$(git rev-parse refs/remotes/origin/main)" = "$main"
+          test "$(git merge-base HEAD "$main")" = 1b1c66749786c238042e3ba1c3917b1ad33b31bc
+          git config user.name Codex
+          git config user.email codex@users.noreply.github.com
+          out="$RUNNER_TEMP/pf6-merge"
+          mkdir -p "$out"
+          set +e
+          git merge --no-commit --no-ff "$main" >"$out/merge.log" 2>&1
+          status=$?
+          set -e
+          cat "$out/merge.log"
+          echo "$status" | tee "$out/exit-code.txt"
+          test "$status" = 1
+          git diff --name-only --diff-filter=U | tee "$out/paths.txt"
+          git ls-files --unmerged > "$out/index.txt"
+          expected=(geometry-core/domain-decoupling/product-architecture.json geometry-web/engineering_bridge.inc geometry-web/web_bridge.c tests/test_geo314_commit_paths.py)
+          printf '%s\n' "${expected[@]}" | diff -u - "$out/paths.txt"
+          git diff --cc > "$out/conflicts.diff"
+          grep -Fq '!g_preview.pf6_batch' geometry-web/engineering_bridge.inc
+          grep -Fq 'strcmp(g_preview.command,"framing-template-transaction")' geometry-web/engineering_bridge.inc
+          git merge --abort
+          test "$(git rev-parse HEAD)" = ec86dbcc05153696bbc19d12df8da2306d2e64f5
+          test -z "$(git status --porcelain)"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pf6-product
-          path: ${{ runner.temp }}/pf6-product
-          if-no-files-found: error
-  architecture:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ec86dbcc05153696bbc19d12df8da2306d2e64f5
-          persist-credentials: false
-      - name: 原三道架構命令及原始輸出
-        shell: bash
-        run: |
-          set -euo pipefail
-          ulimit -s 16384
-          python3 -B .github/scripts/architecture_evidence.py --out "$RUNNER_TEMP/pf6-architecture" > "$RUNNER_TEMP/pf6-architecture.log"
-          cat "$RUNNER_TEMP/pf6-architecture/product-architecture-receipt.json"
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: pf6-architecture
-          path: ${{ runner.temp }}/pf6-architecture
-          if-no-files-found: error
-  withdrawal:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    strategy:
-      fail-fast: false
-      matrix:
-        id: [PF6_PARTIAL_SUCCESS_WRITES, PF6_UNSELECTED_CREATES, PF6_OMIT_DEPENDENT_REVALIDATION]
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ec86dbcc05153696bbc19d12df8da2306d2e64f5
-          persist-credentials: false
-      - name: 同一個具名裁判依序跑原版、撤回、恢復
-        env:
-          WITHDRAWAL_ID: ${{ matrix.id }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          ulimit -s 16384
-          python3 -B tests/pf6_mutation_check.py --out "$RUNNER_TEMP/pf6-proof" "$WITHDRAWAL_ID"
-          python3 -c 'import json, os, sys; r=json.load(open(sys.argv[1])); rows=r["mutations"]; assert r["base_sha"]=="ec86dbcc05153696bbc19d12df8da2306d2e64f5" and r["original_sources_unchanged"] and len(rows)==1; x=rows[0]; assert x["id"]==os.environ["WITHDRAWAL_ID"] and x["named_assertion"] and x["verdict"]=="killed" and x["exits"]==[0,1,0]; print(x["id"],x["exits"])' "$RUNNER_TEMP/pf6-proof/results.json"
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: pf6-${{ matrix.id }}
-          path: ${{ runner.temp }}/pf6-proof
+          name: pf6-merge-conflicts
+          path: ${{ runner.temp }}/pf6-merge
           if-no-files-found: error
