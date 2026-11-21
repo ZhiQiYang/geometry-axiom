@@ -130,7 +130,8 @@ test('PF4_NATIVE_IMPACT: grid and guide before/after records are visible, includ
   // Formal results use the same shipped open/render entry, with a minimal DOM
   // sink. The browser suite separately measures real layout and hit targets.
   const env=environment();env.state.fillGrids.push(clone(before.fillGrids[0]));env.c.document={querySelector:()=>null};
-  await env.W.open(4);let rendered='';const region={addEventListener(){},querySelector:()=>null};
+  // main's R03 render also wires the face-mode select; give the sink only that hook.
+  await env.W.open(4);let rendered='';const region={addEventListener(){},querySelector:selector=>selector==='[data-face-product-mode]'?{addEventListener(){}}:null};
   const pane={id:'test-pane',querySelector:()=>rendered?region:null,set innerHTML(value){rendered=value;}};
   assert.equal(env.W.render(pane,4),true);
   const result=rendered.match(/<details data-pf-grid-result="7">([\s\S]*?)<\/details>/);
