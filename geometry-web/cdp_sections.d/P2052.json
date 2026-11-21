@@ -1,0 +1,21 @@
+{
+  "schema": "geometry-canvas-section/1",
+  "id": "P2052",
+  "assertions": 0,
+  "unit": 2,
+  "order": {
+    "anchor": {
+      "after": "P205",
+      "before": "P353"
+    }
+  },
+  "execution": {
+    "kind": "driver",
+    "driver": "geometry-web/framing_template_jig_workflow_test.js",
+    "flag": "GEOMETRY_FRAMING_JIG_ONLY"
+  },
+  "provenance": {
+    "kind": "candidate"
+  },
+  "cost": null
+}
