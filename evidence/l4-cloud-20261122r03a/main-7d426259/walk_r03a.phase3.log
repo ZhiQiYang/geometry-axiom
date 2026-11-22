@@ -1,0 +1,10 @@
+PASS V1_OPEN_RECIPE_UNCHANGED 
+PASS V1_OPEN_NO_SEARCH 
+STEP v1-preview {"form":{"mode":"framing","modeText":"平釘天花骨架（矩形第一片）","recipe":"L4 R03 3740×2000 平釘天花 · flat-ceiling/1","recipeOptions":["請明選","L4 R03 3740×2000 平釘天花 · flat-ceiling/1"],"name":"L4 R03 3740×2000 平釘天花","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/1；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"矩形第一片：無孔、無柱，邊界明設 RC。從起鋪牆整片開始，裁切只在對牆；主支整支連續。副支每條板端縫重新起算，採上界公式。與既有模板規則不相容的尺寸或排法會明確拒絕，不能確認。例如既有 3700 mm 案例需要退縫，本片回報規則衝突。現在不搜尋其他角或方向；請自行明選後重新預覽。","sources":["","",""],"materials":false},"head":"候選 33 支 · 
+PASS V1_RECIPE_SELECTED_IN_V1_MODE 
+PASS V1_PREVIEW_ORIGINAL_BEHAVIOR 
+PASS V1_PREVIEW_ZERO_WRITE 
+PASS V1_CANCEL_ZERO_WRITE 
+PASS V1_NOT_AUTO_UPGRADED_IN_V2_MODE 
+PASS V1_PICK_KEEPS_PIN 
+SUMMARY {"pass":8,"fail":[]}
