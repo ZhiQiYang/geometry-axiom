@@ -609,3 +609,21 @@ PF-4A 驗重集合內的 R12，須由 `PF4A_ADDED_SUITE_MUTATION_cross-r12-dupli
 四檔不覆寫。expected 仍須由完整原 `run_all.py --build --update-expected` 產生；
 之後原 `native_sharding_mutation_check.py` 必須完整通過。原 35／5 分鐘 workflow、
 每個反證子程序 60 秒、並行上限 2、真收據與模型 `<1200` 秒全部不變。
+
+## L4 實機發現修正的兩個新 suite（PR #443，2026-11-21；併入 #434 後改為片段）
+
+PR #443 新增 `node:face_length_overlay`（D02，`tests/test_face_length_overlay.js`）與
+`node:engineering_override_display`（D09，`tests/test_engineering_override_display.js`）兩套 node --test 套件。
+舊單檔格式下曾以第八份 `/1` 來源 `native_shard_added_evidence_r443.json`（取自 CI 原 log 摘錄）、
+`run_all.expected.json` 兩筆與 `R443_ADDED_SUITES` 守門登記（提交 `bb460d89`／`5a182a90`，Git 歷史可考）。
+
+併入 main `e0db7e478f15df4a90ea130ad17d74406db75586`（#434）後依 `tests/FRAGMENTED-REGISTRIES.md`「新增 native 套件」改為：
+
+- 宣告：`python3 -B tests/native_registry.py --init-suite <名稱> --kind node-test --file <檔>` 產生
+  `tests/suites.d/node__face_length_overlay.json`、`tests/suites.d/node__engineering_override_display.json`，
+  order 為 `new/…`，不進封存的 `native-legacy-execution.json`。
+- 計數與成本：只接受 `Native suite measurement` 官方 artifact 由 `--import-suite` 導入。舊 `/1` 摘錄不是官方 artifact ZIP，
+  也不在 `native-legacy.json` 具名的歷史來源內，不能沿用；舊單檔、`R443_ADDED_SUITES` 與舊格式撤回一併移除，不做雙重登記。
+- 歷史 328／324／317 集合：沿用 main 的定義（由已知層與歷史量測推得），新 `new/` 套件自動在外；舊斷言與具名撤回不變。
+
+35／5 分鐘 workflow、每個反證子程序 60 秒、並行上限 2、真收據與模型 `<1200` 秒全部不變。

@@ -235,7 +235,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   const beforeApplicationGrid=(await refs()).grids.find(g=>g.id===gridId),untouchedTimber=(await refs()).timbers.find(t=>t.id===1);
   await choose(field('application.targets.1.gridAction'),'application');
   await details('本面覆寫');await choose(field('application.targets.1.overrides.gap.mode'),'literal');await fill(field('application.targets.1.overrides.gap.value'),5);await publish();
-  check('本面覆寫作用於兩軸且四個來源完整',gridSources(await state(),gridId,application.id,915,1830,5));
+  check('本面覆寫作用於兩軸且四個來源完整',gridSources(await state(),gridId,application.id,915,1830,5)&&await read(`$('ewField-application-targets-1-overrides-gap-mode')?.value==='literal' && $('ewField-application-targets-1-overrides-gap-value')?.value==='5'`));
   const afterApplicationGrid=(await refs()).grids.find(g=>g.id===gridId);
   check('更新本面做法重算引用並保留起點與未綁角材',beforeApplicationGrid.uDefinition.anchor===afterApplicationGrid.uDefinition.anchor&&beforeApplicationGrid.vDefinition.anchor===afterApplicationGrid.vDefinition.anchor&&same((await refs()).timbers.find(t=>t.id===1),untouchedTimber)&&bindingsMatch((await state()).sources.filter(b=>b.target.kind==='timber'&&b.source.kind==='application'),['A','B'].map(field=>({target:{kind:'timber',id:0,field},source:{kind:'application',id:application.id,field:'boundary.'+field},override:null,effective:field==='A'?27:33}))));
 
@@ -260,7 +260,7 @@ module.exports = async function engineeringWorkflow({send,eval_,sleep,click,wait
   s=await state();const method2=s.methods.find(m=>m.id===method.id&&m.version===2);
   check('做法新版尚未套用，現有面仍引用舊版',method2?.panel.version===2&&s.applications.find(a=>a.placement_id===1).method.version===1);
   await choose('#ewField-application-method',refValue(method2));await choose('#ewField-activePlacement',1);await details('本面覆寫');
-  check('版本升級預設保留本面覆寫',await read(`document.querySelector('[data-ew-field="application.targets.1.preserveOverrides"]').checked`));
+  check('版本升級預設保留本面覆寫',await read(`document.querySelector('[data-ew-field="application.targets.1.preserveOverrides"]').checked && $('ewField-application-targets-1-overrides-gap-mode')?.value==='literal' && $('ewField-application-targets-1-overrides-gap-value')?.value==='5'`));
   await publish();s=await state();
   check('明確升級後才改尺寸，兩軸覆寫仍為 5',same(s.applications.find(a=>a.placement_id===1).method,ref(method2))&&gridSources(s,gridId,application.id,910,1820,5));
   check('未選第二面保留舊版本、完整来源與原格線',same(s.applications.find(a=>a.placement_id===2),otherApplication)&&same(s.sources.filter(b=>b.target.kind==='grid'&&b.target.id===otherGrid.id),otherSources)&&same((await refs()).grids.find(g=>g.id===otherGrid.id),otherGrid));

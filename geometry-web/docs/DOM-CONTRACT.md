@@ -8,6 +8,7 @@
 - `#tbPairOperation` 顯示新增或同組重宣告，`#tbPairStatus` 是有界狀態／拒絕原因。`#tbPairPreview` 才準備完整原生候選；`#tbPairCancel` 放棄本入口草稿／本入口持有的候選。新 id 由原生配號，兩列是無序成員，不以輸入順序決定接頭。
 - 選中任一既有組員，`#tbSelected` 顯示兩個 id，`#tbPairEdit` 開同組完整重宣告，`#tbSelDelete` 與左欄 ✕、畫布 Delete／右鍵刪除同走整組預覽。表單另有 `#tbPairDelete`。不得走舊單支 delete→timber→place，也不得以 history group 模擬候選原子性；重宣告保留原 id／World 次序，整組刪除不連坐刪除下游。
 - 共用 `.reference-impact` 顯示原生 `boundaryPairs` 與 `timberImpacts`。`[data-impact-pair="a:b"]`、`[data-impact-pair-member="id"]`、`[data-impact-timber-detail="id"]` 列兩成員／全部受影響下游的來源、角色、截面、舊新區間／姿態與實際端面接觸；`.impact-violation` 逐條列哪支、條文、預期／實際。`#impact-confirm` 僅在完整且零違規候選可用，`#impact-cancel` 返回原表單。一般上游預覽仍走原 adapter；不能用 `boundaryPairs` 是否存在猜測確認命令種類。
+- D16a／P1-A 已知的端面接觸預期由 `reference-ui.js` 顯示為「兩個真實端面須法向相反、位於同一平面，且有正長度接觸。」；以條文及完整原文配對，未知條文或新增限制照原文保留。只轉換畫面文字，不改原生診斷物件、實際數值、確認資格或保存內容。P335 的 `C02_P1_A_NAMES_D16A` 同時核原文回覆與中文顯示；段計數仍為 192。
 - `/boundary-pair/read` 與 `/boundary-pair/preview` 分別使用 `boundary-pair-read/1`、`boundary-pair-transaction/1`。preview 固定原生 revision／contextKey，操作只收 create、redeclare、delete。`/api` 的 `boundary-pair-confirm <token> <ownerKey>`／`boundary-pair-cancel <token> <ownerKey>` 沿現行回執機制，不重送未知確認。候選的工作世代／session／owner 與同一原生 token 必須相符；已有角材候選時拒絕新預覽，不取消他人的候選。
 - 取消／缺件／違規／過期都零寫入；有變更的確認恰一筆歷史，原樣重宣告零筆。復原／重做還原整組。未提交輸入只在本頁記憶體，保存及切換會明示尚未保存並要求先確認或取消；冷開不能復活 token。
 - 已確認組沿 `.scene` 的 `requires boundary-pair/1` 與完整 begin…end 保存，`.gcanvas` 使用既有 `/19` 共享封套及明確 required capability。只承接 #410 的 literal 尺寸子集；以 `boundary_pair_native.complete=false`／`host-app-literal-entry` 有限描述驗讀，不把完整能力加入原生支援清單。工程／參數組員仍拒絕，不能降級成兩次普通 place。
@@ -573,6 +574,39 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 - 面內圖層列參考線列有 `.face-layer-del` ✕ 鈕 → `emitLine("delete guide <id>")`。
 - GEO-203：顯示設定只作用於面內畫布，隱藏線、座標標籤及命中範圍，角材定位預示也遵循它；線的定義、引用選單及已放角材仍保留。每個面分別記住本次檢視設定，離開再進入、重繪及欄位更新不重設；換場景或重新整理恢復顯示。新產生的線預設顯示。三視圖投影及匯出不受影響。
 
+## R11 觸控第一片候選（2026-11-15，未合併／真 CDP 待驗）
+
+固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`；完整設計、原稿指紋、
+證據限制與 L5 待實機項見 [R11-TOUCH.md](R11-TOUCH.md)。以下為本候選的入口契約，
+不是 main 已具備或瀏覽器已通過的聲明。範圍只有
+`connection.phase === 'ready' && oc.on && !oc.focus && !view3` 的物件畫布；
+未 ready（含離線）不接手，保留既有 document 層 blocker。
+busy 時仍依原滑鼠守門開啟檢視選單；單指正式工具同時檢查 DOWN 與重播時的 busy，
+途中遇 busy 即取消自己的暫態，不因忙碌稍後解除而繞過封鎖。
+不攔面內、空間、三視圖或表單的觸控。
+
+| 名稱／DOM | 契約 | 真事件驗收點 |
+|---|---|---|
+| `CanvasTouchGestures.attach(adapter)` | `touch-gestures.js` 共用辨識器；本片只註冊 `#ocv`／空白 `#canvasViewport`。`CanvasTouchGestures.cancel()`／`sync()` 供工具、導航與世代變更退役 | `Input.dispatchTouchEvent`；不能直接呼叫 helper 代替端到端入口 |
+| `CanvasContextMenu.captureTouchTarget(element, x, y)` / `openTouch(pin)` | DOWN 保存 typed 目標、原 client 與世代；重繪不改取新 DOM。開啟與執行都沿原 `stamp`／`current`／`openingGeneration`／項目及寫入守門，失效 pin 不用新選取補位 | 按住期間重繪仍同一目標；切工具／專案或失效 pin 不開單、不寫入 |
+| `.r11-press-ring` | 150ms 顯示、500ms 環完成開選單；`aria-hidden="true"`、`data-progress` 與 `--r11-press-progress` 為圖形狀態，不取得焦點 | 未超過 8 CSS px 才可長按；移動 12px 取消環與計時，仍有原拖曳效果 |
+| `#canvasCtxMenu.fcm-sheet` | 同一選單以 bottom sheet 呈現；64px 常用方塊、至少 44px 清單列。開啟不自動 focus 搜尋輸入，不喚出軟鍵盤；桌面 card 保留原焦點流程 | 長按只開一次；TouchEnd 與合成 contextmenu 不補點選、建立或重開 |
+| `.fcm-sheet [aria-disabled="true"]` / `.fcm-footer[role="status"]` | 不可用項目可點出原拒絕原因，不能執行；不依賴 hover、不另建提示區 | 真 touch 點不可用項目，原因可見、零副作用 |
+| `ocPointerDown` / `ocPointerMove` / `ocPointerUp` | 滑鼠與物件畫布單指共用原選取、卡片拖曳、矩形和 D12 提交路徑；延後辨識時不先送正式命令 | 同條件 mouse／touch 命令與結果一致，原斷言及拒絕保留 |
+| 雙指 owner 取消 / `oc.panX`、`oc.panY`、`oc.zoom` | 第二指先還原第一指自己的暫態，再做同一 camera 的 pan／zoom；範圍 0.02..8，夾限後用實際比例定位中點。剩一指不補單擊，全部抬起才接受新單指手勢 | ratio 1.5±1%、中點≤1px、平移 60±1px；無 click／選取／建立／canvas-pos 提交 |
+
+`pointercancel`、blur、工具／workspace／project／connection 世代改變都清計時、capture、環與自己的快照；
+不能取消其他 owner 或將舊專案快照回寫新上下文。純 pan／zoom／開單不新增幾何 history；
+真正單指卡片拖曳仍按 D12 保存，不能當成全部暫時狀態。
+ContextMenu／Shift+F10、方向鍵、Home／End、Enter、Esc 與 IME 邊界沿同一 shell，
+既有 pan 工具與縮放按鈕保留；裝飾環不成為唯一可及性提示。
+Esc 關單，以及 sheet 的 `home`／`fit`／`snap`／`grid`／`locate`／`clear` 動作關單後，
+同步返回原宿主焦點；外部點擊關單保留新目標焦點，導航與表單由原處理器接續焦點。
+
+本輪 Chromium 在 AF_UNIX socket 受阻，正式升權被自動核准審查拒絕；
+新 CDP 測試未跑到產品斷言，具名撤回 runner 待正式環境執行。
+沒有有效 0／1／0 或完整 golden／段計數生成收據，不能用啟動失敗作為產品紅或 killed。
+
 ## RC Phase 4 柱樑一等物件(cdp_test §P11)
 
 - 物件庫:`#btnNewColumn`/`#btnNewBeam` → `#rcDialog`(`.dialog`),欄位 `#rcW/#rcD/#rcSpace/#rcX/#rcY/#rcZ0/#rcZ1`(柱)、`#rcAxis/#rcA/#rcB/#rcC/#rcTop`(樑);預設尺寸列 `#rcPresets`;`#rcSubmit` 建立。
@@ -651,7 +685,7 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 | `#canvasModeHint` | 主畫布 | 三段結構容器:`.hint-tool`/`.hint-context`/`.hint-kbd` 三個子元素常駐(`renderCanvasModeHint()` 產生);GEO-186(b) 後只有 rect 工具使用,`hidden = oc.drawTool !== "rect"`、三段為固定文字(「矩形」「在畫布上拖出範圍建立游離面」「Esc 取消」);`enterFocus`/`leaveFocus`/`ocCursor` 都會重算 |
 | `#feDraftLayer` | 面內 | `<g>` 掛在 `#faceEditorRoot` 內、`drawFaceEditor()` 重建幾何時掛在最後一個子節點(在其他內容之上);動態建立,不寫進 `index.html`。`renderFeDraftLayer()` 只清空重繪這個 group,pointermove 同步更新 `feDraftPreviewMove()` 的座標，合併至下一幀呈現，不觸發整份 `drawFaceEditor()`。pointerdown/up 先呈現最後狀態；跨編輯工作階段丟棄舊待繪工作。 |
 | `.draft-edge` / `.draft-rubber` / `.draft-preview-face` / `.draft-vertex` / `.draft-start-vertex` / `.draft-edge-len` / `.draft-corner-preview` / `.draft-align-guide` | 面內 | 草稿層內部元素 class(定義在 `app.css`);GEO-186(b) 後只有 `#feDraftLayer` 使用;`.draft-rubber.error` = 交叉/回頭警示態(變紅) |
-| `#feLenInput` | 面內 | 鍵入長度浮動框;`feLenShow()` 讀 `fe.lenBuf`/`fe.drag.cur`/`fe.drag.pts`(兩者皆是鏡射 `fe.draft` 的相容欄位,見下) |
+| `#feLenInput` | 面內 | 鍵入長度浮動框;`feLenShow()` 讀 `fe.lenBuf`/`fe.drag.cur`/`fe.drag.pts`(兩者皆是鏡射 `fe.draft` 的相容欄位,見下)。保留 readonly／pointer-events:none 的鏡射與 `.style.left/top`；定位按實際矩形避開仍開啟的 `#faceCanvasHint`、`.cx-cur`、縮放控制／座標讀數與選取提示，並限制於視口內，游標重畫及相機變動後重量測。不得為顯示鍵入值關閉首次教學或改寫草稿。Node 回歸：`tests/test_face_length_overlay.js`；1400／390 px 真瀏覽器驅動：`tests/diagnostics/d02_length_overlay_browser.cjs`（獨立顯示驗證，不改既有 canvas 段計數）。 |
 | `#mainEdgeLength${i}` / `#mainEdgeFixed${i}` / `#mainEdgeFree${i}` | 主畫布 | 主畫布 boundary 檢視器「外環邊 · 尺寸確認」清單(RC-POLYGON-PLAN §5.A.1.10);與面內 `#edgeLength${i}`/`#edgeFixed${i}`/`#edgeFree${i}` 同構,id 前綴不同(同一 DOM 中兩個檢視器面板同時存在,避免撞號);`data-edge-len`/`data-fix-edge`/`data-fix-val` 屬性沿用既有命名 |
 | `.edge-list` / `.edge-row` | 共用(既有 class 延伸用途) | 主畫布版本沿用面內既有樣式 class;`querySelectorAll` 需以各自 pane 為根(`#inspectorContent` vs `#faceInspectorContent`)避免互相命中 |
 
@@ -1078,6 +1112,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 - `.ew-nav [data-ew-section]` 切換套用、材料、做法與工程包；`#ewPreview` 建立核心候選，`#ewReviewed` 核對完整影響，`#ewConfirm` 確認单次交易。`#ewCancelPreview` 保留表單但取消候選。
 - GEO-218 統一由 `#projectBar [data-project-action="save"]` 的原使用者手勢直接呼叫完整專案保存；未發布表單經 ReferenceWorkspace 草稿 API 保存，與原生 World 分開。單純表單輸入不造成核心 undo 步驟。
 - 已有來源的網格用 `.engineering-grid-details` 顯示有效值；角材 `#tbSelected` 改由工程入口編輯來源，避免舊表單的刪除／重宣告把來源換成字面量。`references.engineeringSources` 為唯一綁定判準。
+- 本面覆寫欄先顯示未提交的明示草稿；沒有該欄草稿且保留覆寫時，從最新原生 application 顯示 literal 數值、spec 名稱或材料版本身分。顯示不建立草稿、不展平材料來源；首次實際改值才建立同欄 mode/value。確認後、關閉重開與新瀏覽器 profile 開檔都須反映目前覆寫；未編輯預覽仍為零項變更。獨立 `d09_override_display_browser.cjs` 核 390／1400 px、取消零寫入、一次確認／復原／重做及真保存開檔；既有 P69 另加強兩個原斷言，計數不變。
 - `#guide-editor` 保留 LOCAL 引用式；DATUM 只能從共用基準管理器修改。`.reference-impact [data-impact-guide]` 顯示全部可見段前後端點；忙碌中的 I8a 確認／取消仍允許真指標操作。
 - `engineering_workflow_test.js` 與 `project_audit_test.js` 使用正式畫布及 native bridge 驗證；模擬視窗不代替實體觸控驗證。
 
@@ -1207,6 +1242,7 @@ DSL、工程規格、參數卡及斷面工作區沿同一 `appendSectionProfileI
 - `[data-pf-grid-setup]` 只在原生宣告 `create-from-fill-grid`、目前選取正式 fill 與正式宿主時出現。尚未建立主格時，`[data-pf-field="createGrid"]` 明勾建立；`[data-pf-field="gridMainAlong"]` 必須明選 `u`／`v`／`none`，空值不能預覽。`none` 傳為 JSON `null`，不暗設偏好。前端不配置 grid id、不傳展開座標。
 - 已有同來源主格時，`[data-pf-grid-existing]` 取代建立勾選，顯示原生 id 與跟隨來源的語意。此入口只建立，不改既有主格的來源或偏好。同一定義不送新的表單候選；原生 repeated-create 仍由既有 batch 協議回 `history_changed:false`。
 - 沿用 `[data-pf-action="preview"|"confirm"|"cancel"]`。`[data-pf-native-changes]` 增列 `fill-grid`；`[data-pf-grid-impact]` 與 `[data-pf-guide-impact]` 列出原生前後主格／參考線紀錄，既有宿主與角材影響列仍完整呈現。缺能力、來源閉包或前後依賴的候選不能確認。
+- `[data-pf-definition-impact]` 按變更對象列出欄位／確認前／候選後；主格、參考線與 `[data-pf-grid-result]` 使用同一份唯讀欄位呈現。`[data-pf-field-path]` 保留原生欄位路徑，尺寸標示 mm、索引明列帶符號 k 與 band；精確十進位字串不轉 Number。主格主表只比較來源、主支、索引空間、結構側、交丁、兩軸基準及原生抽樣／完整狀態；query、抽樣格線與可見線段保留在既有折疊原件。三欄表頭固定為短詞且不直排，390／1400 px 視窗皆須以實際屬性欄寬核對。原 `[data-pf-impact-full]` 仍逐字值保留五份完整 before／after／changes／dependencies JSON，不以顯示表取代原生收據。這是既有表格的呈現替換，沒有新增入口或常駐說明。
 - `[data-pf-grid-result="gridId"]` 將定義來源與有效值分開：fill／host／mainAlong 是保存定義，signed lattice k、panel-row band、side、stagger 與兩軸精確十進位字串是原生求值。來源修改仍走同一份完整預覽；取消不修改主格或其引用。
 - 面內復原／重做使用 `#faceUndoButton`／`#faceRedoButton`；面內工作區遮住背景控制，不能以背景 `#btnUndo`／`#btnRedo` 冒稱一般入口。正式保存／重開沿原 `.gcanvas` 專案入口。
 - `panel_fill_grid_workflow_test.js` 為 `cdp_test.js` 的 **P1284** 外掛，緊接既有 **P128**、先於 P353／P359；P359 仍是最後一段。新段需由原 full CDP 實跑產生 golden，再連同 `geometry-web/canvas_shards.json` 的唯一歸屬核對。既有 P128=381 及其餘每段計數不得更改；未取得新段完整收據前，不得宣告 canvas 通過。

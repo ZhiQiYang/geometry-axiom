@@ -4,7 +4,8 @@
    the two-level run guard (DP-33) and the "is this menu still about the world I opened it on"
    re-check before any item runs. What the items are, what they do, whether the world may
    change and what "current" means stay with each adapter (model / execute / guards / stamp /
-   current). Markup, class names and sizes are byte-identical to the pre-extraction menu. */
+   current). Touch uses the same model and guards in a bottom sheet; card presentation
+   keeps the existing desktop dimensions and keyboard entry. */
 (function () {
   'use strict';
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(n, Math.max(lo, hi)));
@@ -29,9 +30,9 @@
   function create(adapter) {
     for (const key of ['menu', 'viewport', 'actAttr', 'escape', 'icon', 'model', 'stamp', 'current', 'guards', 'begin', 'execute'])
       if (adapter[key] == null) throw new Error('ContextMenuShell: adapter.' + key + ' is required');
-    const presentation = adapter.presentation || 'card';
-    // Sheet presentation (bottom panel, touch) lands with PR-d together with its CSS and placement.
-    if (presentation !== 'card') throw new Error('ContextMenuShell: presentation "' + presentation + '" is not enabled yet');
+    const defaultPresentation = adapter.presentation || 'card';
+    if (!['card', 'sheet'].includes(defaultPresentation))
+      throw new Error('ContextMenuShell: unknown presentation "' + defaultPresentation + '"');
     const menu = adapter.menu, vp = adapter.viewport, act = adapter.actAttr;
     const esc = value => adapter.escape(String(value ?? ''));
     const icon = name => adapter.icon(name);
@@ -63,21 +64,24 @@
       }
     }
     function hover(a, node, generation) {
-      if (!ownsOpening(generation) || state.keyboardNavigation) return;
+      if (!ownsOpening(generation) || state.keyboardNavigation || state.presentation === 'sheet') return;
       if (a.reason) reason(a.reason);
       else if (a.sub) submenu(a.act, node, generation);
       else { reason(''); if (!node.closest('.fcm-submenu')) closeSubmenu(); }
     }
     function reason(text) {
       const footer = menu.querySelector('.fcm-footer'); if (!footer) return;
-      footer.textContent = text || '↑ ↓ 選擇 · Enter 執行 · Esc 關閉';
+      footer.textContent = text || (state?.presentation === 'sheet'
+        ? '點選指令 · 不可用項目可點選查看原因'
+        : '↑ ↓ 選擇 · Enter 執行 · Esc 關閉');
       footer.classList.toggle('has-reason', !!text); position();
     }
     function render() {
       if (!state) return;
       const generation = state.openingGeneration;
       const m = state.model = adapter.model(state.target);
-      menu.innerHTML = `<div class="fcm-head"><span class="fcm-type">${icon(m.typeIcon)}</span><span class="fcm-heading"><strong>${esc(m.title)}</strong><small>${esc(m.meta)}</small></span>${m.chip?`<span class="fcm-chip">${esc(m.chip)}</span>`:''}</div>`+
+      menu.innerHTML = (state.presentation === 'sheet' ? '<div class="fcm-sheet-handle" aria-hidden="true"></div>' : '')+
+        `<div class="fcm-head"><span class="fcm-type">${icon(m.typeIcon)}</span><span class="fcm-heading"><strong>${esc(m.title)}</strong><small>${esc(m.meta)}</small></span>${m.chip?`<span class="fcm-chip">${esc(m.chip)}</span>`:''}</div>`+
         (m.tiles.length?`<div class="fcm-tiles" style="--fcm-tiles:${m.tiles.length}">${m.tiles.map(a=>button(a,true)).join('')}</div>`:'')+
         `<label class="fcm-search">${icon('search')}<input type="search" placeholder="搜尋指令…" aria-label="搜尋右鍵指令"></label><div class="fcm-list"></div><div class="fcm-footer" role="status"></div>`;
       bindButtons(menu.querySelector('.fcm-tiles') || document.createElement('div'), m.tiles);
@@ -95,7 +99,8 @@
         .filter((a,i,all)=>all.findIndex(b=>b.act===a.act)===i)
         .filter(a=>(a.label+' '+a.reason).toLocaleLowerCase().includes(q))];
       const list = menu.querySelector('.fcm-list');
-      list.style.maxHeight = Math.max(60, vp.clientHeight-190)+'px'; list.style.overflowY = 'auto';
+      list.style.maxHeight = state.presentation === 'sheet' ? 'none' : Math.max(60, vp.clientHeight-190)+'px';
+      list.style.overflowY = state.presentation === 'sheet' ? 'visible' : 'auto';
       list.innerHTML = groups.filter(g=>g.length).map(g=>`<div class="fcm-group">${g.map(a=>button(a)).join('')}</div>`).join('') || '<p class="fcm-empty">沒有符合的指令</p>';
       bindButtons(list, groups.flat()); reason(''); position();
     }
@@ -105,6 +110,9 @@
     }
     function submenu(kind, node, generation) {
       if (!ownsOpening(generation)) return;
+      if (state.presentation === 'sheet' && node.getAttribute('aria-expanded') === 'true') {
+        closeSubmenu(); position(); return;
+      }
       closeSubmenu(); if (!isCurrent()) { hide(); return; }
       state.model = adapter.model(state.target);
       const parent = actions(state.model).find(a => a.act === kind);
@@ -112,8 +120,14 @@
       if (parent.reason) { reason(parent.reason); return; }
       const items = state.model.submenus?.[kind] || [];
       const sub = document.createElement('div'); sub.className = 'fcm-submenu'; sub.setAttribute('role', 'menu');
-      sub.innerHTML = items.map(a=>button(a)).join(''); menu.append(sub); bindButtons(sub, items);
+      sub.innerHTML = items.map(a=>button(a)).join('');
+      if (state.presentation === 'sheet') {
+        const list = menu.querySelector('.fcm-list'), group = node.closest('.fcm-group');
+        if (group?.parentElement === list) group.after(sub); else list.prepend(sub);
+      } else menu.append(sub);
+      bindButtons(sub, items);
       node.setAttribute('aria-expanded', 'true');
+      if (state.presentation === 'sheet') { position(); return; }
       const r = vp.getBoundingClientRect(), m = menu.getBoundingClientRect(), b = node.getBoundingClientRect();
       const width = Math.min(212, r.width-16);
       sub.style.width = width+'px';
@@ -152,6 +166,20 @@
       if (!isCurrent()) { hide(); return false; }
       menu.hidden = false;
       const r = vp.getBoundingClientRect(), gap = 8;
+      if (state.presentation === 'sheet') {
+        // The original B sheet spans its host and sits at the visible bottom.
+        // A keyboard/visual-viewport change must keep its scrollable commands reachable.
+        const vv = window.visualViewport;
+        const left = Math.max(r.left, vv?.offsetLeft || 0);
+        const right = Math.min(r.right, (vv?.offsetLeft || 0) + (vv?.width || innerWidth));
+        const top = Math.max(r.top, vv?.offsetTop || 0);
+        const bottom = Math.min(r.bottom, (vv?.offsetTop || 0) + (vv?.height || innerHeight));
+        menu.style.width = Math.max(0, right-left)+'px';
+        menu.style.maxHeight = Math.max(0, bottom-top)+'px';
+        menu.style.left = left+'px';
+        menu.style.top = Math.max(top, bottom-menu.offsetHeight)+'px';
+        return true;
+      }
       menu.style.width = Math.min(CARD_WIDTH, r.width-16)+'px';
       const mw = menu.offsetWidth, mh = menu.offsetHeight;
       const left = clamp(state.target.x, r.left+gap, r.right-mw-gap), top = clamp(state.target.y, r.top+gap, r.bottom-mh-gap);
@@ -163,23 +191,30 @@
       const was = state;
       openingGeneration = ++nextOpeningGeneration;
       state = null; menu.hidden = true; menu.innerHTML = '';
+      menu.classList.remove('fcm-sheet'); menu.style.maxHeight = '';
       if (active === inst) active = null;
       adapter.onHide?.(was);
     }
     function open(x, y, target = {}) {
+      const presentation = target.presentation || defaultPresentation;
+      if (!['card', 'sheet'].includes(presentation)) throw new Error('ContextMenuShell: unknown presentation "' + presentation + '"');
       if (active && active !== inst) active.hide(); // one menu at a time (DP-24)
       hide();
       const t = adapter.begin(x, y, target);
       if (!t) return false;
       const generation = openingGeneration = ++nextOpeningGeneration;
       state = {target: t, stamp: adapter.stamp(t), openingGeneration: generation,
-        keyboardNavigation: false, composing: false};
+        presentation, keyboardNavigation: false, composing: false};
       active = inst;
+      menu.classList.toggle('fcm-sheet', presentation === 'sheet');
       adapter.beforeShow?.(state);
       menu.hidden = false; render(); position();
       if (!ownsOpening(generation)) return false;
       adapter.afterShow?.(state);
-      menu.querySelector('input')?.focus({preventScroll: true});
+      if (presentation === 'sheet') {
+        // Focus the existing menu, not its text input: opening must not summon an IME.
+        menu.tabIndex = -1; menu.focus({preventScroll: true});
+      } else menu.querySelector('input')?.focus({preventScroll: true});
       return true;
     }
     function sync() {
@@ -205,13 +240,17 @@
         event.preventDefault(); event.stopImmediatePropagation();
         const nodes = [...menu.querySelectorAll('[role="menuitem"]')].filter(n=>n.getAttribute('aria-disabled')!=='true');
         const index = nodes.indexOf(document.activeElement);
-        const next = event.key==='Home'?0:event.key==='End'?nodes.length-1:(index+(event.key==='ArrowUp'?-1:1)+nodes.length)%nodes.length;
+        const next = event.key==='Home'?0:event.key==='End'?nodes.length-1:
+          state.presentation === 'sheet' && index < 0 ? (event.key==='ArrowUp'?nodes.length-1:0) :
+          (index+(event.key==='ArrowUp'?-1:1)+nodes.length)%nodes.length;
         nodes[next]?.focus();
       } else if (event.key === 'Enter') {
         event.preventDefault(); event.stopImmediatePropagation();
         const n = event.target.matches('button')?event.target:menu.querySelector('.fcm-list [role="menuitem"][aria-disabled="false"]'); n?.click();
       } else if (event.key === 'ArrowRight' && event.target.getAttribute('aria-haspopup') === 'menu') {
-        event.preventDefault(); event.stopImmediatePropagation(); event.target.click(); menu.querySelector('.fcm-submenu button')?.focus();
+        event.preventDefault(); event.stopImmediatePropagation();
+        if (event.target.getAttribute('aria-expanded') !== 'true') event.target.click();
+        menu.querySelector('.fcm-submenu button')?.focus();
       } else if (event.key === 'ArrowLeft' && event.target.closest('.fcm-submenu')) {
         event.preventDefault(); event.stopImmediatePropagation(); const parent = menu.querySelector('[aria-expanded="true"]'); closeSubmenu(); parent?.focus({preventScroll: true});
       }
@@ -234,6 +273,8 @@
     function onPointerdown(event) { if (state && !inside(event.target) && !adapter.keepOpenFor?.(event)) hide(); }
     document.addEventListener('keydown', onKeydown, true);
     window.addEventListener('resize', onResize);
+    window.visualViewport?.addEventListener('resize', onResize);
+    window.visualViewport?.addEventListener('scroll', onResize);
     document.addEventListener('focusin', onFocusin);
     menu.addEventListener('pointermove', onPointermove);
     if (adapter.outsidePointerClose) document.addEventListener('pointerdown', onPointerdown, true);
@@ -241,6 +282,8 @@
       hide();
       document.removeEventListener('keydown', onKeydown, true);
       window.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('scroll', onResize);
       document.removeEventListener('focusin', onFocusin);
       document.removeEventListener('pointerdown', onPointerdown, true);
       menu.removeEventListener('pointermove', onPointermove);
