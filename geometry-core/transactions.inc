@@ -651,6 +651,7 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
         if(g_preview.ready&&g_preview.pf6_batch){scene_error(path,line_no,"PF-6 cancellation requires its own token");return false;}
+        if(g_preview.ready&&!strcmp(g_preview.command,"framing-template-transaction")){scene_error(path,line_no,"Framing template cancellation requires its own token and owner key");return false;}
         if(g_preview.ready&&g_preview.timber_batch){scene_error(path,line_no,"Timber cancellation requires its own token");return false;}
         if(g_preview.ready&&g_preview.pair_batch&&!g_pair_internal){scene_error(path,line_no,"D16a: boundary-pair 預覽請用 boundary-pair cancel");return false;}
         g_preview.ready=false;

@@ -809,6 +809,28 @@ MUTANTS += [
 ]
 
 
+# #128/#438 owner merge: each withdrawal exercises real bridge commands, and
+# the unchanged semantic judges also retain the correct owner's token/history.
+PF6_OWNER_JUDGE = "tests.test_builder_token_owners.BuilderTokenOwners."
+MUTANTS += [
+    dict(id="PF6_OWNER_PF6_REJECTS_ENGINEERING_CONFIRM", desc="PF-6/main 合流：撤掉 PF-6 owner 排除，一般批次不得提交或取消明選候選", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="&& !g_preview.pf6_batch && strcmp(g_preview.command,\"framing-template-transaction\")",
+         new="&& strcmp(g_preview.command,\"framing-template-transaction\")",
+         tests=[PF6_OWNER_JUDGE + "test_general_batch_cannot_consume_pf6_or_framing_candidates"]),
+    dict(id="PF6_OWNER_FRAMING_TEMPLATE_REJECTS_ENGINEERING_CONFIRM", desc="PF-6/main 合流：撤掉 framing owner 排除，一般批次不得提交或取消模板候選", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="&& !g_preview.pf6_batch && strcmp(g_preview.command,\"framing-template-transaction\")",
+         new="&& !g_preview.pf6_batch",
+         tests=[PF6_OWNER_JUDGE + "test_general_batch_cannot_consume_pf6_or_framing_candidates"]),
+    dict(id="PF6_OWNER_FRAMING_TEMPLATE_REJECTS_LINE_CANCEL", desc="I8a/FT1：撤掉無 token 通用取消的 owner 守門，不得丟棄 framing 原候選", binary="bridge",
+         file="geometry-core/transactions.inc",
+         old='if(g_preview.ready&&!strcmp(g_preview.command,"framing-template-transaction")){scene_error(path,line_no,"Framing template cancellation requires its own token and owner key");return false;}',
+         new='/* mutation: let foreign generic cancellation discard framing candidate */',
+         tests=[PF6_OWNER_JUDGE + "test_other_terminal_owners_preserve_builder_candidates"]),
+]
+
+
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,
                           text=True, encoding="utf-8", errors="replace",

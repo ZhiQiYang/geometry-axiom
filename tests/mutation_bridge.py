@@ -119,6 +119,14 @@ RESTORED += ["tests.test_panel_fill_builder.PanelFillBuilder." + name for name i
 ]]
 
 
+RESTORED += ["tests.test_builder_token_owners.BuilderTokenOwners." + name for name in [
+    "test_general_batch_cannot_consume_pf6_or_framing_candidates",
+    "test_other_terminal_owners_preserve_builder_candidates",
+    "test_pf6_and_framing_reject_each_others_confirmation_and_cancellation",
+    "test_pf6_and_framing_cannot_consume_engineering_candidate",
+]]
+
+
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
