@@ -1,0 +1,200 @@
+{
+ "checks": [
+  {
+   "code": "D09_EXAMPLE_WORKSPACE_READY",
+   "pass": true
+  },
+  {
+   "code": "D09_INITIAL_INHERIT",
+   "pass": true,
+   "mode": "inherit",
+   "modeText": "沿用來源",
+   "value": null,
+   "note": "移除覆寫後會重新預覽來源與完整影響。"
+  },
+  {
+   "code": "D09_PREVIEW_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "D09_CONFIRM_ONE_HISTORY",
+   "pass": true,
+   "undo": [
+    2,
+    3
+   ],
+   "overrides": {
+    "gap": {
+     "kind": "literal",
+     "value": 4
+    }
+   }
+  },
+  {
+   "code": "D09_SAME_OPEN_SHOWS_4",
+   "pass": true,
+   "mode": "literal",
+   "modeText": "改成本面數值",
+   "value": "4",
+   "note": null
+  },
+  {
+   "code": "D09_REOPEN_SHOWS_LITERAL_4",
+   "pass": true,
+   "mode": "literal",
+   "modeText": "改成本面數值",
+   "value": "4",
+   "note": null
+  },
+  {
+   "code": "D09_UNEDITED_PREVIEW_ZERO_CHANGE",
+   "pass": true,
+   "review": "核對這次變更核對 0 項版本或定義變更。目前工程尚未改動。核心未回傳變更列，請核對操作摘要。保留的覆寫 · 1放置面1欄位gap來源種類literal值4我已核對版本、目標、覆寫及連帶影響"
+  },
+  {
+   "code": "D09_CANCEL_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "D09_UNDO_RESTORES_SCENE",
+   "pass": true,
+   "undo": 2,
+   "redo": 1
+  },
+  {
+   "code": "D09_UNDO_FORM_INHERIT",
+   "pass": true,
+   "mode": "inherit",
+   "modeText": "沿用來源",
+   "value": null,
+   "note": "移除覆寫後會重新預覽來源與完整影響。"
+  },
+  {
+   "code": "D09_REDO_RESTORES_SCENE",
+   "pass": true
+  },
+  {
+   "code": "D09_REDO_FORM_SHOWS_4",
+   "pass": true,
+   "mode": "literal",
+   "modeText": "改成本面數值",
+   "value": "4",
+   "note": null
+  },
+  {
+   "code": "D09_COLD_SCENE_EQUAL",
+   "pass": true,
+   "cold": "abc120d3920c9f852e9a8cf6997bd4ec0de5edd0c7cc39001f812d218929823f",
+   "saved": "abc120d3920c9f852e9a8cf6997bd4ec0de5edd0c7cc39001f812d218929823f"
+  },
+  {
+   "code": "D09_COLD_390_SHOWS_4",
+   "pass": true,
+   "mode": "literal",
+   "modeText": "改成本面數值",
+   "value": "4",
+   "note": null
+  }
+ ],
+ "browser": "153.0.8010.12",
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "9cd9b61c5866b3d25401714377287023a81716cf3a168665fb8db48f58f0a683",
+  "fresh": true,
+  "root": "/tmp/l4w/wt",
+  "pid": 557,
+  "session": "9f9f51288b114b2694649a8de512bdc4"
+ },
+ "formInitial": {
+  "mode": "inherit",
+  "modeText": "沿用來源",
+  "value": null,
+  "note": "移除覆寫後會重新預覽來源與完整影響。"
+ },
+ "shotEdited": {
+  "file": "screens/D09-1-edited-4.png",
+  "sha256": "5936a8a8201ef2f7889e0fb7b534c9ea50ec997a9669eb29e40b7e500f5f75b6"
+ },
+ "review1": "核對這次變更核對 1 個面 · 1 個網格 · 0 支角材。目前工程尚未改動。網格 · 1目前所在面面 1 · 放置 #1主支方向沿 vu 軸排格面材 915 mm ＋ 縫 3 mm；起算 0 mmv 軸排格面材 1830 mm ＋ 縫 3 mm；起算 0 mm實際格線u 4 條 · v 1 條套用後所在面面 1 · 放置 #1主支方向沿 vu 軸排格面材 915 mm ＋ 縫 4 mm；起算 0 mmv 軸排格面材 1830 mm ＋ 縫 4 mm；起算 0 mm實際格線u 4 條 · v 1 條完整定義、識別與核心幾何識別1surface1bindingId未設定indexSpaceordinalsourceSystem未設定原點00種類mainparentId未設定cell未設定divisions未設定boundsu 軸04000v 軸03000主支方向vgeometryModeexactgeometryExacttrueu 軸916183427523670u 軸定義來源panel面材915縫寬 mm3起算點0anchorExplicittruev 軸1831v 軸定義來源panel面材1830縫寬 mm3起算點0anchorExplicittruelines軸向uindex0coordinate916角色primary優先序2核心線段91609163000軸向uindex1",
+ "afterConfirm": {
+  "sceneSha": "abc120d3920c9f852e9a8cf6997bd4ec0de5edd0c7cc39001f812d218929823f",
+  "lines": 35,
+  "undo": 3,
+  "redo": 0,
+  "revision": "17"
+ },
+ "overridesAfterConfirm": {
+  "gap": {
+   "kind": "literal",
+   "value": 4
+  }
+ },
+ "formAfterConfirmSameOpen": {
+  "mode": "literal",
+  "modeText": "改成本面數值",
+  "value": "4",
+  "note": null
+ },
+ "formReopened": {
+  "mode": "literal",
+  "modeText": "改成本面數值",
+  "value": "4",
+  "note": null
+ },
+ "shotReopened": {
+  "file": "screens/D09-2-reopened-shows-4.png",
+  "sha256": "74adce37520a084e59dd456204ace844b03c73b2518307820403bb7a0310fbfb"
+ },
+ "review2": "核對這次變更核對 0 項版本或定義變更。目前工程尚未改動。核心未回傳變更列，請核對操作摘要。保留的覆寫 · 1放置面1欄位gap來源種類literal值4我已核對版本、目標、覆寫及連帶影響",
+ "shotUnedited": {
+  "file": "screens/D09-3-unedited-preview.png",
+  "sha256": "4a20c071980284fc4b008ff25cab4e8e627f3db47699d9bb955af306d98f5a10"
+ },
+ "formAfterUndo": {
+  "mode": "inherit",
+  "modeText": "沿用來源",
+  "value": null,
+  "note": "移除覆寫後會重新預覽來源與完整影響。"
+ },
+ "formAfterRedo": {
+  "mode": "literal",
+  "modeText": "改成本面數值",
+  "value": "4",
+  "note": null
+ },
+ "saved": {
+  "suggested": "工程規格試用・平面與7支角材.gcanvas",
+  "sha256": "ca181e669ce03feba074024ff3134fc11243dc67c7deaedb5bdc913cf6aa9eb4",
+  "bytes": 118000
+ },
+ "errorsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "formCold390": {
+  "mode": "literal",
+  "modeText": "改成本面數值",
+  "value": "4",
+  "note": null
+ },
+ "shotCold": {
+  "file": "screens/D09-4-cold-390-shows-4.png",
+  "sha256": "ad77a0b4113a222141be2604a6eedd8f9d4fb23132d072bdf36f2b0f4b16b3aa"
+ },
+ "cold390ValueRect": {
+  "x": 195,
+  "y": 898.6875,
+  "left": 29,
+  "top": 876.6875,
+  "right": 361,
+  "bottom": 920.6875,
+  "w": 332,
+  "h": 44,
+  "vw": 390,
+  "vh": 844
+ },
+ "errorsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "pass": true,
+ "passed": "14/14"
+}
