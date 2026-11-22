@@ -130,6 +130,8 @@
   async function execute(a, node, state) {
     const t = state.target;
     shell.hide();
+    if (state.presentation === 'sheet' && ['home','fit','snap','grid','locate','clear'].includes(a.act))
+      entryViewport().focus({preventScroll:true});
     if (a.act === 'open') await openCanvasObject(t.kind, t.id);
     else if (a.act === 'locate') centerOnNode(t.kind, t.id);
     else if (a.act === 'delete') await deleteObject(t.kind, t.id);
@@ -179,6 +181,24 @@
     return shell.open(x, y, {...(card ? {kind:card.dataset.kind, id:Number(card.dataset.id)} : {}),
       invocation, clientX:invocation === 'pointer' ? clientX : null, clientY:invocation === 'pointer' ? clientY : null});
   }
+  // Freeze the DOWN identity before a redraw can replace its DOM node. The touch
+  // arbiter owns timing/cancellation; this adapter owns the unchanged menu guards.
+  function captureTouchTarget(element, x, y) {
+    if (!availableEntry({target:element}) || oc.tool !== 'select' || oc.drawTool ||
+        !Number.isFinite(x) || !Number.isFinite(y)) return null;
+    const card = element.closest?.('#ocv .ocard');
+    const target = {...(card ? {kind:card.dataset.kind, id:Number(card.dataset.id)} : {}),
+      invocation:'pointer', clientX:x, clientY:y, presentation:'sheet'};
+    // A press on an already selected card retains the same multi-selection menu
+    // and pins every member, exactly as begin() does for the mouse entry.
+    const multi = target.kind && oc.selection.length > 1 &&
+      oc.selection.some(s => s.kind === target.kind && s.id === target.id);
+    return {x, y, target, stamp:stamp({...target, multi:!!multi})};
+  }
+  function openTouch(pin) {
+    if (!pin || !current(pin.stamp)) return false;
+    return shell.open(pin.x, pin.y, pin.target);
+  }
   for (const entry of [vp, offlineVp]) entry.addEventListener('contextmenu', event => {
     if (event.button === 2) keyboardEntry = null;
     if (!availableEntry(event)) return;
@@ -211,5 +231,5 @@
   window.addEventListener('blur', () => { keyboardEntry = null; });
 
   window.CanvasContextMenu = {show:(x, y, target = {}) => shell.open(x, y, target), hide:shell.hide,
-    current, stamp, connectionChanged, get open() { return shell.isOpen; }};
+    current, stamp, connectionChanged, captureTouchTarget, openTouch, get open() { return shell.isOpen; }};
 })();

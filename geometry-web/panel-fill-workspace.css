@@ -19,5 +19,11 @@
 .pf-tiles path{fill:#e4edf2;stroke:#77838c;stroke-width:1;vector-effect:non-scaling-stroke}.pf-seams line{stroke:#185d96;stroke-width:2;vector-effect:non-scaling-stroke}
 .pf-seams line[data-supported="false"]{stroke:#c21f30;stroke-width:3}
 .pf-table-scroll{max-width:100%;overflow:auto}.pf-workspace table{border-collapse:collapse;font-size:.75rem;width:100%}.pf-workspace td,.pf-workspace th{border:1px solid #ccd1d5;padding:.3rem;text-align:left;overflow-wrap:anywhere}
+.pf-record-card{min-width:0;max-width:100%;margin:.6rem 0}.pf-readable-table{table-layout:fixed}
+.pf-readable-table caption{text-align:left;font-weight:600;padding:.4rem 0;overflow-wrap:anywhere}
+.pf-workspace .pf-readable-table thead th{white-space:nowrap;overflow-wrap:normal}
+.pf-readable-table th:first-child{width:40%}.pf-readable-table[data-pf-columns="3"] td{width:30%}
+.pf-workspace .pf-readable-table tbody th{font-weight:400;word-break:normal;overflow-wrap:normal}
+.pf-readable-table td{vertical-align:top;font-variant-numeric:tabular-nums}
 .pf-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:18rem;overflow:auto;font-size:.75rem}
 @media(max-width:560px){.pf-heading{align-items:flex-start;flex-direction:column}.pf-fields{grid-template-columns:1fr}.pf-workspace{padding:.1rem}.pf-actions{grid-template-columns:1fr}.pf-actions button:last-child{grid-column:auto}}

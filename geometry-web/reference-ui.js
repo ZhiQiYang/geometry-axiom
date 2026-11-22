@@ -1,4 +1,13 @@
 /* Reference editing and the mandatory I8a confirmation flow. */
+function referenceImpactExpected(issue) {
+  const expected=issue.expected ?? '候選符合全部來源與幾何限制';
+  // Presentation only: retain the native diagnostic and unfamiliar wording.
+  // Match both the clause and full expectation so later constraints stay visible.
+  if(issue.clause==='D16a' && expected==='two real end faces with opposite normals, one plane and positive contact')
+    return '兩個真實端面須法向相反、位於同一平面，且有正長度接觸。';
+  return expected;
+}
+
 async function confirmReferenceImpact(preview, adapter = null) {
   /* Train 3: one options object serves three callers — R11 passes
      current/ownsPreview, R17 passes boundaryPair + confirm/cancel, R01 passes
@@ -121,7 +130,7 @@ async function confirmReferenceImpact(preview, adapter = null) {
   for (const issue of preview.violations || []) {
     const p = document.createElement('p'); p.className = 'impact-violation';
     const source=[issue.timber?'角材 '+issue.timber:'',issue.instanceId?'實例 #'+issue.instanceId:'',issue.primaryKey?'主支 #'+issue.primaryKey:'',issue.lineKey?'副支線 #'+issue.lineKey:''].filter(Boolean).join(' · ')||'場景';
-    p.textContent = `${source} · ${issue.code?issue.code+' · ':''}${issue.clause || ''}\n預期：${issue.expected ?? '候選符合全部來源與幾何限制'}\n實際：${issue.actual ?? issue.message ?? '無合法結果'}`;
+    p.textContent = `${source} · ${issue.code?issue.code+' · ':''}${issue.clause || ''}\n預期：${referenceImpactExpected(issue)}\n實際：${issue.actual ?? issue.message ?? '無合法結果'}`;
     dialog.append(p);
   }
   if(!repeatComplete){const p=document.createElement('p');p.className='impact-violation';p.textContent='原生服務缺少逐線開間或角材增刪身分結果；請更新服務後重新預覽。';dialog.append(p);}
