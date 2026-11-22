@@ -27,6 +27,24 @@ class PF6HistoricalBudget(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'):
                 self.replay()
 
+    def test_PF6_R396_UNKNOWN_NEW_ROW_WITH_MATCHING_COST_REJECTED(self):
+        # The old set-comprehension silently excluded every new/ row, even
+        # when the exact same unauthorized name had a positive cost.
+        rows = runner.native_registry.load_registry(runner.run_all.ROOT)
+        costs = runner.native_shards.added_suite_costs()
+        extra = 'py:test_r447_unlisted_control'
+        self.assertNotIn(extra, costs)
+        self.assertFalse(any(row['name'] == extra for row in rows))
+        template = next(row for row in rows if row['name'] == 'py:test_panel_fill_builder')
+        forged = dict(template, name=extra, order='new/py__test_r447_unlisted_control')
+        with mock.patch.object(runner.native_registry, 'load_registry',
+                               return_value=[*rows, forged]):
+            with mock.patch.object(runner.native_shards, 'added_suite_costs',
+                                   return_value={**costs, extra: 1000}):
+                with self.assertRaisesRegex(AssertionError,
+                                            'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'):
+                    self.replay()
+
     def test_PF6_R396_DROP_REGISTERED_COST(self):
         costs = runner.native_shards.added_suite_costs()
         incomplete = dict(costs)
