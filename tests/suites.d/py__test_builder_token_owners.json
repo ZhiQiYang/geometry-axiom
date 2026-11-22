@@ -15,7 +15,9 @@
     "timeout": 1200
   },
   "expected": {
-    "mode": "pending-ci-census"
+    "count": 9,
+    "mode": "count",
+    "unit": "test"
   },
   "files": [
     "tests/test_builder_token_owners.py"
