@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_sections/P1162.js",
+    "reason": "R11 P1162 觸控第一片的受限 canvas 測試模組；由既有 dispatcher 載入，自備 fixture 與載入前唯讀事件觀測，不由產品頁面載入。",
+    "sha256": "b815719fd7e81ed48a9befc10bb2b6ee9e0f4d8c35962d634973372ec835d6c8"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

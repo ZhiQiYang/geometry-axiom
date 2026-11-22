@@ -2,8 +2,10 @@
 """R11 real-CDP red first and named withdrawal, without editing the checkout.
 
 Each run gets a separate runtime source snapshot, feedback directory, native
-server and Chrome profile. All browser assertions remain in canvas_touch_test.
-The baseline is the exact pre-product commit plus the identical new test driver.
+server and Chrome profile. All browser assertions remain in canvas_sections/P1162.
+The baseline is the exact pre-product commit plus the identical, explicitly
+enumerated fragmented test-only dispatcher/module closure. The historical
+product bytes are never replaced by current product files.
 Then fixed / R11_WITHDRAW_TOUCH_REGISTRATION / restored must exit 0 / 1 / 0.
 A startup failure, timeout, no CDP, different assertion or missing input proof
 never counts as the required red. No generated golden or ledger is written.
@@ -42,7 +44,57 @@ DIRECTORIES = ('.github', 'geometry-app', 'geometry-core', 'geometry-kernel',
                'geometry-templates', 'geometry-web', 'geometry-guide', 'tests')
 ROOT_FILES = ('current_geometry.c', '公理層.md')
 OMIT = {'.git', '__pycache__', 'node_modules', 'evidence', 'release-evidence', 'prototypes'}
-TEST_OVERLAY = ('geometry-web/cdp_test.js', 'geometry-web/canvas_touch_test.js')
+# These are test infrastructure, never application/build/runtime sources. The
+# registry's validated JSON/ZIP inputs complete this list in test_overlay().
+# Do not use cdp_test's whole static require closure: dormant legacy suites can
+# import product files, which must remain at the historical product revision.
+TEST_OVERLAY = (
+    'geometry-web/cdp_test.js', 'geometry-web/cdp_floor.js',
+    'geometry-web/canvas_shards.js', 'geometry-web/canvas_registry.js',
+    'geometry-web/canvas_capture.js', 'geometry-web/cdp_helpers.js',
+    'geometry-web/cdp_evaluation.js', 'geometry-web/cdp_navigation.js',
+    'geometry-web/transport_failure_trace.js', 'tests/helpers/canvas_shards.js',
+    'geometry-web/canvas_sections/P1162.js',
+)
+CASES = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWPORT',
+         'DISABLED_REASON', 'VIEW_ACTION_FOCUS', 'TAP', 'DOUBLE_TAP', 'DRAG',
+         'CARD_SECOND_TOUCH', 'TWO_FINGERS', 'RECT_CANCEL', 'CANCEL', 'ESCAPE',
+         'STALE_OWNER', 'STALE_NODE']
+
+
+def test_overlay(root=ROOT):
+    """Resolve the real #434 registry, then admit only reviewed test inputs."""
+    code = """const path=require('node:path');
+const root=path.resolve(process.argv[1]);
+const registry=require(path.join(root,'geometry-web/canvas_registry.js')).load(root,{allowCandidates:true});
+process.stdout.write(JSON.stringify({extensions:registry.extensions.map(row=>row.id),files:registry.sourceFiles}));
+"""
+    env = {name: value for name, value in os.environ.items() if not name.startswith('GEOMETRY_')}
+    result = subprocess.run(['node', '-e', code, str(root)], cwd=root, env=env,
+                            capture_output=True, check=True, timeout=30)
+    registry = json.loads(result.stdout)
+    require(registry['extensions'] == ['P1162'],
+            'Historical overlay requires exactly the reviewed P1162 extension')
+    files = sorted(set(TEST_OVERLAY) | set(registry['files']))
+    for name in files:
+        path = Path(name)
+        require(path.as_posix() == name and not path.is_absolute() and '..' not in path.parts,
+                'Invalid test overlay path: ' + name)
+        metadata = ((name.startswith('geometry-web/cdp_sections.d/') and path.suffix == '.json') or
+                    (name.startswith('geometry-web/canvas-registry/') and path.suffix in {'.json', '.zip'}))
+        require(name in TEST_OVERLAY or metadata,
+                'Test overlay attempted to replace an unreviewed or product file: ' + name)
+        require((root / name).is_file() and not (root / name).is_symlink(),
+                'Missing regular test overlay file: ' + name)
+    return tuple(files)
+
+
+def module_scope(result):
+    scope = result.get('scope', {})
+    return (scope.get('mode') == 'partial' and
+            scope.get('filters') == ['GEOMETRY_CANVAS_MODULE_ONLY'] and
+            scope.get('module') == 'P1162' and scope.get('modifiers') == [] and
+            scope.get('acceptance') is False)
 
 
 def sha(data):
@@ -114,9 +166,25 @@ def baseline(target, reference):
             raise RuntimeError('Invalid baseline object bytes: ' + name)
         path = target / name; path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data); path.chmod(int(mode, 8) & 0o777)
-    # T only: identical harness/early observer, all product files stay at BASE.
-    for name in TEST_OVERLAY:
-        (target / name).write_bytes((ROOT / name).read_bytes())
+    historical = fingerprint(target)
+    overlay = test_overlay()
+    for name in overlay:
+        destination = target / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes((ROOT / name).read_bytes())
+    prepared = fingerprint(target)
+    historical_product = {name: item for name, item in historical.items() if name not in overlay}
+    prepared_product = {name: item for name, item in prepared.items() if name not in overlay}
+    require(prepared_product == historical_product,
+            'Historical product bytes changed outside the exact test-only overlay')
+    require(all(prepared[name] == {'bytes': len((ROOT / name).read_bytes()),
+                                 'blob': blob((ROOT / name).read_bytes()),
+                                 'sha256': sha((ROOT / name).read_bytes())} for name in overlay),
+            'Historical baseline did not receive the identical current test closure')
+    return {'historicalProductBase': reference,
+            'testSourceHead': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+            'productOutsideOverlayUnchanged': True,
+            'files': {name: {'before': historical.get(name), 'after': prepared[name]} for name in overlay}}
 
 
 def unused_port():
@@ -184,7 +252,8 @@ def run(label, root, output, binaries):
         require(build.returncode == 0, 'Original native registry/build did not complete: ' + str(build.returncode))
         port, cdp_port = unused_port(), unused_port()
         require(port != cdp_port, 'Service/CDP port collision; no existing process was touched')
-        env.update(GEOMETRY_TEST_URL=f'http://127.0.0.1:{port}/', GEOMETRY_CDP_PORT=str(cdp_port), GEOMETRY_CANVAS_TOUCH_ONLY='1')
+        env.update(GEOMETRY_TEST_URL=f'http://127.0.0.1:{port}/', GEOMETRY_CDP_PORT=str(cdp_port),
+                   GEOMETRY_CANVAS_MODULE_ONLY='1', GEOMETRY_CANVAS_MODULE='P1162')
         server = subprocess.Popen([sys.executable, '-u', 'geometry-web/start_local.py', '--port', str(port), '--binary-dir', str(binaries)],
                                   cwd=root, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
         ready = threading.Event(); startup = {'ready': False}
@@ -226,7 +295,7 @@ def run(label, root, output, binaries):
         result, touch = report['cdp'][0], report['touch'][0]
         require(result.get('completed') is True and result.get('unexpectedBrowserExceptions') == 0,
                 'CDP did not complete cleanly through its original result path')
-        require(result.get('scope', {}).get('mode') == 'partial' and result['scope'].get('filters') == ['GEOMETRY_CANVAS_TOUCH_ONLY'],
+        require(module_scope(result),
                 'Unexpected CDP scope')
         require(result.get('goldenCompare') == 'not compared (partial mode)', 'Unexpected golden operation')
         require(touch.get('input') == 'Input.dispatchTouchEvent' and touch.get('scope') == 'object-canvas', 'Missing touch scope proof')
@@ -251,9 +320,9 @@ def green(row):
     if row['status'] != 'assertions':
         return False
     cdp, touch = row['cdp'][0], row['touch'][0]
-    return (row['exit'] == 0 and cdp.get('failedAssertions') == 0 and not row['failed']
+    return (row['exit'] == 0 and cdp.get('failedAssertions') == 0 and not row['failed'] and module_scope(cdp)
             and touch.get('completed') is True and touch.get('failed') == []
-            and touch.get('passed') == touch.get('expectedCases') and len(touch.get('passed', [])) == 16
+            and touch.get('passed') == touch.get('expectedCases') == CASES and len(touch.get('passed', [])) == 16
             and set(cdp.get('sections', {})) == {'P1162'} and cdp['sections']['P1162'] > 0)
 
 
@@ -263,12 +332,13 @@ def red(row):
     cdp, touch = row['cdp'][0], row['touch'][0]
     failed = touch.get('firstFailure') or {}
     events = failed.get('detail', {}).get('state', {}).get('events', [])
-    return (row['exit'] == 1 and cdp.get('failedAssertions') == 1
+    return (row['exit'] == 1 and cdp.get('failedAssertions') == 1 and module_scope(cdp)
             and len(row['failed']) == 1 and row['failed'][0].startswith('P1162 '+FAILURE+' ✗')
             and failed.get('assertion') == FAILURE and failed.get('kind') == 'assertion'
             and any(event.get('type') == 'pointerdown' and event.get('pointerType') == 'touch' and event.get('trusted') is True for event in events)
             and any(event.get('type') == 'touchstart' and event.get('trusted') is True for event in events)
             and touch.get('failed') == ['LONG_PRESS'] and touch.get('completed') is False
+            and touch.get('expectedCases') == CASES
             and cdp.get('sectionsFailed') == {'P1162': 1})
 
 
@@ -285,12 +355,12 @@ def main():
     require(temp in binaries.parents and ROOT not in binaries.parents, '--binary-dir must be under TEMP, outside the repository')
     out.mkdir(parents=True)
     original = fingerprint(ROOT / 'geometry-web')
-    report = {'schema': 'geometry-r11-touch-withdrawal/1', 'base': args.before_base, 'mutant': MUTANT,
+    report = {'schema': 'geometry-r11-touch-withdrawal/2', 'base': args.before_base, 'mutant': MUTANT,
               'requiredFirstFailure': FAILURE, 'status': 'blocked', 'runs': [], 'problems': []}
     save(out / 'checkout-web-before.json', original)
     try:
         roots = {name: out / ('source-'+name) for name in ('baseline','fixed-before','withdrawn','fixed-after')}
-        baseline(roots['baseline'], args.before_base)
+        report['testOverlay'] = baseline(roots['baseline'], args.before_base)
         for name in ('fixed-before','withdrawn','fixed-after'):
             candidate(roots[name])
         app = roots['withdrawn'] / 'geometry-web/app.js'; data = app.read_bytes()

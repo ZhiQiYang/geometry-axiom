@@ -21,7 +21,7 @@ sheet on current. Later failures in the historical suite remain in the report.
   python3 -B tests/diagnostics/r433_original_release.py \
     --out /tmp/r433-original-replay --binary-dir /tmp/r433-native-cache
 
-The last command delegates to the unchanged original runner, including its
+The last command delegates to the byte-pinned historical runner, including its
 native receipts, isolation, runtime checks and 300-second build/CDP budgets.
 --prepare-only starts neither Chrome nor a native build. Prepared snapshots,
 overlay diff and fingerprints can be inspected before the cloud replay.
@@ -32,13 +32,14 @@ import argparse
 import copy
 import difflib
 import hashlib
-import importlib.util
+import io
 import json
 import math
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import types
 
 ROOT = Path(__file__).resolve().parents[2]
 OLD = 'e8155a9f006c514c53f4630c49a37c676cf83b87'
@@ -144,14 +145,46 @@ def instrument(source):
 
 
 def load_runner(historical):
-    require((ROOT / DRIVER).read_bytes() == historical[DRIVER],
-            'Original runner bytes changed; this diagnostic cannot replace its execution authority')
-    spec = importlib.util.spec_from_file_location('r433_original_release_runner', ROOT / DRIVER)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    # historical_sources() verified its exact bytes/blob/SHA-256 from OLD.
+    # Execute those bytes, not the current fragmented runner. __file__ only
+    # supplies the real source root; it does not read today's runner or fixture.
+    module = types.ModuleType('r433_original_release_runner')
+    module.__file__ = str(ROOT / DRIVER)
+    exec(compile(historical[DRIVER], module.__file__ + '@' + OLD, 'exec'), module.__dict__)
     require(module.ROOT == ROOT and tuple(module.TEST_OVERLAY) == (CDP, TEST),
             'Unexpected original runner root or test-overlay scope')
     return module
+
+
+def historical_baseline(original, target):
+    """Materialize OLD directly; never call an overlay using retired live paths."""
+    target.mkdir()
+    tree = subprocess.check_output(['git', 'ls-tree', '-rz', '--full-tree', OLD], cwd=ROOT)
+    entries = []
+    for entry in tree.split(b'\0'):
+        if not entry:
+            continue
+        metadata, raw_name = entry.split(b'\t', 1)
+        mode, kind, object_id = metadata.decode().split()
+        name = raw_name.decode()
+        if not original.wanted(name) or not (name.split('/')[0] in original.DIRECTORIES or
+                name in original.ROOT_FILES or '/' not in name and Path(name).suffix in {'.h', '.inc'}):
+            continue
+        require(kind == 'blob' and mode in {'100644', '100755'}, 'Unsupported historical source: ' + name)
+        entries.append((name, object_id, mode))
+    batch = subprocess.run(['git', 'cat-file', '--batch'], cwd=ROOT,
+                           input=''.join(oid + '\n' for _, oid, _ in entries).encode(), capture_output=True, check=True)
+    stream = io.BytesIO(batch.stdout)
+    for name, object_id, mode in entries:
+        header = stream.readline().decode().strip().split()
+        require(len(header) == 3 and header[:2] == [object_id, 'blob'], 'Missing historical source: ' + name)
+        size = int(header[2]); data = stream.read(size)
+        require(len(data) == size and stream.read(1) == b'\n' and original.blob(data) == object_id,
+                'Invalid historical object bytes: ' + name)
+        path = target / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        path.chmod(int(mode, 8) & 0o777)
 
 
 def finite(value):
@@ -386,7 +419,7 @@ def main():
     binaries = (args.binary_dir or out / 'binaries').resolve()
     require(temp in binaries.parents and ROOT not in binaries.parents,
             '--binary-dir must be under TEMP, outside the checkout')
-    overlay = {CDP: historical[CDP], TEST: instrument(historical[TEST])}
+    overlay = {CDP: historical[CDP], TEST: instrument(historical[TEST]), DRIVER: historical[DRIVER]}
     out.mkdir(parents=True)
     checkout_before = original.fingerprint(ROOT)
     original.save(out / 'checkout-before.json', checkout_before)
@@ -408,7 +441,7 @@ def main():
         for label in ('old', 'current'):
             source = out / ('source-' + label)
             if label == 'old':
-                original.baseline(source, OLD)
+                historical_baseline(original, source)
             else:
                 original.candidate(source)
             before = original.fingerprint(source)

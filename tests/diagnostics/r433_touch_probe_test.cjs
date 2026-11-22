@@ -11,10 +11,10 @@ const {test} = require('node:test');
 const {performance} = require('node:perf_hooks');
 
 const sourcePath = path.resolve(process.env.R433_PROBE_SOURCE ||
-  path.join(__dirname, '../../geometry-web/canvas_touch_test.js'));
+  path.join(__dirname, '../../geometry-web/canvas_sections/P1162.js'));
 const source = fs.readFileSync(sourcePath, 'utf8');
 const start = source.indexOf('function installEarlyObserver() {');
-const end = source.indexOf('\nmodule.exports = async function canvasTouch(');
+const end = source.indexOf('\nmodule.exports = async helpers => {');
 assert.ok(start >= 0 && end > start, 'R433_PROBE_REAL_FUNCTION_BOUNDARIES');
 
 function fixture({ownerAvailable = true, productListener = () => {}} = {}) {

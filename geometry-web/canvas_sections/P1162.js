@@ -4,8 +4,34 @@
  * The only callback replay is explicitly labelled STALE_NODE fault injection.
  */
 'use strict';
-const cdp = require('./cdp_helpers.js');
+const {randomUUID} = require('node:crypto');
+const {waitForExpectedNavigation} = require('../cdp_navigation.js');
 const {isDeepStrictEqual: same} = require('node:util');
+function makeRead(eval_) {
+  return async expression => {
+    const value = await eval_(expression);
+    if (value?.__err) throw Error(value.__err);
+    return value;
+  };
+}
+
+/* Keep entry identities in the browser: JSON copies and stack lengths cannot
+ * prove one commit when bounded history is full. These pins are test-only. */
+function isSingleHistoryStep(before,after,limit) {
+  const retained=before.slice(Math.max(0,before.length+1-limit));
+  return after.length===Math.min(before.length+1,limit)&&after.length===retained.length+1&&
+    after.slice(0,-1).every((entry,i)=>entry===retained.at(i))&&!before.includes(after.at(-1));
+}
+function makeHistoryOracle(read,namespace) {
+  let serial=0;
+  return {
+    async capture(){const pin=namespace+':'+(++serial);return read(`(()=>{const h=ReferenceWorkspace.history;(window.__cdpHistoryPins ||= new Map()).set(${JSON.stringify(pin)},{undo:h.undo.slice(),redo:h.redo.slice(),limit:h.limit,frame:h.frame});return {pin:${JSON.stringify(pin)},undo:h.undo.length,redo:h.redo.length,limit:h.limit};})()`);},
+    unchanged:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)}),same=(a,z)=>a.length===z.length&&a.every((entry,i)=>entry===z[i]);return h.limit===b.limit&&h.frame===b.frame&&same(h.undo,b.undo)&&same(h.redo,b.redo);})()`),
+    single:({pin})=>read(`(()=>{const h=ReferenceWorkspace.history,b=window.__cdpHistoryPins.get(${JSON.stringify(pin)});return h.limit===b.limit&&h.group===null&&h.redo.length===0&&(${isSingleHistoryStep.toString()})(b.undo,h.undo,h.limit);})()`),
+    release:({pin})=>read(`window.__cdpHistoryPins.delete(${JSON.stringify(pin)});void 0`),
+  };
+}
+
 const FIXTURE = [
   'boundary 41 outline 0,0 1000,0 1000,800 0,800', 'canvas-pos boundary 41 80 100',
   'boundary 42 outline 0,0 1200,0 1200,900 0,900', 'canvas-pos boundary 42 400 100',
@@ -19,7 +45,8 @@ const CASES = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWP
 // A document listener installed later cannot observe a correctly consumed touch
 // pointer at window capture. This observer never prevents or dispatches events.
 function installEarlyObserver() {
-  const p = window.__p1162Early = {events:[],enabled:false,eventRows:new WeakMap(),eventRefs:new WeakMap()};
+  const p = window.__p1162Early = {events:[],enabled:false,eventRows:new WeakMap(),eventRefs:new WeakMap(),
+    beforeProduct:document.readyState==='loading'&&typeof oc==='undefined'&&typeof objectTouchOwner==='undefined'};
   const types = p.types = ['pointerdown','pointermove','pointerup','pointercancel','touchstart','touchmove','touchend','touchcancel',
     'mousedown','mouseup','contextmenu','click','keydown','scroll','resize','lostpointercapture'];
   // Keep the actual Event until a later CDP read, after dispatch has returned.
@@ -49,6 +76,11 @@ function installEarlyObserver() {
     p.eventRows.set(event,row); p.eventRefs.set(row,event); p.events.push(row);
   };
   for (const type of types) window.addEventListener(type, observe, true);
+  p.cleanup = () => {
+    for (const type of types) window.removeEventListener(type,observe,true);
+    p.enabled = false; p.clear();
+    if (window.__p1162Early === p) delete window.__p1162Early;
+  };
 }
 
 function installProbe() {
@@ -119,18 +151,19 @@ function installProbe() {
   };
 }
 
-module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCount}) {
+module.exports = async helpers => {
+  const {send, eval_, waitForUI, exceptionCount, makeCheck} = helpers;
   console.log('=== P1162. 物件畫布觸控：長按、雙指與原路徑等價 ===');
-  const read = cdp.makeRead(eval_);
-  const history = cdp.makeHistoryOracle(read, 'P1162');
+  const read = makeRead(eval_);
+  const history = makeHistoryOracle(read, 'P1162');
   const pins = [], results = [];
-  const baseCheck = cdp.makeCheck({prefix:'P1162 '});
+  const baseCheck = makeCheck({prefix:'P1162 '});
   const initialExceptions = exceptionCount();
   let active = null, touching = false;
   function check(name, value, detail) {
     const passed = value === true;
     baseCheck(name, passed, detail);
-    active.assertions[passed ? 'passed' : 'failed']++;
+    if (passed) active.assertions.passed++; else active.assertions.failed++;
     if (!passed) {
       active.firstFailure ||= {assertion:name, kind:'assertion', detail};
       const error = Error(name); error.p1162Assertion = true; throw error;
@@ -664,17 +697,31 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     check('STALE_NODE_CANNOT_CLOSE_NEW_MENU', await read(`!$('canvasCtxMenu').hidden && $('canvasCtxMenu').textContent.includes('42')`));
     await unchanged(before,'STALE_NODE_NO_WRITE');
   }
-  const actions = {LONG_PRESS:longPress, BLANK_EQUIVALENCE:blankEquivalence, SHEET_KEYBOARD:sheetKeyboard,
+  const actions = new Map(Object.entries({LONG_PRESS:longPress, BLANK_EQUIVALENCE:blankEquivalence, SHEET_KEYBOARD:sheetKeyboard,
     SHORT_VIEWPORT:shortViewport, DISABLED_REASON:disabledReason, VIEW_ACTION_FOCUS:viewActionFocus,
     TAP:shortTap, DOUBLE_TAP:doubleTap,
     DRAG:drag, CARD_SECOND_TOUCH:cardSecondTouch, TWO_FINGERS:twoFingers,
-    RECT_CANCEL:rectCancel, CANCEL:()=>cancelled('CANCEL'), ESCAPE:()=>cancelled('ESCAPE'), STALE_OWNER:staleOwner, STALE_NODE:staleNode};
+    RECT_CANCEL:rectCancel, CANCEL:()=>cancelled('CANCEL'), ESCAPE:()=>cancelled('ESCAPE'), STALE_OWNER:staleOwner, STALE_NODE:staleNode}));
+  const marker = 'P1162:'+randomUUID();
   try {
+    // Dispatcher invokes modules after the app is ready. Install into the next
+    // document, reload, and require this exact fresh marker before the probe.
+    // The existing initial-load 30000 ms limit is retained; touch deadlines below
+    // are unchanged. Never install the early observer into an already-live page.
+    const injected = await send('Page.addScriptToEvaluateOnNewDocument', {source:
+      '('+installEarlyObserver.toString()+')();window.__cdpExpectedNavigationMarker='+JSON.stringify(marker)+';'});
+    try {
+      await send('Page.reload', {});
+      await waitForExpectedNavigation({evaluate:eval_,marker,label:'P1162 early observer',timeout:30000,pollInterval:50,
+        condition:"typeof api==='function'&&typeof oc==='object'&&typeof ReferenceWorkspace!=='undefined'&&connection.phase==='ready'&&window.__p1162Early?.beforeProduct===true"});
+    } finally {
+      await send('Page.removeScriptToEvaluateOnNewDocument', {identifier:injected.result.identifier});
+    }
     await read('('+installProbe.toString()+')()');
     await send('Emulation.setTouchEmulationEnabled', {enabled:true,maxTouchPoints:2});
     for (const id of CASES) {
       active = {id,status:'running',assertions:{passed:0,failed:0}};
-      try { await actions[id](); active.status = 'pass'; }
+      try { await actions.get(id)(); active.status = 'pass'; }
       catch (error) {
         if (!error.p1162Assertion) throw error;
         active.status = 'fail';
@@ -686,8 +733,9 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     check('NO_NEW_BROWSER_EXCEPTION', exceptionCount() === initialExceptions);
   } finally {
     if (touching) await touch('touchCancel');
-    await read(`(()=>{CanvasContextMenu.hide();FaceContextMenu.hide();setOcTool('select');
-      closeDialogs();closeMenus();closePanels();__p1162?.cleanup();})()`);
+    await read(`(()=>{try {CanvasContextMenu.hide();FaceContextMenu.hide();setOcTool('select');
+      closeDialogs();closeMenus();closePanels();} finally {window.__p1162?.cleanup();window.__p1162Early?.cleanup();
+      if(window.__cdpExpectedNavigationMarker===${JSON.stringify(marker)})delete window.__cdpExpectedNavigationMarker;}})()`);
     for (const pin of pins) await history.release(pin);
     await send('Emulation.setTouchEmulationEnabled', {enabled:false});
     await send('Emulation.setDeviceMetricsOverride', {width:1400,height:900,deviceScaleFactor:1,mobile:false});
@@ -699,4 +747,3 @@ module.exports = async function canvasTouch({send, eval_, waitForUI, exceptionCo
     failed:results.filter(row=>row.status==='fail').map(row=>row.id),
     firstFailure:results.find(row=>row.firstFailure)?.firstFailure || null}));
 };
-module.exports.installEarlyObserver = installEarlyObserver;

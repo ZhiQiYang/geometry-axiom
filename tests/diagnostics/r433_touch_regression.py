@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """PR 433 touch repair: old-head red, two product and one fixture CDP 0/1/0 proofs.
 
-This diagnostic imports the original canvas_touch_regression.py unchanged.
+This diagnostic imports the reviewed fragmented canvas_touch_regression.py,
+whose exact source hash below pins its execution authority.
 Its snapshot, native build, runtime probe, Chrome execution, 300 s budgets,
 16-case green predicate and source checks remain the execution authority.
 No Chrome is started by --self-test; those receipts are explicitly synthetic.
@@ -16,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import importlib.util
 import json
 import math
@@ -29,10 +31,11 @@ ROOT = Path(__file__).resolve().parents[2]
 BASE = 'e8155a9f006c514c53f4630c49a37c676cf83b87'
 PRODUCT = 'geometry-web/touch-gestures.js'
 DRIVER = 'tests/canvas_touch_regression.py'
+DRIVER_SHA256 = '9cdc391b89b20a4737b47fba03c35704e8130979badb3b5c3c8d9fad225e227b'
 RELEASE = 'R433_RELEASE_PRESERVES_MENU'
 DELETE = 'TOUCH_DELETE_COMPLETED'
 BLANK = 'R433_BLANK_TOUCH_TARGET'
-TOUCH_TEST = 'geometry-web/canvas_touch_test.js'
+TOUCH_TEST = 'geometry-web/canvas_sections/P1162.js'
 CASES = ['LONG_PRESS', 'BLANK_EQUIVALENCE', 'SHEET_KEYBOARD', 'SHORT_VIEWPORT',
          'DISABLED_REASON', 'VIEW_ACTION_FOCUS', 'TAP', 'DOUBLE_TAP', 'DRAG',
          'CARD_SECOND_TOUCH', 'TWO_FINGERS', 'RECT_CANCEL', 'CANCEL', 'ESCAPE',
@@ -50,6 +53,8 @@ MUTATIONS = (
 
 
 def original_runner():
+    if hashlib.sha256((ROOT / DRIVER).read_bytes()).hexdigest() != DRIVER_SHA256:
+        raise RuntimeError('Fragmented registration runner differs from its reviewed exact byte pin')
     spec = importlib.util.spec_from_file_location('r433_original_touch_runner', ROOT / DRIVER)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -190,7 +195,10 @@ def repair_red(row, marker):
         failure = touch.get('firstFailure') or {}
         if not (cdp.get('completed') is True and cdp.get('unexpectedBrowserExceptions') == 0
                 and cdp.get('scope', {}).get('mode') == 'partial'
-                and cdp.get('scope', {}).get('filters') == ['GEOMETRY_CANVAS_TOUCH_ONLY']
+                and cdp.get('scope', {}).get('filters') == ['GEOMETRY_CANVAS_MODULE_ONLY']
+                and cdp.get('scope', {}).get('module') == 'P1162'
+                and cdp.get('scope', {}).get('modifiers') == []
+                and cdp.get('scope', {}).get('acceptance') is False
                 and cdp.get('goldenCompare') == 'not compared (partial mode)'
                 and cdp.get('failedAssertions') == 1
                 and set(cdp.get('sections', {})) == {'P1162'}
@@ -288,7 +296,8 @@ def predicate_selftest(original):
             'status': 'assertions', 'exit': 1, 'sourceUnchanged': True, 'runtime': {'fresh': True},
             'fatal': [], 'failed': ['P1162 ' + marker + ' ✗'],
             'cdp': [{'completed': True, 'unexpectedBrowserExceptions': 0,
-                     'scope': {'mode': 'partial', 'filters': ['GEOMETRY_CANVAS_TOUCH_ONLY'],
+                     'scope': {'mode': 'partial', 'filters': ['GEOMETRY_CANVAS_MODULE_ONLY'],
+                               'module': 'P1162', 'modifiers': [], 'acceptance': False,
                                'url': 'http://127.0.0.1:12345/'},
                      'goldenCompare': 'not compared (partial mode)', 'failedAssertions': 1,
                      'sections': {'P1162': 1}, 'sectionsFailed': {'P1162': 1}}],
@@ -323,6 +332,8 @@ def predicate_selftest(original):
             ('incomplete CDP', lambda r: r['cdp'][0].update(completed=False)),
             ('browser exception', lambda r: r['cdp'][0].update(unexpectedBrowserExceptions=1)),
             ('wrong scope', lambda r: r['cdp'][0].update(scope={'mode': 'full'})),
+            ('retired touch-only scope', lambda r: r['cdp'][0]['scope'].update(filters=['GEOMETRY_CANVAS_TOUCH_ONLY'])),
+            ('wrong module', lambda r: r['cdp'][0]['scope'].update(module='P999')),
             ('different case', lambda r: r['touch'][0].update(failed=['STALE_NODE'])),
             ('missing required cases', lambda r: r['touch'][0].update(expectedCases=CASES[:-1])),
             ('other assertion', lambda r: r['touch'][0]['firstFailure'].update(assertion='CONTROL_REACHABLE')),
@@ -425,17 +436,17 @@ def main():
     binaries = (args.binary_dir or out / 'binaries').resolve()
     original.require(temp in binaries.parents and ROOT not in binaries.parents,
                      '--binary-dir must be under TEMP, outside the repository')
-    old_driver = subprocess.check_output(['git', 'show', BASE + ':' + DRIVER], cwd=ROOT)
-    original.require((ROOT / DRIVER).read_bytes() == old_driver,
-                     'The original R11 registration runner must remain unchanged')
+    driver_bytes = (ROOT / DRIVER).read_bytes()
+    original.require(hashlib.sha256(driver_bytes).hexdigest() == DRIVER_SHA256,
+                     'The fragmented R11 registration runner must match its reviewed byte pin')
     out.mkdir(parents=True)
     checkout_before = original.fingerprint(ROOT)
     original.save(out / 'checkout-before.json', checkout_before)
     report = {
-        'schema': 'geometry-r433-touch-repair/2', 'base': BASE, 'status': 'blocked',
-        'originalDriver': identity(original, old_driver), 'runs': [], 'proofs': [], 'problems': [],
+        'schema': 'geometry-r433-touch-repair/3', 'base': BASE, 'status': 'blocked',
+        'originalDriver': identity(original, driver_bytes), 'runs': [], 'proofs': [], 'problems': [],
         'candidateHead': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        'testOverlay': {name: identity(original, (ROOT / name).read_bytes()) for name in original.TEST_OVERLAY},
+        'testOverlay': {name: identity(original, (ROOT / name).read_bytes()) for name in original.test_overlay()},
     }
 
     def run(label, source):
@@ -448,9 +459,9 @@ def main():
 
     try:
         before_root = out / 'source-before'
-        original.baseline(before_root, BASE)
+        report['historicalTestOverlay'] = original.baseline(before_root, BASE)
         original.require(all((before_root / name).read_bytes() == (ROOT / name).read_bytes()
-                             for name in original.TEST_OVERLAY), 'Baseline must use the identical T harness')
+                             for name in original.test_overlay()), 'Baseline must use the identical T harness')
         baseline = run('before', before_root)
         original.require(repair_red(baseline, RELEASE), 'Exact old head did not reach ' + RELEASE)
         for name, kind, path, marker, anchor, replacement in MUTATIONS:
