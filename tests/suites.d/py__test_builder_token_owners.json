@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_builder_token_owners.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_builder_token_owners.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_builder_token_owners.py"
+  ],
+  "name": "py:test_builder_token_owners",
+  "order": "new/py__test_builder_token_owners",
+  "schema": "geometry-native-suite/1"
+}
