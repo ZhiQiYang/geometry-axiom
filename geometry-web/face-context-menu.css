@@ -37,6 +37,25 @@ body.oc-busy :is(#canvasCtxMenu,#spaceCtxMenu,#viewCtxMenu) :is(button,input) { 
 .fcm-submenu { position:absolute; z-index:2; width:212px; padding:6px; background:#fff; border:1px solid #dfe4eb; border-radius:12px; box-shadow:0 12px 34px rgba(24,33,51,.12),0 3px 10px rgba(24,33,51,.08); }
 .fcm-empty { margin:8px; color:#596679; font-size:12px; }
 .fcm-suppressed { visibility:hidden; pointer-events:none; }
+/* R11 PR-d: B touch presentation of the same menu; no duplicate command surface. */
+:is(#feCtxMenu,#canvasCtxMenu).fcm-sheet {
+  box-sizing:border-box; padding:8px 12px max(0px, env(safe-area-inset-bottom));
+  border-radius:16px 16px 0 0; overflow:auto; overscroll-behavior:contain;
+}
+:is(#feCtxMenu,#canvasCtxMenu).fcm-sheet:not([hidden]) { display:flex; flex-direction:column; }
+.fcm-sheet-handle { width:36px; height:4px; min-height:4px; margin:0 auto 10px; background:#c3cad5; border-radius:2px; }
+.fcm-sheet :is(.fcm-head,.fcm-tiles,.fcm-search,.fcm-footer) { flex-shrink:0; }
+.fcm-sheet .fcm-tiles { gap:6px; }
+:is(#feCtxMenu,#canvasCtxMenu).fcm-sheet .fcm-tile { height:64px; font-size:12px; }
+:is(#feCtxMenu,#canvasCtxMenu).fcm-sheet .fcm-row { min-height:44px; height:auto; font-size:14px; padding:8px; }
+.fcm-sheet .fcm-search input { min-height:44px; font-size:16px; }
+.fcm-sheet .fcm-list { flex:0 0 auto; }
+.fcm-sheet .fcm-submenu { position:static; width:auto; margin:4px 0; border-radius:8px; box-shadow:none; }
+.fcm-sheet .fcm-footer { margin:5px -12px 0; border-radius:0; }
+/* Only the object gesture surface owns touch; page/forms keep native scrolling. */
+#ocv { touch-action:none; }
+.r11-press-ring { position:fixed; z-index:90; width:56px; height:56px; transform:translate(-50%,-50%); pointer-events:none; }
+.r11-press-ring svg { display:block; width:56px; height:56px; }
 #feOpPanel.fcm-panel { position:fixed; z-index:92; width:296px; padding:10px 12px; transform:none; border-color:#dfe4eb; box-shadow:0 12px 34px rgba(24,33,51,.12),0 3px 10px rgba(24,33,51,.08); font-family:Inter,'Noto Sans TC',system-ui,sans-serif; max-height:calc(100% - 16px); overflow:auto; }
 .fcm-panel .fe-op-head { display:grid; grid-template-columns:24px minmax(0,1fr) 26px; column-gap:8px; row-gap:0; margin-bottom:9px; align-items:center; }
 .fcm-form-icon { grid-row:1 / span 2; width:24px; height:24px; display:grid; place-items:center; border-radius:7px; background:#eef1ff; color:#3d54d4; }

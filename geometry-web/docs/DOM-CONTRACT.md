@@ -574,6 +574,39 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 - 面內圖層列參考線列有 `.face-layer-del` ✕ 鈕 → `emitLine("delete guide <id>")`。
 - GEO-203：顯示設定只作用於面內畫布，隱藏線、座標標籤及命中範圍，角材定位預示也遵循它；線的定義、引用選單及已放角材仍保留。每個面分別記住本次檢視設定，離開再進入、重繪及欄位更新不重設；換場景或重新整理恢復顯示。新產生的線預設顯示。三視圖投影及匯出不受影響。
 
+## R11 觸控第一片候選（2026-11-15，未合併／真 CDP 待驗）
+
+固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`；完整設計、原稿指紋、
+證據限制與 L5 待實機項見 [R11-TOUCH.md](R11-TOUCH.md)。以下為本候選的入口契約，
+不是 main 已具備或瀏覽器已通過的聲明。範圍只有
+`connection.phase === 'ready' && oc.on && !oc.focus && !view3` 的物件畫布；
+未 ready（含離線）不接手，保留既有 document 層 blocker。
+busy 時仍依原滑鼠守門開啟檢視選單；單指正式工具同時檢查 DOWN 與重播時的 busy，
+途中遇 busy 即取消自己的暫態，不因忙碌稍後解除而繞過封鎖。
+不攔面內、空間、三視圖或表單的觸控。
+
+| 名稱／DOM | 契約 | 真事件驗收點 |
+|---|---|---|
+| `CanvasTouchGestures.attach(adapter)` | `touch-gestures.js` 共用辨識器；本片只註冊 `#ocv`／空白 `#canvasViewport`。`CanvasTouchGestures.cancel()`／`sync()` 供工具、導航與世代變更退役 | `Input.dispatchTouchEvent`；不能直接呼叫 helper 代替端到端入口 |
+| `CanvasContextMenu.captureTouchTarget(element, x, y)` / `openTouch(pin)` | DOWN 保存 typed 目標、原 client 與世代；重繪不改取新 DOM。開啟與執行都沿原 `stamp`／`current`／`openingGeneration`／項目及寫入守門，失效 pin 不用新選取補位 | 按住期間重繪仍同一目標；切工具／專案或失效 pin 不開單、不寫入 |
+| `.r11-press-ring` | 150ms 顯示、500ms 環完成開選單；`aria-hidden="true"`、`data-progress` 與 `--r11-press-progress` 為圖形狀態，不取得焦點 | 未超過 8 CSS px 才可長按；移動 12px 取消環與計時，仍有原拖曳效果 |
+| `#canvasCtxMenu.fcm-sheet` | 同一選單以 bottom sheet 呈現；64px 常用方塊、至少 44px 清單列。開啟不自動 focus 搜尋輸入，不喚出軟鍵盤；桌面 card 保留原焦點流程 | 長按只開一次；TouchEnd 與合成 contextmenu 不補點選、建立或重開 |
+| `.fcm-sheet [aria-disabled="true"]` / `.fcm-footer[role="status"]` | 不可用項目可點出原拒絕原因，不能執行；不依賴 hover、不另建提示區 | 真 touch 點不可用項目，原因可見、零副作用 |
+| `ocPointerDown` / `ocPointerMove` / `ocPointerUp` | 滑鼠與物件畫布單指共用原選取、卡片拖曳、矩形和 D12 提交路徑；延後辨識時不先送正式命令 | 同條件 mouse／touch 命令與結果一致，原斷言及拒絕保留 |
+| 雙指 owner 取消 / `oc.panX`、`oc.panY`、`oc.zoom` | 第二指先還原第一指自己的暫態，再做同一 camera 的 pan／zoom；範圍 0.02..8，夾限後用實際比例定位中點。剩一指不補單擊，全部抬起才接受新單指手勢 | ratio 1.5±1%、中點≤1px、平移 60±1px；無 click／選取／建立／canvas-pos 提交 |
+
+`pointercancel`、blur、工具／workspace／project／connection 世代改變都清計時、capture、環與自己的快照；
+不能取消其他 owner 或將舊專案快照回寫新上下文。純 pan／zoom／開單不新增幾何 history；
+真正單指卡片拖曳仍按 D12 保存，不能當成全部暫時狀態。
+ContextMenu／Shift+F10、方向鍵、Home／End、Enter、Esc 與 IME 邊界沿同一 shell，
+既有 pan 工具與縮放按鈕保留；裝飾環不成為唯一可及性提示。
+Esc 關單，以及 sheet 的 `home`／`fit`／`snap`／`grid`／`locate`／`clear` 動作關單後，
+同步返回原宿主焦點；外部點擊關單保留新目標焦點，導航與表單由原處理器接續焦點。
+
+本輪 Chromium 在 AF_UNIX socket 受阻，正式升權被自動核准審查拒絕；
+新 CDP 測試未跑到產品斷言，具名撤回 runner 待正式環境執行。
+沒有有效 0／1／0 或完整 golden／段計數生成收據，不能用啟動失敗作為產品紅或 killed。
+
 ## RC Phase 4 柱樑一等物件(cdp_test §P11)
 
 - 物件庫:`#btnNewColumn`/`#btnNewBeam` → `#rcDialog`(`.dialog`),欄位 `#rcW/#rcD/#rcSpace/#rcX/#rcY/#rcZ0/#rcZ1`(柱)、`#rcAxis/#rcA/#rcB/#rcC/#rcTop`(樑);預設尺寸列 `#rcPresets`;`#rcSubmit` 建立。
