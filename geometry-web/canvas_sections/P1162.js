@@ -171,15 +171,20 @@ module.exports = async helpers => {
   }
   // Capture each native field once. The post-wait check and its failure detail
   // must describe this same evaluation, not a third read after state changes.
-  const nativeStateExpression = `(()=>{const values={pending:__p1162.pending,busy:oc.busy,
-    phase:connection.phase,blocked:ReferenceWorkspace.getEvidenceState().blocked,
-    previewing:window.ParameterUI?.previewing};
+  const nativeStateExpression = `(()=>{const sample=get=>{let clock;
+    try{clock={wallTimeMs:Date.now(),monotonicMs:performance.now(),timeOriginMs:performance.timeOrigin};}
+    catch(error){clock={error:String(error)};}
+    const value=get();return {value,type:typeof value,clock};};
+    const samples={pending:sample(()=>__p1162.pending),busy:sample(()=>oc.busy),
+      phase:sample(()=>connection.phase),blocked:sample(()=>ReferenceWorkspace.getEvidenceState().blocked),
+      previewing:sample(()=>window.ParameterUI?.previewing)};
+    const values=Object.fromEntries(Object.entries(samples).map(([key,row])=>[key,row.value]));
     const conditions={pendingZero:values.pending===0,canvasIdle:!values.busy,
       connectionReady:values.phase==='ready',referenceUnblocked:values.blocked===false,
       parameterIdle:!values.previewing};
-    return {values,conditions,falseConditions:Object.keys(conditions).filter(key=>!conditions[key])};})()`;
+    return {values,conditions,samples,falseConditions:Object.keys(conditions).filter(key=>!conditions[key])};})()`;
   function stateExpression(nativeExpression = nativeStateExpression) {
-    return `(()=>{const nativeState=${nativeExpression},r=ocv.getBoundingClientRect();return {
+    return `(()=>{const nativeState=${nativeExpression};try{const r=ocv.getBoundingClientRect();return {
       native:nativeState,
       selection:oc.selection,sel:oc.sel,focus:oc.focus,tool:oc.tool,drawTool:oc.drawTool,
       card:oc.card?{kind:oc.card.kind,id:oc.card.id,pointerId:oc.card.pointerId,moved:oc.card.moved,blocked:oc.card.blocked}:null,
@@ -192,7 +197,8 @@ module.exports = async helpers => {
       rect:oc.rect,camera:{x:oc.panX,y:oc.panY,z:oc.zoom},
       menu:{hidden:$('canvasCtxMenu').hidden,sheet:$('canvasCtxMenu').classList.contains('fcm-sheet')},
       active:document.activeElement?.outerHTML?.slice(0,400),
-      events:__p1162.snapshot(),requests:__p1162.requests,rings:__p1162.rings,menus:__p1162.menus};})()`;
+      events:__p1162.snapshot(),requests:__p1162.requests,rings:__p1162.rings,menus:__p1162.menus};}
+      catch(error){return {diagnosticError:String(error),native:nativeState};}})()`;
   }
   async function state() { return read(stateExpression()); }
   async function until(name, expression, nativeSettlement = false) {
