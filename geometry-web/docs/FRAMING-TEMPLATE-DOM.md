@@ -57,3 +57,45 @@ node --test tests/test_canvas_shards.js tests/test_boundary_pair_browser_scope.j
 第二條會跑既有完整 CDP 模式，要求零失敗才產生 golden，且只准新增實際觀察到的 P205；任一舊段數值不同或未完成會恢復原 golden bytes。不得把部分模式計數手貼為正式 golden。之後仍須依既有 CI 跑兩個完整分片及其彙總；時限、原有段落、交接狀態與所有舊 golden 值維持不變。
 
 `tests/mutants_results.json`、product architecture 收據／掃描／文件與正典閱讀器等衍生物由 CI 或 Claude 依正式產生器重產，本補丁不手寫。
+
+## 第二片：政策 A 固定治具的矩形範圍
+
+第一片 `flat-ceiling/1` 的政策指紋、預設建立行為、read/1 請求和 P205 的 25 個斷言保留。第二片新增不可變 `flat-ceiling/2`，政策指紋為 `3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58`；沿用已核定 oracle 的固定 M 治具與末兩步重疊處理，但仍限矩形、無孔、World 無柱樑、水平 +N、RC 邊界、無 FT02 退縫與 R-butt 主支移位。所有候選仍須完整原生合法性與逐側承接；不保證每個矩形皆可生成。
+
+沒有新增頂層入口或常駐說明卡。「面內工作」原 select 增加 `value="framing-fixed"` 的「平釘天花骨架（政策 A 固定治具）」選項，取代同位置的第一片範圍說明；`value="framing"` 仍明選第一片。副支欄位在 v2 顯示「固定治具步距 M（mm）」，保存欄位名稱仍為 `maxSecondarySpacing`，不猜測或換算另一份預設。原值 367 保留。
+
+切換模式會重新讀取所選版本並清空本次來源選取；已有同版本配方可明選，沒有就顯示新配方草稿。直接選另一版本的已保存配方，也會先重新讀取該精確版本，再要求明選來源。這兩個動作均是明示選擇，不把 v1 配方改為 v2。未知 generator 版本仍原樣唯讀；不可複製成可用版本來無聲移轉。
+
+### 版本、來源與候選協定
+
+| 契約 | 第一片 | 第二片 |
+| --- | --- | --- |
+| 來源請求 | `framing-template-read/1`，只有 schema、boundaryId | `framing-template-read/2`，另必填精確 template 三欄：id、version、policyFingerprint |
+| 來源回覆 | `framing-template-read-result/1`、`rectangle-common-policy` | `framing-template-read-result/2`、`rectangle-fixed-jig-no-retreat` |
+| 生成請求 | `framing-template-generate/1`，固定 v1 | 同一協定，明選固定 v2；schema 不代替版本選取 |
+| 候選回覆 | 原 `framing-template-preview/1` 不變 | 同一協定，另含精確 `template` 與候選封存後的 `definitionFingerprint` |
+| 確認 | 本次 token ＋ ownerKey | 同一交易，不重新搜尋或重新生成；確認後定義指紋須等於預覽封存候選 |
+| 保存 | `framing-template-recipes/1` | 同一附件 schema，保存 v2 版本與指紋；不新增任何結果、token、搜索或正式物件擁有權欄位 |
+
+Host 遇版本／政策不符的 read 回覆直接拒絕；預覽版本不符、缺少候選指紋或缺少原有合法性證據時取消精確 token/owner，不能顯示可確認候選。舊配方和目前來源讀取版本不同時，以 `FT_VERSION_SOURCE` 拒絕生成。未知服務回執仍沿原紀律處理，不重送確認。
+
+### T→P、撤回與瀏覽器交接
+
+`tests/test_framing_template_session.js` 保留原 12 個案例，新增 10 個政策 A 案例，正常計數為 22；原 `test_framing_recipe_project_store.js` 的 9 個案例不變。新案例驗兩版本固定指紋、精確來源讀取、預覽版本守門、拒絕零寫入、確認同 token 不重搜、真 ZIP 保存與冷還原。具名撤回 `R03A_HOST_COLD_OPEN_SEARCH` 在 v2 真 ZIP 冷還原路徑插入生成請求，必須由 `R03A_HOST_COLD_OPEN_NO_SEARCH` 斷言殺死，並保留原兩個 host 撤回。這是 Node host 證據，不是瀏覽器或原生幾何證據。
+
+新 `framing_template_jig_workflow_test.js` 為 P2052，共 28 個具名斷言；原 P205 不增加或減少斷言。主正例是 F4 走道、板長沿 u、預覽圖左上，28 支逐支對照原 frozen oracle，另比對 seams 與固定治具 marks。它實際走原面入口、保存 v1／v2 兩份意圖、預覽／取消零寫入、單筆精確候選確認、復原／重做、390 px 與 1400 px、FT02 拒絕零寫入、真 `.gcanvas` 下載、另一 native service/session 與新 Chrome process/profile 冷開。冷開要求原 World 與兩版本配方逐值一致、沒有 framing endpoint 請求，且新程序 `generatorInvocations=0`。錯 v2 指紋檔案整案拒絕，未知版本原樣唯讀。
+
+瀏覽器程式尚須雲端 Claude 實跑。依既有隔離服務、來源與 binary sidecar 新鮮度紀律準備後：
+
+```sh
+GEOMETRY_FRAMING_JIG_ONLY=1 node geometry-web/cdp_test.js
+node geometry-web/generate_framing_jig_golden.js --run
+```
+
+第一條只是 P2052 定位；第二條必須完整 CDP、零失敗、舊段計數不變，才接受原產生器實際觀察到的 P2052。28 是待驗收契約數，不是實跑收據。`GEOMETRY_FRAMING_JIG_ARTIFACT_DIR` 可指定新下載檔與獨立冷開原件的保存目錄；不要指到既有證據目錄。完整兩片 canvas 與 coverage 仍須正式 CI，原時限不變。
+
+### L4 一般 App 操作路徑
+
+用一般 App「建立物件」或既有畫房間入口建立 1680 × 3880 mm 的封閉矩形面與水平向上框架。從工程規格材料頁明示發布 915 × 1830、厚 6 mm 的板材；由既有參數入口明示建立 X=8 mm dimension 欄位。這些準備也要留 UI 操作原件，不能用 P2052 的 API 夾具冒充一般入口。
+
+雙擊封閉面 → 屬性 → 面設定 → 完成面／骨架 → 面內工作選「政策 A 固定治具」→ 保存新配方（起鋪預覽圖左上、板長沿 u、M=367）→ 明選框架、板材版本、X 與 RC／literal → 預覽 28 支 → 取消並核對 World、附件、修訂、歷史與 id 高水位不變 → 再明選來源預覽 → 確認一次 → 復原／重做 → 另存 `.gcanvas` → 新 native 程序與新瀏覽器冷開。另走 3700 × 2000 退縫拒絕案例與第一片 v1 配方保留。L4 只據實際走通且留原件的範圍登錄；原生／Node／撰寫完成的瀏覽器碼不提升到 L4，雲端操作也不等於使用者驗收 L5。

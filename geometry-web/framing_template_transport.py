@@ -48,14 +48,21 @@ def request(body, ask_bridge, *, mode):
             raise ValueError('需 1 MiB 內完整 read／preview JSON')
         value = json.loads(body.decode('utf-8'), object_pairs_hook=_pairs, parse_constant=_constant)
         _strings(value)
-        keys = {'schema', 'boundaryId'} if mode == 'read' else {
+        version_two = mode == 'read' and type(value) is dict and value.get('schema') == 'framing-template-read/2'
+        keys = ({'schema', 'boundaryId', 'template'} if version_two else {'schema', 'boundaryId'}) if mode == 'read' else {
             'schema', 'boundaryId', 'on', 'contextKey', 'definitionFingerprint',
             'expectedRevision', 'template', 'parameters', 'layout', 'material', 'sources'}
         if type(value) is not dict or set(value) != keys or not _u32(value['boundaryId']):
             raise ValueError('需完整明示欄位與 uint32 邊界識別')
-        schema = 'framing-template-read/1' if mode == 'read' else 'framing-template-generate/1'
+        schema = ('framing-template-read/2' if version_two else 'framing-template-read/1') if mode == 'read' else 'framing-template-generate/1'
         if value['schema'] != schema:
             raise ValueError('不支援的配方資料版本')
+        if version_two:
+            template = value['template']
+            if (type(template) is not dict or set(template) != {'id', 'version', 'policyFingerprint'}
+                    or template['id'] != 'flat-ceiling' or type(template['version']) is not int
+                    or template['version'] != 2 or not _key(template['policyFingerprint'])):
+                raise ValueError('read/2 需明選完整的 flat-ceiling/2 版本與政策指紋')
         if mode == 'preview':
             revision = value['expectedRevision']
             if (not _u32(value['on']) or not _key(value['contextKey']) or not _key(value['definitionFingerprint'])

@@ -6,6 +6,7 @@ const driver=require('../geometry-web/cdp_test.js'),plugin=require('../geometry-
 const shards=require('../geometry-web/canvas_shards.js'),evidence=require('./helpers/canvas_shards.js');
 const extension=require('./diagnostics/r335_canvas_extension.cjs');
 const r03Extension=require('./diagnostics/r03_framing_canvas_extension.cjs');
+const r03aExtension=require('./diagnostics/r03a_framing_canvas_extension.cjs');
 const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
 const touchExtension=require('./diagnostics/r433_canvas_touch_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
@@ -17,7 +18,7 @@ const train3Inputs=()=>{
   // R03 (#205) P205 follows P1284; project it out exactly before PF-4A.
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
   const touchBase=touchExtension.project(shards.loadGolden(),shards.loadPlan());
-  const r03Plan=r03Extension.projectPlan(touchBase.plan),r03Golden=r03Extension.projectGolden(touchBase.golden);
+  const r03Plan=r03Extension.projectPlan(r03aExtension.projectPlan(touchBase.plan)),r03Golden=r03Extension.projectGolden(r03aExtension.projectGolden(touchBase.golden));
   assert.deepEqual(shards.validatePlan(r03Plan,r03Golden),[],'PF4A_RAW_PLAN_COMPLETE');
   const rawPlan=pf4aExtension.projectPlan(r03Plan),rawGolden=pf4aExtension.projectGolden(r03Golden);
   assert.deepEqual(shards.validatePlan(rawPlan,rawGolden),[],'TRAIN3_RAW_PLAN_COMPLETE');
