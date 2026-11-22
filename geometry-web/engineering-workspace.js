@@ -334,9 +334,20 @@ window.EngineeringWorkspace = (() => {
     state.application.targets[id]={placement_id:id,gridAction:gridId!=null?'update':grids.length?(canUseFutureDefaults(state.snapshot,id)?'defaults':'application'):'create',gridId:gridId??null,longAxis:existing?.longAxis??'inherit',mainAlong:existing?.mainAlong??'inherit',anchors,preserveOverrides:true,overrides:{},timberIds:[],objectOverrides:{},objectSources:{}};
     if(existing?.method && !state.application.method)state.application.method=clone(existing.method);
   }
+  function displayedOverride(target,field) {
+    if(Object.hasOwn(target.overrides,field))return target.overrides[field];
+    const key=field==='gap'?field:field.replace(/(A|B)$/,'.$1');
+    const source=target.preserveOverrides&&list(state.snapshot?.applications).find(a=>a.placement_id===target.placement_id)?.overrides?.[key];
+    if(!source)return {mode:'inherit',value:''};
+    if(source.kind==='literal')return {mode:'literal',value:String(source.value)};
+    if(source.kind==='spec')return {mode:'spec',value:source.name};
+    // Existing material references remain references; displaying one must not
+    // create an edit or replace it with its current numeric result.
+    return {mode:'saved',source};
+  }
   function overrideField(label,path,value,options={}) {
     const setting=value||{mode:'inherit',value:''};
-    return `<div class="ew-override">${select(label,path+'.mode',setting.mode,[['inherit','沿用來源'],['literal','改成本面數值'],['spec','引用具名尺寸']])}${setting.mode==='spec'?select('具名尺寸',path+'.value',setting.value,[['','請選擇'],...list(state.snapshot.specs).map(s=>[s.name,`${s.name} · ${s.value} mm`])]):setting.mode==='literal'?input(label+' mm',path+'.value',setting.value,'inputmode="numeric"'):'<small>移除覆寫後會重新預覽來源與完整影響。</small>'}</div>`;
+    return `<div class="ew-override">${select(label,path+'.mode',setting.mode,[...(setting.mode==='saved'?[['saved','保留目前本面覆寫']]:[]),['inherit','沿用來源'],['literal','改成本面數值'],['spec','引用具名尺寸']])}${setting.mode==='spec'?select('具名尺寸',path+'.value',setting.value,[['','請選擇'],...list(state.snapshot.specs).map(s=>[s.name,`${s.name} · ${s.value} mm`])]):setting.mode==='literal'?input(label+' mm',path+'.value',setting.value,'inputmode="numeric"'):setting.mode==='saved'?`<small>${esc(sourceLabel(setting.source))}</small>`:'<small>移除覆寫後會重新預覽來源與完整影響。</small>'}</div>`;
   }
   function bindingsForPlacement(id) {
     const gridIds=new Set(list(state.snapshot.grids).filter(g=>(g.placement_id??g.surface)===id).map(g=>g.id));
@@ -402,7 +413,7 @@ window.EngineeringWorkspace = (() => {
   }
   function renderTarget(p,t) {
     const base=`application.targets.${p.id}`,grids=list(state.snapshot.grids).filter(g=>(g.placement_id??g.surface)===p.id&&g.kind!=='subgrid'),timbers=list(state.snapshot.timbers).filter(item=>(item.placement_id??item.surface??item.geometry?.placement_id)===p.id);
-    return `${select('網格處理',base+'.gridAction',t.gridAction,[['create','建立新主網格'],['update','更新指定主網格'],['defaults','只提供後續新建預設']])}${t.gridAction==='update'?select('要更新的主網格',base+'.gridId',t.gridId??'',[['','請明確選擇'],...grids.map(g=>[g.id,`主網格 #${g.id}`])]):''}${select('面材長邊對應',base+'.longAxis',t.longAxis,[['inherit','沿用做法'],['u','長邊沿 u，寬沿 v'],['v','長邊沿 v，寬沿 u']])}${select('主支長度方向',base+'.mainAlong',t.mainAlong,[['inherit','沿用做法'],['u','沿 u'],['v','沿 v']])}<fieldset><legend>起算點 · mm</legend><p class="ew-note">更新已有主格時保留具體起點，除非這次明確指定新值。</p>${['u','v'].map(axis=>`<div class="ew-fields">${select(axis+' 軸起算',base+'.anchors.'+axis+'.mode',t.anchors[axis].mode,[...(t.gridAction==='update'?[['keep','保留目前起點']]:[]),['lower','使用本次面下界'],['value','明寫座標']])}${t.anchors[axis].mode==='value'?input(axis+' 起算座標',base+'.anchors.'+axis+'.value',t.anchors[axis].value,'inputmode="numeric"'):''}</div>`).join('')}</fieldset><details><summary>本面覆寫與恢復沿用</summary><label class="ew-checkbox"><input type="checkbox" data-ew-field="${base}.preserveOverrides"${t.preserveOverrides?' checked':''}>升級時保留原有覆寫</label>${overrideField('縫寬',base+'.overrides.gap',t.overrides.gap)}${roles.map(([key,label])=>`<details><summary>${label}截面覆寫</summary>${['A','B'].map(axis=>overrideField(label+' '+axis,base+'.overrides.'+key+axis,t.overrides[key+axis])).join('')}</details>`).join('')}</details><details><summary>綁定既有角材 · 已選 ${t.timberIds.length} 支</summary><p class="ew-note">勾選才套用角色對應材料；位置引用與角色保持。custom 角色不能綁定三角色槽位。</p>${timbers.map(item=>`<label class="ew-checkbox"><input type="checkbox" data-ew-timber="${item.id}" data-placement="${p.id}"${t.timberIds.includes(item.id)?' checked':''}${item.role==='custom'?' disabled':''}>角材 #${item.id} · ${esc(item.role)}${item.role==='custom'?'（本次不綁定）':''}</label>`).join('')||'<p>這個放置面沒有已放角材。</p>'}</details>`;
+    return `${select('網格處理',base+'.gridAction',t.gridAction,[['create','建立新主網格'],['update','更新指定主網格'],['defaults','只提供後續新建預設']])}${t.gridAction==='update'?select('要更新的主網格',base+'.gridId',t.gridId??'',[['','請明確選擇'],...grids.map(g=>[g.id,`主網格 #${g.id}`])]):''}${select('面材長邊對應',base+'.longAxis',t.longAxis,[['inherit','沿用做法'],['u','長邊沿 u，寬沿 v'],['v','長邊沿 v，寬沿 u']])}${select('主支長度方向',base+'.mainAlong',t.mainAlong,[['inherit','沿用做法'],['u','沿 u'],['v','沿 v']])}<fieldset><legend>起算點 · mm</legend><p class="ew-note">更新已有主格時保留具體起點，除非這次明確指定新值。</p>${['u','v'].map(axis=>`<div class="ew-fields">${select(axis+' 軸起算',base+'.anchors.'+axis+'.mode',t.anchors[axis].mode,[...(t.gridAction==='update'?[['keep','保留目前起點']]:[]),['lower','使用本次面下界'],['value','明寫座標']])}${t.anchors[axis].mode==='value'?input(axis+' 起算座標',base+'.anchors.'+axis+'.value',t.anchors[axis].value,'inputmode="numeric"'):''}</div>`).join('')}</fieldset><details><summary>本面覆寫與恢復沿用</summary><label class="ew-checkbox"><input type="checkbox" data-ew-field="${base}.preserveOverrides"${t.preserveOverrides?' checked':''}>升級時保留原有覆寫</label>${overrideField('縫寬',base+'.overrides.gap',displayedOverride(t,'gap'))}${roles.map(([key,label])=>`<details><summary>${label}截面覆寫</summary>${['A','B'].map(axis=>overrideField(label+' '+axis,base+'.overrides.'+key+axis,displayedOverride(t,key+axis))).join('')}</details>`).join('')}</details><details><summary>綁定既有角材 · 已選 ${t.timberIds.length} 支</summary><p class="ew-note">勾選才套用角色對應材料；位置引用與角色保持。custom 角色不能綁定三角色槽位。</p>${timbers.map(item=>`<label class="ew-checkbox"><input type="checkbox" data-ew-timber="${item.id}" data-placement="${p.id}"${t.timberIds.includes(item.id)?' checked':''}${item.role==='custom'?' disabled':''}>角材 #${item.id} · ${esc(item.role)}${item.role==='custom'?'（本次不綁定）':''}</label>`).join('')||'<p>這個放置面沒有已放角材。</p>'}</details>`;
   }
   function renderGeometry(placement,segments) {
     if(!placement)return '<p class="ew-empty">從正式畫布放置面後，即可選取。</p>';
@@ -415,7 +426,19 @@ window.EngineeringWorkspace = (() => {
     return `<svg viewBox="${minX-pad} ${minY-pad} ${width+2*pad} ${height+2*pad}" role="img" aria-label="${esc(placementLabel(placement))}，u 向右、v 向下"><path d="${esc(path)}" fill-rule="evenodd" class="ew-outline"/>${lines.map(line=>Array.isArray(line)&&line.length===2&&line.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isFinite))?`<line x1="${line[0][0]}" y1="${line[0][1]}" x2="${line[1][0]}" y2="${line[1][1]}" class="ew-grid-line"/>`:'').join('')}</svg>`;
   }
   function renderTransfer() {return `<section class="ew-transfer"><h2>攜帶材料與工程做法</h2><p>做法包匯入會核對完整版本與來源，同 id／版本異內容整包拒絕。原型 JSON 不能直接代替正式做法包。</p><label for="ewImportText">正式做法包 JSON<textarea id="ewImportText" data-ew-field="importText" spellcheck="false" rows="10">${esc(state.importText)}</textarea></label><p class="ew-field-error" id="ewFormError" role="alert"></p><div class="ew-button-row"><button type="button" data-ew-export>匯出本專案材料與做法包</button></div><p class="ew-note">保存完整工程請用上方「保存專案」；做法包不是場景備份。</p></section>`;}
-  function setPath(path,value) {const parts=path.split('.');let target=state;for(const part of parts.slice(0,-1)){if(['__proto__','prototype','constructor'].includes(part))return;target=target[part]??(target[part]={});}const key=parts.at(-1);if(!['__proto__','prototype','constructor'].includes(key))target[key]=value;}
+  function setPath(path,value) {
+    const parts=path.split('.');
+    if(parts.length===6&&parts[0]==='application'&&parts[1]==='targets'&&parts[3]==='overrides'&&['mode','value'].includes(parts[5])){
+      const face=Object.hasOwn(state.application.targets,parts[2])?state.application.targets[parts[2]]:null,field=parts[4];
+      if(face&&(field==='gap'||roles.some(([role])=>field===role+'A'||field===role+'B'))&&!Object.hasOwn(face.overrides,field)){
+        // Materialize only the field the user actually edits. In particular,
+        // changing an already visible value must retain its literal/spec mode.
+        const setting=displayedOverride(face,field);
+        face.overrides[field]={mode:setting.mode==='saved'?'inherit':setting.mode,value:setting.value??''};
+      }
+    }
+    let target=state;for(const part of parts.slice(0,-1)){if(['__proto__','prototype','constructor'].includes(part))return;target=target[part]??(target[part]={});}const key=parts.at(-1);if(!['__proto__','prototype','constructor'].includes(key))target[key]=value;
+  }
   function fieldValue(element) {
     const path=element.dataset.ewField;
     if(element.type==='checkbox')return element.checked;

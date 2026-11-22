@@ -78,6 +78,9 @@ test('pan updates only the noninteractive grid and preserves captured scene node
   context.el = (tag, attrs, parent) => { const node = {tag, attrs}; parent.children.push(node); return node; };
   context.cancelCanvasMarquee = () => {};
   context.fePlaceOverlays = () => {};
+  // This grid-only fixture has no typed-length mirror. Its placement and the
+  // camera refresh hook are exercised by test_face_length_overlay.js.
+  context.feLenShow = () => {};
   context.drawFaceEditor = () => { throw Error('Pan must not rebuild the scene'); };
   context.feUpdateBackgroundGrid();
   const firstLines = group.children;

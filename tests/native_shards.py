@@ -256,9 +256,17 @@ def _swap_scenarios(parts, loads, costs):
             for left in sorted(parts[i]):
                 for right in sorted(parts[j]):
                     a_load, b_load = loads[i][:], loads[j][:]
+                    rejected = False
                     for r, (a, b) in enumerate(zip(costs[left], costs[right])):
                         a_load[r] += b - a
                         b_load[r] -= b - a
+                        # A strictly larger peak cannot improve a descending
+                        # score. Equality must continue: later values can win.
+                        if a_load[r] > current[0] or b_load[r] > current[0]:
+                            rejected = True
+                            break
+                    if rejected:
+                        continue
                     improved = score((a_load, b_load))
                     if improved < current:
                         candidate = [load[:] for load in loads]
@@ -295,10 +303,16 @@ def _exchange_scenarios(parts, loads, costs):
                 combined = [a + b for a, b in zip(costs[left], costs[middle])]
                 for right in candidates[j]:
                     a_load, b_load = loads[i][:], loads[j][:]
+                    rejected = False
                     for r, (a, b) in enumerate(zip(combined, costs[right])):
                         a_load[r] += b - a
                         b_load[r] += a - b
-                    if score((a_load, b_load)) >= pair_score:
+                        # The unchanged shards are a common multiset. A pair
+                        # with a larger peak cannot improve the global score.
+                        if a_load[r] > pair_score[0] or b_load[r] > pair_score[0]:
+                            rejected = True
+                            break
+                    if rejected or score((a_load, b_load)) >= pair_score:
                         continue
                     # Promising trials still compare the complete vector with
                     # the best trial, which may involve different shard pairs.

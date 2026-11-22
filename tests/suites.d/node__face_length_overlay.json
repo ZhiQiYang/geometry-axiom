@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_face_length_overlay.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_face_length_overlay.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "count": 7,
+    "mode": "count",
+    "unit": "node test"
+  },
+  "files": [
+    "tests/test_face_length_overlay.js"
+  ],
+  "name": "node:face_length_overlay",
+  "order": "new/node__face_length_overlay",
+  "schema": "geometry-native-suite/1"
+}
