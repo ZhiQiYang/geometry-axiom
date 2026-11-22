@@ -143,6 +143,21 @@ def project_r17_boundary_pair_native(case, value):
     return projected
 
 
+def project_pf6_native_capability(case, value):
+    """Extract only PF-6's reviewed partial capability; keep the R14 oracle."""
+    projected = json.loads(json.dumps(value))
+    state = projected["engineering-read"]["state"]
+    capabilities = state["native_capabilities"]
+    case.assertEqual(1, capabilities.count("panel-fill-builder-native/1"),
+                     "K1_PF6_NATIVE_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("panel-fill-builder-native/1")
+    case.assertEqual(len(capabilities) - 1, at, "K1_PF6_NATIVE_CAPABILITY_FIXED_LAST")
+    case.assertNotIn("panel-fill/1", state["capabilities"],
+                     "K1_PF6_NOT_CLAIMED_AS_COMPLETE")
+    del capabilities[at]
+    return projected
+
+
 def project_r14_native_capability(case, value):
     """Project exactly the approved native-only addition; keep the old oracle."""
     projected = json.loads(json.dumps(value))
@@ -278,7 +293,8 @@ class EngineeringTerminal(unittest.TestCase):
         expected_json = json.dumps(original, ensure_ascii=False, separators=(",", ":"))
 
         def compare(value):
-            projected = project_panel_fill_reader(self, value)
+            projected = project_pf6_native_capability(self, value)
+            projected = project_panel_fill_reader(self, projected)
             projected = project_r14_rule_capability(self, projected)
             projected = project_identity_capability(self, without_terminal(projected))
             projected = project_r14_native_capability(self, projected)

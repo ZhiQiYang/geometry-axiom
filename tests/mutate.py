@@ -9,7 +9,8 @@
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
   binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
          真 bridge unittest 方法。先跑基準，變異後只以完成的行為斷言判 killed；每筆還原
-         來源、重新編譯並跑共用回歸。錯誤、略過、逾時與不完整方法清單都算 blocked。
+         來源，重驗完整來源／裁判／工具與同次已通過基準的二進位／sidecar 身分，保存
+         還原等價證明；不把證明冒充重跑收據。錯誤、略過、逾時與不完整方法清單都算 blocked。
          bridge 行程在測試中死亡(tests/_bridge.py 的 BridgeClosed,帶結束碼)不是斷言失敗。
          crashed 判準同核心:同一測試連續 RUN_RETRIES 次都以存取違規(is_access_violation_code)
          結束、且沒有任何斷言失敗;重跑範圍較窄,只重跑存取違規(核心則重跑所有 blocked)。
