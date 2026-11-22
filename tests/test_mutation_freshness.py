@@ -2,6 +2,7 @@
 import concurrent.futures
 import contextlib
 import copy
+import importlib.util
 import inspect
 import io
 import json
@@ -1370,10 +1371,13 @@ class Cases(unittest.TestCase):
 
             def oracle(work, binary, methods, env, folder, label, root, cache):
                 if methods == mutation_bridge.RESTORED:
-                    return self.receipt(methods, [], 0, label)
-                labels.append(label)
-                failures, code = script[len(labels) - 1]
-                return self.receipt(methods, failures, code, label)
+                    receipt = self.receipt(methods, [], 0, label)
+                else:
+                    labels.append(label)
+                    failures, code = script[len(labels) - 1]
+                    receipt = self.receipt(methods, failures, code, label)
+                receipt['command'][3] = mutation_bridge._portable(str(binary), root, work, cache)
+                return receipt
             real_run = subprocess.run     # keep git's own progress text out of the test output
 
             def quiet_run(*args, **kwargs):
@@ -1410,6 +1414,198 @@ class Cases(unittest.TestCase):
         record, labels = run_pass([violation, violation, ([self.failure("assertion", test=method, detail="AssertionError: u")], 1)])
         self.assertEqual(('killed', ['mutant', 'mutant-2', 'mutant-3']), (record['verdict'], labels))
         self.assertEqual([method], record['killed_by'])
+        self.check_bridge_restore_capacity_and_proof()
+
+    def check_bridge_restore_capacity_and_proof(self):
+        """Exercise the real runner; only compiler/oracle processes are stand-ins.
+
+        A full RESTORED pass is the shared baseline work. Each mutation must still
+        build and execute its own oracle, while restoration proves the original
+        source, judge and already-tested binary, without another full-suite run.
+        """
+        repo = self.dir / 'capacity-repo'
+        (repo / 'tests').mkdir(parents=True)
+        original = b'#include "dep.inc"\nint anchor = 1;\nint second = 1;\n'
+        (repo / 'current_geometry.c').write_bytes(original)
+        (repo / 'dep.inc').write_bytes(b'int dependency = 1;\n')
+        (repo / 'tests/keep.py').write_bytes(b'JUDGE = 1\n')
+        real_run = subprocess.run
+        for argv in (['init', '-q'], ['add', '-A'], ['commit', '-q', '-m', 'capacity fixture']):
+            real_run(['git', '-c', 'core.autocrlf=false', '-c', 'user.name=t',
+                      '-c', 'user.email=t@example.invalid', *argv], cwd=repo,
+                     check=True, capture_output=True)
+        head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=repo, text=True).strip()
+        first = self.fixture_mutant()
+        second = dict(first, id='MB_SECOND', old='second = 1', new='second = 2')
+        methods = list(mutation_bridge.RESTORED)
+        source = mutate.Sources(repo)
+        tool = mutate.tool_hash()
+        sha = mutation_bridge.sha
+        binary_name = 'bridge.exe' if os.name == 'nt' else 'bridge'
+
+        def case(name, corrupt=None, mutants=(first, second), cache_root=None):
+            cache = (cache_root or self.dir) / ('capacity-cache-' + name)
+            results = self.dir / ('capacity-results-' + name + '.json')
+            calls, state = [], {'tool_changed': False}
+
+            def identity(work, out):
+                binary = Path(out) / binary_name
+                side_raw = binary.with_name(binary.name + '.fingerprint.json').read_bytes()
+                side = json.loads(side_raw)
+                current = {rel: sha((Path(work) / rel).read_bytes()) for rel in side['files']}
+                if current != side['files'] or sha(binary.read_bytes()) != side['exe_sha256']:
+                    raise RuntimeError('fixture bridge source/binary identity changed')
+                return {'freshness': 'fresh', 'exe_sha256': side['exe_sha256'],
+                        'sidecar_sha256': sha(side_raw), 'sidecar': side}
+
+            def raw_receipt(folder, label, command, result=None):
+                folder.mkdir(parents=True, exist_ok=True)
+                stdout = (label + '\n' + json.dumps(result, sort_keys=True) + '\n').encode()
+                stderr = b''
+                (folder / (label + '.stdout')).write_bytes(stdout)
+                (folder / (label + '.stderr')).write_bytes(stderr)
+                return {'command': command, 'exit_code': 0, 'timed_out': False,
+                        'stdout_file': label + '.stdout', 'stderr_file': label + '.stderr',
+                        'stdout_sha256': sha(stdout), 'stderr_sha256': sha(stderr), 'result': result}
+
+            def build(work, out, env, folder, label, root, passed_cache):
+                calls.append(('build', label))
+                out.mkdir(parents=True, exist_ok=True)
+                files = {rel: sha((work / rel).read_bytes()) for rel in ('current_geometry.c', 'dep.inc')}
+                binary = out / binary_name
+                binary.write_bytes(b'fixture-built-from\n' + (work / 'current_geometry.c').read_bytes()
+                                   + (work / 'dep.inc').read_bytes())
+                side = {'files': files, 'exe_sha256': sha(binary.read_bytes())}
+                binary.with_name(binary.name + '.fingerprint.json').write_text(json.dumps(side), encoding='utf-8')
+                return raw_receipt(folder, label, ['fixture-compiler']), identity(work, out)
+
+            def oracle(work, binary, requested, env, folder, label, root, passed_cache):
+                calls.append(('oracle', label, tuple(requested)))
+                complete = requested == methods
+                row = self.receipt(requested, [] if complete else [self.failure(
+                    'assertion', test=requested[0], detail='AssertionError: R447_REAL_MUTANT_ASSERTION')],
+                    0 if complete else 1, label)['result']
+                receipt = raw_receipt(folder, label,
+                    ['<python>', '-B', 'tests/bridge_mutation_oracle.py',
+                     mutation_bridge._portable(str(binary), root, work, passed_cache), *requested], row)
+                receipt['exit_code'] = 0 if complete else 1
+                if not complete and corrupt:
+                    if corrupt == 'source':
+                        (work / 'dep.inc').write_bytes(b'int dependency = 9;\n')
+                    elif corrupt == 'oracle':
+                        (work / 'tests/keep.py').write_bytes(b'JUDGE = 9\n')
+                    elif corrupt == 'binary':
+                        baseline = passed_cache / '_bridge-baseline' / head / binary_name
+                        baseline.write_bytes(b'changed baseline executable')
+                    elif corrupt == 'tool':
+                        state['tool_changed'] = True
+                    elif corrupt == 'head':
+                        real_run(['git', '-c', 'user.name=t', '-c', 'user.email=t@example.invalid',
+                                  'commit', '--allow-empty', '-q', '-m', 'unexpected checkout'],
+                                 cwd=work, check=True, capture_output=True)
+                return receipt
+
+            def quiet_run(*args, **kwargs):
+                return real_run(*args, **{'stdout': subprocess.DEVNULL, 'stderr': subprocess.DEVNULL, **kwargs})
+            with contextlib.redirect_stdout(io.StringIO()), \
+                    mock.patch.object(subprocess, 'run', quiet_run), \
+                    mock.patch.object(mutate, 'MUT_ROOT', cache), \
+                    mock.patch.object(mutate, 'tool_hash', lambda: 'f' * 64 if state['tool_changed'] else tool), \
+                    mock.patch.object(mutation_bridge, '_build', build), \
+                    mock.patch.object(mutation_bridge, '_identity', identity), \
+                    mock.patch.object(mutation_bridge, '_test', oracle):
+                mutation_bridge.run_pass(mutate, list(mutants), repo, results, today='2026-11-22')
+            return mutate.load_records(results), calls, cache
+
+        records, calls, cache = case('clean')
+        complete = [call for call in calls if call[0] == 'oracle' and call[2] == tuple(methods)]
+        self.assertEqual(['baseline'], [call[1] for call in complete],
+                         'R447_BRIDGE_RESTORE_CAPACITY: one complete baseline per pass')
+        self.assertEqual(3, sum(call[0] == 'build' for call in calls),
+                         'R447_BRIDGE_BUILD_CAPACITY: one baseline plus one build per mutation')
+        self.assertEqual(2, sum(call[0] == 'oracle' and call[1] == 'mutant' for call in calls),
+                         'R447_BRIDGE_EVERY_MUTANT_EXECUTED')
+        for mutant in (first, second):
+            record = records[mutant['id']]
+            self.assertEqual('killed', record['verdict'], record.get('why'))
+            self.assertEqual(mutant['tests'], record['killed_by'], 'R447_BRIDGE_NAMED_ASSERTION')
+            execution = record['execution']
+            self.assertEqual('geometry-bridge-mutation-execution/2', execution['schema'])
+            self.assertNotIn('restored', execution, 'restoration is a byte proof, not a fabricated test run')
+            self.assertNotIn('restored_build', execution, 'the tested baseline binary is retained')
+            self.assertEqual(execution['baseline_identity'], execution['restored_identity'])
+            proof = execution['restoration']
+            digest = sha(json.dumps(execution['baseline'], ensure_ascii=False, sort_keys=True,
+                                    separators=(',', ':')).encode('utf-8'))
+            self.assertEqual('geometry-bridge-baseline-equivalence/1', proof['schema'])
+            self.assertEqual(digest, proof['baseline_receipt_sha256'])
+            self.assertEqual(source.closure, proof['source_closure_sha256'])
+            self.assertEqual(mutation_bridge.oracle_hash(mutant, repo), proof['oracle_sha256'])
+            self.assertEqual(tool, proof['tool_sha256'])
+            self.assertEqual(head, proof['head'])
+            self.assertEqual(execution['baseline_identity']['exe_sha256'], proof['baseline_exe_sha256'])
+            with mock.patch.object(mutate, 'MUT_ROOT', cache):
+                self.assertEqual([], mutation_bridge.execution_problems(mutate, mutant, record, 'killed', source))
+                for field in ('baseline_receipt_sha256', 'source_closure_sha256', 'oracle_sha256',
+                              'tool_sha256', 'head', 'baseline_exe_sha256'):
+                    with self.subTest(proof_field=field):
+                        bad = copy.deepcopy(record)
+                        value = bad['execution']['restoration'][field]
+                        bad['execution']['restoration'][field] = ('0' if value[0] != '0' else '1') + value[1:]
+                        self.assertTrue(mutation_bridge.execution_problems(mutate, mutant, bad, 'killed', source),
+                                        'R447_BRIDGE_RESTORE_PROOF_BINDING: ' + field)
+                bad = copy.deepcopy(record)
+                bad['execution']['head'] = bad['execution']['restoration']['head'] = 'f' * 40
+                self.assertTrue(mutation_bridge.execution_problems(mutate, mutant, bad, 'killed', source),
+                                'R447_BRIDGE_BASELINE_EXECUTION_HEAD')
+                bad = copy.deepcopy(record)
+                bad['execution']['restored_identity']['sidecar_sha256'] = '0' * 64
+                self.assertTrue(mutation_bridge.execution_problems(mutate, mutant, bad, 'killed', source),
+                                'R447_BRIDGE_COMPLETE_IDENTITY')
+        # Cache output may be inside the repository. Its more specific portable
+        # prefix must still be <cache>, so the command binds the same real binary.
+        nested_records, _, _ = case('nested', cache_root=repo)
+        for mutant in (first, second):
+            self.assertEqual('killed', nested_records[mutant['id']]['verdict'],
+                             'R447_BRIDGE_REPOSITORY_CACHE: ' + mutant['id'])
+        self.assertEqual('<repo>/tests/keep.py',
+            mutation_bridge._portable(str(repo / 'tests/keep.py'), repo,
+                                      self.dir / 'separate-work', self.dir),
+            'R447_BRIDGE_SPECIFIC_PORTABLE_PATH')
+        # The downloaded artifact verifier must still inspect every real byte;
+        # removing the extra restored binary must not remove baseline evidence.
+        spec = importlib.util.spec_from_file_location('r447_artifact_supervisor',
+                    ROOT / '.github/scripts/mutation_evidence.py')
+        supervisor = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(supervisor)
+        baseline_dir = cache / '_bridge-baseline' / head
+        mutant_dir = cache / first['id']
+        artifacts = [baseline_dir / binary_name,
+                     baseline_dir / (binary_name + '.fingerprint.json'),
+                     baseline_dir / 'baseline.stdout', baseline_dir / 'baseline-build.stderr',
+                     mutant_dir / 'bridge-mutant' / binary_name,
+                     mutant_dir / 'bridge-mutant' / (binary_name + '.fingerprint.json'),
+                     mutant_dir / 'mutant.stdout', mutant_dir / 'mutant-build.stderr']
+        with mock.patch.object(supervisor, 'ROOT', repo):
+            supervisor.require_binaries([first, second], records, cache)
+            for artifact in artifacts:
+                with self.subTest(downloaded_artifact=artifact.relative_to(cache).as_posix()):
+                    saved = artifact.read_bytes()
+                    try:
+                        artifact.write_bytes(saved + b'corrupted original bytes')
+                        with self.assertRaises(ValueError, msg='R447_BRIDGE_DOWNLOADED_BYTES'):
+                            supervisor.require_binaries([first, second], records, cache)
+                    finally:
+                        artifact.write_bytes(saved)
+            bad = copy.deepcopy(records)
+            bad[first['id']]['execution']['restoration']['baseline_receipt_sha256'] = '0' * 64
+            with self.assertRaises(ValueError, msg='R447_BRIDGE_DOWNLOADED_RESTORE_PROOF'):
+                supervisor.require_binaries([first, second], bad, cache)
+        for corrupt in ('source', 'oracle', 'binary', 'tool', 'head'):
+            with self.subTest(during_mutant=corrupt):
+                records, _, _ = case(corrupt, corrupt, mutants=(first,))
+                self.assertEqual('blocked', records[first['id']]['verdict'],
+                                 'R447_BRIDGE_RESTORE_FAIL_CLOSED: ' + corrupt)
 
 
 if __name__ == '__main__':
