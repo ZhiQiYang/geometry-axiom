@@ -168,6 +168,7 @@ async function driverContract(R){
       entry.guard.replace(/\n$/,''),
       "  if (!process.env.GEOMETRY_FRAMING_TEMPLATE_ONLY) {",
       "  if(inSequence(2))await p1284();",
+      "  } // closes the FRAMING_TEMPLATE_ONLY guard, as in cdp_test.js",
       entry.dispatch.replace(/\n$/,''),
       (entry.following||"  if(inSequence(2))await p353();\n").replace(/\n$/,''),
       "  if(inSequence(2))await p359();",
@@ -249,8 +250,21 @@ async function driverContract(R){
     assert.equal(registry.drivers.length,1);
     for(const relative of entry.closure)assert.ok(registry.sourceFiles.includes(relative),'R386_CANVAS_DRIVER_SOURCE_BOUND '+relative);
     await assert.rejects(R.dispatch(root,{mode:'partial',module:'P2052'},{eval_:async()=>({local:{},session:{}})}),/R386_CANVAS_MODULE_UNKNOWN/,'R386_CANVAS_DRIVER_NOT_MODULE_DISPATCH');
-    // The strict module rules are unchanged: the same driver is not a module.
-    assert.throws(()=>R.moduleSourceHash(root,entry.driver),/R386_CANVAS_/,'R386_CANVAS_STRICT_MODULE_UNCHANGED');
+    // The same driver is not a strict module (renamed from the former
+    // R386_CANVAS_STRICT_MODULE_UNCHANGED, 7072484935 §2: that name overstated it).
+    assert.throws(()=>R.moduleSourceHash(root,entry.driver),/R386_CANVAS_/,'R386_CANVAS_DRIVER_REJECTED_BY_STRICT_MODULE');
+    // The strict module program itself is pinned: the exact source of each
+    // module-path function equals main 883e68688f6480a5f1de6e86e6a056cc20339cb9
+    // (where #434 introduced it). Changing one is a reviewed contract change.
+    {
+      const native=process.binding('natives')['internal/deps/acorn/acorn/dist/acorn'],parser={};
+      require('node:vm').runInNewContext(native,{exports:parser,module:{exports:parser}});
+      const text=fs.readFileSync(API_FILE,'utf8').replace(/\r\n/g,'\n'),tree=parser.parse(text,{ecmaVersion:'latest',sourceType:'script'});
+      const STRICT_MODULE_PIN={"dispatch":"cd74c3ef04b4f158e5b02f63b4ef9d15cec891d8c12d433ba112fb88873e53dc","moduleSourceHash":"de39a3592b9d883d57c690a542b5dcf887e37867c1ee25b7a7ad8dc847bc4633","solvePlacement":"8affd02fb0e65b58828a0c5d80d08841b0ec71e3da7e4cfe4052315e254fdfd4","sourceClosure":"4dcaeec5c908d259a48fed45dd9959bdd3e50e9771f645491a40bf401738e70b","stageModule":"dd7d64fb5f3a7906395219d0e85533d11956d3716c0eae789068d7606c3197ee","verifyMeasurement":"db056ffbce3ffcaa77e4077c74aff977d1ff28d6a703f54e330f2e37c81cc577","verifySlotProof":"8ceff9866fec9dcd6b41e96b38ee2657ca043e4c99736c092557432c17d88209","zipMembers":"0ff41ea5d97211665aab0861359c739036c541f2e448680179098e42c28418e0"};
+      const actual=Object.fromEntries(tree.body.filter(node=>node.type==='FunctionDeclaration'&&Object.hasOwn(STRICT_MODULE_PIN,node.id.name))
+        .map(node=>[node.id.name,sha(Buffer.from(text.slice(node.start,node.end)))]).sort(([a],[b])=>a<b?-1:1));
+      assert.deepEqual(actual,STRICT_MODULE_PIN,'R386_CANVAS_STRICT_MODULE_SOURCE_PINNED');
+    }
     const cli=()=>spawnSync(process.execPath,[API_FILE,'check','--root',root],{encoding:'utf8'});
     const snapshot=()=>Object.fromEntries([fragment,'geometry-web/cdp_test.js',...entry.closure,...SUBPROCESS_SCRIPTS,'geometry-web/canvas-registry/costs/P2052/1/artifact.zip',
       'geometry-web/canvas-registry/costs/P2052/1/receipt.json'].map(relative=>[relative,fs.readFileSync(path.join(root,relative))]));

@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import threading
 
 import canvas_evidence as evidence
 
@@ -21,6 +22,84 @@ ROOT = evidence.ROOT
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
+
+
+LEDGER_SCHEMA = "geometry-driver-process-ledger/1"
+
+
+def _proc_table():
+    """One /proc snapshot: pid -> (ppid, start ticks). Linux only."""
+    table = {}
+    for name in os.listdir("/proc"):
+        if not name.isdigit():
+            continue
+        try:
+            raw = Path("/proc", name, "stat").read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        fields = raw[raw.rindex(")") + 2:].split(" ")
+        table[int(name)] = (int(fields[1]), fields[19])
+    return table
+
+
+def _argv(pid):
+    try:
+        raw = Path("/proc", str(pid), "cmdline").read_bytes()
+    except OSError:
+        return None
+    return [part.decode("utf-8", "replace") for part in raw.split(b"\0")[:-1]] or None
+
+
+def capture_with_ledger(command, out, err, env, ledger_path):
+    """R445 F1: the measuring script's own record of every process started
+    under cdp_test.js (pid, ppid, start ticks, argv), sampled from /proc while
+    it runs. It is independent of what the driver prints about itself; it is
+    not independent of this (branch-run) measuring script."""
+    evidence.require(sys.platform.startswith("linux") and Path("/proc/self/stat").is_file(), "R386_CANVAS_DRIVER_LEDGER_PLATFORM")
+    process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    root_start = _proc_table().get(process.pid, (None, None))[1]
+    rows, done = {}, threading.Event()
+
+    def sample():
+        while True:
+            table = _proc_table()
+            children = {}
+            for pid, (ppid, _) in table.items():
+                children.setdefault(ppid, []).append(pid)
+            pending = list(children.get(process.pid, []))
+            while pending:
+                pid = pending.pop()
+                pending.extend(children.get(pid, []))
+                ppid, start = table[pid]
+                argv = _argv(pid)
+                if argv is None:
+                    continue
+                row = rows.setdefault((pid, start), {"pid": pid, "ppid": ppid, "start": start, "argv": argv})
+                row["argv"] = argv  # last observed: a fork shows the parent's argv until exec
+            if done.is_set():
+                return
+            done.wait(0.05)
+
+    def copy(stream, target, console):
+        with target.open("wb") as output:
+            while chunk := stream.read(65536):
+                output.write(chunk)
+                output.flush()
+                console.buffer.write(chunk)
+                console.buffer.flush()
+    threads = [threading.Thread(target=copy, args=(process.stdout, out, sys.stdout)),
+               threading.Thread(target=copy, args=(process.stderr, err, sys.stderr)),
+               threading.Thread(target=sample)]
+    for thread in threads:
+        thread.start()
+    status = process.wait()
+    done.set()
+    for thread in threads:
+        thread.join()
+    ledger = {"schema": LEDGER_SCHEMA, "root": {"pid": process.pid, "start": root_start, "argv": list(command)},
+              "processes": sorted(rows.values(), key=lambda row: (int(row["start"]), row["pid"]))}
+    evidence.save(ledger_path, ledger)
+    return status
 
 
 def run(section, output):
@@ -120,16 +199,16 @@ def run_driver(section, row, output, identity, run_identity):
     evidence.require(runtime.get("fresh") is True and runtime.get("schema") == "geometry-runtime/1",
                      "R386_CANVAS_MEASURE_RUNTIME")
     command = ["node", "geometry-web/cdp_test.js"]
-    status = evidence.capture(command, output / "stdout.log", output / "stderr.log", env)
+    status = capture_with_ledger(command, output / "stdout.log", output / "stderr.log", env, output / "process-ledger.json")
     produced = {path.relative_to(output).as_posix(): sha(path.read_bytes())
                 for path in sorted(outputs.rglob("*")) if path.is_file() and not path.is_symlink()}
     evidence.require(all(not path.is_symlink() for path in outputs.rglob("*")), "R386_CANVAS_DRIVER_OUTPUT_HASH")
-    receipt = {"schema": "geometry-canvas-driver-measurement/1", **identity, **run_identity, "id": section,
+    receipt = {"schema": "geometry-canvas-driver-measurement/2", **identity, **run_identity, "id": section,
                "driver": driver["driver"], "driver_sha256": driver["sha256"], "dispatch_sha256": driver["dispatchSha256"],
                "flag": driver["flag"], "command": command, "process_exit": status, "runtime_fresh": runtime["fresh"],
                "runtime_version": runtime["version"], "capture_verified": False, "acceptance": False,
                "files": {name: sha((output / name).read_bytes()) for name in
-                         ("stdout.log", "stderr.log", "runtime.stdout", "runtime.stderr")},
+                         ("process-ledger.json", "stdout.log", "stderr.log", "runtime.stdout", "runtime.stderr")},
                "outputs": produced}
     evidence.save(output / "manifest.json", receipt)
     evidence.require(status == 0, "R386_CANVAS_MEASURE_PROCESS_FAILED")
