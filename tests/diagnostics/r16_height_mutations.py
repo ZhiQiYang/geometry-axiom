@@ -22,7 +22,7 @@ import sys
 import tempfile
 
 
-BASE_SHA = "883e68688f6480a5f1de6e86e6a056cc20339cb9"
+BASE_SHA = "142cc84986db7a5372f5fa16a32dac407617f938"
 CASE = "P1231"
 MAX_TIMEOUT = 900  # Existing browser_mutation_check.py budget, never extended.
 
@@ -116,6 +116,11 @@ def definitions(root: Path):
     add("R123H_WITHDRAW_FACE_TOOL_END_GUTTER", css, gutter,
         "/* R123H_WITHDRAW_FACE_TOOL_END_GUTTER: old end-of-scroll extent applies. */",
         "R123H_CONTROLS", "Remove the physical trailing scroll extent; retain all five hit points and the original narrow face-tool controls.")
+    statusbar = block(texts[css], "R123H_STATUSBAR_ROW")
+    add("R123H_RESTORE_STATUSBAR_BREAKPOINT_GAP", css, statusbar,
+        "@media (max-width: 560px) { body.canvas-composition { --statusbar-h: 32px; } }",
+        "R123H_STATUSBAR_CONTAINS_COMMAND",
+        "Restore the old 560px-only status row: the 561px composition falls back to 26px and its command button overlaps the canvas by 0.5px.")
     return result
 
 
@@ -132,7 +137,8 @@ def manifest_for(root: Path, mutations):
             "geometry-web/cdp_test.js",
             "geometry-web/browser_mutation_check.py", "geometry-web/workspace-height.js",
             "geometry-web/workspace-height.css", "geometry-web/workspace-height-dialogs.css",
-            "tests/diagnostics/r16_height_mutations.py", "tests/diagnostics/r16_control_probe.cjs"
+            "tests/diagnostics/r16_height_mutations.py", "tests/diagnostics/r16_control_probe.cjs",
+            "tests/diagnostics/r16_statusbar_probe.cjs"
         ] + (["geometry-web/canvas_sections/P1231.js", "geometry-web/cdp_sections.d/P1231.json"]
              if fragmented else ["geometry-web/workspace_height_test.js"]),
         "mutations": mutations,

@@ -22,6 +22,12 @@
 #canvasViewport > :is(#ocv, #cv), #faceEditorSvg { overflow: hidden; }
 /* R123H_NORMAL_HEIGHT_END */
 
+/* R123H_STATUSBAR_ROW_BEGIN: the adopted 32px row contains the existing
+ * 28px command button and 1px top border at every composition width.
+ */
+body.canvas-composition { --statusbar-h: 32px; }
+/* R123H_STATUSBAR_ROW_END */
+
 .wsh-dock {
   display: flex;
   flex-direction: column;
@@ -235,7 +241,6 @@ body #fbRoot > #fbButton:not([hidden]) {
 }
 /* R123H_FEEDBACK_DOCK_END */
 @media (max-width: 560px) {
-  body.canvas-composition { --statusbar-h: 32px; }
   .object-workspace-topbar, .reference-editor .object-workspace-topbar {
     grid-template-rows: 44px 44px;
     padding-block: 4px;

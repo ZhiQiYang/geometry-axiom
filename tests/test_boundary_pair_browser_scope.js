@@ -15,7 +15,8 @@ const train3Inputs=()=>{
   // PF-4A (#128) P1284 is a later independent section; project it out exactly first.
   // R03 (#205) P205 follows P1284; project it out exactly before PF-4A.
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
-  const r03Plan=r03Extension.projectPlan(shards.loadPlan()),r03Golden=r03Extension.projectGolden(shards.loadGolden());
+  const legacy=require('../geometry-web/canvas_registry.js').legacyView();
+  const r03Plan=r03Extension.projectPlan(legacy.plan),r03Golden=r03Extension.projectGolden(legacy.golden);
   assert.deepEqual(shards.validatePlan(r03Plan,r03Golden),[],'PF4A_RAW_PLAN_COMPLETE');
   const rawPlan=pf4aExtension.projectPlan(r03Plan),rawGolden=pf4aExtension.projectGolden(r03Golden);
   assert.deepEqual(shards.validatePlan(rawPlan,rawGolden),[],'TRAIN3_RAW_PLAN_COMPLETE');
