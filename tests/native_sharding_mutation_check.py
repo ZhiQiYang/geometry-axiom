@@ -1,11 +1,14 @@
 """在CI用真覆蓋／預算測試反證：各具名撤回必須正常AssertionError紅，恢復綠。"""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import subprocess
 import sys
+from threading import Lock
+import time
 
 PROGRAM = r'''
 import json, pathlib, sys, unittest
@@ -23,6 +26,24 @@ def drop_added_suites(names):
         name: ms for name, ms in effective().items() if name not in names}
 removed = []
 target = 'test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once'
+capacity_modes = {
+    'R443_RESTORE_SWAP_TRIAL_SCORING': ('_swap_scenarios', 'current', 'restore'),
+    'R443_RESTORE_EXCHANGE_TRIAL_SCORING': ('_exchange_scenarios', 'pair_score', 'restore'),
+    'R443_REJECT_EQUAL_SWAP_PEAK': ('_swap_scenarios', 'current', 'equal'),
+    'R443_REJECT_EQUAL_EXCHANGE_PEAK': ('_exchange_scenarios', 'pair_score', 'equal'),
+}
+if mode == 'capacity-baseline' or mode in capacity_modes:
+    target = 'test_unittest_runner.NativeShardCoverage._assert_rejected_trial_capacity_and_ties'
+    if mode in capacity_modes:
+        import inspect
+        method, score_name, withdrawal = capacity_modes[mode]
+        source = inspect.getsource(getattr(native_shards, method))
+        anchor = ('if a_load[r] > ' + score_name + '[0] or '
+                  'b_load[r] > ' + score_name + '[0]:')
+        assert source.count(anchor) == 1, 'R443_CAPACITY_WITHDRAWAL_SITE'
+        replacement = 'if False:' if withdrawal == 'restore' else anchor.replace(' > ', ' >= ')
+        exec(compile(source.replace(anchor, replacement), '<' + mode + '>', 'exec'),
+             native_shards.__dict__)
 if mode in ('drop-one-suite', 'R348_FOUR_SHARD_DROP_ONE_SUITE', 'R378_SIX_SHARD_DROP_ONE_SUITE'):
     original = run_all.partition_suites
     def mutated(suites, count, weights=None):
@@ -587,7 +608,11 @@ if mode in historical_workflow_replacements:
     test_unittest_runner.HISTORICAL_FOUR_NATIVE_WORKFLOW = value
 suite = unittest.defaultTestLoader.loadTestsFromName(target)
 result = unittest.TextTestRunner(verbosity=2).run(suite)
-markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
+markers = ('R443_NATIVE_SWAP_REJECTED_TRIAL_CAPACITY',
+           'R443_NATIVE_EXCHANGE_REJECTED_TRIAL_CAPACITY',
+           'R443_NATIVE_SWAP_EQUAL_PEAK_REMAINS_ELIGIBLE',
+           'R443_NATIVE_EXCHANGE_EQUAL_PEAK_REMAINS_ELIGIBLE',
+           'R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R348_RETAINED_MEASURED_EVIDENCE', 'R348_FOUR_SHARDS_COVER_FULL_REGISTRY',
            'R380_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R378_SIX_NATIVE_WORKFLOW',
            'R378_SIX_SHARDS_COVER_FULL_REGISTRY', 'R378_RETAINED_MEASURED_EVIDENCE',
@@ -637,15 +662,34 @@ def main():
                         help='prove the R396 historical projection and retained cost/suite negative controls')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
+    proof_started = time.monotonic()
+    proof_started_at = datetime.now(timezone.utc).isoformat()
     rows = []
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
-    initial = [] if args.r03 or args.r443_r396 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
-    for label, mode, expected in initial:
-        report, log = args.output/(label+'.json'), args.output/(label+'.log')
+    clock_lock = Lock()
+
+    def run_child(stem, mode):
+        report, log = args.output/(stem+'.json'), args.output/(stem+'.log')
+        started_at = datetime.now(timezone.utc).isoformat()
+        started = time.monotonic()
         with log.open('wb') as stream:
             result = subprocess.run([sys.executable, '-B', '-c', PROGRAM, mode, str(report.resolve())],
                                     env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=60)
+        timing = dict(started_at=started_at, finished_at=datetime.now(timezone.utc).isoformat(),
+                      seconds=round(time.monotonic()-started, 6))
         row = json.loads(report.read_text(encoding='utf-8'))
+        row['timing'] = timing
+        report.write_text(json.dumps(row, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+        # Keep original child logs and each real run; make future attribution
+        # possible even when a later step exhausts the five-minute job budget.
+        with clock_lock:
+            print(json.dumps(dict(event='native-sharding-child', stem=stem, mode=mode,
+                                  exit=result.returncode, **timing)), flush=True)
+        return result, row
+
+    initial = [] if args.r03 or args.r443_r396 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
+    for label, mode, expected in initial:
+        result, row = run_child(label, mode)
         assert result.returncode == expected and row['tests'] == 1 and row['errors'] == row['skips'] == 0, row
         assert row['failures'] == expected, row
         if expected:
@@ -653,6 +697,10 @@ def main():
             assert row['failure_ids'] == ['test_unittest_runner.NativeShardCoverage.test_partition_covers_actual_suite_registry_once']
         rows.append(dict(label=label, exit=result.returncode, **row))
     mutations = {
+        'R443_RESTORE_SWAP_TRIAL_SCORING': ('capacity-baseline', 'R443_NATIVE_SWAP_REJECTED_TRIAL_CAPACITY'),
+        'R443_RESTORE_EXCHANGE_TRIAL_SCORING': ('capacity-baseline', 'R443_NATIVE_EXCHANGE_REJECTED_TRIAL_CAPACITY'),
+        'R443_REJECT_EQUAL_SWAP_PEAK': ('capacity-baseline', 'R443_NATIVE_SWAP_EQUAL_PEAK_REMAINS_ELIGIBLE'),
+        'R443_REJECT_EQUAL_EXCHANGE_PEAK': ('capacity-baseline', 'R443_NATIVE_EXCHANGE_EQUAL_PEAK_REMAINS_ELIGIBLE'),
         'R379_REVERT_SINGLE_START_ONE_SWEEP': ('r14-baseline', 'R348_MEASURED_RECEIPT_BUDGET'),
         'R379_DROP_R14_SUITE_EVIDENCE': ('measured-baseline', 'R379_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
         'R379_DROP_R14_EXPECTED_ENTRIES': ('baseline', 'R379_COMPLETE_EXPECTED_REGISTRY'),
@@ -752,16 +800,13 @@ def main():
         for label, mode, expected in [('baseline', baseline, 0),
                                       ('withdrawn', mutation, 1), ('restored', baseline, 0)]:
             stem = mutation + '-' + label
-            report, log = args.output/(stem+'.json'), args.output/(stem+'.log')
-            with log.open('wb') as stream:
-                result = subprocess.run([sys.executable, '-B', '-c', PROGRAM, mode, str(report.resolve())],
-                                        env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=60)
-            row = json.loads(report.read_text(encoding='utf-8'))
+            result, row = run_child(stem, mode)
             assert result.returncode == expected and row['tests'] == 1 and row['errors'] == row['skips'] == 0, row
             assert bool(row['failures']) == bool(expected), row
             if expected:
                 assert row['assertion_failure'] and marker in row['failure_markers'], row
-                methods = {'baseline': 'NativeShardCoverage.test_partition_covers_actual_suite_registry_once',
+                methods = {'capacity-baseline': 'NativeShardCoverage._assert_rejected_trial_capacity_and_ties',
+                           'baseline': 'NativeShardCoverage.test_partition_covers_actual_suite_registry_once',
                            'measured-baseline': 'NativeShardCoverage.test_profile_balances_measured_work',
                            'receipt-baseline': 'NativeShardCoverage.test_cross_shard_report_requires_all_rows',
                            'provenance-baseline': ('NativeShardCoverage.'
@@ -789,7 +834,10 @@ def main():
     with ThreadPoolExecutor(max_workers=2) as pool:
         timing_proofs = dict(pool.map(prove, selected_mutations.items()))
     receipt = dict(passed=True, baseline_mutant_restored_exit=[r['exit'] for r in rows], rows=rows,
-                   timing_proofs=timing_proofs)
+                   timing_proofs=timing_proofs,
+                   timing=dict(started_at=proof_started_at,
+                               finished_at=datetime.now(timezone.utc).isoformat(),
+                               seconds=round(time.monotonic()-proof_started, 6)))
     (args.output/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     print(json.dumps(receipt, ensure_ascii=False))
 
