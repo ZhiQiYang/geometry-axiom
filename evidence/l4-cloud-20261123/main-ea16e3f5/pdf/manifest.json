@@ -1,0 +1,87 @@
+{
+  "malformed-h": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 h S",
+    "bytes": 1074,
+    "sha256": "bc15a6f332481185dc73296b5e2b6434cdc989718ea506dd07370fc82cb01958"
+  },
+  "valid-h": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l h S",
+    "bytes": 1076,
+    "sha256": "d9d568582d665865c4bf6c7ca647361f3008526f43753af333f34c16422a489b"
+  },
+  "explicit-l": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l 60 40 l S",
+    "bytes": 1082,
+    "sha256": "44b25975b71a434f0a3c66d1112f1bc82ea84c94eeed264d0bb8bba1fd2cbadb"
+  },
+  "implicit-s": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l s",
+    "bytes": 1074,
+    "sha256": "6d19d44189984771c2193348725f541379959dbf7bf538f67526eaafb9d510a1"
+  },
+  "implicit-b": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l b",
+    "bytes": 1074,
+    "sha256": "397e052e6e4e44135bc1308f9355c7573d85bc1ddfbe49c2b9283b6ac0ee8cfa"
+  },
+  "implicit-b-star": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l b*",
+    "bytes": 1075,
+    "sha256": "cba476fb9edb60b7b0598f63c8ffa89617aff8d59dbc10169dbddcad9030f840"
+  },
+  "double-h": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l h h S",
+    "bytes": 1078,
+    "sha256": "41f48c4017f913ac313a1f2144ea378c59a0b43821e78cf314d5c1a6a03554cd"
+  },
+  "h-then-s": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l h s",
+    "bytes": 1076,
+    "sha256": "e5998faa314c7218c25110fb15f57440aaa405f88ff9baf93411e9555938acfd"
+  },
+  "h-then-line": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l h 40 40 l S",
+    "bytes": 1084,
+    "sha256": "72692ee7f658c18d0e658a401983bede71c06153c3fb1377864ae43d48fa0a06"
+  },
+  "h-h-then-line": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l h h 40 40 l S",
+    "bytes": 1086,
+    "sha256": "96c7fb180de5ba5362fce99982ddd06f9cc5b1ada6724daf7783d6ecbf690ce1"
+  },
+  "h-then-move": {
+    "path": "60 40 m 300 40 l 300 140 l 220 140 l 220 200 l 60 200 l h 30 10 m 50 10 l S",
+    "bytes": 1092,
+    "sha256": "f0886aaf8d39016496c41e39998ce1ffaf7ddcfaa7e5714560aea03ce451f70d"
+  },
+  "rectangle-re": {
+    "path": "60 40 240 160 re S",
+    "bytes": 1035,
+    "sha256": "bde1df62de8c2fd24c860571fd9459ce5ba7c59fed89b301abb07475a10e55a6"
+  },
+  "curved-v-h": {
+    "path": "60 40 m 100 80 60 120 v 120 120 l 120 40 l h S",
+    "bytes": 1063,
+    "sha256": "197ee8253bb1903b381725aead61ad0bc1cbe822f0863938e7e9824b565bd7e1"
+  },
+  "curved-y-h": {
+    "path": "60 40 m 100 80 60 120 y 120 120 l 120 40 l h S",
+    "bytes": 1063,
+    "sha256": "310f8d0a67d5c358da603c1efa583ed7ca43471abc8da68aa70d08c24438f427"
+  },
+  "straight-v-h": {
+    "path": "60 40 m 60 80 60 120 v 120 120 l 120 40 l h S",
+    "bytes": 1062,
+    "sha256": "42506767ca7e7b52357c9e77d0e8dab02609cee9e4a03f2311a9793716c22ea8"
+  },
+  "straight-y-h": {
+    "path": "60 40 m 60 80 60 120 y 120 120 l 120 40 l h S",
+    "bytes": 1062,
+    "sha256": "b887e0572814b4771ac4b58aeac808aee8b412dc93e1e9bfb185beed10adceb9"
+  },
+  "curved-h-then-line": {
+    "path": "60 40 m 100 80 60 120 v 120 120 l 120 40 l h 40 40 l S",
+    "bytes": 1071,
+    "sha256": "f25f5aa773e64026db2daac5d8a314de2774ce9356ee9234a02b0001fe40b9d5"
+  }
+}

@@ -87,16 +87,23 @@ exports.rect = (S, sel, nth = 0) => S.p.evaluate(([s, n]) => {
 }, [sel, nth]);
 // 目標不在視窗內時，以 CDP 滑鼠滾輪捲動它所在的捲動區（不呼叫 scrollIntoView）
 exports.reveal = async (S, sel, nth = 0) => {
-  for (let i = 0; i < 40; i++) {
-    const r = await exports.rect(S, sel, nth); if (!r) return null;
-    if (r.top >= 4 && r.bottom <= r.vh - 4) return r;
-    const anchor = await S.p.evaluate(([s, n]) => {
-      const e = [...document.querySelectorAll(s)].filter(e => e.getBoundingClientRect().width > 0)[n];
+  // 目標中心必須真的點得到：在視窗內，且命中測試回到目標本身（或其子孫）。否則以滾輪捲動最近的捲動祖先。
+  for (let i = 0; i < 60; i++) {
+    const st = await S.p.evaluate(([s, n]) => {
+      const vis = e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== 'hidden'; };
+      const e = [...document.querySelectorAll(s)].filter(vis)[n]; if (!e) return null;
+      const r = e.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
       let c = e.parentElement; while (c && !(c.scrollHeight > c.clientHeight + 2 && /(auto|scroll)/.test(getComputedStyle(c).overflowY))) c = c.parentElement;
-      if (!c) return null; const r = c.getBoundingClientRect(); return { x: r.left + Math.min(r.width / 2, 40), y: Math.max(r.top + 10, Math.min(r.bottom - 10, innerHeight / 2)) };
+      const cr = c ? c.getBoundingClientRect() : { top: 0, bottom: innerHeight, left: 0, width: innerWidth };
+      const inView = y >= Math.max(4, cr.top + 2) && y <= Math.min(innerHeight - 4, cr.bottom - 2);
+      const hit = inView ? document.elementFromPoint(x, y) : null;
+      const okHit = !!hit && (hit === e || e.contains(hit) || hit.contains(e) && hit.tagName === 'LABEL');
+      return { x, y, okHit, inView, dir: y > (cr.top + cr.bottom) / 2 ? 1 : -1, anchor: c ? { x: cr.left + Math.min(cr.width / 2, 40), y: Math.max(cr.top + 10, Math.min(cr.bottom - 10, innerHeight / 2)) } : null };
     }, [sel, nth]);
-    if (!anchor) return r;
-    await exports.wheel(S, anchor.x, anchor.y, r.top < 4 ? -200 : 200); await sleep(120);
+    if (!st) return null;
+    if (st.okHit) return exports.rect(S, sel, nth);
+    if (!st.anchor) return exports.rect(S, sel, nth);
+    await exports.wheel(S, st.anchor.x, st.anchor.y, st.dir * 120); await sleep(120);
   }
   return exports.rect(S, sel, nth);
 };
@@ -106,7 +113,7 @@ exports.click = async (S, sel, { nth = 0, wait = 500, button = 'left', count = 1
 };
 // 依按鈕／標籤可見文字找元素（唯讀），回傳可給 click 用的 nth 選擇器
 exports.byText = async (S, sel, re) => {
-  const n = await S.p.evaluate(([s, src]) => { const rx = new RegExp(src); return [...document.querySelectorAll(s)].filter(e => e.getBoundingClientRect().width > 0).findIndex(e => rx.test(e.textContent.trim())); }, [sel, re.source]);
+  const n = await S.p.evaluate(([s, src]) => { const rx = new RegExp(src); return [...document.querySelectorAll(s)].filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== 'hidden'; }).findIndex(e => rx.test(e.textContent.trim())); }, [sel, re.source]);
   return n < 0 ? null : { sel, nth: n };
 };
 exports.clickText = async (S, sel, re, opts = {}) => { const t = await exports.byText(S, sel, re); if (!t) throw new Error('no text ' + re + ' in ' + sel); return exports.click(S, t.sel, { ...opts, nth: t.nth }); };
