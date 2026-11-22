@@ -14,10 +14,27 @@ const fixture = () => clone(current);
 const reject = (value, label) => assert.throws(() => helper.project(value.golden, value.plan),
   error => error.code === 'ERR_ASSERTION' && error.message.includes(label), label + ' must reject');
 
+function assertOnlyTouchRemoved(input, output) {
+  const expected = clone(input);
+  expected.golden.sections = Object.fromEntries(Object.entries(input.golden.sections).filter(([id]) => id !== 'P1162'));
+  expected.golden.total = input.golden.total - 504;
+  for (const shard of expected.plan.shards) shard.sections = shard.sections.filter(id => id !== 'P1162');
+  assert.deepEqual(output, expected, 'R433_OTHER_INPUTS_UNCHANGED');
+  assert.deepEqual(Object.keys(output.golden.sections), Object.keys(expected.golden.sections), 'R433_OTHER_SECTION_ORDER_UNCHANGED');
+}
+
 test('R433_ONLY_P1162_PROJECTED', () => {
   const input = fixture(), before = clone(input), output = helper.project(input.golden, input.plan);
-  assert.deepEqual(output, {golden: legacy.golden, plan: legacy.plan}, 'R433_ALL_LEGACY_INPUTS_UNCHANGED');
   assert.deepEqual(input, before, 'R433_INPUTS_UNCHANGED');
+  assertOnlyTouchRemoved(before, output);
+  // P2052 and any other independent module remain in output. Only this test's
+  // legacy comparison projects them out; every one was checked unchanged above.
+  const old = clone(output), isLegacy = id => Object.hasOwn(legacy.golden.sections, id);
+  old.golden.sections = Object.fromEntries(Object.entries(output.golden.sections).filter(([id]) => isLegacy(id)));
+  old.golden.total = Object.values(old.golden.sections).reduce((sum, count) => sum + count, 0);
+  for (const shard of old.plan.shards) shard.sections = shard.sections.filter(isLegacy);
+  assert.deepEqual(old, {golden: legacy.golden, plan: legacy.plan}, 'R433_ALL_LEGACY_INPUTS_UNCHANGED');
+  assert.deepEqual(Object.keys(old.golden.sections), Object.keys(legacy.golden.sections), 'R433_LEGACY_SECTION_ORDER_UNCHANGED');
   assert.equal(input.golden.sections.P1162, 504, 'R433_REAL_REGISTRY_RETAINS_P1162');
   assert.deepEqual(input.plan.shards[1].sections.slice(-3), ['P1161', 'P1162', 'P359']);
 });
@@ -80,9 +97,11 @@ test('R433_UNRELATED_INPUT_PRESERVED', () => {
   input.golden.extra = {source: 'unrelated golden metadata'};
   input.plan.shards[1].sections.unshift('P999');
   input.plan.extra = {source: 'unrelated plan metadata'};
+  const before = clone(input);
   const output = helper.project(input.golden, input.plan);
+  assertOnlyTouchRemoved(before, output);
   assert.equal(output.golden.sections.P999, 17, 'R433_OTHER_SECTION_RETAINED');
-  assert.equal(output.golden.total, legacy.golden.total + 17, 'R433_ONLY_504_SUBTRACTED');
+  assert.equal(output.golden.total, before.golden.total - 504, 'R433_ONLY_504_SUBTRACTED');
   assert.deepEqual(output.golden.extra, input.golden.extra, 'R433_GOLDEN_METADATA_RETAINED');
   assert.deepEqual(output.plan.extra, input.plan.extra, 'R433_PLAN_METADATA_RETAINED');
   assert.deepEqual(output.plan.shards[0], input.plan.shards[0], 'R433_FIRST_UNIT_UNCHANGED');

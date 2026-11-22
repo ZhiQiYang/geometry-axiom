@@ -21,6 +21,9 @@ const cases = [
   {id: 'R433_WITHDRAW_UNIQUE_OWNER', before: ownerBlock, test: 'R433_OWNER_REJECTED', oracle: 'R433_P1162_EXACT_OWNER:P1161 must reject'},
   {id: 'R433_WITHDRAW_EXACT_NEIGHBORS', before: "  assert.deepEqual(plan.shards[1].sections.slice(-3), ['P1161', 'P1162', 'P359'],\n    'R433_P1162_EXACT_NEIGHBORS');\n", test: 'R433_NEIGHBORS_REJECTED', oracle: 'R433_P1162_EXACT_NEIGHBORS must reject'},
   {id: 'R433_WITHDRAW_INPUT_COPY', before: 'const clone = value => JSON.parse(JSON.stringify(value));', after: 'const clone = value => value;', test: 'R433_ONLY_P1162_PROJECTED', oracle: 'R433_INPUTS_UNCHANGED'},
+  {id: 'R433_WITHDRAW_OTHER_MODULE_PRESERVATION', before: '  delete projectedGolden.sections.P1162;',
+    after: "  delete projectedGolden.sections.P1162;\n  delete projectedGolden.sections.P2052;\n  projectedGolden.total -= 28;\n  projectedPlan.shards[1].sections = projectedPlan.shards[1].sections.filter(id => id !== 'P2052');",
+    tests: ['R433_ONLY_P1162_PROJECTED', 'R433_UNRELATED_INPUT_PRESERVED'], oracle: 'R433_OTHER_INPUTS_UNCHANGED'},
   {id: 'R433_WITHDRAW_BOUNDARY_PROJECTION', file: BOUNDARY, count: 7,
     before: 'const touchBase=touchExtension.project(shards.loadGolden(),shards.loadPlan());',
     after: 'const touchBase={golden:shards.loadGolden(),plan:shards.loadPlan()};',
@@ -28,7 +31,7 @@ const cases = [
       'R335_EXTENSION rejects count drift, duplicate ownership and a changed execution position'], oracle: 'TRAIN3_CANVAS_TAIL'},
   {id: 'R433_WITHDRAW_CANVAS_PROJECTION', file: CANVAS, count: 41,
     before: 'const touchBase = touchExtension.project(golden, plan);', after: 'const touchBase = {golden, plan};',
-    test: '完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 golden', oracle: 'R396_ONLY_P1161_GOLDEN_PROJECTED'}
+    test: '完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 golden', oracle: 'R433_P1162_PROJECTED_BEFORE_LEGACY_ORACLES'}
 ];
 
 assert.equal(process.argv.length, 3, 'usage: node r433_canvas_projection_mutations.cjs NEW_OUTPUT_DIR');
