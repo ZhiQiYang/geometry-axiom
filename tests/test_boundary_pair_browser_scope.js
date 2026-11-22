@@ -6,6 +6,7 @@ const driver=require('../geometry-web/cdp_test.js'),plugin=require('../geometry-
 const shards=require('../geometry-web/canvas_shards.js'),evidence=require('./helpers/canvas_shards.js');
 const extension=require('./diagnostics/r335_canvas_extension.cjs');
 const r03Extension=require('./diagnostics/r03_framing_canvas_extension.cjs');
+const r03aExtension=require('./diagnostics/r03a_framing_canvas_extension.cjs');
 const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
 // sections. Strip them first (P420 by its exact count and tail position, P1161
@@ -15,6 +16,8 @@ const train3Inputs=()=>{
   // PF-4A (#128) P1284 is a later independent section; project it out exactly first.
   // R03 (#205) P205 follows P1284; project it out exactly before PF-4A.
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
+  r03aExtension.projectPlan(shards.loadPlan());
+  r03aExtension.projectGolden(shards.loadGolden());
   const legacy=require('../geometry-web/canvas_registry.js').legacyView();
   const r03Plan=r03Extension.projectPlan(legacy.plan),r03Golden=r03Extension.projectGolden(legacy.golden);
   assert.deepEqual(shards.validatePlan(r03Plan,r03Golden),[],'PF4A_RAW_PLAN_COMPLETE');

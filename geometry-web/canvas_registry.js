@@ -83,6 +83,429 @@ function sourceClosure(root,seeds,{strict=false}={}){
   return {files:Object.fromEntries(Object.entries(hashes).sort()),sha256:sha(stable(hashes))};
 }
 function moduleSourceHash(root,module){return sourceClosure(root,[module],{strict:true}).sha256;}
+/* R445: reviewed independent CDP driver sections. A driver is NOT a module:
+ * it may use fs/ZIP/new processes, so it is admitted only through this closed,
+ * source-reviewed allowlist (this file is pinned by the architecture exclusion
+ * and tests/registry-source-reviews). A fragment can only restate an entry; it
+ * cannot name another file, flag, command, slot or helper set.
+ * Trust level (7072484935 X1): this allowlist and its checker live in the same
+ * PR-editable file; the source review only recomputes hashes. The real defence
+ * for a change here is the human review of the diff. */
+const DRIVER_SECTIONS=Object.freeze({
+  P2052:Object.freeze({
+    driver:'geometry-web/framing_template_jig_workflow_test.js',
+    flag:'GEOMETRY_FRAMING_JIG_ONLY',unit:2,after:'P205',before:'P353',
+    assertions:Object.freeze(['ENTRY','VERSION2_SCOPE','SOURCES_BLANK','SAVE_INTENT','V1_RETAINED','READ_VERSION','POLICY_REQUEST',
+      'ORACLE_F4_FIXED','MARKS','PREVIEW_TABLE','PREVIEW_ZERO','CANCEL_ZERO','NEW_TOKEN','CONFIRM_SAME_CANDIDATE','LIVE_DEFINITIONS',
+      'UNDO','REDO','REJECT_ZERO','VERSION1_STILL_REJECTS','NARROW_LAYOUT','WIDE_LAYOUT','SAVE_FILE','FRESH_CONTEXT','COLD_EXACT',
+      'COLD_NO_SEARCH','WRONG_V2_POLICY','UNKNOWN_VERSION','NO_EXCEPTIONS']),
+    /* Exact cdp_test.js text: the P205 statement, its closing brace and the
+       single P2052 statement. The helper set passed to the driver is part of it. */
+    dispatch:["  if(inSequence(2)||process.env.GEOMETRY_FRAMING_TEMPLATE_ONLY)",
+      "    await require('./framing_template_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,exceptionCount:()=>excN});",
+      "  } // FRAMING_JIG_ONLY owns only P2052; the complete v1 P205 path is unchanged.",
+      "  if(inSequence(2)||process.env.GEOMETRY_FRAMING_JIG_ONLY)",
+      "    await require('./framing_template_jig_workflow_test.js')({send,eval_,sleep,click,dblclick,waitForUI,exceptionCount:()=>excN});",
+      ""].join('\n'),
+    /* R445 (7072803590 item 2): the statement that must directly follow the
+       P2052 dispatch in the same block (the P353 dispatch). */
+    following:["  if(inSequence(2)||process.env.GEOMETRY_GRID_CARD_ENTRY_ONLY)",
+      "    await require('./grid_card_entry_test.js')({send,eval_,sleep,click,waitForUI,expectNativeDialog,exceptionCount:()=>excN});",
+      ""].join('\n'),
+    guard:'  if (!process.env.GEOMETRY_FRAMING_JIG_ONLY) {\n',
+    closure:Object.freeze(['geometry-core/framing-template/oracle/oracle-golden.json','geometry-web/cdp_bay_repeat_io.js',
+      'geometry-web/cdp_helpers.js','geometry-web/framing_template_jig_workflow_test.js','geometry-web/vendor/fflate/umd/index.js']),
+    builtins:Object.freeze(['child_process','crypto','fs','net','os','path','util']),
+    vendor:Object.freeze({'geometry-web/vendor/fflate/umd/index.js':Object.freeze(['worker_threads'])}),
+    processProperties:Object.freeze(['env','kill','platform']),
+    /* R445 (7072803590 item 1): like strict modules, a computed member must be
+       a literal; the only exceptions are these reviewed sites, each pinned by
+       its exact text and the SHA-256 of its innermost enclosing function. */
+    computed:Object.freeze({
+      "geometry-web/framing_template_jig_workflow_test.js":Object.freeze([
+        "first.members[i]@9c5c862d4da971c729241b07fafa8f7de081b4eadd15f6e4fb80ae55a48e9d9e",
+        "first.members[i]@9c5c862d4da971c729241b07fafa8f7de081b4eadd15f6e4fb80ae55a48e9d9e",
+        "first.members[i]@9c5c862d4da971c729241b07fafa8f7de081b4eadd15f6e4fb80ae55a48e9d9e",
+        "first.members[i]@9c5c862d4da971c729241b07fafa8f7de081b4eadd15f6e4fb80ae55a48e9d9e"]),
+      "geometry-web/cdp_helpers.js":Object.freeze([
+        "retained[i]@9699819b9ad0ef0dd41f5630505bea7aa235e974bddf47600e731c633d7781c5",
+        "process.env[n]@c85612ec549d9df59f1161a106bf90b3cc56002fc28e9843d4f2ae95e5f6f092",
+        "CARD_NATIVE_LIST[kind]@806397ce2276cea0751b89b7a463c451174b99f17fc6e5c987cdf01e405884e7"]),
+      "geometry-web/cdp_bay_repeat_io.js":Object.freeze([
+        "attributes[at+1]@fb01ddd3ea80128fae5ddc66ca697b44deb3b5ca10c8b2a69a97f52bc9b56f9b"])}),
+    /* R445: child_process is reachable only through this one reviewed import;
+       every call of spawn/spawnSync/ownedSpawn must be one of these exact sites
+       (text + innermost enclosing function SHA-256). The scripts those sites
+       execute are hashed into the driver identity (see driverIdentity). */
+    subprocess:Object.freeze({file:'geometry-web/cdp_bay_repeat_io.js',
+      import:"const {spawn,spawnSync}=require('node:child_process');",
+      callees:Object.freeze(['ownedSpawn','spawn','spawnSync']),wrapper:'ownedSpawn',
+      sites:Object.freeze([
+        "spawnSync('taskkill',['/PID',String(child.pid),'/T','/F'],{stdio:'ignore'})@da8e245b68c6266c3f99b88a61b2f5fef46171ea1913c1e944ccd019179718d8",
+        "spawn(executable,args,{cwd:ROOT,detached:process.platform!=='win32',stdio:['ignore','pipe','pipe'],...options})@5034bbb8d37169547239c393e3251bc624332fc89a1478312ae50151a027fae4",
+        "spawnSync(python,['-B','-c',script,ROOT,configured],{cwd:ROOT,encoding:'utf8',timeout:30000})@7475d4b5be865c4750c6a64489782ffc6d3589dd4e0a0ae193b6980572feb8c6",
+        "ownedSpawn(python,['-B',path.join(__dirname,'serve.py'),String(port)],{env:{...process.env,\n    GEOMETRY_BRIDGE_EXECUTABLE:record.path,GEOMETRY_FEEDBACK_DIR:feedback,GEOMETRY_ISOLATED_SERVICE:'1'}})@b4df205f98c5a3185a8ab313ceac2c40fa0d910f1a03e84d3133129ddb69a367",
+        "ownedSpawn(process.env.GEOMETRY_CHROME||'C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe',[\n     '--headless=new','--disable-gpu','--no-first-run','--remote-debugging-port=0','--window-size=1280,900',\n     '--user-data-dir='+profile,...(process.env.GEOMETRY_CHROME_FLAGS||'').split(' ').filter(Boolean),'about:blank'])@b4df205f98c5a3185a8ab313ceac2c40fa0d910f1a03e84d3133129ddb69a367"]),
+      scripts:Object.freeze(['geometry-web/serve.py','geometry-web/start_local.py','tests/binaries.py'])}),
+    outputs:Object.freeze({saved:/^saved-[0-9]+\.gcanvas$/,cold:/^cold-[0-9]+\.json$/,coldFinal:/^cold-final-[0-9]+\.json$/,
+      fixed:Object.freeze(['unknown-v2-generator.gcanvas','wrong-v2-policy.gcanvas'])}),
+    artifactEnv:'GEOMETRY_FRAMING_JIG_ARTIFACT_DIR',
+  }),
+});
+const DRIVER_MEASUREMENT_SCHEMA='geometry-canvas-driver-measurement/2',DRIVER_OUTPUTS='driver-outputs';
+const DRIVER_RECEIPT_FILES=Object.freeze(['process-ledger.json','runtime.stderr','runtime.stdout','stderr.log','stdout.log']);
+const DRIVER_LEDGER_SCHEMA='geometry-driver-process-ledger/1';
+const DRIVER_COMMAND=Object.freeze(['node','geometry-web/cdp_test.js']);
+function driverEntry(id){requireThat(typeof id==='string'&&Object.hasOwn(DRIVER_SECTIONS,id),'R386_CANVAS_DRIVER_UNREVIEWED',String(id));return DRIVER_SECTIONS[id];}
+function driverDeclaration(id){const entry=driverEntry(id);
+  return {unit:entry.unit,order:{anchor:{after:entry.after,before:entry.before}},execution:{kind:'driver',driver:entry.driver,flag:entry.flag}};}
+function parseScript(raw,relative){
+  if(!acorn){const native=process.binding('natives')['internal/deps/acorn/acorn/dist/acorn'];
+    requireThat(typeof native==='string','R386_CANVAS_SOURCE_PARSER');acorn={};require('node:vm').runInNewContext(native,{exports:acorn,module:{exports:acorn}});}
+  return acorn.parse(raw.toString('utf8'),{ecmaVersion:'latest',sourceType:relative.endsWith('.mjs')?'module':'script',allowReturnOutsideFunction:true});
+}
+const DRIVER_BANNED_IDS=Object.freeze(['eval','Function','AsyncFunction','GeneratorFunction','AsyncGeneratorFunction','WebAssembly','global','globalThis','Reflect','Proxy']);
+const DRIVER_BANNED_PROPS=Object.freeze(['constructor','__proto__','createRequire','mainModule','binding','_linkedBinding','dlopen','_load','_resolveFilename',
+  'getPrototypeOf','setPrototypeOf','__defineGetter__','__defineSetter__','__lookupGetter__','__lookupSetter__',
+  'getOwnPropertyDescriptor','getOwnPropertyDescriptors','getOwnPropertyNames','getOwnPropertySymbols','defineProperty','defineProperties',...DRIVER_BANNED_IDS]);
+/* Constant value of a string-literal expression ('a', `a`, 'a'+'b'); null otherwise. */
+function constantString(node){
+  if(node?.type==='Literal'&&typeof node.value==='string')return node.value;
+  if(node?.type==='TemplateLiteral'&&node.expressions.length===0)return node.quasis.map(quasi=>quasi.value.cooked).join('');
+  if(node?.type==='BinaryExpression'&&node.operator==='+'){const left=constantString(node.left),right=constantString(node.right);
+    return left!==null&&right!==null?left+right:null;}
+  return null;
+}
+/* Every node with its ancestor chain; scope = SHA-256 of the innermost
+ * enclosing function's LF source (or 'program'). */
+function walkWithScope(tree,source,visit){
+  const stack=[];
+  const step=(node,parent,scope)=>{
+    if(!node||typeof node!=='object')return;
+    if(['FunctionDeclaration','FunctionExpression','ArrowFunctionExpression'].includes(node.type))scope=sha(Buffer.from(source.slice(node.start,node.end)));
+    visit(node,parent,scope,stack);stack.push(node);
+    for(const value of Object.values(node))if(Array.isArray(value)){for(const item of value)if(item&&typeof item==='object')step(item,node,scope);}
+      else if(value&&typeof value==='object'&&typeof value.type==='string')step(value,node,scope);
+    stack.pop();
+  };
+  step(tree,null,'program');
+}
+const countSet=items=>{const counts={};for(const item of items)counts[item]=(counts[item]||0)+1;return counts;};
+/* Driver-mode closure: every dependency must be a literal, resolvable path
+ * inside the root or a listed builtin; loaders, reflection, dynamic members,
+ * pattern-extracted reflective keys and unreviewed subprocess sites are
+ * rejected. The resulting file SET must equal the reviewed entry; bytes go
+ * into the hash. */
+function driverClosure(root,id){
+  const entry=driverEntry(id),hashes={},pending=[entry.driver],builtins=new Set(entry.builtins);
+  const bannedIds=new Set(DRIVER_BANNED_IDS),bannedProps=new Set(DRIVER_BANNED_PROPS);
+  const literal=node=>node?.type==='Literal'&&typeof node.value==='string'?node.value:null;
+  const computedSeen={},sitesSeen=[];
+  while(pending.length){
+    const relative=pending.pop();if(Object.hasOwn(hashes,relative))continue;
+    const file=relativeFile(root,relative,'R386_CANVAS_DRIVER_CLOSURE_MISSING'),raw=lf(fs.readFileSync(file));hashes[relative]=sha(raw);
+    if(!/\.(?:js|cjs|mjs)$/.test(relative))continue;
+    const vendor=Object.hasOwn(entry.vendor,relative)?new Set(entry.vendor[relative]):null,dependencies=[];
+    const source=raw.toString('utf8'),tree=parseScript(raw,relative),text=node=>source.slice(node.start,node.end);
+    const subprocessFile=relative===entry.subprocess.file;let importNode=null;
+    if(!vendor)for(const statement of tree.body)if(statement.type==='VariableDeclaration'&&text(statement)===entry.subprocess.import)
+      {requireThat(subprocessFile&&!importNode,'R386_CANVAS_DRIVER_SUBPROCESS',relative+' import');importNode=statement;}
+    if(subprocessFile)requireThat(importNode!==null,'R386_CANVAS_DRIVER_SUBPROCESS',relative+' import missing');
+    const inside=(node,outer)=>outer&&node.start>=outer.start&&node.end<=outer.end;
+    const childProcess=name=>name.replace(/^node:/,'')==='child_process';
+    walkWithScope(tree,source,(node,parent,scope,ancestors)=>{
+      if(node.type==='CallExpression'&&node.callee?.type==='Identifier'&&node.callee.name==='require'){
+        const name=node.arguments.length===1?literal(node.arguments[0]):null;
+        requireThat(name!==null,'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC',relative);dependencies.push(name);
+        if(childProcess(name))requireThat(!vendor&&inside(node,importNode),'R386_CANVAS_DRIVER_SUBPROCESS',relative+' '+text(node));
+      }
+      if(node.type==='ImportExpression'){const name=literal(node.source);requireThat(name!==null,'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC',relative);dependencies.push(name);
+        requireThat(!childProcess(name),'R386_CANVAS_DRIVER_SUBPROCESS',relative+' '+text(node));}
+      if(['ImportDeclaration','ExportNamedDeclaration','ExportAllDeclaration'].includes(node.type)&&node.source){
+        const name=literal(node.source);requireThat(name!==null,'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC',relative);dependencies.push(name);
+        requireThat(!childProcess(name),'R386_CANVAS_DRIVER_SUBPROCESS',relative+' '+text(node));}
+      if(vendor)return;
+      const value=node.type==='Literal'||node.type==='TemplateLiteral'?constantString(node):null;
+      if(value!==null&&!(parent?.type==='Property'&&parent.key===node&&!parent.computed&&ancestors.at(-2)?.type==='ObjectExpression'))
+        requireThat(!bannedProps.has(value),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE',relative+' '+JSON.stringify(value));
+      if(node.type==='Identifier'){
+        const asKey=parent&&(parent.type==='Property'&&parent.key===node&&!parent.computed&&parent.value!==node||
+          parent.type==='MemberExpression'&&parent.property===node&&!parent.computed);
+        if(!asKey){
+          requireThat(!bannedIds.has(node.name),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE',relative+' '+node.name);
+          if(node.name==='require')requireThat(parent?.type==='CallExpression'&&parent.callee===node,'R386_CANVAS_DRIVER_CLOSURE_INDIRECT',relative);
+          if(node.name==='module')requireThat(parent?.type==='UnaryExpression'&&parent.operator==='typeof'||
+            parent?.type==='MemberExpression'&&parent.object===node&&!parent.computed&&parent.property.name==='exports','R386_CANVAS_DRIVER_CLOSURE_INDIRECT',relative);
+          if(node.name==='process')requireThat(parent?.type==='MemberExpression'&&parent.object===node&&!parent.computed&&
+            entry.processProperties.includes(parent.property.name),'R386_CANVAS_DRIVER_PROCESS_CAPABILITY',relative);
+          if(entry.subprocess.callees.includes(node.name)&&!inside(node,importNode)&&
+            !(subprocessFile&&parent?.type==='FunctionDeclaration'&&parent.id===node&&node.name===entry.subprocess.wrapper&&ancestors.length===2)){
+            requireThat(parent?.type==='CallExpression'&&parent.callee===node,'R386_CANVAS_DRIVER_SUBPROCESS',relative+' '+node.name);
+            sitesSeen.push(relative+'|'+text(parent)+'@'+scope);
+          }
+        }
+      }
+      /* process.env is read-only: a member read or an object spread, never a
+         write, delete, alias or argument (env injects into pinned children). */
+      if(node.type==='MemberExpression'&&node.object?.type==='Identifier'&&node.object.name==='process'&&!node.computed&&node.property.name==='env'){
+        const grand=ancestors.at(-2),member=parent?.type==='MemberExpression'&&parent.object===node;
+        const write=member&&(grand?.type==='AssignmentExpression'&&grand.left===parent||grand?.type==='UpdateExpression'&&grand.argument===parent||
+          grand?.type==='UnaryExpression'&&grand.operator==='delete'&&grand.argument===parent||
+          grand?.type==='Property'&&grand.value===parent&&ancestors.at(-3)?.type==='ObjectPattern'||grand?.type==='ArrayPattern'||
+          grand?.type==='AssignmentPattern'&&grand.left===parent||grand?.type==='RestElement'&&grand.argument===parent||
+          ['ForInStatement','ForOfStatement'].includes(grand?.type)&&grand.left===parent);
+        requireThat((parent?.type==='MemberExpression'&&parent.object===node||parent?.type==='SpreadElement')&&!write,
+          'R386_CANVAS_DRIVER_PROCESS_CAPABILITY',relative+' process.env');
+      }
+      if(node.type==='MemberExpression'){
+        if(node.computed){
+          const key=constantString(node.property),numeric=node.property.type==='Literal'&&typeof node.property.value==='number';
+          if(key!==null)requireThat(!bannedProps.has(key),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE',relative+' '+key);
+          else if(!numeric){const site=text(node)+'@'+scope;computedSeen[relative]=computedSeen[relative]||[];computedSeen[relative].push(site);
+            requireThat((entry.computed[relative]||[]).includes(site),'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC_PROPERTY',relative+' '+text(node));}
+          requireThat(!(node.object.type==='Identifier'&&['process','module','require','exports'].includes(node.object.name)),
+            'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC_PROPERTY',relative);
+        }else requireThat(!bannedProps.has(node.property.name),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE',relative+' '+node.property.name);
+      }
+      /* Destructuring is a property read: {constructor:F}=fn and {[k]:F}=fn. */
+      if(node.type==='Property'&&parent?.type==='ObjectPattern'){
+        const key=node.computed?constantString(node.key):node.key.type==='Identifier'?node.key.name:literal(node.key);
+        requireThat(key!==null,'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC_PROPERTY',relative+' '+text(node));
+        requireThat(!bannedProps.has(key),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE',relative+' '+key);
+      }
+    });
+    for(const name of [...new Set(dependencies)].sort()){
+      if(!name.startsWith('.')){
+        const bare=name.replace(/^node:/,'');
+        requireThat(nodeModule.builtinModules.includes(bare)&&(vendor?vendor.has(bare):builtins.has(bare)),'R386_CANVAS_DRIVER_BUILTIN',relative+' '+name);continue;}
+      requireThat(!vendor,'R386_CANVAS_DRIVER_VENDOR_LEAF',relative+' '+name);
+      let target;try{target=nodeModule.createRequire(file).resolve(name);}catch{requireThat(false,'R386_CANVAS_DRIVER_CLOSURE_MISSING',relative+' '+name);}
+      const rel=path.relative(path.resolve(root),target).split(path.sep).join('/');
+      requireThat(!rel.startsWith('../')&&!path.isAbsolute(rel)&&/\.(?:js|cjs|mjs|json)$/.test(rel),'R386_CANVAS_DEPENDENCY_OUTSIDE_ROOT',name);pending.push(rel);
+    }
+  }
+  const files=Object.fromEntries(Object.entries(hashes).sort());
+  requireThat(same(Object.keys(files),[...entry.closure]),'R386_CANVAS_DRIVER_CLOSURE_SET',JSON.stringify(Object.keys(files)));
+  /* The reviewed lists are exact: no extra site, and no silently dropped one. */
+  for(const relative of new Set([...Object.keys(computedSeen),...Object.keys(entry.computed)]))
+    requireThat(same(countSet(computedSeen[relative]||[]),countSet(entry.computed[relative]||[])),'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC_PROPERTY',relative+' reviewed set');
+  requireThat(same(countSet(sitesSeen),countSet(entry.subprocess.sites.map(site=>entry.subprocess.file+'|'+site))),'R386_CANVAS_DRIVER_SUBPROCESS','reviewed site set');
+  return files;
+}
+/* The scripts that the pinned subprocess sites execute. Their own repo-local
+ * imports are part of the runtime fingerprint (see FRAGMENTED-REGISTRIES.md). */
+function driverScripts(root,entry){
+  return Object.fromEntries([...entry.subprocess.scripts].sort().map(relative=>
+    [relative,sha(lf(fs.readFileSync(relativeFile(root,relative,'R386_CANVAS_DRIVER_SUBPROCESS'))))]));
+}
+/* The 28 names are read statically from the authored driver; it is never run here. */
+function driverAssertionNames(root,entry){
+  const raw=lf(fs.readFileSync(relativeFile(root,entry.driver,'R386_CANVAS_DRIVER_CLOSURE_MISSING'))),tree=parseScript(raw,entry.driver),found=[];
+  for(const statement of tree.body)if(statement.type==='VariableDeclaration')for(const item of statement.declarations){
+    if(item.id?.type!=='Identifier'||item.id.name!=='ASSERTIONS')continue;
+    const init=item.init;
+    requireThat(init?.type==='CallExpression'&&init.callee?.type==='MemberExpression'&&init.callee.object?.name==='Object'&&
+      init.callee.property?.name==='freeze'&&init.arguments.length===1&&init.arguments[0].type==='ArrayExpression'&&
+      init.arguments[0].elements.every(element=>element?.type==='Literal'&&typeof element.value==='string'),'R386_CANVAS_DRIVER_ASSERTIONS','literal');
+    found.push(init.arguments[0].elements.map(element=>element.value));
+  }
+  requireThat(found.length===1,'R386_CANVAS_DRIVER_ASSERTIONS','declaration count '+found.length);return found[0];
+}
+function countText(text,part){let count=0,at=0;while((at=text.indexOf(part,at))>=0){count++;at+=part.length;}return count;}
+/* R445 (7072803590 item 2): "dispatched exactly once" is an AST fact. Every
+ * require()/import() whose literal module path normalizes to the driver is
+ * counted (any quoting, with or without extension); every string constant
+ * naming the driver stem is counted; the one dispatch must sit in the reviewed
+ * block: after the guard block ending in P205, before the reviewed P353 statement. */
+function driverDispatch(root,entry){
+  const relative='geometry-web/cdp_test.js',raw=lf(fs.readFileSync(relativeFile(root,relative,'R386_CANVAS_DRIVER_DISPATCH'))),text=raw.toString('utf8');
+  requireThat(countText(text,entry.dispatch)===1,'R386_CANVAS_DRIVER_DISPATCH','statement');
+  requireThat(countText(text,entry.guard)===1,'R386_CANVAS_DRIVER_DISPATCH','guard');
+  const scope=text.split('\n').filter(line=>line.startsWith('SCOPE_FLAGS.push(')&&line.includes("'"+entry.flag+"'"));
+  requireThat(scope.length===1&&countText(text,"'"+entry.flag+"'")===1,'R386_CANVAS_DRIVER_SCOPE_FLAG',entry.flag);
+  let tree;try{tree=parseScript(raw,relative);}catch(error){requireThat(false,'R386_CANVAS_DRIVER_DISPATCH','parse '+error.message);}
+  const directory=path.posix.dirname(relative),driver=entry.driver,stem=path.posix.basename(driver).replace(/\.[cm]?js$/,'');
+  const normalized=name=>{if(!name.startsWith('.'))return null;const joined=path.posix.normalize(path.posix.join(directory,name));
+    return [joined,joined+'.js',joined+'.cjs',joined+'/index.js'].includes(driver)?driver:joined;};
+  const dispatches=[],named=[],source=node=>text.slice(node.start,node.end);
+  walkWithScope(tree,text,(node,parent,scope,ancestors)=>{
+    const loader=node.type==='CallExpression'&&node.callee?.type==='Identifier'&&node.callee.name==='require'?node.arguments[0]:
+      node.type==='ImportExpression'?node.source:null;
+    if(loader){const name=constantString(loader);if(name!==null&&normalized(name)===driver)dispatches.push({node,ancestors:[...ancestors]});}
+    if(node.type==='TemplateElement'&&(node.value.cooked||'').includes(stem))named.push(node);
+    else{const value=constantString(node);if(value!==null&&node.type==='Literal'&&value.includes(stem))named.push(node);}
+  });
+  requireThat(dispatches.length===1,'R386_CANVAS_DRIVER_DISPATCH','driver loaded '+dispatches.length+' times');
+  requireThat(named.length===1&&named[0]===dispatches[0].node.arguments[0],'R386_CANVAS_DRIVER_DISPATCH','driver named '+named.length+' times');
+  /* Structure: await require(<driver>)({...}) as the sole consequent of the
+     reviewed `if`, directly inside a block, between the reviewed neighbours. */
+  const chain=dispatches[0].ancestors,at=offset=>chain.at(-offset);
+  const call=at(1),awaited=at(2),statement=at(3),branch=at(4),block=at(5);
+  const strip=value=>value.replace(/^\s+/,'').replace(/\n$/,'');
+  const lines=entry.dispatch.split('\n');
+  requireThat(call?.type==='CallExpression'&&call.callee===dispatches[0].node&&awaited?.type==='AwaitExpression'&&
+    statement?.type==='ExpressionStatement'&&branch?.type==='IfStatement'&&branch.consequent===statement&&!branch.alternate&&
+    block?.type==='BlockStatement'&&strip(source(branch))===strip(lines.slice(3,5).join('\n')),'R386_CANVAS_DRIVER_DISPATCH','structure');
+  const index=block.body.indexOf(branch),previous=block.body[index-1],next=block.body[index+1];
+  requireThat(previous?.type==='IfStatement'&&strip(source(previous.test))==='!process.env.'+entry.flag&&previous.consequent?.type==='BlockStatement'&&
+    strip(source(previous.consequent.body.at(-1)||{start:0,end:0}))===strip(lines.slice(0,2).join('\n')),'R386_CANVAS_DRIVER_DISPATCH','previous');
+  requireThat(next&&strip(source(next))===strip(entry.following),'R386_CANVAS_DRIVER_DISPATCH','following');
+  return sha(entry.dispatch);
+}
+function driverIdentity(root,id){
+  const entry=driverEntry(id),files=driverClosure(root,id),dispatchSha256=driverDispatch(root,entry),scripts=driverScripts(root,entry);
+  requireThat(same(driverAssertionNames(root,entry),[...entry.assertions]),'R386_CANVAS_DRIVER_ASSERTIONS','names');
+  const reviewed={driver:entry.driver,flag:entry.flag,unit:entry.unit,after:entry.after,before:entry.before,assertions:[...entry.assertions],
+    dispatch:entry.dispatch,following:entry.following,guard:entry.guard,closure:[...entry.closure],builtins:[...entry.builtins],vendor:entry.vendor,
+    processProperties:[...entry.processProperties],computed:entry.computed,subprocess:entry.subprocess,command:[...DRIVER_COMMAND],
+    bannedIds:[...DRIVER_BANNED_IDS],bannedProps:[...DRIVER_BANNED_PROPS]};
+  const entrySha256=sha(stable(reviewed));
+  return {id,driver:entry.driver,flag:entry.flag,files,scripts,dispatchSha256,entrySha256,
+    sha256:sha(stable({id,files,scripts,dispatchSha256,entrySha256}))};
+}
+function driverSourceHash(root,id){return driverIdentity(root,id).sha256;}
+const ZIP_READER='import sys,json,zipfile,base64,io\nz=zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read()) if sys.argv[1]=="-" else sys.argv[1])\nr={}\nt=0\nfor i in z.infolist():\n if i.is_dir(): continue\n n=i.filename\n assert n not in r and not n.startswith("/") and ".." not in n.split("/") and ((i.external_attr>>16)&0o170000)!=0o120000 and i.file_size<=16777216, "unsafe, duplicate or oversized driver original"\n t+=i.file_size\n assert t<=67108864, "driver artifact too large"\n r[n]=base64.b64encode(z.read(i)).decode()\nprint(json.dumps(r))';
+function zipAll(file,{input=null,code='R386_CANVAS_COST_ZIP'}={}){
+  const run=spawnSync(process.env.PYTHON||'python3',['-c',ZIP_READER,input===null?file:'-'],{encoding:'utf8',input:input===null?undefined:input,maxBuffer:128*1024*1024});
+  requireThat(!run.error&&run.status===0,code,run.stderr||String(run.error||''));
+  return Object.fromEntries(Object.entries(parseJson(run.stdout)).map(([name,value])=>[name,Buffer.from(value,'base64')]));
+}
+/* R445 F4: the saved archive is a real .gcanvas, carrying both recipe versions. */
+function driverArchive(raw,code){
+  requireThat(Buffer.isBuffer(raw)&&raw.length>0,code,'empty');
+  const members=zipAll(null,{input:raw,code});
+  requireThat(same(Object.keys(members).sort(),['manifest.json','world.scene']),code,'members '+JSON.stringify(Object.keys(members)));
+  let manifest;try{manifest=JSON.parse(members['manifest.json'].toString('utf8'));}catch{requireThat(false,code,'manifest');}
+  requireThat(manifest&&typeof manifest==='object'&&/^geometry-canvas\/[0-9]+$/.test(manifest.format||'')&&manifest.sceneHash===sha(members['world.scene']),code,'format/sceneHash');
+  const records=(manifest.featureAttachments?.records||[]).filter(record=>record?.kind==='framing-template-recipes');
+  requireThat(manifest.featureAttachments?.schema==='geometry-feature-attachments/1'&&records.length===1&&Array.isArray(records[0].value?.recipes),code,'recipes');
+  const versions=records[0].value.recipes.map(recipe=>recipe?.template?.version);
+  requireThat(versions.filter(version=>version===1).length>=1&&versions.filter(version=>version===2).length===1,code,'versions '+JSON.stringify(versions));
+  return {members,manifest};
+}
+/* R445 F3: each tampered archive is the saved one with exactly the driver's edit. */
+function driverTampered(saved,raw,name){
+  const code='R386_CANVAS_DRIVER_TAMPERED';
+  requireThat(Buffer.isBuffer(raw)&&raw.length>0&&!raw.equals(saved.raw),code,name+' empty or unchanged');
+  const members=zipAll(null,{input:raw,code});
+  requireThat(same(Object.keys(members).sort(),Object.keys(saved.members).sort())&&members['world.scene'].equals(saved.members['world.scene']),code,name+' members');
+  let actual;try{actual=JSON.parse(members['manifest.json'].toString('utf8'));}catch{requireThat(false,code,name+' manifest');}
+  const expected=structuredClone(saved.manifest),recipe=expected.featureAttachments.records.find(record=>record.kind==='framing-template-recipes')
+    .value.recipes.find(item=>item.template.version===2);
+  if(name==='wrong-v2-policy.gcanvas')recipe.template.policyFingerprint='0'.repeat(64);
+  else{recipe.template.version=999;recipe.template.policyFingerprint='f'.repeat(64);}
+  requireThat(same(actual,expected)&&!same(actual,saved.manifest),code,name+' edit');
+}
+/* R445 F1: the cold service and Chrome must be processes that the measuring
+ * script itself observed under cdp_test.js (not only the driver's own words). */
+function driverLedger(ledger,pkg,info,runtime){
+  const code='R386_CANVAS_DRIVER_COLD_OPEN';
+  requireThat(ledger?.schema===DRIVER_LEDGER_SCHEMA&&same(ledger.root?.argv,[...DRIVER_COMMAND])&&Number.isSafeInteger(ledger.root?.pid)&&
+    Array.isArray(ledger.processes),code,'ledger');
+  const byPid=new Map();for(const item of ledger.processes){requireThat(Number.isSafeInteger(item?.pid)&&Number.isSafeInteger(item?.ppid)&&
+    Array.isArray(item.argv)&&item.argv.every(arg=>typeof arg==='string'),code,'ledger row');byPid.set(item.pid,[...(byPid.get(item.pid)||[]),item]);}
+  const descends=item=>{const seen=new Set();for(let at=item;at;){if(at.ppid===ledger.root.pid)return true;if(seen.has(at.pid))return false;seen.add(at.pid);
+    const parents=byPid.get(at.ppid)||[];if(parents.length!==1)return false;at=parents[0];}return false;};
+  const only=(pid,match,label)=>{const rows=(byPid.get(pid)||[]).filter(item=>descends(item)&&match(item.argv));
+    requireThat(rows.length===1&&(byPid.get(pid)||[]).length===1,code,'ledger '+label);};
+  const port=new URL(info.url).port;
+  only(pkg.nativeService.pid,argv=>argv.length>=3&&argv.includes('-B')&&/(?:^|\/)geometry-web\/serve\.py$/.test(argv.at(-2))&&argv.at(-1)===port,'cold service');
+  only(pkg.browserPid,argv=>argv.includes('--user-data-dir='+pkg.profile)&&argv.includes('--remote-debugging-port=0'),'cold chrome');
+  requireThat(!(byPid.get(runtime.pid)||[]).some(descends)&&runtime.pid!==ledger.root.pid,code,'ledger source service');
+}
+function verifyDriverMeasurement(members,row,identity){
+  const entry=driverEntry(row.id),manifest=parseJson(members['manifest.json']||'null','manifest.json');
+  exactKeys(manifest,['schema','execution_sha','head_sha','tree','run_id','run_attempt','id','driver','driver_sha256','dispatch_sha256','flag',
+    'command','process_exit','runtime_fresh','runtime_version','capture_verified','acceptance','files','outputs'],'R386_CANVAS_DRIVER_RECEIPT_KEYS');
+  requireThat(manifest.schema===DRIVER_MEASUREMENT_SCHEMA&&manifest.capture_verified===true&&manifest.acceptance===false,'R386_CANVAS_COST_CAPTURE');
+  requireThat(/^[0-9a-f]{40}$/.test(manifest.execution_sha||'')&&/^[0-9a-f]{40}$/.test(manifest.head_sha||'')&&
+    /^[0-9a-f]{40}$/.test(manifest.tree||'')&&/^\d+$/.test(manifest.run_id||'')&&/^\d+$/.test(manifest.run_attempt||''),'R386_CANVAS_COST_CI_IDENTITY');
+  requireThat(manifest.process_exit===0&&manifest.id===row.id&&manifest.driver===entry.driver&&manifest.flag===entry.flag&&
+    manifest.driver_sha256===identity.sha256&&manifest.dispatch_sha256===identity.dispatchSha256,'R386_CANVAS_COST_SOURCE');
+  requireThat(same(manifest.command,DRIVER_COMMAND)&&manifest.runtime_fresh===true,'R386_CANVAS_COST_COMMAND');
+  exactKeys(manifest.files,[...DRIVER_RECEIPT_FILES],'R386_CANVAS_COST_RAW_HASH');
+  for(const [name,digest] of Object.entries(manifest.files))requireThat(members[name]&&sha(members[name])===digest,'R386_CANVAS_COST_RAW_HASH',name);
+  const outputs=Object.keys(members).filter(name=>name.startsWith(DRIVER_OUTPUTS+'/')).sort();
+  requireThat(same(Object.keys(members).sort(),['manifest.json',...DRIVER_RECEIPT_FILES,...outputs].sort()),'R386_CANVAS_ZIP_FILE_SET');
+  requireThat(manifest.outputs&&typeof manifest.outputs==='object'&&same(Object.keys(manifest.outputs).sort(),outputs)&&
+    outputs.every(name=>manifest.outputs[name]===sha(members[name])),'R386_CANVAS_DRIVER_OUTPUT_HASH');
+  const runtime=parseJson(members['runtime.stdout'],'runtime.stdout');
+  requireThat(runtime.schema==='geometry-runtime/1'&&runtime.fresh===true&&runtime.version===manifest.runtime_version&&
+    Number.isSafeInteger(runtime.pid)&&typeof runtime.session==='string'&&runtime.session&&typeof runtime.root==='string','R386_CANVAS_COST_COMMAND');
+  const lines=members['stdout.log'].toString('utf8').split(/\r?\n/),results=lines.filter(line=>line.startsWith('CDP_RESULT '));
+  requireThat(results.length===1,'R386_CANVAS_COST_RESULT_COUNT');
+  const result=parseJson(results[0].slice('CDP_RESULT '.length),'CDP_RESULT');
+  requireThat(result.schema==='geometry-cdp-result/1'&&result.completed===true&&result.failedAssertions===0&&
+    same(result.skipped,[])&&!result.sectionsFailed&&result.unexpectedBrowserExceptions===0&&result.scope?.mode==='partial'&&
+    same(result.scope.filters,[entry.flag])&&same(result.scope.modifiers,[])&&!Object.hasOwn(result.scope,'module')&&
+    result.goldenCompare==='not compared (partial mode)','R386_CANVAS_DRIVER_PARTIAL_RESULT');
+  requireThat(same(result.sectionOrder,[row.id])&&same(Object.keys(result.sections||{}),[row.id])&&
+    result.sections[row.id]===result.passedAssertions&&result.sections[row.id]===entry.assertions.length&&result.sections[row.id]===row.assertions,
+    'R386_CANVAS_COST_COUNT');
+  requireThat(same(Object.keys(result.sectionElapsedMs||{}),[row.id])&&Number.isFinite(result.sectionElapsedMs[row.id])&&result.sectionElapsedMs[row.id]>0,
+    'R386_CANVAS_COST_TIMING');
+  /* Same 28 named checks, really executed once each in this one run. */
+  const verdicts=lines.map((line,index)=>[line.match(/^(\S+) ([A-Z0-9_]+) ([✓✗])(?: |$)/),index]).filter(([match])=>match&&match[1]===row.id);
+  const passed=verdicts.filter(([match])=>match[3]==='✓').map(([match])=>match[2]);
+  requireThat(verdicts.every(([match])=>match[3]==='✓')&&passed.length===entry.assertions.length&&
+    same([...passed].sort(),[...entry.assertions].sort()),'R386_CANVAS_DRIVER_NAMED_CHECKS',JSON.stringify(passed));
+  const tagged=tag=>lines.flatMap((line,index)=>line.startsWith(tag+' ')?[[parseJson(line.slice(tag.length+1),tag),index]]:[]);
+  const scope=tagged('R03A_BROWSER_SCOPE');
+  requireThat(scope.length===1&&scope[0][0].schema==='framing-template-jig-browser-scope/1'&&scope[0][0].assertions===entry.assertions.length,'R386_CANVAS_DRIVER_SCOPE_LINE');
+  const packages=tagged('R03A_BROWSER_PACKAGE');
+  requireThat(packages.length===1,'R386_CANVAS_DRIVER_COLD_OPEN','package');
+  /* R445 F2: one run's log shape: CDP_SCOPE (= the result scope) < the section
+     header < every named check < SCOPE line < CDP_RESULT, PACKAGE inside. */
+  const scopes=tagged('CDP_SCOPE'),headers=lines.flatMap((line,index)=>line.startsWith('=== '+row.id+'. ')?[index]:[]);
+  const resultIndex=lines.indexOf(results[0]),first=Math.min(...verdicts.map(([,index])=>index)),last=Math.max(...verdicts.map(([,index])=>index));
+  requireThat(scopes.length===1&&same(scopes[0][0],result.scope)&&headers.length===1&&scopes[0][1]<headers[0]&&headers[0]<first&&
+    last<scope[0][1]&&headers[0]<packages[0][1]&&packages[0][1]<scope[0][1]&&scope[0][1]<resultIndex,'R386_CANVAS_DRIVER_LOG_STRUCTURE');
+  /* Cold open: a new native service/session and a new Chrome process/profile
+   * reopened the exact archived bytes; both tampered archives exist. */
+  const folders=[...new Set(outputs.map(name=>name.split('/').slice(0,2).join('/')))];
+  requireThat(folders.length===1,'R386_CANVAS_DRIVER_COLD_OPEN','package/folder');
+  const names=outputs.map(name=>name.slice(folders[0].length+1)),pkg=packages[0][0];
+  const saved=names.filter(name=>entry.outputs.saved.test(name)),cold=names.filter(name=>entry.outputs.cold.test(name));
+  const final=names.filter(name=>entry.outputs.coldFinal.test(name)),known=[...saved,...cold,...final];
+  requireThat(saved.length===1&&cold.length===1&&final.length===1&&same(names.filter(name=>!known.includes(name)).sort(),[...entry.outputs.fixed]),
+    'R386_CANVAS_DRIVER_COLD_OPEN','outputs');
+  const archive=members[folders[0]+'/'+saved[0]],info=parseJson(members[folders[0]+'/'+cold[0]],'cold');
+  const closing=parseJson(members[folders[0]+'/'+final[0]],'cold-final');
+  requireThat(same(closing.info,info)&&closing.end?.pid===info.service?.pid&&closing.end?.session===info.service?.session&&
+    Array.isArray(closing.errors)&&closing.errors.length===0,'R386_CANVAS_DRIVER_COLD_OPEN','close');
+  requireThat(pkg.sha256===sha(archive)&&pkg.bytes===archive.length&&Number.isSafeInteger(pkg.browserPid)&&pkg.browserPid>0&&
+    pkg.nativeService?.pid!==pkg.sourceService?.pid&&pkg.nativeService?.session!==pkg.sourceService?.session&&
+    pkg.nativeService?.fresh===true&&pkg.nativeService?.version===pkg.sourceService?.version&&typeof pkg.profile==='string'&&pkg.profile&&
+    same(info.service,pkg.nativeService)&&same(info.sourceRuntime,pkg.sourceService)&&info.browserPid===pkg.browserPid&&info.profile===pkg.profile,
+    'R386_CANVAS_DRIVER_COLD_OPEN','identity');
+  /* R445 F1: bind the driver's words to the measuring script's own probe:
+     the source service IS the probed service, the cold one runs the probed
+     source version under the same root, and both cold processes are in the
+     measuring script's own process ledger under cdp_test.js. */
+  requireThat(same(pkg.sourceService,runtime)&&pkg.nativeService.version===manifest.runtime_version&&pkg.nativeService.root===runtime.root&&
+    pkg.nativeService.schema===runtime.schema&&Number.isSafeInteger(scopes[0][0].browserPid)&&scopes[0][0].browserPid!==pkg.browserPid,
+    'R386_CANVAS_DRIVER_COLD_OPEN','runtime');
+  driverLedger(parseJson(members['process-ledger.json'],'process-ledger.json'),pkg,info,runtime);
+  /* R445 F4/F3: the saved file is a real .gcanvas; each tampered file is it with exactly the driver's one edit. */
+  const savedArchive={raw:archive,...driverArchive(archive,'R386_CANVAS_DRIVER_ARCHIVE')};
+  for(const name of entry.outputs.fixed)driverTampered(savedArchive,members[folders[0]+'/'+name],name);
+  return {assertions:result.sections[row.id],milliseconds:result.sectionElapsedMs[row.id],runId:manifest.run_id,attempt:manifest.run_attempt,
+    executionSha:manifest.execution_sha,headSha:manifest.head_sha};
+}
+function verifyDriverRow(root,row,inherited){
+  const declared=driverDeclaration(row.id);
+  for(const key of ['unit','order','execution'])requireThat(same(row[key],declared[key]),'R386_CANVAS_DRIVER_UNREVIEWED',row.id+' '+key);
+  const entry=driverEntry(row.id),legacy=inherited.plan.shards.find(unit=>unit.index===entry.unit).sections;
+  requireThat(!inherited.ids.includes(row.id)&&legacy.indexOf(entry.after)>=0&&legacy[legacy.indexOf(entry.after)+1]===entry.before,'R386_CANVAS_DRIVER_ANCHOR',row.id);
+  if(row.cost===null){
+    exactKeys(row.provenance,['kind'],'R386_CANVAS_MODULE_PROVENANCE_KEYS');
+    requireThat(row.provenance.kind==='candidate'&&row.assertions===0,'R386_CANVAS_DRIVER_CANDIDATE',row.id);
+  }else{
+    exactKeys(row.provenance,['kind','executionSha','headSha','runId','attempt'],'R386_CANVAS_MODULE_PROVENANCE_KEYS');
+    requireThat(row.provenance.kind==='ci-capture'&&row.assertions===entry.assertions.length,'R386_CANVAS_DRIVER_ASSERTIONS',row.id);
+  }
+  return driverIdentity(root,row.id);
+}
 function relativeFile(root,relative,code='R386_CANVAS_FILE'){
   requireThat(typeof relative==='string'&&relative!==''&&!relative.includes('\\')&&!path.isAbsolute(relative)&&
     path.posix.normalize(relative)===relative&&!relative.startsWith('../'),code,relative);
@@ -485,8 +908,10 @@ function verifyCost(root,row,moduleHash,sourceFiles){
   requireThat(artifact.path===path.posix.dirname(row.cost.receipt)+'/artifact.zip','R386_CANVAS_COST_PATH');
   const zip=relativeFile(root,artifact.path,'R386_CANVAS_COST_ZIP'),raw=fs.readFileSync(zip);
   requireThat(sha(raw)===artifact.sha256,'R386_CANVAS_COST_ARTIFACT_DIGEST');
-  const members=zipMembers(zip),manifest=parseJson(members['manifest.json'],'manifest.json');
-  const measured=verifyMeasurement(manifest,members['stdout.log'],members['stderr.log'],row,moduleHash);
+  let measured;
+  if(row.execution.kind==='driver')measured=verifyDriverMeasurement(zipAll(zip),row,moduleHash);/* moduleHash is the driver identity here */
+  else{const members=zipMembers(zip),manifest=parseJson(members['manifest.json'],'manifest.json');
+    measured=verifyMeasurement(manifest,members['stdout.log'],members['stderr.log'],row,moduleHash);}
   requireThat(String(artifact.runId)===measured.runId&&same(receipt.measured,measured),'R386_CANVAS_COST_SUMMARY');
   sourceFiles.push(row.cost.receipt,artifact.path);return measured;
 }
@@ -504,7 +929,7 @@ function load(root=ROOT,{allowCandidates=false,ignorePlacementCandidate=false}={
   });
   const ids=fragments.map(row=>row.id);requireThat(new Set(ids).size===ids.length,'R386_CANVAS_DUPLICATE_SECTION');
   for(const id of inherited.ids)requireThat(ids.includes(id),'R386_CANVAS_MISSING_FRAGMENT',id);
-  const sourceFiles=[META,ARCHIVE_PLAN,ARCHIVE_GOLDEN,...files],modules=[],costs={},allowed={};
+  const sourceFiles=[META,ARCHIVE_PLAN,ARCHIVE_GOLDEN,...files],modules=[],drivers=[],costs={},allowed={};
   let acceptance=true;
   for(const row of fragments){
     if(inherited.ids.includes(row.id)){
@@ -515,6 +940,14 @@ function load(root=ROOT,{allowCandidates=false,ignorePlacementCandidate=false}={
       requireThat(same(row.provenance,{kind:'migration',baseSha:inherited.meta.baseSha,
         planSha256:inherited.meta.files[0].sha256,goldenSha256:inherited.meta.files[1].sha256}),'R386_CANVAS_LEGACY_PROVENANCE',row.id);
       requireThat(row.cost===null,'R386_CANVAS_COST_LEGACY_OPAQUE',row.id);
+    }else if(row.execution?.kind==='driver'||Object.hasOwn(DRIVER_SECTIONS,row.id)){
+      /* Reviewed driver: only an exact restatement of DRIVER_SECTIONS. */
+      exactKeys(row.execution,['kind','driver','flag'],'R386_CANVAS_DRIVER_UNREVIEWED');
+      const identity=verifyDriverRow(root,row,inherited);
+      sourceFiles.push(...Object.keys(identity.files),'geometry-web/cdp_test.js');
+      if(allowCandidates&&!row.cost){acceptance=false;}
+      else costs[row.id]=verifyCost(root,row,identity,sourceFiles);
+      drivers.push(row);
     }else{
       exactKeys(row.execution,['kind','module','export'],'R386_CANVAS_MODULE_EXECUTION_KEYS');
       exactKeys(row.provenance,row.provenance?.kind==='candidate'?['kind']:['kind','executionSha','headSha','runId','attempt'],'R386_CANVAS_MODULE_PROVENANCE_KEYS');
@@ -559,14 +992,25 @@ function load(root=ROOT,{allowCandidates=false,ignorePlacementCandidate=false}={
   }
   for(const shard of plan.shards)shard.sections=fragments.filter(row=>row.execution.kind==='legacy'&&row.unit===shard.index)
     .sort((a,b)=>a.order.legacy-b.order.legacy).map(row=>row.id);
+  for(const row of [...drivers].sort((a,b)=>a.id<b.id?-1:1)){
+    const entry=driverEntry(row.id),sections=plan.shards[entry.unit-1].sections,at=sections.indexOf(entry.after);
+    requireThat(at>=0&&sections[at+1]===entry.before,'R386_CANVAS_DRIVER_ANCHOR',row.id);sections.splice(at+1,0,row.id);
+  }
   plan.shards[0].sections.push(...extensions.filter(row=>assignment[row.id]===1).map(row=>row.id));
   plan.shards[1].sections.splice(plan.shards[1].sections.length-1,0,...extensions.filter(row=>assignment[row.id]===2).map(row=>row.id));
   plan.boundaries[0].after=plan.shards[0].sections.at(-1);
+  for(const row of drivers){
+    const entry=driverEntry(row.id),owners=plan.shards.map(unit=>unit.sections.filter(id=>id===row.id).length);
+    requireThat(same(owners,plan.shards.map(unit=>unit.index===entry.unit?1:0)),'R386_CANVAS_DRIVER_OWNER',row.id);
+    const sections=plan.shards[entry.unit-1].sections,at=sections.indexOf(row.id);
+    requireThat(same(sections.slice(at-1,at+2),[entry.after,row.id,entry.before]),'R386_CANVAS_DRIVER_ORDER',row.id);
+  }
+  requireThat(plan.shards[1].sections.at(-1)==='P359'&&plan.shards[0].sections[0]===inherited.plan.shards[0].sections[0],'R386_CANVAS_TERMINAL_SLOT');
   if(extensions.some(row=>row.unit==='auto'))plan.registryPlanning=planning;
   for(const key of Object.keys(golden.sections))golden.sections[key]=fragments.find(row=>row.id===key).assertions;
-  for(const row of extensions)golden.sections[row.id]=row.assertions;
+  for(const row of [...drivers,...extensions])golden.sections[row.id]=row.assertions;
   golden.total=Object.values(golden.sections).reduce((sum,count)=>sum+count,0);
-  return {schema:'geometry-canvas-registry/1',root,plan,golden,fragments,extensions,sourceFiles:[...new Set(sourceFiles)].sort(),acceptance,
+  return {schema:'geometry-canvas-registry/1',root,plan,golden,fragments,extensions,drivers,sourceFiles:[...new Set(sourceFiles)].sort(),acceptance,
     assignment,costs,unitCosts,planning,candidate,
     baseline:inherited,planSha256:sha(encode(plan)),goldenSha256:sha(encode(golden))};
 }
@@ -624,19 +1068,21 @@ function createSectionTimer(clock=()=>process.hrtime.bigint()){
     finish(){if(!finished){close();finished=true;}return {...totals};}};
 }
 function importCost(root,{id,artifactFile,artifactId}){
-  const registry=load(root,{allowCandidates:true}),row=registry.extensions.find(item=>item.id===id);
+  const registry=load(root,{allowCandidates:true}),row=registry.extensions.find(item=>item.id===id)||registry.drivers.find(item=>item.id===id);
   requireThat(row,'R386_CANVAS_MODULE_UNKNOWN',id);
   requireThat(/^\d+$/.test(String(artifactId)),'R386_CANVAS_COST_ARTIFACT');
+  const driver=row.execution.kind==='driver';
   const endpoint='repos/ZhiQiYang/geometry-axiom/actions/artifacts/'+artifactId;
   const api=spawnSync('gh',['api',endpoint],{encoding:'utf8',maxBuffer:4*1024*1024});
   requireThat(!api.error&&api.status===0,'R386_CANVAS_OFFICIAL_ARTIFACT_API',api.stderr||String(api.error||''));
   const official=parseJson(api.stdout,endpoint),raw=fs.readFileSync(artifactFile),digest=sha(raw);
   requireThat(official.id===Number(artifactId)&&official.expired===false&&official.digest==='sha256:'+digest,'R386_CANVAS_OFFICIAL_ARTIFACT_DIGEST');
-  const members=zipMembers(artifactFile),manifest=parseJson(members['manifest.json']);
-  const moduleHash=moduleSourceHash(root,row.execution.module);
+  const members=driver?zipAll(artifactFile):zipMembers(artifactFile),manifest=parseJson(members['manifest.json']);
+  const moduleHash=driver?driverSourceHash(root,id):moduleSourceHash(root,row.execution.module);
   const actual=parseJson(members['stdout.log'].toString('utf8').split(/\r?\n/).find(line=>line.startsWith('CDP_RESULT '))?.slice(11)||'null');
   const proposed={...row,assertions:actual?.sections?.[id]};
-  const measured=verifyMeasurement(manifest,members['stdout.log'],members['stderr.log'],proposed,moduleHash);
+  const measured=driver?verifyDriverMeasurement(members,proposed,driverIdentity(root,id)):
+    verifyMeasurement(manifest,members['stdout.log'],members['stderr.log'],proposed,moduleHash);
   requireThat(String(official.workflow_run?.id)===measured.runId,'R386_CANVAS_OFFICIAL_ARTIFACT_RUN');
   verifyOfficialRun(measured,'.github/workflows/canvas-section-measure.yml',true);
   const directory='geometry-web/canvas-registry/costs/'+id+'/'+artifactId,receiptPath=directory+'/receipt.json';
@@ -718,10 +1164,19 @@ function stageModule(root,id,after=[],before=[]){
     load(root,{allowCandidates:true});return {id,fragment:relative,acceptance:false,
       note:'The generated zero is an unaccepted placeholder. CI measurement and import-cost supply the actual count and elapsed time.'};});
 }
+function stageDriver(root,id){
+  const entry=driverEntry(id),inherited=archive(root),relative=DIRECTORY+'/'+id+'.json';
+  requireThat(!inherited.ids.includes(id)&&!fs.existsSync(path.join(root,relative)),'R386_CANVAS_SECTION_ALREADY_EXISTS',id);
+  const row={schema:SCHEMA,id,assertions:0,...driverDeclaration(id),provenance:{kind:'candidate'},cost:null};
+  const ordered={schema:row.schema,id:row.id,assertions:row.assertions,unit:row.unit,order:row.order,execution:row.execution,provenance:row.provenance,cost:row.cost};
+  return writeImport(root,new Map([[relative,encode(ordered)]]),()=>{
+    load(root,{allowCandidates:true});return {id,fragment:relative,driver:entry.driver,acceptance:false,
+      note:'Reviewed driver candidate; the zero is a placeholder. Canvas section measurement and import-cost supply the real count, cost and receipt.'};});
+}
 function verifyCiSources(root=ROOT,{trustedRef=null}={}){
   requireThat(trustedRef===null||/^[0-9a-f]{40}$/.test(trustedRef),'R386_CANVAS_TRUSTED_REF');
   const registry=load(root),verified=[],inherited=[];
-  const paths=registry.extensions.flatMap(row=>[row.cost.receipt,...(row.balance?[row.balance.receipt]:[])])
+  const paths=[...registry.drivers,...registry.extensions].flatMap(row=>[row.cost.receipt,...(row.balance?[row.balance.receipt]:[])])
     .concat(Object.values(registry.unitCosts).map(row=>row.receipt));
   const matchesBase=relative=>{
     if(!trustedRef)return false;
@@ -747,7 +1202,8 @@ function verifyCiSources(root=ROOT,{trustedRef=null}={}){
 module.exports={ROOT,PLAN,GOLDEN,DIRECTORY,MODULES,META,ARCHIVE_PLAN,ARCHIVE_GOLDEN,SCHEMA,sha,lf,stable,encode,parseJson,
   requireThat,migrate,load,loadPlan,loadGolden,legacyView,dispatch,createSectionTimer,verifyMeasurement,importCost,verifyCiSources,
   slotIdentity,slotMetadata:slotIdentity,verifySlotRun,verifySlotProof,solvePlacement,placementCandidate,runSlotIsolation,restoreStorageExpression,
-  STORAGE_EXPRESSION,PROTOCOL_FILES,importUnitCost,importSlots,proposeBalance,stageModule,sourceClosure,moduleSourceHash};
+  STORAGE_EXPRESSION,PROTOCOL_FILES,importUnitCost,importSlots,proposeBalance,stageModule,sourceClosure,moduleSourceHash,
+  DRIVER_SECTIONS,DRIVER_MEASUREMENT_SCHEMA,DRIVER_RECEIPT_FILES,DRIVER_OUTPUTS,driverClosure,driverIdentity,driverSourceHash,verifyDriverMeasurement,stageDriver};
 if(require.main===module){
   try{
     const [mode,...args]=process.argv.slice(2),options={};for(let at=0;at<args.length;at++){
@@ -767,8 +1223,10 @@ if(require.main===module){
     else if(mode==='import-slots')result=importSlots(root,{id:options.id,artifactFile:options.artifact,artifactId:options['artifact-id']});
     else if(mode==='placement-candidate')result=placementCandidate(root,options.id,Number(options.unit),options.out);
     else if(mode==='propose-balance')result=proposeBalance(root);
+    else if(mode==='stage-driver')result=stageDriver(root,options.id);
+    else if(mode==='driver-identity')result=driverIdentity(root,options.id);
     else if(mode==='stage-module')result=stageModule(root,options.id,options.after?options.after.split(','):[],options.before?options.before.split(','):[]);
-    else throw Error('Use migrate, check, report, golden, plan, import-cost, import-unit-cost, placement-candidate, import-slots or propose-balance');
+    else throw Error('Use migrate, check, report, golden, plan, import-cost, import-unit-cost, placement-candidate, import-slots, propose-balance, stage-module, stage-driver or driver-identity');
     process.stdout.write(encode(result));
   }catch(error){process.stderr.write(String(error.message)+'\n');process.exitCode=1;}
 }

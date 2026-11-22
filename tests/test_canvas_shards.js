@@ -260,6 +260,12 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(legacy.golden.total, rawGolden.total + legacy.golden.sections.P205, 'R03_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(context.golden.total, legacy.golden.total + registeredIndependent.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION_IN_VERDICT');
+  // R445 N4 (7072484935 §7): restore the original patch's R03A union over the
+  // current fragment composition: exactly the legacy view plus the independent
+  // sections it does not own, P2052 among them at its measured 28.
+  const independent = Object.keys(context.golden.sections).filter(name => !Object.hasOwn(legacy.golden.sections, name));
+  assert.ok(independent.includes('P2052') && context.golden.sections.P2052 === 28, 'R03A_P2052_REGISTERED_IN_VERDICT');
+  assert.equal(context.golden.total, legacy.golden.total + independent.reduce((total, name) => total + context.golden.sections[name], 0), 'R03A_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
