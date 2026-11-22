@@ -5,6 +5,7 @@
  * reset, so first-visit and read states use the ordinary App lifecycle.
  */
 const {controlProbe,entryControlReady,sweepEntryControl}=require('../../tests/diagnostics/r16_control_probe.cjs');
+const {statusbarProbe,statusbarReady,statusbarMatrixReady}=require('../../tests/diagnostics/r16_statusbar_probe.cjs');
 module.exports = async helpers => {
   const {send, eval_, sleep, click, waitForUI, makeCheck, exceptionCount} = helpers;
   console.log('=== P1231. U123-H:A 六工作區正常畫布與既有控制可達性 ===');
@@ -23,6 +24,7 @@ module.exports = async helpers => {
     {width:390, height:844}, {width:768, height:1024}, {width:1400, height:900},
     {width:560, height:844}, {width:561, height:844}
   ];
+  const mainStatusbarRows=[];
   const save = '#projectBar [data-project-action="save"]';
   const project = [save, '#projectInfoButton'];
   const common = [...project, '#fileMenuBtn'];
@@ -179,11 +181,23 @@ module.exports = async helpers => {
     await settle();
     const p=await call(surfaceProbe,selector),minimum=size.height-(size.width<=560?128:88);
     console.log('P1231_LAYOUT '+JSON.stringify({label,state,requested:size,minimum,observation:p}));
+    let statusbar;
+    if(label==='main'){
+      statusbar=await call(statusbarProbe);
+      const row={state,requested:size,observation:statusbar};
+      mainStatusbarRows.push(row);
+      console.log('P1231_STATUSBAR '+JSON.stringify(row));
+    }
     check('R123H_LAYOUT_VIEWPORT '+label+' '+state+' '+size.width,
       p.exists===true&&p.viewport.innerWidth===size.width&&p.viewport.innerHeight===size.height,p);
     check('R123H_HEIGHT '+label+' '+state+' '+size.width,
       p.exists===true&&p.visible&&p.clipped.height>=minimum&&p.clipped.width>0,
       {minimum,actual:p.clipped,bounds:p.bounds});
+    // Keep the old passing prefix intact; the observed 561px regression gets
+    // its own deterministic assertion before the unchanged overlap judge.
+    if(label==='main'&&size.width===561)
+      check('R123H_STATUSBAR_CONTAINS_COMMAND '+label+' '+state+' '+size.width,
+        statusbarReady(statusbar),statusbar);
     check('R123H_UNOBSCURED '+label+' '+state+' '+size.width,
       p.exists===true&&p.obstructions.length===0&&p.samples.every(s=>s.hit),
       {obstructions:p.obstructions,samples:p.samples});
@@ -298,6 +312,7 @@ module.exports = async helpers => {
   await viewport({width:1400,height:900});
   await ctl('#btnZoom');
   await matrix('main','#ocv',rootControls,'#ocSelectionSummary','#btnZoom');
+  check('R123H_STATUSBAR_ALL_MAIN_STATES',statusbarMatrixReady(mainStatusbarRows,sizes),mainStatusbarRows);
 
   // A real CDP page-scale change separates visualViewport from innerHeight.
   // This is a denominator probe, not a claim to have opened a phone keyboard.
