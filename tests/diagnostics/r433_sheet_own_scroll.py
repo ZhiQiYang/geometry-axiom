@@ -2,7 +2,8 @@
 """Fragmented R433 sheet-own-scroll Chrome withdrawal; never edits the checkout.
 
 This reuses the reviewed, byte-pinned fragmented registration candidate/run/green.
-Product/native sources stay pinned to the reviewed 82b7b765 PR head.
+Product/native sources stay pinned to the reviewed 82b7b765 PR head, with only
+the exact 16 copied R13 paths adopted from the reviewed main 883e6868 merge.
 Its three *candidate* snapshots are baseline/control, withdrawn, restored.
 It is NOT the registration runner's historical-baseline 1/0/1/0 experiment.
 Only the withdrawn snapshot loses the one sheet-own-scroll guard. No harness,
@@ -35,6 +36,26 @@ import tempfile
 
 sys.dont_write_bytecode = True
 BASE = '82b7b76526ab9e926ac2d6eb4e3f3de1163155b5'
+MERGED_MAIN = '883e68688f6480a5f1de6e86e6a056cc20339cb9'
+MERGED_MAIN_PARENT = 'e0db7e478f15df4a90ea130ad17d74406db75586'
+MAIN_SOURCE_PATHS = (
+    'geometry-core/card-reference/run_axiom_mutations.py',
+    'geometry-core/domain-decoupling/product-architecture.d/exclusions/geometry-core/card-reference/run_axiom_mutations.py.json',
+    'geometry-core/modeling/__init__.py',
+    'geometry-guide/公理層-白話.md',
+    'geometry-guide/公理層-閱讀器.html',
+    'tests/fixtures/q38j-b-native-model.json',
+    'tests/fixtures/r13-approved-delta.json',
+    'tests/fixtures/r13-main-3ef07683/card.json',
+    'tests/fixtures/r13-main-3ef07683/profile.json',
+    'tests/fixtures/r13-main-3ef07683/provenance.json',
+    'tests/fixtures/r13-main-3ef07683/stagger.json',
+    'tests/make_r13_approved_delta.py',
+    'tests/mutation_r14_repeat_panel.py',
+    'tests/test_domain_decoupling_adoption.py',
+    'tests/test_engineering_model_compatibility.py',
+    '公理層.md',
+)
 NAME = 'R433_WITHDRAW_SHEET_OWN_SCROLL_GUARD'
 DRIVER = 'tests/canvas_touch_regression.py'
 PRODUCT = 'geometry-web/touch-gestures.js'
@@ -64,6 +85,7 @@ ADOPTION_PATHS = {
     'tests/diagnostics/r433_touch_regression.py', 'tests/diagnostics/r433_original_release.py',
     'tests/diagnostics/r433_touch_probe_test.cjs', 'tests/diagnostics/r433_sheet_own_scroll.py',
     'tests/diagnostics/r433_fragment_contract_test.cjs', 'tests/diagnostics/test_r433_fragment_runners.py',
+    'tests/diagnostics/test_r433_main_projection.py',
     'geometry-core/domain-decoupling/product-architecture.d/exclusions/geometry-web/canvas_touch_test.js.json',
     'geometry-core/domain-decoupling/product-architecture.d/exclusions/geometry-web/canvas_sections/P1162.js.json',
 }
@@ -118,9 +140,9 @@ def pinned_runner(root):
     return original, pins
 
 
-def fixed_source_tree(root, original):
+def fixed_source_tree(root, original, reference=BASE):
     """Pin all copied source bytes; only the reviewed fragment conversion may differ."""
-    raw = subprocess.check_output(['git', 'ls-tree', '-rz', '--full-tree', BASE], cwd=root)
+    raw = subprocess.check_output(['git', 'ls-tree', '-rz', '--full-tree', reference], cwd=root)
     expected = {}
     for entry in raw.split(b'\0'):
         if not entry:
@@ -135,6 +157,23 @@ def fixed_source_tree(root, original):
         require(kind == 'blob' and mode in {'100644', '100755'}, 'Unsupported fixed source entry: ' + path)
         expected[path] = blob
     return expected
+
+
+def verified_main_projection(root, original, fixed, control):
+    """Permit the named ordinary merge only at its exact before/after blobs."""
+    before = fixed_source_tree(root, original, MERGED_MAIN_PARENT)
+    after = fixed_source_tree(root, original, MERGED_MAIN)
+    changed = tuple(sorted(name for name in before.keys() | after.keys()
+                           if before.get(name) != after.get(name)))
+    require(changed == MAIN_SOURCE_PATHS, 'R433_MERGED_MAIN_EXACT_PATH_SET')
+    paths = {}
+    for name in MAIN_SOURCE_PATHS:
+        require(fixed.get(name) == before.get(name),
+                'R433_MERGED_MAIN_BEFORE_PIN: ' + name)
+        require(control.get(name, {}).get('blob') == after.get(name),
+                'R433_MERGED_MAIN_SOURCE_PIN: ' + name)
+        paths[name] = {'before': before.get(name), 'after': after.get(name)}
+    return {'main': MERGED_MAIN, 'parent': MERGED_MAIN_PARENT, 'paths': paths}
 
 
 def integer(value, minimum=0):
@@ -356,9 +395,11 @@ def execute(args, original, pins):
         # validates them; this never permits changing a legacy fragment or code.
         measured_inputs = {path for path in original.test_overlay()
                            if path.startswith('geometry-web/canvas-registry/costs/P1162/')}
-        require(set(base_changes) <= ADOPTION_PATHS | measured_inputs,
+        main_projection = verified_main_projection(root, original, fixed_tree, control)
+        require(set(base_changes) <= ADOPTION_PATHS | measured_inputs | set(main_projection['paths']),
                 'Runtime source differs outside the reviewed fragment conversion: ' + ', '.join(base_changes))
         report['changesFromFixedBase'] = base_changes
+        report['mainProjection'] = main_projection
         save(out / 'fixed-base-source-blobs.json', fixed_tree)
         require(fingerprints['baseline'] == fingerprints['restored'], 'Restored source differs from baseline')
         changed = sorted(p for p in fingerprints['baseline'].keys() | fingerprints['withdrawn'].keys()
