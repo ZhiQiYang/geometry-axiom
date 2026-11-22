@@ -157,7 +157,9 @@ async function driverContract(R){
     for(const relative of migrated.deletes)fs.unlinkSync(path.join(root,relative));
     fs.rmSync(path.join(root,'stage'),{recursive:true});
     const legacy=R.load(root);
-    for(const relative of entry.closure){const target=path.join(root,relative);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(ROOT,relative),target);}
+    // R445 (7072803590): the scripts the pinned subprocess sites execute are copied too.
+    const SUBPROCESS_SCRIPTS=['geometry-web/serve.py','geometry-web/start_local.py','tests/binaries.py'];
+    for(const relative of [...entry.closure,...SUBPROCESS_SCRIPTS]){const target=path.join(root,relative);fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(path.join(ROOT,relative),target);}
     const dispatcher=["'use strict';",
       "const SCOPE_FLAGS=[];",
       "SCOPE_FLAGS.push('GEOMETRY_FRAMING_TEMPLATE_ONLY','"+entry.flag+"');",
@@ -167,7 +169,7 @@ async function driverContract(R){
       "  if (!process.env.GEOMETRY_FRAMING_TEMPLATE_ONLY) {",
       "  if(inSequence(2))await p1284();",
       entry.dispatch.replace(/\n$/,''),
-      "  if(inSequence(2))await p353();",
+      (entry.following||"  if(inSequence(2))await p353();\n").replace(/\n$/,''),
       "  if(inSequence(2))await p359();",
       "  }",
       "}",""].join('\n');
@@ -177,29 +179,54 @@ async function driverContract(R){
     const candidate=R.load(root,{allowCandidates:true});
     assert.equal(candidate.acceptance,false,'R386_CANVAS_DRIVER_CANDIDATE_NOT_ACCEPTANCE');
     assert.throws(()=>R.load(root),/^Error: R386_CANVAS_COST_RECEIPT_REQUIRED/,'R386_CANVAS_DRIVER_RECEIPT_REQUIRED');
-    // A fixed-anchor, measured driver: the synthetic CI capture below.
+    // A fixed-anchor, measured driver: the synthetic CI capture below. Its
+    // shape follows the official original (artifact 14732356182): real ZIP
+    // .gcanvas members, the measuring script's own runtime probe and, when the
+    // receipt schema lists it, the measuring script's own process ledger.
+    const zipBytes=members=>{const file=path.join(root,'.zip-'+require('node:crypto').randomUUID());zipWrite(file,members);const raw=fs.readFileSync(file);fs.unlinkSync(file);return raw;};
+    const scene=Buffer.from('reset\nline surface 1 origin 0 0 2500 u +x v +y outline 0,0 1,0 1,1 0,1\n');
+    const archiveManifest=(mutate=()=>{})=>{const recipes=[{id:'r-v1',name:'v1',template:{id:'flat-ceiling',version:1,policyFingerprint:'1'.repeat(64)}},
+      {id:'r-v2',name:'v2',template:{id:'flat-ceiling',version:2,policyFingerprint:'2'.repeat(64)}}];
+      const value={schema:'framing-template-recipes/1',recipes};mutate(recipes[1]);
+      return {projectId:'p',name:'n',sources:[],faces:[],featureAttachments:{schema:'geometry-feature-attachments/1',records:[
+        {kind:'framing-template-recipes',schema:'framing-template-recipes/1',value}]},format:'geometry-canvas/19',models:[],faceProjections:[],
+        sceneHash:sha(scene),requiredCapabilities:['framing-template-recipes/1']};};
+    const gcanvas=manifest=>zipBytes({'world.scene':scene,'manifest.json':Buffer.from(JSON.stringify(manifest))});
+    const RUNTIME_VERSION='c'.repeat(64);
     const build=(mutate=()=>{})=>{
       const identity=R.driverIdentity(root,'P2052'),folder=R.DRIVER_OUTPUTS+'/r06-formal-archive-fixture/';
-      const saved=Buffer.from('synthetic gcanvas bytes'),source={pid:41,session:'source-session',version:'v1',fresh:true,root:'/x'};
-      const service={pid:42,session:'cold-session',version:'v1',fresh:true,root:'/x'};
-      const members={},lines=['=== P2052. R03 政策 A 固定治具 矩形第二片與冷開 ===',...entry.assertions.map(name=>'P2052 '+name+' ✓ ')];
+      const saved=gcanvas(archiveManifest());
+      const wrong=gcanvas(archiveManifest(recipe=>{recipe.template.policyFingerprint='0'.repeat(64);}));
+      const unknown=gcanvas(archiveManifest(recipe=>{recipe.template.version=999;recipe.template.policyFingerprint='f'.repeat(64);}));
+      const source={schema:'geometry-runtime/1',version:RUNTIME_VERSION,fresh:true,root:'/x',pid:41,session:'source-session'};
+      const service={schema:'geometry-runtime/1',version:RUNTIME_VERSION,fresh:true,root:'/x',pid:42,session:'cold-session'};
+      const scope={mode:'partial',filters:[entry.flag],modifiers:[],url:'http://127.0.0.1:18839/',feedbackDirectory:'/tmp/f',browserProfile:'/tmp/geometry-cdp-x',cdpPort:9333,browserPid:70};
+      const lines=['CDP_SCOPE '+JSON.stringify(scope),'=== P2052. R03 政策 A 固定治具 矩形第二片與冷開 ===',...entry.assertions.map(name=>'P2052 '+name+' ✓ ')];
       const pkg={path:'/tmp/saved-1.gcanvas',bytes:saved.length,sha256:sha(saved),nativeService:service,sourceService:source,browserPid:77,profile:'/tmp/r06-cold-chrome-x'};
       const cold={sourceRuntime:source,service,profile:pkg.profile,browserPid:77,browserVersion:'synthetic',bridge:{},url:'http://127.0.0.1:1'};
-      const result={schema:'geometry-cdp-result/1',scope:{mode:'partial',filters:[entry.flag],modifiers:[],url:'http://127.0.0.1:18839/',feedbackDirectory:'/tmp/f'},
+      const result={schema:'geometry-cdp-result/1',scope,
         completed:true,passedAssertions:28,failedAssertions:0,skipped:[],sections:{P2052:28},sectionOrder:['P2052'],sectionElapsedMs:{P2052:1234.5},
         goldenCompare:'not compared (partial mode)',unexpectedBrowserExceptions:0};
-      const state={lines,pkg,cold,result,saved};mutate(state);
+      const ledger={schema:'geometry-driver-process-ledger/1',root:{pid:60,start:'1000',argv:['node','geometry-web/cdp_test.js']},processes:[
+        {pid:70,ppid:60,start:'1001',argv:['/opt/chrome','--headless=new','--user-data-dir=/tmp/geometry-cdp-x']},
+        {pid:42,ppid:60,start:'1002',argv:['python3','-B','/x/geometry-web/serve.py','1']},
+        {pid:77,ppid:60,start:'1003',argv:['/opt/chrome','--headless=new','--remote-debugging-port=0','--user-data-dir=/tmp/r06-cold-chrome-x','about:blank']}]};
+      const runtime={...source};
+      const state={lines,pkg,cold,result,saved,wrong,unknown,ledger,runtime,final:null};mutate(state);
+      const members={};
       members[folder+'saved-1.gcanvas']=state.saved;members[folder+'cold-2.json']=Buffer.from(JSON.stringify(state.cold,null,2)+'\n');
-      members[folder+'cold-final-2.json']=Buffer.from(JSON.stringify({info:state.cold,end:state.cold.service,errors:[]},null,2)+'\n');
-      members[folder+'wrong-v2-policy.gcanvas']=Buffer.from('wrong');members[folder+'unknown-v2-generator.gcanvas']=Buffer.from('unknown');
+      members[folder+'cold-final-2.json']=Buffer.from(JSON.stringify(state.final||{info:state.cold,end:state.cold.service,errors:[]},null,2)+'\n');
+      members[folder+'wrong-v2-policy.gcanvas']=state.wrong;members[folder+'unknown-v2-generator.gcanvas']=state.unknown;
       members['stdout.log']=Buffer.from([...state.lines,'R03A_BROWSER_PACKAGE '+JSON.stringify(state.pkg),
         'R03A_BROWSER_SCOPE '+JSON.stringify({schema:'framing-template-jig-browser-scope/1',assertions:28}),'CDP_RESULT '+JSON.stringify(state.result),''].join('\n'));
-      members['stderr.log']=Buffer.from('');members['runtime.stdout']=Buffer.from(JSON.stringify({schema:'geometry-runtime/1',fresh:true,version:'runtime-v'})+'\n');
+      members['stderr.log']=Buffer.from('');members['runtime.stdout']=Buffer.from(JSON.stringify(state.runtime)+'\n');
       members['runtime.stderr']=Buffer.from('');
+      const recorded=R.DRIVER_RECEIPT_FILES||['stdout.log','stderr.log','runtime.stdout','runtime.stderr'];
+      if(recorded.includes('process-ledger.json'))members['process-ledger.json']=Buffer.from(JSON.stringify(state.ledger,null,2)+'\n');
       const manifest={schema:R.DRIVER_MEASUREMENT_SCHEMA,execution_sha:'a'.repeat(40),head_sha:'a'.repeat(40),tree:'b'.repeat(40),run_id:'7',run_attempt:'1',
         id:'P2052',driver:entry.driver,driver_sha256:identity.sha256,dispatch_sha256:identity.dispatchSha256,flag:entry.flag,
-        command:['node','geometry-web/cdp_test.js'],process_exit:0,runtime_fresh:true,runtime_version:'runtime-v',capture_verified:true,acceptance:false,
-        files:Object.fromEntries(['stdout.log','stderr.log','runtime.stdout','runtime.stderr'].map(name=>[name,sha(members[name])])),
+        command:['node','geometry-web/cdp_test.js'],process_exit:0,runtime_fresh:true,runtime_version:RUNTIME_VERSION,capture_verified:true,acceptance:false,
+        files:Object.fromEntries(recorded.map(name=>[name,sha(members[name])])),
         outputs:Object.fromEntries(Object.keys(members).filter(name=>name.startsWith(folder)).sort().map(name=>[name,sha(members[name])]))};
       members['manifest.json']=Buffer.from(JSON.stringify(manifest,null,2)+'\n');
       const directory='geometry-web/canvas-registry/costs/P2052/1',zip=path.join(root,directory,'artifact.zip');
@@ -225,7 +252,7 @@ async function driverContract(R){
     // The strict module rules are unchanged: the same driver is not a module.
     assert.throws(()=>R.moduleSourceHash(root,entry.driver),/R386_CANVAS_/,'R386_CANVAS_STRICT_MODULE_UNCHANGED');
     const cli=()=>spawnSync(process.execPath,[API_FILE,'check','--root',root],{encoding:'utf8'});
-    const snapshot=()=>Object.fromEntries([fragment,'geometry-web/cdp_test.js',...entry.closure,'geometry-web/canvas-registry/costs/P2052/1/artifact.zip',
+    const snapshot=()=>Object.fromEntries([fragment,'geometry-web/cdp_test.js',...entry.closure,...SUBPROCESS_SCRIPTS,'geometry-web/canvas-registry/costs/P2052/1/artifact.zip',
       'geometry-web/canvas-registry/costs/P2052/1/receipt.json'].map(relative=>[relative,fs.readFileSync(path.join(root,relative))]));
     const pristine=snapshot(),restore=()=>{for(const [relative,raw] of Object.entries(pristine))fs.writeFileSync(path.join(root,relative),raw);
       fs.rmSync(path.join(root,'geometry-web/cdp_sections.d/P2053.json'),{force:true});};
@@ -250,6 +277,42 @@ async function driverContract(R){
     withdraw('R445_ESCAPE_UNREVIEWED_DRIVER',()=>editRow(row=>({...row,execution:{...row.execution,driver:'geometry-web/other_driver.js'}})),'R386_CANVAS_DRIVER_UNREVIEWED');
     withdraw('R445_ESCAPE_UNREVIEWED_ID',()=>write(root,'geometry-web/cdp_sections.d/P2053.json',{...JSON.parse(pristine[fragment]),id:'P2053'}),'R386_CANVAS_DRIVER_UNREVIEWED');
     withdraw('R445_ASSERTION_NAMES',()=>edit(entry.driver,text=>text.replace("'MARKS',","'MARKS_RENAMED',")),'R386_CANVAS_DRIVER_ASSERTIONS');
+    /* R445 先紅負控制（ChatGPT 7072803590 阻擋 1、2 與收據強度；對抗審查 7072484935
+     * N2／N3／F1～F4）。每例仍是 0／1／0 且只認指定代碼；全部跑完才一次報告，
+     * 讓每一例各自紅在自己的名字上。 */
+    const missed=[];
+    const negative=(id,mutate,code)=>{try{withdraw(id,mutate,code);}catch(error){missed.push(id+' → '+String(error.message).split('\n')[0]);restore();}};
+    const append=(relative,text)=>()=>edit(relative,source=>source+'\n'+text+'\n');
+    // 硬條件 2：反射／計算屬性／解構取 constructor，一律拒收。
+    negative('R445_N2_SPELLED_CONSTRUCTOR',append('geometry-web/cdp_helpers.js',"const __k='constr'+'uctor';(function(){})[__k]('return 1')();"),'R386_CANVAS_DRIVER_CLOSURE_DYNAMIC_PROPERTY');
+    negative('R445_N2_DESTRUCTURED_CONSTRUCTOR',append('geometry-web/cdp_helpers.js',"const {constructor:F}=function(){};F('return 1')();"),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE');
+    negative('R445_N2_ASSIGNED_PATTERN_CONSTRUCTOR',append('geometry-web/cdp_helpers.js',"let G;({constructor:G}=async()=>{});G('return 1');"),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE');
+    negative('R445_N2_CONSTRUCTOR_STRING',append('geometry-web/cdp_helpers.js',"const D=Object.getOwnPropertyDescriptor(Object.prototype,'constructor');"),'R386_CANVAS_DRIVER_CLOSURE_REFLECTIVE');
+    negative('R445_N2_ENV_WRITE',append('geometry-web/cdp_helpers.js',"process.env.PYTHONPATH='/tmp/unhashed';"),'R386_CANVAS_DRIVER_PROCESS_CAPABILITY');
+    // 子程序：只准封閉清單上的呼叫點；被執行的腳本進來源 hash。
+    negative('R445_N2_UNPINNED_CHILD_PROCESS',append('geometry-web/cdp_helpers.js',"require('child_process').execFileSync('node',['geometry-web/unhashed_payload.js']);"),'R386_CANVAS_DRIVER_SUBPROCESS');
+    negative('R445_N2_UNPINNED_SPAWN_SITE',append('geometry-web/cdp_bay_repeat_io.js',"function extra(){return spawnSync('node',['geometry-web/unhashed_payload.js']);}"),'R386_CANVAS_DRIVER_SUBPROCESS');
+    negative('R445_N2_EXECUTED_SCRIPT_HASH',append('geometry-web/serve.py','# one changed byte'),'R386_CANVAS_COST_SOURCE');
+    // 硬條件 1：派發恰好一次（AST、模組路徑正規化、派發區塊結構）。
+    const second=quote=>"  if(inSequence(1))await require("+quote+")({send,eval_,sleep,click,dblclick,waitForUI,exceptionCount:()=>excN});\n";
+    const beforeP1284=insert=>()=>edit('geometry-web/cdp_test.js',text=>text.replace('  if(inSequence(2))await p1284();\n',insert+'  if(inSequence(2))await p1284();\n'));
+    negative('R445_N3_DOUBLE_QUOTED_SECOND_DISPATCH',beforeP1284(second('"./framing_template_jig_workflow_test.js"')),'R386_CANVAS_DRIVER_DISPATCH');
+    negative('R445_N3_EXTENSIONLESS_SECOND_DISPATCH',beforeP1284(second("'./framing_template_jig_workflow_test'")),'R386_CANVAS_DRIVER_DISPATCH');
+    negative('R445_N3_EXTRA_NODE_CALL',()=>edit('geometry-web/cdp_test.js',text=>text.replace(entry.dispatch,entry.dispatch+"  require('child_process').execSync('true');\n")),'R386_CANVAS_DRIVER_DISPATCH');
+    // 收據強度 F1：冷開身分要對上量測腳本自己的 runtime 探測與進程帳。
+    const forgedSource={schema:'geometry-runtime/1',version:'0'.repeat(64),fresh:true,root:'/nowhere',pid:1,session:'forged'};
+    negative('R445_F1_FORGED_SOURCE_SERVICE',()=>build(state=>{state.pkg.sourceService=forgedSource;state.cold.sourceRuntime=forgedSource;
+      state.pkg.nativeService={...state.pkg.nativeService,version:forgedSource.version};state.cold.service=state.pkg.nativeService;}),'R386_CANVAS_DRIVER_COLD_OPEN');
+    negative('R445_F1_UNOBSERVED_COLD_SERVICE',()=>build(state=>{state.pkg.nativeService={...state.pkg.nativeService,pid:9999};state.cold.service=state.pkg.nativeService;}),'R386_CANVAS_DRIVER_COLD_OPEN');
+    negative('R445_F1_UNOBSERVED_COLD_CHROME',()=>build(state=>{state.pkg.browserPid=9998;state.cold.browserPid=9998;}),'R386_CANVAS_DRIVER_COLD_OPEN');
+    // F2：同一次執行的 log 結構（CDP_SCOPE、段標題、順序）。
+    negative('R445_F2_TRIMMED_STDOUT',()=>build(state=>{state.lines=state.lines.filter(line=>line.startsWith('P2052 '));}),'R386_CANVAS_DRIVER_LOG_STRUCTURE');
+    // F3：兩份竄改檔要是合法 ZIP，且相對存檔只差預期的欄位。
+    negative('R445_F3_EMPTY_TAMPERED',()=>build(state=>{state.wrong=Buffer.alloc(0);state.unknown=Buffer.alloc(0);}),'R386_CANVAS_DRIVER_TAMPERED');
+    negative('R445_F3_TAMPERED_IS_UNCHANGED_COPY',()=>build(state=>{state.wrong=state.saved;}),'R386_CANVAS_DRIVER_TAMPERED');
+    // F4：存檔要是合法 .gcanvas（ZIP、manifest、sceneHash、v1＋v2 配方）。
+    negative('R445_F4_SAVED_NOT_GCANVAS',()=>build(state=>{state.saved=Buffer.from('not a zip');state.pkg.bytes=state.saved.length;state.pkg.sha256=sha(state.saved);}),'R386_CANVAS_DRIVER_ARCHIVE');
+    assert.deepEqual(missed,[],'R445_NEGATIVE_CONTROLS_REJECTED');
   }finally{fs.rmSync(root,{recursive:true,force:true});}
 }
 
