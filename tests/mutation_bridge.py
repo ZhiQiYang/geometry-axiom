@@ -124,6 +124,11 @@ RESTORED += ["tests.test_builder_token_owners.BuilderTokenOwners." + name for na
     "test_other_terminal_owners_preserve_builder_candidates",
     "test_pf6_and_framing_reject_each_others_confirmation_and_cancellation",
     "test_pf6_and_framing_cannot_consume_engineering_candidate",
+    "test_simultaneous_load_and_builders_reject_both_foreign_terminals",
+    "test_load_shared_serial_survives_reset",
+    "test_load_shared_serial_refuses_uint32_exhaustion",
+    "test_reference_stage_shared_serial_refuses_uint32_exhaustion",
+    "test_builder_capacity_reports_refusal_without_aliasing_live_load",
 ]]
 
 

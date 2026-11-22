@@ -414,7 +414,11 @@ static void cmd_timber_edit_preview(const char *path)
         if(!valid)app_world_candidate_clear_stagger(transaction);
         char error[512];snprintf(error,sizeof error,"%s",g_engineering_error[0]?g_engineering_error:"Candidate rejected");
         bool no_op=valid&&world_definitions_equal(&transaction->before,&transaction->after);
-        if(!no_op){char *label="timber-edit-transaction";reference_stage(transaction,&label,1,valid);
+        if(!no_op){char *label="timber-edit-transaction";
+            if(!reference_stage(transaction,&label,1,valid)){
+                app_world_candidate_destroy(transaction);
+                eng_bridge_error("CAPACITY","Preview token capacity exhausted; restart the service");goto done;
+            }
             g_preview.engineering_batch=true;g_preview.timber_batch=true;g_timber_pending=call.pending;}
         fputs("{\"ok\":true,\"preview\":",stdout);timber_edit_json_preview(transaction,&call.pending,valid,no_op,error);fputs("}\n",stdout);
         if(no_op)app_world_candidate_destroy(transaction);

@@ -403,7 +403,11 @@ static void cmd_pf6_select(const char *path)
     }
     bool no_op=valid&&world_definitions_equal(&transaction->before,&transaction->after);
     if(!no_op){
-        char *label="panel-fill-builder";reference_stage(transaction,&label,1,valid);
+        char *label="panel-fill-builder";
+        if(!reference_stage(transaction,&label,1,valid)){
+            free(before);free(after);pf6_report_free(&call.report);app_world_candidate_destroy(transaction);
+            eng_bridge_error("CAPACITY","Preview token capacity exhausted; restart the service");goto done;
+        }
         g_preview.engineering_batch=true;g_preview.pf6_batch=true;
         g_pf6_pending.token=g_preview.token;g_pf6_pending.generation=g_pf6_proposal->generation;
         g_pf6_pending.report=call.report;memset(&call.report,0,sizeof call.report);

@@ -210,7 +210,12 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     bool ok=app_world_candidate_evaluate(transaction,app_batch_candidate_apply,&call)==GEO_CANDIDATE_OK;
     if(ok&&!app_world_candidate_seal(transaction)){ok=false;eng_fail("I8: candidate seal failed; World unchanged");}
     if(!ok)app_world_candidate_clear_stagger(transaction);
-    char *stage_label=(char *)label;reference_stage(transaction,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
+    char *stage_label=(char *)label;
+    if(!reference_stage(transaction,&stage_label,1,ok)){
+        app_world_candidate_destroy(transaction);geo_json_free(&j);free(text);
+        eng_bridge_error("CAPACITY","Preview token capacity exhausted; restart the service");return;
+    }
+    g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
     g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);g_parameter_preview_order=&order;write_preview();g_parameter_preview_order=NULL;fputs("}\n",stdout);
