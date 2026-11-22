@@ -4,6 +4,8 @@
   const KIND='framing-template-recipes',SCHEMA='framing-template-recipes/1',CAPABILITY=SCHEMA;
   const POLICY_FINGERPRINT='21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83';
   const TEMPLATE=Object.freeze({id:'flat-ceiling',version:1,policyFingerprint:POLICY_FINGERPRINT});
+  const POLICY_A_TEMPLATE=Object.freeze({id:'flat-ceiling',version:2,policyFingerprint:'3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58'});
+  const TEMPLATES=Object.freeze([TEMPLATE,POLICY_A_TEMPLATE]);
   const DEFAULTS=Object.freeze({panelWidth:915,panelLength:1830,gap:2,timberWidth:27,timberDepth:33,maxSecondarySpacing:367});
   const SLOTS=Object.freeze(['boundary','frame','material-semantics','panel-version','support-threshold']);
   const CORNERS=Object.freeze(['min-min','max-min','min-max','max-max']);
@@ -15,16 +17,17 @@
   function fail(code,message){throw Object.assign(new Error(code+'：'+message),{code});}
   function exact(v,fields){return !!v&&typeof v==='object'&&!Array.isArray(v)&&Object.getOwnPropertySymbols(v).length===0&&Object.keys(v).length===fields.length&&fields.every(k=>{const d=Object.getOwnPropertyDescriptor(v,k);return d?.enumerable&&Object.hasOwn(d,'value');});}
   function availability(recipe){
-    const t=recipe?.template;
-    return {canGenerate:t?.id===TEMPLATE.id&&t?.version===TEMPLATE.version&&t?.policyFingerprint===POLICY_FINGERPRINT,
-      reason:t?.id===TEMPLATE.id&&t?.version===TEMPLATE.version?'':'此不可變模板版本目前不可用；配方原樣保留，只能查看。'};
+    const t=recipe?.template,known=TEMPLATES.find(v=>t?.id===v.id&&t?.version===v.version);
+    return {canGenerate:!!known&&t.policyFingerprint===known.policyFingerprint,
+      reason:known?'':'此不可變模板版本目前不可用；配方原樣保留，只能查看。'};
   }
   function validateRecipe(r){
     if(!exact(r,['id','name','template','defaults','preference','sourceSlots','sourceHints'])||!ident(r.id)||typeof r.name!=='string'||!r.name.trim()||r.name.length>160)
       fail('FT_RECIPE_FIELDS','配方只能保存名稱、固定版本、字面預設、偏好與來源槽／提示。');
     if(!exact(r.template,['id','version','policyFingerprint'])||!ident(r.template.id)||!integer(r.template.version,1,4294967295)||!hash(r.template.policyFingerprint))
       fail('FT_RECIPE_VERSION','模板版本或指紋不合法。');
-    if(r.template.id===TEMPLATE.id&&r.template.version===TEMPLATE.version&&r.template.policyFingerprint!==POLICY_FINGERPRINT)
+    const known=TEMPLATES.find(v=>r.template.id===v.id&&r.template.version===v.version);
+    if(known&&r.template.policyFingerprint!==known.policyFingerprint)
       fail('FT_RECIPE_POLICY','已知版本的規則指紋不符，未載入專案。');
     if(!exact(r.defaults,Object.keys(DEFAULTS))||Object.entries(r.defaults).some(([k,v])=>!integer(v,k==='gap'?0:1)))
       fail('FT_RECIPE_DEFAULTS','預設必須是合法整數 mm；長邊使用 length 欄位語意，不依尺寸大小換軸。');
@@ -46,6 +49,6 @@
   const empty=()=>({schema:SCHEMA,recipes:[]});
   function upsert(value,recipe){const current=value||empty();validate(current);assertGeneratable(recipe);const previous=current.recipes.find(r=>r.id===recipe.id);if(previous)assertGeneratable(previous);const next=clone(current),index=next.recipes.findIndex(r=>r.id===recipe.id);if(index<0)next.recipes.push(clone(recipe));else next.recipes[index]=clone(recipe);return validate(next);}
   function remove(value,id){validate(value);if(!value.recipes.some(r=>r.id===id))fail('FT_RECIPE_MISSING','配方不存在。');return validate({...clone(value),recipes:value.recipes.filter(r=>r.id!==id).map(clone)});}
-  function create(id,name,defaults={...DEFAULTS},preference={corner:'min-min',lengthAlong:'v'}){return validateRecipe({id,name,template:{...TEMPLATE},defaults:clone(defaults),preference:clone(preference),sourceSlots:[...SLOTS],sourceHints:[]});}
-  return Object.freeze({KIND,SCHEMA,CAPABILITY,POLICY_FINGERPRINT,TEMPLATE,DEFAULTS,SLOTS,CORNERS,MAX_RECIPES,validate,validateRecipe,availability,assertGeneratable,empty,upsert,remove,create});
+  function create(id,name,defaults={...DEFAULTS},preference={corner:'min-min',lengthAlong:'v'},version=1){const template=TEMPLATES.find(t=>t.version===version);if(!template)fail('FT_GENERATOR_UNAVAILABLE','請明選可用的不可變模板版本。');return validateRecipe({id,name,template:{...template},defaults:clone(defaults),preference:clone(preference),sourceSlots:[...SLOTS],sourceHints:[]});}
+  return Object.freeze({KIND,SCHEMA,CAPABILITY,POLICY_FINGERPRINT,TEMPLATE,POLICY_A_TEMPLATE,TEMPLATES,DEFAULTS,SLOTS,CORNERS,MAX_RECIPES,validate,validateRecipe,availability,assertGeneratable,empty,upsert,remove,create});
 });

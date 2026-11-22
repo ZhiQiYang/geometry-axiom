@@ -2,8 +2,10 @@
  * syntax. Recipes, ownership and generation counters are runtime/project data.
  * Private IDs are chosen against the candidate, never consumed by preview. */
 #include "../geometry-templates/woodworking/native/flat_ceiling.h"
+#include "../geometry-templates/woodworking/native/flat_ceiling_jig.h"
 typedef struct {
     WoodFlatParameters parameters;WoodFlatPlan plan;
+    uint32_t version;char candidate_fingerprint[65];
     uint32_t boundary,on,finish,fill,host,grid,ids[WOOD_FLAT_MEMBERS],guides[WOOD_FLAT_LINES];
     EngVersionRef panel;ParameterRef threshold;
     const World *before;const char *failure_code;
@@ -35,22 +37,29 @@ static void framing_template_defaults(void)
 static void cmd_framing_template_read(const char *path)
 {
     GeoJson j;char *text;if(!framing_template_document(path,&j,&text))return;
-    uint32_t boundary;char hash[65];const SpaceBoundarySurface *surface;
-    if(!geo_json_keys(&j,0,"schema,boundaryId","")||!framing_template_word(&j,0,"schema","framing-template-read/1")||
+    uint32_t boundary,version=1;char hash[65];const SpaceBoundarySurface *surface;
+    bool jig=framing_template_word(&j,0,"schema","framing-template-read/2");
+    int tpl=geo_json_member(&j,0,"template");
+    bool valid_schema=jig?geo_json_keys(&j,0,"schema,boundaryId,template","")&&
+        geo_json_keys(&j,tpl,"id,version,policyFingerprint","")&&framing_template_word(&j,tpl,"id","flat-ceiling")&&
+        eng_u32(&j,geo_json_member(&j,tpl,"version"),&version,false)&&version==2&&framing_template_word(&j,tpl,"policyFingerprint",WOOD_FLAT_JIG_POLICY):
+        geo_json_keys(&j,0,"schema,boundaryId","")&&framing_template_word(&j,0,"schema","framing-template-read/1");
+    if(!valid_schema||
        !eng_u32(&j,geo_json_member(&j,0,"boundaryId"),&boundary,false)||!(surface=world_find_boundary(&g_world,boundary))){
-        eng_bridge_error("SCHEMA","需 framing-template-read/1 與明選的現有邊界");goto done;
+        eng_bridge_error("SCHEMA",jig?"需 framing-template-read/2、明選邊界與完整第二版政策身分":"需 framing-template-read/1 與明選的現有邊界");goto done;
     }
     if(!framing_template_context())goto done;
     if(!eng_definition_hash(&g_world,hash)){eng_bridge_error("IO","無法核對 World 定義指紋");goto done;}
-    printf("{\"ok\":true,\"schema\":\"framing-template-read-result/1\",\"revision\":\"%llu\",\"contextKey\":\"%s\",\"definitionFingerprint\":\"%s\",\"generatorInvocations\":%llu,\"source\":{\"boundaryId\":%u,\"outer\":",
-        (unsigned long long)g_definition_revision,g_framing_context,hash,(unsigned long long)g_framing_invocations,boundary);
+    printf("{\"ok\":true,\"schema\":\"framing-template-read-result/%u\",\"revision\":\"%llu\",\"contextKey\":\"%s\",\"definitionFingerprint\":\"%s\",\"generatorInvocations\":%llu,\"source\":{\"boundaryId\":%u,\"outer\":",
+        version,(unsigned long long)g_definition_revision,g_framing_context,hash,(unsigned long long)g_framing_invocations,boundary);
     fs_json_loop(&surface->outline);printf(",\"holes\":%zu,\"placements\":[",surface->hole_count);bool first=true;
     for(size_t i=0;i<world_placement_count(&g_world);++i){const PlacementSurface *p=world_placement_at(&g_world,i);
         if(p->boundary_id!=boundary||p->derived_fill_id)continue;
         printf("%s{\"id\":%u,\"frame\":{\"origin\":[%lld,%lld,%lld],\"u\":\"%s\",\"v\":\"%s\"}}",first?"":",",p->id,
             (long long)p->frame.origin.x,(long long)p->frame.origin.y,(long long)p->frame.origin.z,fs_axis_word(p->frame.axis_u),fs_axis_word(p->frame.axis_v));first=false;
     }
-    fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":1,\"policyFingerprint\":\"" WOOD_FLAT_POLICY "\",\"scope\":\"rectangle-common-policy\",\"defaults\":",stdout);
+    if(jig)fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":2,\"policyFingerprint\":\"" WOOD_FLAT_JIG_POLICY "\",\"scope\":\"rectangle-fixed-jig-no-retreat\",\"defaults\":",stdout);
+    else fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":1,\"policyFingerprint\":\"" WOOD_FLAT_POLICY "\",\"scope\":\"rectangle-common-policy\",\"defaults\":",stdout);
     framing_template_defaults();fputs("},\"sources\":{\"panels\":[",stdout);first=true;
     for(size_t i=0;i<g_world.wood.engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(&g_world,i);if(!m||m->kind!=0||!m->has_thickness)continue;
         printf("%s%.*s,\"fingerprint\":\"%s\"}",first?"":",",(int)strlen(m->content)-1,m->content,m->fingerprint);first=false;
@@ -71,7 +80,9 @@ static bool framing_template_parse(GeoJson *j,FramingTemplateCall *c)
        !geo_json_string(j,geo_json_member(j,0,"definitionFingerprint"),hash,sizeof hash)||!boundary_pair_host_key(hash)||
        !eng_u32(j,geo_json_member(j,0,"boundaryId"),&c->boundary,false)||!eng_u32(j,geo_json_member(j,0,"on"),&c->on,false)||
        !geo_json_keys(j,tpl,"id,version,policyFingerprint","")||!framing_template_word(j,tpl,"id","flat-ceiling")||
-       !eng_u32(j,geo_json_member(j,tpl,"version"),&version,false)||version!=1||!framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_POLICY)||
+       !eng_u32(j,geo_json_member(j,tpl,"version"),&version,false)||
+       !((version==1&&framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_POLICY))||
+         (version==2&&framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_JIG_POLICY)))||
        !geo_json_keys(j,p,"panelWidth,panelLength,gap,timberWidth,timberDepth,maxSecondarySpacing","")||
        !geo_json_keys(j,layout,"corner,lengthAlong","")||!geo_json_string(j,geo_json_member(j,layout,"corner"),corner,sizeof corner)||
        !geo_json_string(j,geo_json_member(j,layout,"lengthAlong"),axis,sizeof axis)||
@@ -81,7 +92,7 @@ static bool framing_template_parse(GeoJson *j,FramingTemplateCall *c)
        !eng_u32(j,geo_json_member(j,threshold,"parameterId"),&c->threshold.parameter_id,false)||
        !eng_u32(j,geo_json_member(j,threshold,"fieldId"),&c->threshold.field_id,false))
         return eng_fail("需完整明選來源、固定模板版本與政策指紋，不接受缺欄、額外欄或推測材料");
-    c->threshold.set=true;
+    c->version=version;c->threshold.set=true;
     if(!g_framing_context[0]||strcmp(context,g_framing_context)){c->failure_code="CONTEXT";return eng_fail("工作區 contextKey 已失效，請重新讀取");}
     if(revision!=g_definition_revision||!eng_definition_hash(&g_world,actual)||strcmp(hash,actual)){c->failure_code="STALE";return eng_fail("來源或 World 指紋已變更，請重新讀取");}
     if(strcmp(axis,"u")&&strcmp(axis,"v"))return eng_fail("板長軸必須明選 u 或 v");
@@ -117,7 +128,8 @@ static bool framing_template_scope(FramingTemplateCall *c)
     for(size_t i=0;i<g_world.wood.timber_count;++i)if(g_world.wood.timbers[i].placed&&g_world.wood.anchors[i].placement_id==c->on)return eng_fail("來源面已有角材；第一片不重排既有正式物件");
     for(size_t i=0;i<g_world.wood.finish_surfaces.count;++i)if(g_world.wood.finish_surfaces.items[i].boundary_id==c->boundary)
         return eng_fail("邊界已有完成面或已生成骨架；第一片不在另一宿主重複排同一邊界");
-    if(!wood_flat_build(bounds,&c->parameters,&c->plan)){c->failure_code=c->plan.code;return eng_fail(c->plan.reason);}
+    bool built=c->version==2?wood_flat_jig_build(bounds,&c->parameters,&c->plan):wood_flat_build(bounds,&c->parameters,&c->plan);
+    if(!built){c->failure_code=c->plan.code;return eng_fail(c->plan.reason);}
     /* Existing oracle's R-butt can relocate a near-wall center. That policy
      * differs from this immutable from-fill center; reject the computed case. */
     GeoQuantity x;if(!parameter_value(&g_world,c->threshold,&x))return eng_fail(g_parameter_error);
@@ -280,6 +292,7 @@ static void framing_template_json_preview(const FramingTemplateCall *c,const Wor
             printf("%s{\"axis\":\"%c\",\"k\":\"%lld\",\"range\":[%lld,%lld],\"left\":%lld,\"right\":%lld,\"supported\":%s}",i?",":"",l->axis?'v':'u',(long long)l->k,(long long)p->range[0],(long long)p->range[1],(long long)p->left,(long long)p->right,p->supported?"true":"false");}putchar(']');}
         else fputs("null",stdout);pf_support_free(&support);pf_free(&layout);
     }else fputs("null",stdout);
+    if(c->version==2)printf(",\"template\":{\"id\":\"flat-ceiling\",\"version\":2,\"policyFingerprint\":\"" WOOD_FLAT_JIG_POLICY "\"},\"definitionFingerprint\":\"%s\"",c->candidate_fingerprint);
     putchar('}');
 }
 static void cmd_framing_template_preview(const char *path)
@@ -295,6 +308,7 @@ static void cmd_framing_template_preview(const char *path)
     c->before=&transaction->before;++g_framing_invocations;identity_drop_serials();
     bool valid=app_world_candidate_evaluate(transaction,framing_template_evaluate,c)==GEO_CANDIDATE_OK;
     if(valid)valid=app_world_candidate_seal(transaction);
+    if(valid&&c->version==2)valid=eng_definition_hash(&transaction->after,c->candidate_fingerprint);
     if(!valid){eng_bridge_error("NATIVE_INVALID",g_engineering_error[0]?g_engineering_error:"原生完整候選封存失敗");app_world_candidate_destroy(transaction);identity_drop_serials();goto free_call;}
     char *label="framing-template-transaction";reference_stage(transaction,&label,1,true);g_preview.engineering_batch=true;g_framing_token=g_preview.token;
     printf("{\"ok\":true,\"history_changed\":false,\"ownerKey\":\"%s\",\"preview\":",g_framing_owner);framing_template_json_preview(c,&transaction->after);fputs("}\n",stdout);

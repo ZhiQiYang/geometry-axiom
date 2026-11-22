@@ -283,7 +283,7 @@ window.PanelFillWorkspace = (() => {
     const focusTitle=focused?.id==='pfTitle',selection=focused?.tagName==='INPUT'?[focused.selectionStart,focused.selectionEnd]:null;
     const first=!previous;
     pane.innerHTML=`<section class="pf-workspace" data-pf-workspace="${s.boundaryId}" aria-labelledby="pfTitle"><div class="pf-heading"><h2 id="pfTitle" tabindex="-1">完成面與鋪排</h2><button type="button" data-pf-action="close"${['confirming','unknown'].includes(s.phase)?' disabled':''}>返回面設定</button></div>
-      <label>面內工作<select data-face-product-mode${s.dirty||['loading','previewing','confirmable','confirming','unknown'].includes(s.phase)?' disabled':''}><option value="finish">完成面與鋪排</option><option value="framing">平釘天花骨架（矩形第一片）</option></select></label>
+      <label>面內工作<select data-face-product-mode${s.dirty||['loading','previewing','confirmable','confirming','unknown'].includes(s.phase)?' disabled':''}><option value="finish">完成面與鋪排</option><option value="framing">平釘天花骨架（矩形第一片）</option><option value="framing-fixed">平釘天花骨架（政策 A 固定治具）</option></select></label>
       <p class="pf-status" data-pf-status="${s.phase}" role="status" aria-live="polite">${esc(s.reason)}</p>
       ${s.draft?form(s):''}
       <details class="pf-source-preparation"><summary>來源與本片能力</summary><p>材料與尺寸參數須先在既有工程規格獨立確認。取消本次鋪排不會撤回先前已正式確認的來源。</p><button type="button" data-pf-action="sources"${['confirming','unknown'].includes(s.phase)?' disabled':''}>前往既有工程規格準備來源</button><p>本片：完成面、鋪排、板縫支撐與派生宿主（PF1–3＋PF-H）${s.contract?.supportedActions.includes('create-from-fill-grid')?'，以及既有宿主的跟隨鋪排主格（PF-4A）':''}。PF-6 角材建議、PF-4 獨立網格快照、PF-5 空間流程尚未提供，沒有可執行動作。整體 complete:false。</p><p>服務支援：${esc(s.contract?.supportedActions.join('、')??'尚未取得相容契約')}；範圍完整：${s.contract?String(s.contract.completeForScope):'未知'}。</p></details>
@@ -292,7 +292,7 @@ window.PanelFillWorkspace = (() => {
       <div class="pf-actions"><button type="button" data-pf-action="preview"${!s.draft||s.retired||['loading','previewing','confirming','unknown'].includes(s.phase)?' disabled':''}>預覽</button><button type="button" data-pf-action="confirm"${s.phase!=='confirmable'||s.retired?' disabled':''}>確認一次變更</button><button type="button" data-pf-action="cancel"${['confirming','unknown'].includes(s.phase)?' disabled':''}>取消／返回</button></div></section>`;
     const region=pane.querySelector('[data-pf-workspace]');
     s.renderedRegion=region;
-    region.querySelector('[data-face-product-mode]').addEventListener('change',event=>{if(event.target.value==='framing'&&active===s&&close())window.FramingWorkspace?.open(s.boundaryId,s.trigger);});
+    region.querySelector('[data-face-product-mode]').addEventListener('change',event=>{const mode=event.target.value;if(['framing','framing-fixed'].includes(mode)&&active===s&&close())window.FramingWorkspace?.open(s.boundaryId,s.trigger,mode==='framing-fixed'?2:1);});
     region.addEventListener('input',event=>update(s,event));region.addEventListener('change',event=>update(s,event));
     region.addEventListener('click',event=>{const button=event.target.closest('[data-pf-action]');if(button&&!button.disabled){event.preventDefault();act(s,button.dataset.pfAction);}});
     region.addEventListener('keydown',event=>{
