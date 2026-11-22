@@ -810,7 +810,12 @@ class NativeShardCoverage(unittest.TestCase):
         # 318-suite history and the current 324-suite/six-shard plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+        # Project only validated post-migration identities out of this history.
+        # An unknown cost without a new/ declaration must still fail equality.
+        fragment_additions = ({row['name'] for row in native_registry.load_registry(run_all.ROOT)
+                               if row['order'].startswith('new/')}
+                              if native_registry.active(run_all.ROOT) else set())
+        self.assertEqual(R396_ADDED_SUITES, set(added) - fragment_additions - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
                          'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
