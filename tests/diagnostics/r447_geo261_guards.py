@@ -23,23 +23,44 @@ class PF6InventoryWithdrawals(unittest.TestCase):
         self.second = next(i for i, row in enumerate(self.rows)
                            if row["id"] == "PF6_UNSELECTED_CREATES")
 
-    def test_original_registry_passes(self):
-        check_inventory(self.rows)
+    def assert_withdrawal(self, name, mutation, marker):
+        original = [dict(row) for row in self.rows]
+        mutant = [dict(row) for row in original]
+        mutation(mutant)
+
+        def verdict(rows):
+            try:
+                check_inventory(rows)
+            except AssertionError as error:
+                self.assertIn(marker, str(error))
+                return 1
+            return 0
+
+        self.assertEqual([0, 1, 0], [verdict(original), verdict(mutant), verdict(original)], name)
+
+    def test_PF6_INVENTORY_OMIT_REGISTRATION(self):
+        def mutation(rows):
+            rows.pop(self.second)
+        self.assert_withdrawal("PF6_INVENTORY_OMIT_REGISTRATION", mutation,
+                               "PF6_NATIVE_IDS_IN_DECLARATION_ORDER")
 
     def test_PF6_INVENTORY_SWAP_ORDER(self):
-        self.rows[self.first], self.rows[self.second] = self.rows[self.second], self.rows[self.first]
-        with self.assertRaisesRegex(AssertionError, "PF6_NATIVE_IDS_IN_DECLARATION_ORDER"):
-            check_inventory(self.rows)
+        def mutation(rows):
+            rows[self.first], rows[self.second] = rows[self.second], rows[self.first]
+        self.assert_withdrawal("PF6_INVENTORY_SWAP_ORDER", mutation,
+                               "PF6_NATIVE_IDS_IN_DECLARATION_ORDER")
 
     def test_PF6_INVENTORY_WRONG_OWNER(self):
-        self.rows[self.first]["file"] = self.rows[self.second]["file"]
-        with self.assertRaisesRegex(AssertionError, "R360_ORIGINAL_123_OWNERS_UNCHANGED"):
-            check_inventory(self.rows)
+        def mutation(rows):
+            rows[self.first]["file"] = rows[self.second]["file"]
+        self.assert_withdrawal("PF6_INVENTORY_WRONG_OWNER", mutation,
+                               "R360_ORIGINAL_123_OWNERS_UNCHANGED")
 
     def test_PF6_INVENTORY_WRONG_BINARY(self):
-        self.rows[self.first].pop("binary")
-        with self.assertRaisesRegex(AssertionError, "NATIVE_BRIDGE_IDS_EXACT"):
-            check_inventory(self.rows)
+        def mutation(rows):
+            rows[self.first].pop("binary")
+        self.assert_withdrawal("PF6_INVENTORY_WRONG_BINARY", mutation,
+                               "NATIVE_BRIDGE_IDS_EXACT")
 
 
 if __name__ == "__main__":

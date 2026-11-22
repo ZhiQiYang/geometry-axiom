@@ -30,16 +30,25 @@ class PF6CapabilityOrder(unittest.TestCase):
             with patch.object(judge, "command", read), patch.object(judge, "seed", side_effect=CapabilitiesAccepted):
                 getattr(judge, method)()
 
-        with self.assertRaises(CapabilitiesAccepted):
-            exercise(native)
+        def verdict(sequence):
+            try:
+                exercise(sequence)
+            except CapabilitiesAccepted:
+                return 0
+            except AssertionError as error:
+                self.assertIn("R14_NATIVE_CAPABILITY_EXPLICIT_AND_ORDERED", str(error))
+                return 1
+            self.fail("R14 capability judge reached geometry work without the acceptance sentinel")
+
         withdrawals = {
             "PF6_R14_MISSING_FINAL_CAPABILITY": native[:-1],
             "PF6_R14_SWAPPED_FINAL_PAIR": native[:2] + list(reversed(native[2:])),
+            "PF6_R14_REMOVE_EXISTING_GRID_SUBDIVISION": native[:2] + native[3:],
             "PF6_R14_DUPLICATE_FINAL_CAPABILITY": native + native[-1:],
         }
         for name, sequence in withdrawals.items():
-            with self.subTest(name=name), self.assertRaisesRegex(AssertionError, "R14_NATIVE_CAPABILITY_EXPLICIT_AND_ORDERED"):
-                exercise(sequence)
+            with self.subTest(name=name):
+                self.assertEqual([0, 1, 0], [verdict(native), verdict(sequence), verdict(native)], name)
 
 
 if __name__ == "__main__":
