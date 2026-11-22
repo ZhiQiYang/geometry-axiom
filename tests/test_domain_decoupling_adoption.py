@@ -768,12 +768,69 @@ def restore_pre_r13_source(current_bytes, queue_bytes, delta_bytes=None):
     return previous
 
 
+# R09b (#44, Q1-A + Q2-A, seven format alignments) is the next separately
+# approved overlay (#44 comments 7064656541 and 7073161164). Its exact bytes are
+# reversed before the R13 gate. Its decision record is a separate dated section
+# that the older gates already ignore, so the queue is verified here and passed on unchanged.
+R09B_APPROVED_SHA256 = "480708e9b2547b31bd29164bc0310cb69007d9112d6b3bc4376d5c9a7b1bcecd"
+R09B_APPROVED_BLOB = "3d30411cc29bd7d0b86a82bcb62d3639388f89bc"
+R09B_DELTA_SHA256 = '0d58181a3d0b049b4ad8d09bc00099ddfbdd90cf5c2f72f90577dc0d742672b2'
+R09B_DECISION_HEADING = '### 2026-11-22 使用者決定 🔒'
+R09B_APPROVAL_RECORD = '1. **R09b 身分帳擴充的完整落檔候選。** 使用者回覆「R09b 完整條文是否核可（#44 留言 7064656541）。建議核可：相對你核可過的 r2，寫進條文的差異只有 12 個空格與 12 個星號；#439 已合併，落檔基底已在 main。」，原話「核可 R09b」。核可 7064656541 第四至第六節的 11 個 text 程式碼框（17 處規範變動），留言 body SHA-256 `17703c53c158611acce0eff54d8743a2f84c4425ff35b56a3214e973105f3ef3`。相對 2026-11-21 核可的 r2 主稿，寫入條文的差異只有六行格式：三個「附加段」標籤各前置四個空格，D65、D66、D67 標題加粗體記號。§七的 B 選項不在範圍，產品片另行排程。[完整落檔候選](https://github.com/ZhiQiYang/geometry-axiom/issues/44#issuecomment-7064656541)、[r2 主稿核可紀錄](https://github.com/ZhiQiYang/geometry-axiom/issues/44#issuecomment-7057035938)、[上次停下的原因](https://github.com/ZhiQiYang/geometry-axiom/issues/44#issuecomment-7057283275)、[核可紀錄](https://github.com/ZhiQiYang/geometry-axiom/issues/44#issuecomment-7073161164)。'
+
+
+def verify_r09b_approval(queue_bytes):
+    """The R09b record must be item 1 directly under its own dated heading."""
+    queue = normalized(queue_bytes)
+    lines = queue.split("\n")
+    starts = [i for i, line in enumerate(lines) if line == R09B_DECISION_HEADING]
+    records = [i for i, line in enumerate(lines) if line == R09B_APPROVAL_RECORD]
+    require(len(starts) == len(records) == 1 and records[0] == starts[0] + 2 and lines[starts[0] + 1] == "",
+            "R09B_APPROVAL", "R09b needs one exact scoped full-text record under its dated heading")
+    require(starts[0] in r14_section_heads(lines), "R09B_APPROVAL", "R09b approval must be outside Markdown containers")
+    return queue.encode("utf-8")
+
+
+def restore_pre_r09b_source(current_bytes, queue_bytes, delta_bytes=None):
+    """Reverse only the eleven approved R09b text fences (17 normative changes)."""
+    verify_r09b_approval(queue_bytes)
+    current = normalized(current_bytes).encode("utf-8")
+    require(hashlib.sha256(current).hexdigest() == R09B_APPROVED_SHA256
+            and hashlib.sha1(b"blob " + str(len(current)).encode() + bytes([0]) + current).hexdigest() == R09B_APPROVED_BLOB,
+            "R09B_APPROVED_SOURCE", "R09b requires the exact user-approved text")
+    if delta_bytes is None:
+        delta_bytes = (ROOT / "tests/fixtures/r09b-approved-delta.json").read_bytes()
+    delta_bytes = delta_bytes.replace(b"\r\n", b"\n")
+    require(hashlib.sha256(delta_bytes).hexdigest() == R09B_DELTA_SHA256,
+            "R09B_FROZEN_DELTA", "R09b uses the delta derived from the approved comment body")
+    delta = json.loads(delta_bytes)
+    require(delta["schema"] == "r09b-approved-delta/1"
+            and delta["beforeBlob"] == R13_APPROVED_BLOB and delta["approvedBlob"] == R09B_APPROVED_BLOB
+            and delta["sourceCommentBodySha256"] == "17703c53c158611acce0eff54d8743a2f84c4425ff35b56a3214e973105f3ef3"
+            and [block["item"] for block in delta["blocks"]] == list(range(1, 12)),
+            "R09B_DELTA_SCOPE", "R09b scope is exactly the eleven approved text fences")
+    text = current.decode("utf-8")
+    for block in reversed(delta["blocks"]):
+        require(text.count(block["new"]) == 1, "R09B_REVERSE_ANCHOR", block["label"])
+        text = text.replace(block["new"], block["old"], 1)
+    previous = text.encode("utf-8")
+    require(hashlib.sha256(previous).hexdigest() == R13_APPROVED_SHA256
+            and hashlib.sha1(b"blob " + str(len(previous)).encode() + bytes([0]) + previous).hexdigest() == R13_APPROVED_BLOB,
+            "R09B_PREVIOUS_SOURCE", "R09b reversal must restore the unchanged released R13 bytes")
+    return previous
+
+
 def previous_r03_queue():
     return verify_r03_approval((ROOT / "決策佇列.md").read_bytes())
 
 
+def previous_r09b_source():
+    return restore_pre_r09b_source((ROOT / "公理層.md").read_bytes(),
+                                   (ROOT / "決策佇列.md").read_bytes())
+
+
 def previous_r13_source():
-    return restore_pre_r13_source((ROOT / "公理層.md").read_bytes(),
+    return restore_pre_r13_source(previous_r09b_source(),
                                   (ROOT / "決策佇列.md").read_bytes())
 
 
@@ -930,9 +987,42 @@ class AdoptionIntegrity(unittest.TestCase):
                     queue.replace(section, b"<!DOCTYPE\n" + section + b"## faux boundary\n>\n", 1))
         self.assertEqual(restore_pre_r03_source(actual, b"<!DOCTYPE html>\n\n" + queue), previous)
 
+    def check_r09b_exact_adoption(self):
+        """Additional R09b obligations; the R13 bytes and every older gate stay unchanged."""
+        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
+        delta_bytes = (ROOT / "tests/fixtures/r09b-approved-delta.json").read_bytes()
+        delta = json.loads(delta_bytes)
+        previous = restore_pre_r09b_source(actual, queue)
+        self.assertEqual(hashlib.sha256(previous).hexdigest(), R13_APPROVED_SHA256, "R09B_OLD_SOURCE_UNCHANGED")
+        self.assertEqual(restore_pre_r09b_source(actual.replace(b"\n", b"\r\n"), queue.replace(b"\n", b"\r\n")), previous)
+        unapproved = "\n\nR64 未核可的追加條文：\n    本段不在 7064656541 的十一個框內。".encode()
+        for changed in (actual + b"\n", actual.replace(b"\n", b"\r\r\n"), previous,
+                        actual.replace("物理理由：候選描述的是一次準備採用的設計變更".encode(),
+                                       "物理理由：候選描述的是一次準備採行的設計變更".encode(), 1),
+                        actual.replace("物理理由：整面牆的長度不自然變成兩片牆各自的長度，外案複製的定義也不表示已在本案量測；改綁不能改寫觀察事實。".encode(),
+                                       "物理理由：整面牆的長度不自然變成兩片牆各自的長度，外案複製的定義也不表示已在本案量測；改綁不能改寫觀察事實。".encode() + unapproved, 1),
+                        actual.replace("    I72 附加段：".encode(), "I72 附加段：".encode(), 1),
+                        actual.replace("**D65 來源使用項（SourceSlot）**：".encode(), "D65 來源使用項（SourceSlot）：".encode(), 1),
+                        *(actual.replace(block["new"].encode(), block["old"].encode(), 1) for block in delta["blocks"])):
+            with self.subTest(r09b_source=hashlib.sha256(changed).hexdigest()):
+                self.assertNotEqual(changed, actual)
+                self.reject("R09B_APPROVED_SOURCE", restore_pre_r09b_source, changed, queue)
+        for changed in (delta_bytes + b"\n", delta_bytes.replace(b'"item": 1,', b'"item": 0,', 1)):
+            self.reject("R09B_FROZEN_DELTA", restore_pre_r09b_source, actual, queue, changed)
+        record = R09B_APPROVAL_RECORD.encode()
+        heading = R09B_DECISION_HEADING.encode()
+        for altered in (queue.replace(record, b"", 1), queue + b"\n" + record + b"\n",
+                        queue.replace(record, b"   " + record, 1),
+                        queue.replace(heading + b"\n\n", heading + b"\n\nextra\n\n", 1),
+                        queue.replace(heading, heading.replace(b"11-22", b"11-23"), 1),
+                        queue.replace("原話「核可 R09b」".encode(), "原話「都照你的建議」".encode(), 1),
+                        queue.replace(heading + b"\n", b"```\n" + heading + b"\n```\n", 1)):
+            self.reject("R09B_APPROVAL", restore_pre_r09b_source, actual, altered)
+
     def check_r13_exact_adoption(self):
         """Additional R13 obligations; the R03 bytes and every older gate stay unchanged."""
-        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        actual = previous_r09b_source()
         queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
         delta_bytes = (ROOT / "tests/fixtures/r13-approved-delta.json").read_bytes()
         delta = json.loads(delta_bytes)
@@ -957,6 +1047,7 @@ class AdoptionIntegrity(unittest.TestCase):
             self.reject("R13_APPROVAL", restore_pre_r13_source, actual, altered)
 
     def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
+        self.check_r09b_exact_adoption()
         self.check_r13_exact_adoption()
         self.check_r03_exact_adoption()
         queue = previous_r03_queue()

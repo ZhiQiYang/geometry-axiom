@@ -37,9 +37,10 @@ from mutation_bridge import classify
 
 BASE = "83d4ca22e3129d64bbb3b8dd024e950250992eee"
 # R03 #384 adds the separately approved §十 overlay to the released
-# R14/R17 source; R13 C/D (#43, PR #439) adds its approved overlay on top.
+# R14/R17 source; R13 C/D (#43, PR #439) adds its approved overlay on top,
+# and R09b (#44, comments 7064656541 / 7073161164) adds its approved overlay on that.
 # The R14 clauses and native capability remain unchanged.
-AXIOM_BLOB = "2b2fda3f6450707a6aea998d255079dd40b0dd85"
+AXIOM_BLOB = "3d30411cc29bd7d0b86a82bcb62d3639388f89bc"
 PREFIX = "tests.test_r14_repeat_panel.R14RepeatPanelNative."
 METHODS = [
     "test_01_literal_mixed_dual_panel_phase_anchor_and_inner_lines",
