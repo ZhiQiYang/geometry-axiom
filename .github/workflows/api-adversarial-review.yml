@@ -262,6 +262,9 @@ jobs:
               lines += [f"> ⚠️ 審查期間 PR head 已變為 `{current[:7]}`；本審查只對 `{env['HEAD_SHA']}`。", ""]
           if ok:
               lines.append(text[:60000] + ("\n\n…（輸出過長，已截斷）" if len(text) > 60000 else ""))
+          elif not res:
+              lines.append("### 結論\n審查**沒有執行**：模型啟動前的步驟失敗（例如工具清單預檢、資料收集或 CLI 安裝），"
+                           "沒有呼叫 API。失敗的 step 與原因請看下方 run 連結。")
           else:
               lines.append("### 結論\n審查**未完成**，以下沒有可用的審查結果。")
               lines.append(f"\n- subtype：`{res.get('subtype')}`；terminal_reason：`{res.get('terminal_reason')}`；is_error：`{res.get('is_error')}`")
