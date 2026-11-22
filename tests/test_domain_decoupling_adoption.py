@@ -716,12 +716,69 @@ def restore_pre_r03_source(current_bytes, queue_bytes, delta_bytes=None):
     return previous
 
 
+# R13 C/D is the next separately approved overlay (#43 comments 6938368110 and
+# 7057035577). Its exact bytes are reversed before the R03 gate. The decision
+# record is a separate dated section that the older gates already ignore, so
+# the queue is verified here and passed on unchanged.
+R13_APPROVED_SHA256 = "3628b16ba37fc84e193a57fb8523a6290882c8e4a005382beb74faba392645a0"
+R13_APPROVED_BLOB = "2b2fda3f6450707a6aea998d255079dd40b0dd85"
+R13_DELTA_SHA256 = '43e0383ecfbe566f01818903997cf6e4326dd3927692fe3ee8ea0333a69a5e55'
+R13_DECISION_HEADING = '### 2026-11-21 使用者決定 🔒'
+R13_APPROVAL_RECORD = '1. **R13 底圖重建 C／D。** 使用者回覆「R13 底圖重建 C/D 批：條文你已授權，但落檔卡在兩處改字，等你一句『同意』；產品還沒開始做。」，原話「都照你的建議」。核可 r1 第 2–5 節及兩處改字。第 2.1 節索引開頭「R13 補資料與核對擴充的作用域：」改為「GEO-198 補資料與核對擴充的作用域：」，R58b 末段「本包不替 R09b 作決定」改為「本包不替 #44 未採納的身分帳擴充作決定」。第 6–7 節留作後續交接。[候選全文](https://github.com/ZhiQiYang/geometry-axiom/issues/43#issuecomment-6932710590)、[授權範圍](https://github.com/ZhiQiYang/geometry-axiom/issues/43#issuecomment-6938368110)、[上次停下的原因](https://github.com/ZhiQiYang/geometry-axiom/issues/43#issuecomment-7054259696)、[兩處改字核可紀錄](https://github.com/ZhiQiYang/geometry-axiom/issues/43#issuecomment-7057035577)。'
+
+
+def verify_r13_approval(queue_bytes):
+    """The R13 record must be item 1 directly under its own dated heading."""
+    queue = normalized(queue_bytes)
+    lines = queue.split("\n")
+    starts = [i for i, line in enumerate(lines) if line == R13_DECISION_HEADING]
+    records = [i for i, line in enumerate(lines) if line == R13_APPROVAL_RECORD]
+    require(len(starts) == len(records) == 1 and records[0] == starts[0] + 2 and lines[starts[0] + 1] == "",
+            "R13_APPROVAL", "R13 needs one exact scoped full-text record under its dated heading")
+    require(starts[0] in r14_section_heads(lines), "R13_APPROVAL", "R13 approval must be outside Markdown containers")
+    return queue.encode("utf-8")
+
+
+def restore_pre_r13_source(current_bytes, queue_bytes, delta_bytes=None):
+    """Reverse only the approved R13 C/D sections 2-5 and the two approved words."""
+    verify_r13_approval(queue_bytes)
+    current = normalized(current_bytes).encode("utf-8")
+    require(hashlib.sha256(current).hexdigest() == R13_APPROVED_SHA256
+            and hashlib.sha1(b"blob " + str(len(current)).encode() + bytes([0]) + current).hexdigest() == R13_APPROVED_BLOB,
+            "R13_APPROVED_SOURCE", "R13 requires the exact user-approved C/D text")
+    if delta_bytes is None:
+        delta_bytes = (ROOT / "tests/fixtures/r13-approved-delta.json").read_bytes()
+    delta_bytes = delta_bytes.replace(b"\r\n", b"\n")
+    require(hashlib.sha256(delta_bytes).hexdigest() == R13_DELTA_SHA256,
+            "R13_FROZEN_DELTA", "R13 uses the delta derived from the approved comment body")
+    delta = json.loads(delta_bytes)
+    require(delta["schema"] == "r13-approved-delta/1"
+            and delta["beforeBlob"] == R03_APPROVED_BLOB and delta["approvedBlob"] == R13_APPROVED_BLOB
+            and delta["sourceCommentBodySha256"] == "ccf70e3efb152004e7f3cb71c01548d89bac55a2774a7745d69e6da5467d1803"
+            and [block["item"] for block in delta["blocks"]] == list(range(1, 8)),
+            "R13_DELTA_SCOPE", "R13 scope is exactly the approved sections 2-5")
+    text = current.decode("utf-8")
+    for block in reversed(delta["blocks"]):
+        require(text.count(block["new"]) == 1, "R13_REVERSE_ANCHOR", block["label"])
+        text = text.replace(block["new"], block["old"], 1)
+    previous = text.encode("utf-8")
+    require(hashlib.sha256(previous).hexdigest() == R03_APPROVED_SHA256
+            and hashlib.sha1(b"blob " + str(len(previous)).encode() + bytes([0]) + previous).hexdigest() == R03_APPROVED_BLOB,
+            "R13_PREVIOUS_SOURCE", "R13 reversal must restore the unchanged released R03 bytes")
+    return previous
+
+
 def previous_r03_queue():
     return verify_r03_approval((ROOT / "決策佇列.md").read_bytes())
 
 
+def previous_r13_source():
+    return restore_pre_r13_source((ROOT / "公理層.md").read_bytes(),
+                                  (ROOT / "決策佇列.md").read_bytes())
+
+
 def previous_r03_source():
-    return restore_pre_r03_source((ROOT / "公理層.md").read_bytes(),
+    return restore_pre_r03_source(previous_r13_source(),
                                   (ROOT / "決策佇列.md").read_bytes())
 
 
@@ -823,7 +880,7 @@ class AdoptionIntegrity(unittest.TestCase):
 
     def check_r03_exact_adoption(self):
         """Additional R03 obligations; no old clause, hash or expected count changes."""
-        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        actual = previous_r13_source()
         queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
         delta_bytes = (ROOT / "tests/fixtures/r03-approved-delta.json").read_bytes()
         delta = json.loads(delta_bytes)
@@ -873,7 +930,34 @@ class AdoptionIntegrity(unittest.TestCase):
                     queue.replace(section, b"<!DOCTYPE\n" + section + b"## faux boundary\n>\n", 1))
         self.assertEqual(restore_pre_r03_source(actual, b"<!DOCTYPE html>\n\n" + queue), previous)
 
+    def check_r13_exact_adoption(self):
+        """Additional R13 obligations; the R03 bytes and every older gate stay unchanged."""
+        actual = (ROOT / "公理層.md").read_bytes().replace(b"\r\n", b"\n")
+        queue = (ROOT / "決策佇列.md").read_bytes().replace(b"\r\n", b"\n")
+        delta_bytes = (ROOT / "tests/fixtures/r13-approved-delta.json").read_bytes()
+        delta = json.loads(delta_bytes)
+        previous = restore_pre_r13_source(actual, queue)
+        self.assertEqual(hashlib.sha256(previous).hexdigest(), R03_APPROVED_SHA256, "R13_OLD_SOURCE_UNCHANGED")
+        self.assertEqual(restore_pre_r13_source(actual.replace(b"\n", b"\r\n"), queue.replace(b"\n", b"\r\n")), previous)
+        for changed in (actual + b"\n", actual.replace(b"\n", b"\r\r\n"), previous,
+                        actual.replace("GEO-198 補資料".encode(), "R13 補資料".encode(), 1),
+                        actual.replace("#44 未採納的身分帳擴充".encode(), b"R09b", 1),
+                        *(actual.replace(block["new"].encode(), block["old"].encode(), 1) for block in delta["blocks"])):
+            with self.subTest(r13_source=hashlib.sha256(changed).hexdigest()):
+                self.reject("R13_APPROVED_SOURCE", restore_pre_r13_source, changed, queue)
+        for changed in (delta_bytes + b"\n", delta_bytes.replace(b'"item": 1,', b'"item": 0,', 1)):
+            self.reject("R13_FROZEN_DELTA", restore_pre_r13_source, actual, queue, changed)
+        record = R13_APPROVAL_RECORD.encode()
+        heading = R13_DECISION_HEADING.encode()
+        for altered in (queue.replace(record, b"", 1), queue + b"\n" + record + b"\n",
+                        queue.replace(record, b"   " + record, 1),
+                        queue.replace(heading + b"\n\n", heading + b"\n\nextra\n\n", 1),
+                        queue.replace(heading, heading.replace(b"11-21", b"11-22"), 1),
+                        queue.replace(heading + b"\n", b"```\n" + heading + b"\n```\n", 1)):
+            self.reject("R13_APPROVAL", restore_pre_r13_source, actual, altered)
+
     def test_actual_ssot_is_the_full_approved_upstream_preserving_adoption(self):
+        self.check_r13_exact_adoption()
         self.check_r03_exact_adoption()
         queue = previous_r03_queue()
         verify_revision_decisions(queue, POST_APPROVAL_REVISIONS)
