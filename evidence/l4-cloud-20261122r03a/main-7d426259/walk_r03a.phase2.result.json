@@ -1,0 +1,4627 @@
+{
+ "phase": "2",
+ "steps": [
+  {
+   "name": "12-cold-open",
+   "sceneSha": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1",
+   "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+   "openRequests": [],
+   "generatorInvocations": 0,
+   "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "2493abf0db05dabdc6de488b3f73cc0fd6b4766d2076f273ce1919fe8961137b",
+    "fresh": true,
+    "root": "/tmp/r03a-l4/wt",
+    "pid": 6098,
+    "session": "02ec955947534c16b3d229505819db68"
+   },
+   "fileSha256": "ff42721bae1364d0c7136db44ee83eb1b37ed9076daa6871047bee60556e3960"
+  },
+  {
+   "name": "12c-cold-form",
+   "form": {
+    "mode": "framing-fixed",
+    "modeText": "平釘天花骨架（政策 A 固定治具）",
+    "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+    "recipeOptions": [
+     "請明選",
+     "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+    ],
+    "name": "L4 R03A 3740×3301 固定治具",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false
+   }
+  },
+  {
+   "name": "reject-3700x2000",
+   "size": [
+    3700,
+    2000
+   ],
+   "boundary": 2,
+   "outline": [
+    [
+     420,
+     120
+    ],
+    [
+     4120,
+     120
+    ],
+    [
+     4120,
+     2120
+    ],
+    [
+     420,
+     2120
+    ]
+   ],
+   "dims": [
+    3700,
+    2000
+   ],
+   "placement": "placement 3 on boundary 2 origin 0 0 2500 u +x v +y",
+   "form": {
+    "mode": "framing-fixed",
+    "modeText": "平釘天花骨架（政策 A 固定治具）",
+    "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+    "recipeOptions": [
+     "請明選",
+     "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+    ],
+    "name": "L4 R03A 3740×3301 固定治具",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false
+   },
+   "onOptions": [
+    [
+     "3",
+     "放置面 3 · 原點 0, 0, 2500 · u +x／v +y"
+    ]
+   ],
+   "sources": {
+    "on": "3",
+    "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+    "threshold": "1:1",
+    "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+    "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+   },
+   "status": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+   "phase": "rejected",
+   "confirmDisabled": true,
+   "results": false,
+   "requests": [
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331370135
+    }
+   ],
+   "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+  },
+  {
+   "name": "reject-3709x2000",
+   "size": [
+    3709,
+    2000
+   ],
+   "boundary": 3,
+   "outline": [
+    [
+     720,
+     120
+    ],
+    [
+     4429,
+     120
+    ],
+    [
+     4429,
+     2120
+    ],
+    [
+     720,
+     2120
+    ]
+   ],
+   "dims": [
+    3709,
+    2000
+   ],
+   "placement": "placement 4 on boundary 3 origin 0 0 2500 u +x v +y",
+   "form": {
+    "mode": "framing-fixed",
+    "modeText": "平釘天花骨架（政策 A 固定治具）",
+    "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+    "recipeOptions": [
+     "請明選",
+     "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+    ],
+    "name": "L4 R03A 3740×3301 固定治具",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false
+   },
+   "onOptions": [
+    [
+     "4",
+     "放置面 4 · 原點 0, 0, 2500 · u +x／v +y"
+    ]
+   ],
+   "sources": {
+    "on": "4",
+    "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+    "threshold": "1:1",
+    "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+    "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+   },
+   "status": "POLICY_RULE_CONFLICT：此縫在舊 R-butt 會移主支中心；目前共同域不接受不同位置",
+   "phase": "rejected",
+   "confirmDisabled": true,
+   "results": false,
+   "requests": [
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331425292
+    }
+   ],
+   "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+  },
+  {
+   "name": "reject-3720x2000",
+   "size": [
+    3720,
+    2000
+   ],
+   "boundary": 4,
+   "outline": [
+    [
+     434,
+     228
+    ],
+    [
+     4154,
+     228
+    ],
+    [
+     4154,
+     2228
+    ],
+    [
+     434,
+     2228
+    ]
+   ],
+   "dims": [
+    3720,
+    2000
+   ],
+   "placement": "placement 5 on boundary 4 origin 0 0 2500 u +x v +y",
+   "form": {
+    "mode": "framing-fixed",
+    "modeText": "平釘天花骨架（政策 A 固定治具）",
+    "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+    "recipeOptions": [
+     "請明選",
+     "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+    ],
+    "name": "L4 R03A 3740×3301 固定治具",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false
+   },
+   "onOptions": [
+    [
+     "5",
+     "放置面 5 · 原點 0, 0, 2500 · u +x／v +y"
+    ]
+   ],
+   "sources": {
+    "on": "5",
+    "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+    "threshold": "1:1",
+    "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+    "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+   },
+   "status": "NATIVE_INVALID：R43: v k=0 segment [4115,4127] has left/right 0/0 mm, X=8/1 mm; complete candidate refused",
+   "phase": "rejected",
+   "confirmDisabled": true,
+   "results": false,
+   "requests": [
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331482098
+    }
+   ],
+   "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+  }
+ ],
+ "checks": {
+  "FRESH_CONTEXT": {
+   "ok": true,
+   "detail": {
+    "recipe": null,
+    "runtime": {
+     "schema": "geometry-runtime/1",
+     "version": "2493abf0db05dabdc6de488b3f73cc0fd6b4766d2076f273ce1919fe8961137b",
+     "fresh": true,
+     "root": "/tmp/r03a-l4/wt",
+     "pid": 6098,
+     "session": "02ec955947534c16b3d229505819db68"
+    }
+   }
+  },
+  "COLD_FILE_IS_SAVED_FILE": {
+   "ok": true,
+   "detail": {
+    "open": "ff42721bae1364d0c7136db44ee83eb1b37ed9076daa6871047bee60556e3960",
+    "saved": "ff42721bae1364d0c7136db44ee83eb1b37ed9076daa6871047bee60556e3960"
+   }
+  },
+  "COLD_SCENE_EXACT": {
+   "ok": true,
+   "detail": {
+    "before": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1",
+    "cold": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1"
+   }
+  },
+  "COLD_RECIPE_V2_EXACT": {
+   "ok": true,
+   "detail": {
+    "cold": {
+     "schema": "framing-template-recipes/1",
+     "recipes": [
+      {
+       "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+       "name": "L4 R03A 3740×3301 固定治具",
+       "template": {
+        "id": "flat-ceiling",
+        "version": 2,
+        "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+       },
+       "defaults": {
+        "panelWidth": 915,
+        "panelLength": 1830,
+        "gap": 2,
+        "timberWidth": 27,
+        "timberDepth": 33,
+        "maxSecondarySpacing": 367
+       },
+       "preference": {
+        "corner": "min-min",
+        "lengthAlong": "v"
+       },
+       "sourceSlots": [
+        "boundary",
+        "frame",
+        "material-semantics",
+        "panel-version",
+        "support-threshold"
+       ],
+       "sourceHints": []
+      }
+     ]
+    }
+   }
+  },
+  "COLD_NO_SEARCH": {
+   "ok": true,
+   "detail": {
+    "openReqs": [],
+    "generatorInvocations": 0
+   }
+  },
+  "COLD_VIEW_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "COLD_FORM_SHOWS_V2_RECIPE_SOURCES_BLANK": {
+   "ok": true,
+   "detail": {
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "diff": {}
+   }
+  },
+  "COLD_FORM_NO_GENERATION": {
+   "ok": true,
+   "detail": [
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/1",
+     "template": null,
+     "t": 1795331262388
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/1",
+     "template": null,
+     "t": 1795331313237
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/2",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331315412
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/1",
+     "template": null,
+     "t": 1795331364296
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/2",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331366473
+    },
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331370135
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/1",
+     "template": null,
+     "t": 1795331419406
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/2",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331421577
+    },
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331425292
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/1",
+     "template": null,
+     "t": 1795331476283
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/2",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331478438
+    },
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "t": 1795331482098
+    },
+    {
+     "path": "/framing-template/read",
+     "cmd": null,
+     "schema": "framing-template-read/1",
+     "template": null,
+     "t": 1795331487067
+    }
+   ]
+  },
+  "REJECT_3700x2000_POLICY_RULE_CONFLICT": {
+   "ok": true,
+   "detail": {
+    "size": [
+     3700,
+     2000
+    ],
+    "boundary": 2,
+    "outline": [
+     [
+      420,
+      120
+     ],
+     [
+      4120,
+      120
+     ],
+     [
+      4120,
+      2120
+     ],
+     [
+      420,
+      2120
+     ]
+    ],
+    "dims": [
+     3700,
+     2000
+    ],
+    "placement": "placement 3 on boundary 2 origin 0 0 2500 u +x v +y",
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "onOptions": [
+     [
+      "3",
+      "放置面 3 · 原點 0, 0, 2500 · u +x／v +y"
+     ]
+    ],
+    "sources": {
+     "on": "3",
+     "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+     "threshold": "1:1",
+     "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+     "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+    },
+    "status": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "schema": "framing-template-generate/1",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "t": 1795331370135
+     }
+    ],
+    "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+   }
+  },
+  "REJECT_3700x2000_ZERO_WRITE": {
+   "ok": true,
+   "detail": {
+    "preview": {},
+    "cancel": {}
+   }
+  },
+  "REJECT_3709x2000_POLICY_RULE_CONFLICT": {
+   "ok": true,
+   "detail": {
+    "size": [
+     3709,
+     2000
+    ],
+    "boundary": 3,
+    "outline": [
+     [
+      720,
+      120
+     ],
+     [
+      4429,
+      120
+     ],
+     [
+      4429,
+      2120
+     ],
+     [
+      720,
+      2120
+     ]
+    ],
+    "dims": [
+     3709,
+     2000
+    ],
+    "placement": "placement 4 on boundary 3 origin 0 0 2500 u +x v +y",
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "onOptions": [
+     [
+      "4",
+      "放置面 4 · 原點 0, 0, 2500 · u +x／v +y"
+     ]
+    ],
+    "sources": {
+     "on": "4",
+     "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+     "threshold": "1:1",
+     "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+     "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+    },
+    "status": "POLICY_RULE_CONFLICT：此縫在舊 R-butt 會移主支中心；目前共同域不接受不同位置",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "schema": "framing-template-generate/1",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "t": 1795331425292
+     }
+    ],
+    "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+   }
+  },
+  "REJECT_3709x2000_ZERO_WRITE": {
+   "ok": true,
+   "detail": {
+    "preview": {},
+    "cancel": {}
+   }
+  },
+  "REJECT_3720x2000_NATIVE_INVALID": {
+   "ok": true,
+   "detail": {
+    "size": [
+     3720,
+     2000
+    ],
+    "boundary": 4,
+    "outline": [
+     [
+      434,
+      228
+     ],
+     [
+      4154,
+      228
+     ],
+     [
+      4154,
+      2228
+     ],
+     [
+      434,
+      2228
+     ]
+    ],
+    "dims": [
+     3720,
+     2000
+    ],
+    "placement": "placement 5 on boundary 4 origin 0 0 2500 u +x v +y",
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "onOptions": [
+     [
+      "5",
+      "放置面 5 · 原點 0, 0, 2500 · u +x／v +y"
+     ]
+    ],
+    "sources": {
+     "on": "5",
+     "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+     "threshold": "1:1",
+     "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+     "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+    },
+    "status": "NATIVE_INVALID：R43: v k=0 segment [4115,4127] has left/right 0/0 mm, X=8/1 mm; complete candidate refused",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "schema": "framing-template-generate/1",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "t": 1795331482098
+     }
+    ],
+    "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+   }
+  },
+  "REJECT_3720x2000_ZERO_WRITE": {
+   "ok": true,
+   "detail": {
+    "preview": {},
+    "cancel": {}
+   }
+  },
+  "REJECTS_KEEP_RECIPE_AND_FACE1": {
+   "ok": true,
+   "detail": {}
+  }
+ },
+ "browser": "153.0.8010.12",
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "2493abf0db05dabdc6de488b3f73cc0fd6b4766d2076f273ce1919fe8961137b",
+  "fresh": true,
+  "root": "/tmp/r03a-l4/wt",
+  "pid": 6098,
+  "session": "02ec955947534c16b3d229505819db68"
+ },
+ "savedSha256AtOpen": "ff42721bae1364d0c7136db44ee83eb1b37ed9076daa6871047bee60556e3960",
+ "coldGeneratorInvocations": 0,
+ "viewAfterCold": {
+  "label": "R03A-V3-cold",
+  "rows": [
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+   },
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定 · 放置 #1"
+   },
+   {
+    "kind": "placement",
+    "id": "2",
+    "text": "承載面 2自帶矩形"
+   }
+  ],
+  "cards": [
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"
+   },
+   {
+    "kind": "placement",
+    "id": "2",
+    "text": "承載面 2自帶矩形 · 無邊界無邊界1×1 mm · 4 頂點檢查 ›"
+   },
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+   }
+  ],
+  "parameterRows": [
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+   }
+  ],
+  "hostInspector": "承載面 2\n承載面\n狀態\n已放置\n外框尺寸\n0 × 0 mm\n詳細資料\n操作\n進入面內工作區\n定位卡片\n刪除承載面 2（Delete 鍵 · 可 Ctrl+Z 復原）\n來源／影響",
+  "hostEnterDisabled": true,
+  "hostCard": [
+   "承載面 2自帶矩形 · 無邊界無邊界1×1 mm · 4 頂點檢查 ›"
+  ],
+  "face1Inspector": "✓\n建面\n→\n✓\n放置\n→\n3\n收進空間\n面 1\n面\n用途\n用途未指定\n狀態\n已放置\n外框尺寸\n3740 × 3301 mm\n面積(扣孔)\n12.35 m²\n位置\n天花 z=2500 · 放置標高 2500 mm\n所屬空間\n尚未加入空間\n詳細資料\n位置與朝向 · 天花 z=2500 · 修改…\n面的用途與觀看方向\n一般面 · 用途未指定\n要用這片輪廓建立空間，請先明確設定平面投影與觀看方向。\n圖面 z＝2500 mm。牆底標高與牆高另設。\n設定平面投影\n輪廓編輯圖沿局部 u →、v ↓ 顯示；觀看方向的預覽請開啟投影定義。\n外環邊 · 尺寸確認\nF 固定 · X 自由\n0\n→ 右\nmm\nF\nX\n1\n↓ 下\nmm\nF\nX\n2\n← 左\nmm\nF\nX\n3\n↑ 上\nmm\nF\nX\n操作\n進入面內工作區\n定位卡片\n刪除面 1（Delete 鍵 · 可 Ctrl+Z 復原）\n來源／影響",
+  "face1Focus": {
+   "kind": null,
+   "id": 1
+  },
+  "face1Layers": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+  "face1TimberHits": [],
+  "face1CanvasRects": 7,
+  "face1Selected": [],
+  "threeView": {
+   "timberIds": 53,
+   "ownerElements": 477
+  },
+  "threeViewHosts": [
+   "2"
+  ],
+  "threeViewPicks": [
+   {
+    "kind": "boundary",
+    "id": "1",
+    "visible": true,
+    "at": {
+     "x": 451.86622619628906,
+     "y": 398.5229797363281,
+     "w": 416.1036376953125,
+     "h": 3.00396728515625
+    },
+    "info": "角材 1"
+   },
+   {
+    "kind": "main",
+    "id": "3",
+    "visible": true,
+    "at": {
+     "x": 345.7820587158203,
+     "y": 580.6517639160156,
+     "w": 3.003936767578125,
+     "h": 361.25360107421875
+    },
+    "info": "角材 3"
+   },
+   {
+    "kind": "secondary:mark",
+    "id": "9",
+    "visible": true,
+    "at": {
+     "x": 295.54923248291016,
+     "y": 437.4631652832031,
+     "w": 97.46171569824219,
+     "h": 3.00396728515625
+    },
+    "info": "角材 9"
+   },
+   {
+    "kind": "secondary:seam",
+    "id": "49",
+    "visible": true,
+    "at": {
+     "x": 295.54923248291016,
+     "y": 600.7893981933594,
+     "w": 97.46171569824219,
+     "h": 3.00396728515625
+    },
+    "info": "角材 49"
+   }
+  ]
+ },
+ "modePath": [
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ],
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ],
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ],
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ]
+ ],
+ "coldForm": {
+  "mode": "framing-fixed",
+  "modeText": "平釘天花骨架（政策 A 固定治具）",
+  "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+  "recipeOptions": [
+   "請明選",
+   "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+  ],
+  "name": "L4 R03A 3740×3301 固定治具",
+  "corner": "min-min",
+  "lengthAlong": "v",
+  "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+  "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+  "sources": [
+   "",
+   "",
+   ""
+  ],
+  "materials": false
+ },
+ "rejects": [
+  {
+   "res": {
+    "size": [
+     3700,
+     2000
+    ],
+    "boundary": 2,
+    "outline": [
+     [
+      420,
+      120
+     ],
+     [
+      4120,
+      120
+     ],
+     [
+      4120,
+      2120
+     ],
+     [
+      420,
+      2120
+     ]
+    ],
+    "dims": [
+     3700,
+     2000
+    ],
+    "placement": "placement 3 on boundary 2 origin 0 0 2500 u +x v +y",
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "onOptions": [
+     [
+      "3",
+      "放置面 3 · 原點 0, 0, 2500 · u +x／v +y"
+     ]
+    ],
+    "sources": {
+     "on": "3",
+     "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+     "threshold": "1:1",
+     "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+     "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+    },
+    "status": "POLICY_RULE_CONFLICT：此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "schema": "framing-template-generate/1",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "t": 1795331370135
+     }
+    ],
+    "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+   },
+   "checkpoints": {
+    "before": {
+     "sceneSha": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1",
+     "revision": "11",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 1,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": false,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "06ff825bac66102fdf944410e4a5234c1051d7af54b17c98b6981f7d7449a72a",
+     "dirty": false,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 11,
+     "ids": {
+      "boundary": 2,
+      "placement": 3,
+      "surfaces": [
+       3
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": false,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+     "sceneLines": 192
+    },
+    "drawn": {
+     "sceneSha": "ffe5a36f14d8d0edeed71fe2f02ec318f06ec16696dd9b5a143451f5abb9c1b7",
+     "revision": "15",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 5,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 15,
+     "ids": {
+      "boundary": 3,
+      "placement": 4,
+      "surfaces": [
+       4
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "c8139ca7195cd62ac52857ebdc27dd1c92d9859fc38797c8a1d3030c94523316",
+     "sceneLines": 195
+    },
+    "b0": {
+     "sceneSha": "ffe5a36f14d8d0edeed71fe2f02ec318f06ec16696dd9b5a143451f5abb9c1b7",
+     "revision": "15",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 5,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 15,
+     "ids": {
+      "boundary": 3,
+      "placement": 4,
+      "surfaces": [
+       4
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "c8139ca7195cd62ac52857ebdc27dd1c92d9859fc38797c8a1d3030c94523316",
+     "sceneLines": 195
+    },
+    "a0": {
+     "sceneSha": "ffe5a36f14d8d0edeed71fe2f02ec318f06ec16696dd9b5a143451f5abb9c1b7",
+     "revision": "15",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 5,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 15,
+     "ids": {
+      "boundary": 3,
+      "placement": 4,
+      "surfaces": [
+       4
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "c8139ca7195cd62ac52857ebdc27dd1c92d9859fc38797c8a1d3030c94523316",
+     "sceneLines": 195
+    },
+    "c0": {
+     "sceneSha": "ffe5a36f14d8d0edeed71fe2f02ec318f06ec16696dd9b5a143451f5abb9c1b7",
+     "revision": "15",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 5,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 15,
+     "ids": {
+      "boundary": 3,
+      "placement": 4,
+      "surfaces": [
+       4
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "c8139ca7195cd62ac52857ebdc27dd1c92d9859fc38797c8a1d3030c94523316",
+     "sceneLines": 195
+    }
+   }
+  },
+  {
+   "res": {
+    "size": [
+     3709,
+     2000
+    ],
+    "boundary": 3,
+    "outline": [
+     [
+      720,
+      120
+     ],
+     [
+      4429,
+      120
+     ],
+     [
+      4429,
+      2120
+     ],
+     [
+      720,
+      2120
+     ]
+    ],
+    "dims": [
+     3709,
+     2000
+    ],
+    "placement": "placement 4 on boundary 3 origin 0 0 2500 u +x v +y",
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "onOptions": [
+     [
+      "4",
+      "放置面 4 · 原點 0, 0, 2500 · u +x／v +y"
+     ]
+    ],
+    "sources": {
+     "on": "4",
+     "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+     "threshold": "1:1",
+     "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+     "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+    },
+    "status": "POLICY_RULE_CONFLICT：此縫在舊 R-butt 會移主支中心；目前共同域不接受不同位置",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "schema": "framing-template-generate/1",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "t": 1795331425292
+     }
+    ],
+    "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+   },
+   "checkpoints": {
+    "before": {
+     "sceneSha": "ffe5a36f14d8d0edeed71fe2f02ec318f06ec16696dd9b5a143451f5abb9c1b7",
+     "revision": "15",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 5,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 15,
+     "ids": {
+      "boundary": 3,
+      "placement": 4,
+      "surfaces": [
+       4
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "c8139ca7195cd62ac52857ebdc27dd1c92d9859fc38797c8a1d3030c94523316",
+     "sceneLines": 195
+    },
+    "drawn": {
+     "sceneSha": "0783c051ace33a15ffda666d1197d6704054b89d8dd1c8756d4e41ea5b1f847a",
+     "revision": "19",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 9,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 19,
+     "ids": {
+      "boundary": 4,
+      "placement": 5,
+      "surfaces": [
+       5
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "a3107f2d9ad7c939f9e4f3905b07456159699ed79747120ff98695330d648dad",
+     "sceneLines": 198
+    },
+    "b0": {
+     "sceneSha": "0783c051ace33a15ffda666d1197d6704054b89d8dd1c8756d4e41ea5b1f847a",
+     "revision": "19",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 9,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 19,
+     "ids": {
+      "boundary": 4,
+      "placement": 5,
+      "surfaces": [
+       5
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "a3107f2d9ad7c939f9e4f3905b07456159699ed79747120ff98695330d648dad",
+     "sceneLines": 198
+    },
+    "a0": {
+     "sceneSha": "0783c051ace33a15ffda666d1197d6704054b89d8dd1c8756d4e41ea5b1f847a",
+     "revision": "19",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 9,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 19,
+     "ids": {
+      "boundary": 4,
+      "placement": 5,
+      "surfaces": [
+       5
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "a3107f2d9ad7c939f9e4f3905b07456159699ed79747120ff98695330d648dad",
+     "sceneLines": 198
+    },
+    "c0": {
+     "sceneSha": "0783c051ace33a15ffda666d1197d6704054b89d8dd1c8756d4e41ea5b1f847a",
+     "revision": "19",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 9,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 19,
+     "ids": {
+      "boundary": 4,
+      "placement": 5,
+      "surfaces": [
+       5
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "a3107f2d9ad7c939f9e4f3905b07456159699ed79747120ff98695330d648dad",
+     "sceneLines": 198
+    }
+   }
+  },
+  {
+   "res": {
+    "size": [
+     3720,
+     2000
+    ],
+    "boundary": 4,
+    "outline": [
+     [
+      434,
+      228
+     ],
+     [
+      4154,
+      228
+     ],
+     [
+      4154,
+      2228
+     ],
+     [
+      434,
+      2228
+     ]
+    ],
+    "dims": [
+     3720,
+     2000
+    ],
+    "placement": "placement 5 on boundary 4 origin 0 0 2500 u +x v +y",
+    "form": {
+     "mode": "framing-fixed",
+     "modeText": "平釘天花骨架（政策 A 固定治具）",
+     "recipe": "L4 R03A 3740×3301 固定治具 · flat-ceiling/2",
+     "recipeOptions": [
+      "請明選",
+      "L4 R03A 3740×3301 固定治具 · flat-ceiling/2"
+     ],
+     "name": "L4 R03A 3740×3301 固定治具",
+     "corner": "min-min",
+     "lengthAlong": "v",
+     "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+     "scope": "政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。",
+     "sources": [
+      "",
+      "",
+      ""
+     ],
+     "materials": false
+    },
+    "onOptions": [
+     [
+      "5",
+      "放置面 5 · 原點 0, 0, 2500 · u +x／v +y"
+     ]
+    ],
+    "sources": {
+     "on": "5",
+     "panel": "[\"material-12fe7773-afbb-439d-98be-7cad494e0d1d\",1]",
+     "threshold": "1:1",
+     "panelText": "L4 R03A 面材 915×1830 · v1 · 915 × 1830 × 6 mm",
+     "thresholdText": "鋪排承接門檻／X · 8/1 mm"
+    },
+    "status": "NATIVE_INVALID：R43: v k=0 segment [4115,4127] has left/right 0/0 mm, X=8/1 mm; complete candidate refused",
+    "phase": "rejected",
+    "confirmDisabled": true,
+    "results": false,
+    "requests": [
+     {
+      "path": "/framing-template/preview",
+      "cmd": null,
+      "schema": "framing-template-generate/1",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "t": 1795331482098
+     }
+    ],
+    "afterCancelStatus": "已取消本次輸入，沒有新增物件或歷史。"
+   },
+   "checkpoints": {
+    "before": {
+     "sceneSha": "0783c051ace33a15ffda666d1197d6704054b89d8dd1c8756d4e41ea5b1f847a",
+     "revision": "19",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 9,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 19,
+     "ids": {
+      "boundary": 4,
+      "placement": 5,
+      "surfaces": [
+       5
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "a3107f2d9ad7c939f9e4f3905b07456159699ed79747120ff98695330d648dad",
+     "sceneLines": 198
+    },
+    "drawn": {
+     "sceneSha": "325c8e4f8245198e11aeec4c5b38fb22ffb3b030309cda2d3616dabc7bddad5a",
+     "revision": "23",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 13,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 23,
+     "ids": {
+      "boundary": 5,
+      "placement": 6,
+      "surfaces": [
+       6
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "5c25136fdeeca7f5540b282edc0fa7600d7ea995772a65e3bb84dd43fc2f7aed",
+     "sceneLines": 201
+    },
+    "b0": {
+     "sceneSha": "325c8e4f8245198e11aeec4c5b38fb22ffb3b030309cda2d3616dabc7bddad5a",
+     "revision": "23",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 13,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 23,
+     "ids": {
+      "boundary": 5,
+      "placement": 6,
+      "surfaces": [
+       6
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "5c25136fdeeca7f5540b282edc0fa7600d7ea995772a65e3bb84dd43fc2f7aed",
+     "sceneLines": 201
+    },
+    "a0": {
+     "sceneSha": "325c8e4f8245198e11aeec4c5b38fb22ffb3b030309cda2d3616dabc7bddad5a",
+     "revision": "23",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 13,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 23,
+     "ids": {
+      "boundary": 5,
+      "placement": 6,
+      "surfaces": [
+       6
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "5c25136fdeeca7f5540b282edc0fa7600d7ea995772a65e3bb84dd43fc2f7aed",
+     "sceneLines": 201
+    },
+    "c0": {
+     "sceneSha": "325c8e4f8245198e11aeec4c5b38fb22ffb3b030309cda2d3616dabc7bddad5a",
+     "revision": "23",
+     "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+     "undo": 13,
+     "redo": 0,
+     "frame": {
+      "context": {
+       "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+       "name": "未命名專案",
+       "sources": {},
+       "groups": {},
+       "models": [],
+       "modelsDirty": false,
+       "reconstructionReviews": {},
+       "faceProjections": {},
+       "faceProjectionsDirty": false,
+       "engineeringDrafts": [
+        {
+         "id": "engineering-workspace-application",
+         "kind": "application",
+         "base_ref": null,
+         "data": {
+          "form": {
+           "method": null,
+           "targets": {
+            "1": {
+             "placement_id": 1,
+             "gridAction": "create",
+             "gridId": null,
+             "longAxis": "inherit",
+             "mainAlong": "inherit",
+             "anchors": {
+              "u": {
+               "mode": "lower",
+               "value": ""
+              },
+              "v": {
+               "mode": "lower",
+               "value": ""
+              }
+             },
+             "preserveOverrides": true,
+             "overrides": {},
+             "timberIds": [],
+             "objectOverrides": {},
+             "objectSources": {}
+            }
+           }
+          },
+          "ui": {
+           "section": "materials",
+           "inlineKind": null,
+           "activePlacement": 1,
+           "importText": ""
+          }
+         },
+         "updated_at": "2026-11-22T07:05:57.787Z"
+        }
+       ],
+       "assemblyDrafts": [],
+       "featureAttachments": [
+        {
+         "kind": "framing-template-recipes",
+         "schema": "framing-template-recipes/1",
+         "value": {
+          "schema": "framing-template-recipes/1",
+          "recipes": [
+           {
+            "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+            "name": "L4 R03A 3740×3301 固定治具",
+            "template": {
+             "id": "flat-ceiling",
+             "version": 2,
+             "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+            },
+            "defaults": {
+             "panelWidth": 915,
+             "panelLength": 1830,
+             "gap": 2,
+             "timberWidth": 27,
+             "timberDepth": 33,
+             "maxSecondarySpacing": 367
+            },
+            "preference": {
+             "corner": "min-min",
+             "lengthAlong": "v"
+            },
+            "sourceSlots": [
+             "boundary",
+             "frame",
+             "material-semantics",
+             "panel-version",
+             "support-threshold"
+            ],
+            "sourceHints": []
+           }
+          ]
+         }
+        }
+       ],
+       "scenarioCatalog": null,
+       "pending": {},
+       "dirty": true,
+       "provenance": {
+        "kind": "file",
+        "label": "專案檔案「r03a.gcanvas」",
+        "openedAt": "2026-11-22T07:07:37.686Z",
+        "lastSavedAt": null,
+        "lastDownloadAt": null
+       },
+       "saved": true,
+       "dirtyReason": "",
+       "downloaded": false
+      },
+      "ids": {}
+     },
+     "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+     "dirty": true,
+     "recipe": {
+      "schema": "framing-template-recipes/1",
+      "recipes": [
+       {
+        "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+        "name": "L4 R03A 3740×3301 固定治具",
+        "template": {
+         "id": "flat-ceiling",
+         "version": 2,
+         "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+        },
+        "defaults": {
+         "panelWidth": 915,
+         "panelLength": 1830,
+         "gap": 2,
+         "timberWidth": 27,
+         "timberDepth": 33,
+         "maxSecondarySpacing": 367
+        },
+        "preference": {
+         "corner": "min-min",
+         "lengthAlong": "v"
+        },
+        "sourceSlots": [
+         "boundary",
+         "frame",
+         "material-semantics",
+         "panel-version",
+         "support-threshold"
+        ],
+        "sourceHints": []
+       }
+      ]
+     },
+     "pfRevision": 23,
+     "ids": {
+      "boundary": 5,
+      "placement": 6,
+      "surfaces": [
+       6
+      ],
+      "timber": 54
+     },
+     "project": {
+      "dirty": true,
+      "name": null
+     },
+     "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+     "idsSha": "5c25136fdeeca7f5540b282edc0fa7600d7ea995772a65e3bb84dd43fc2f7aed",
+     "sceneLines": 201
+    }
+   }
+  }
+ ],
+ "generatorInvocationsAfterRejects": 1,
+ "checkpoints": {
+  "fresh": {
+   "sceneSha": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+   "revision": "10",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 0,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "c04e92c4-5427-432c-b90b-cc5d3abffc47",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [],
+     "assemblyDrafts": [],
+     "featureAttachments": [],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "server",
+      "label": "服務目前保留的場景（來源未確認）",
+      "openedAt": null,
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     }
+    },
+    "ids": {}
+   },
+   "lastUndoSha": null,
+   "dirty": false,
+   "recipe": null,
+   "pfRevision": 10,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 4
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+   "idsSha": "f74bdd0783b5300dc44a3a0d2d62ae83c862c364b67c1d5a596f91c84606569a",
+   "sceneLines": 13
+  },
+  "cold": {
+   "sceneSha": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-22T07:05:57.787Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+          "name": "L4 R03A 3740×3301 固定治具",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 2,
+           "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03a.gcanvas」",
+      "openedAt": "2026-11-22T07:07:37.686Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "06ff825bac66102fdf944410e4a5234c1051d7af54b17c98b6981f7d7449a72a",
+   "dirty": false,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+      "name": "L4 R03A 3740×3301 固定治具",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  },
+  "coldView": {
+   "sceneSha": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-22T07:05:57.787Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+          "name": "L4 R03A 3740×3301 固定治具",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 2,
+           "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03a.gcanvas」",
+      "openedAt": "2026-11-22T07:07:37.686Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "06ff825bac66102fdf944410e4a5234c1051d7af54b17c98b6981f7d7449a72a",
+   "dirty": false,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+      "name": "L4 R03A 3740×3301 固定治具",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  },
+  "coldAfterForm": {
+   "sceneSha": "cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-22T07:05:57.787Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+          "name": "L4 R03A 3740×3301 固定治具",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 2,
+           "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": false,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03a.gcanvas」",
+      "openedAt": "2026-11-22T07:07:37.686Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "06ff825bac66102fdf944410e4a5234c1051d7af54b17c98b6981f7d7449a72a",
+   "dirty": false,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+      "name": "L4 R03A 3740×3301 固定治具",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "project": {
+    "dirty": false,
+    "name": null
+   },
+   "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  },
+  "end": {
+   "sceneSha": "325c8e4f8245198e11aeec4c5b38fb22ffb3b030309cda2d3616dabc7bddad5a",
+   "revision": "23",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 13,
+   "redo": 0,
+   "frame": {
+    "context": {
+     "id": "0bf74f52-7d82-407c-b973-9518f0c01b7f",
+     "name": "未命名專案",
+     "sources": {},
+     "groups": {},
+     "models": [],
+     "modelsDirty": false,
+     "reconstructionReviews": {},
+     "faceProjections": {},
+     "faceProjectionsDirty": false,
+     "engineeringDrafts": [
+      {
+       "id": "engineering-workspace-application",
+       "kind": "application",
+       "base_ref": null,
+       "data": {
+        "form": {
+         "method": null,
+         "targets": {
+          "1": {
+           "placement_id": 1,
+           "gridAction": "create",
+           "gridId": null,
+           "longAxis": "inherit",
+           "mainAlong": "inherit",
+           "anchors": {
+            "u": {
+             "mode": "lower",
+             "value": ""
+            },
+            "v": {
+             "mode": "lower",
+             "value": ""
+            }
+           },
+           "preserveOverrides": true,
+           "overrides": {},
+           "timberIds": [],
+           "objectOverrides": {},
+           "objectSources": {}
+          }
+         }
+        },
+        "ui": {
+         "section": "materials",
+         "inlineKind": null,
+         "activePlacement": 1,
+         "importText": ""
+        }
+       },
+       "updated_at": "2026-11-22T07:05:57.787Z"
+      }
+     ],
+     "assemblyDrafts": [],
+     "featureAttachments": [
+      {
+       "kind": "framing-template-recipes",
+       "schema": "framing-template-recipes/1",
+       "value": {
+        "schema": "framing-template-recipes/1",
+        "recipes": [
+         {
+          "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+          "name": "L4 R03A 3740×3301 固定治具",
+          "template": {
+           "id": "flat-ceiling",
+           "version": 2,
+           "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+          },
+          "defaults": {
+           "panelWidth": 915,
+           "panelLength": 1830,
+           "gap": 2,
+           "timberWidth": 27,
+           "timberDepth": 33,
+           "maxSecondarySpacing": 367
+          },
+          "preference": {
+           "corner": "min-min",
+           "lengthAlong": "v"
+          },
+          "sourceSlots": [
+           "boundary",
+           "frame",
+           "material-semantics",
+           "panel-version",
+           "support-threshold"
+          ],
+          "sourceHints": []
+         }
+        ]
+       }
+      }
+     ],
+     "scenarioCatalog": null,
+     "pending": {},
+     "dirty": true,
+     "provenance": {
+      "kind": "file",
+      "label": "專案檔案「r03a.gcanvas」",
+      "openedAt": "2026-11-22T07:07:37.686Z",
+      "lastSavedAt": null,
+      "lastDownloadAt": null
+     },
+     "saved": true,
+     "dirtyReason": "",
+     "downloaded": false
+    },
+    "ids": {}
+   },
+   "lastUndoSha": "ba3a4ac8ce57e5bc9c8d6316404307000c464a79846a137b74fd5b147a90b4b3",
+   "dirty": true,
+   "recipe": {
+    "schema": "framing-template-recipes/1",
+    "recipes": [
+     {
+      "id": "7d004e21-c00c-4f4e-b18d-45cc00eb433f",
+      "name": "L4 R03A 3740×3301 固定治具",
+      "template": {
+       "id": "flat-ceiling",
+       "version": 2,
+       "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+      },
+      "defaults": {
+       "panelWidth": 915,
+       "panelLength": 1830,
+       "gap": 2,
+       "timberWidth": 27,
+       "timberDepth": 33,
+       "maxSecondarySpacing": 367
+      },
+      "preference": {
+       "corner": "min-min",
+       "lengthAlong": "v"
+      },
+      "sourceSlots": [
+       "boundary",
+       "frame",
+       "material-semantics",
+       "panel-version",
+       "support-threshold"
+      ],
+      "sourceHints": []
+     }
+    ]
+   },
+   "pfRevision": 23,
+   "ids": {
+    "boundary": 5,
+    "placement": 6,
+    "surfaces": [
+     6
+    ],
+    "timber": 54
+   },
+   "project": {
+    "dirty": true,
+    "name": null
+   },
+   "recipeSha": "876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279",
+   "idsSha": "5c25136fdeeca7f5540b282edc0fa7600d7ea995772a65e3bb84dd43fc2f7aed",
+   "sceneLines": 201
+  }
+ },
+ "coldScene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6ImRhMzk1ZTFkOTVmZTA0MTJjMzMwYzYxNmI0ZmQ4MTYxNmU1NDQ2ZTU2M2FlMWFlMGViNDZmMzVhNWU0NzFjMjAiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC0xMmZlNzc3My1hZmJiLTQzOWQtOThiZS03Y2FkNDk0ZTBkMWQiLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoiTDQgUjAzQSDpnaLmnZAgOTE1w5cxODMwIiwibm90ZXMiOm51bGwsInRoaWNrbmVzcyI6IjYiLCJ2ZXJzaW9uIjoxLCJ3aWR0aCI6OTE1fX0=\nboundary 1 outline 122,194 3862,194 3862,3495 122,3495\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec r03_mark_1_0 -1468\nspec r03_mark_2_0 -1101\nspec r03_mark_3_0 -734\nspec r03_mark_4_0 -367\nspec r03_mark_5_0 367\nspec r03_mark_6_0 734\nspec r03_mark_7_0 1101\nspec r03_mark_8_0 1286\nrequires panel-fill/1\nfinish-surface 1 on boundary 1 origin 0 0 2500 u +x v +y n +z side +n name-hex 523033206365696c696e67\npanel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a322c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b3132322c3139345d2c2270616e656c223a7b226964223a226d6174657269616c2d31326665373737332d616662622d343339642d393862652d376361643439346530643164222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a317d7d\nderived-placement 2 definition-hex 7b2266696c6c4964223a312c2268223a33332c226964223a327d\ngrid 1 on 2 from-fill 1 main-along v\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\ntimber 4 27 33 role primary\ntimber 5 27 33 role primary\ntimber 6 27 33 role primary\ntimber 7 27 33 role primary\ntimber 8 27 33 role primary\ntimber 9 27 33 role secondary\ntimber 10 27 33 role secondary\ntimber 11 27 33 role secondary\ntimber 12 27 33 role secondary\ntimber 13 27 33 role secondary\ntimber 14 27 33 role secondary\ntimber 15 27 33 role secondary\ntimber 16 27 33 role secondary\ntimber 17 27 33 role secondary\ntimber 18 27 33 role secondary\ntimber 19 27 33 role secondary\ntimber 20 27 33 role secondary\ntimber 21 27 33 role secondary\ntimber 22 27 33 role secondary\ntimber 23 27 33 role secondary\ntimber 24 27 33 role secondary\ntimber 25 27 33 role secondary\ntimber 26 27 33 role secondary\ntimber 27 27 33 role secondary\ntimber 28 27 33 role secondary\ntimber 29 27 33 role secondary\ntimber 30 27 33 role secondary\ntimber 31 27 33 role secondary\ntimber 32 27 33 role secondary\ntimber 33 27 33 role secondary\ntimber 34 27 33 role secondary\ntimber 35 27 33 role secondary\ntimber 36 27 33 role secondary\ntimber 37 27 33 role secondary\ntimber 38 27 33 role secondary\ntimber 39 27 33 role secondary\ntimber 40 27 33 role secondary\ntimber 41 27 33 role secondary\ntimber 42 27 33 role secondary\ntimber 43 27 33 role secondary\ntimber 44 27 33 role secondary\ntimber 45 27 33 role secondary\ntimber 46 27 33 role secondary\ntimber 47 27 33 role secondary\ntimber 48 27 33 role secondary\ntimber 49 27 33 role secondary\ntimber 50 27 33 role secondary\ntimber 51 27 33 role secondary\ntimber 52 27 33 role secondary\ntimber 53 27 33 role secondary\nguide 1 2 u grid:1:v:0+spec:r03_mark_1_0\nguide 2 2 u grid:1:v:0+spec:r03_mark_2_0\nguide 3 2 u grid:1:v:0+spec:r03_mark_3_0\nguide 4 2 u grid:1:v:0+spec:r03_mark_4_0\nguide 5 2 u grid:1:v:0+spec:r03_mark_5_0\nguide 6 2 u grid:1:v:0+spec:r03_mark_6_0\nguide 7 2 u grid:1:v:0+spec:r03_mark_7_0\nguide 8 2 u grid:1:v:0+spec:r03_mark_8_0\nplace 1 on 2 at-face key-hex:5b5b226530222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[[\"e0\",0,1]]\nplace 2 on 2 at-face key-hex:5b5b226532222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d -u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=[[\"e2\",0,1]]\nplace 3 on 2 at-line grid 1 u 0 between t1 t2 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=null\nplace 4 on 2 at-line grid 1 u 1 between t1 t2 +v +n\n# R18 角材 4: onBoundary=false coversEdge=false boundaryEdge=null\nplace 5 on 2 at-line grid 1 u 2 between t1 t2 +v +n\n# R18 角材 5: onBoundary=false coversEdge=false boundaryEdge=null\nplace 6 on 2 at-line grid 1 u 3 between t1 t2 +v +n\n# R18 角材 6: onBoundary=false coversEdge=false boundaryEdge=null\nplace 7 on 2 at-face key-hex:5b5b226533222c302c315d5d between t1 t2 -v +n\n# R18 角材 7: onBoundary=true coversEdge=false boundaryEdge=[[\"e3\",0,1]]\nplace 8 on 2 at-face key-hex:5b5b226531222c302c315d5d between t1 t2 +v +n\n# R18 角材 8: onBoundary=true coversEdge=false boundaryEdge=[[\"e1\",0,1]]\nplace 9 on 2 at-line guide 1 between t7 t3 +u +n\n# R18 角材 9: onBoundary=false coversEdge=false boundaryEdge=null\nplace 10 on 2 at-line guide 2 between t7 t3 +u +n\n# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=null\nplace 11 on 2 at-line guide 3 between t7 t3 +u +n\n# R18 角材 11: onBoundary=false coversEdge=false boundaryEdge=null\nplace 12 on 2 at-line guide 4 between t7 t3 +u +n\n# R18 角材 12: onBoundary=false coversEdge=false boundaryEdge=null\nplace 13 on 2 at-line guide 5 between t7 t3 +u +n\n# R18 角材 13: onBoundary=false coversEdge=false boundaryEdge=null\nplace 14 on 2 at-line guide 6 between t7 t3 +u +n\n# R18 角材 14: onBoundary=false coversEdge=false boundaryEdge=null\nplace 15 on 2 at-line guide 7 between t7 t3 +u +n\n# R18 角材 15: onBoundary=false coversEdge=false boundaryEdge=null\nplace 16 on 2 at-line guide 8 between t7 t3 +u +n\n# R18 角材 16: onBoundary=false coversEdge=false boundaryEdge=null\nplace 17 on 2 at-line guide 1 between t3 t4 +u +n\n# R18 角材 17: onBoundary=false coversEdge=false boundaryEdge=null\nplace 18 on 2 at-line guide 2 between t3 t4 +u +n\n# R18 角材 18: onBoundary=false coversEdge=false boundaryEdge=null\nplace 19 on 2 at-line guide 3 between t3 t4 +u +n\n# R18 角材 19: onBoundary=false coversEdge=false boundaryEdge=null\nplace 20 on 2 at-line guide 4 between t3 t4 +u +n\n# R18 角材 20: onBoundary=false coversEdge=false boundaryEdge=null\nplace 21 on 2 at-line guide 5 between t3 t4 +u +n\n# R18 角材 21: onBoundary=false coversEdge=false boundaryEdge=null\nplace 22 on 2 at-line guide 6 between t3 t4 +u +n\n# R18 角材 22: onBoundary=false coversEdge=false boundaryEdge=null\nplace 23 on 2 at-line guide 7 between t3 t4 +u +n\n# R18 角材 23: onBoundary=false coversEdge=false boundaryEdge=null\nplace 24 on 2 at-line guide 8 between t3 t4 +u +n\n# R18 角材 24: onBoundary=false coversEdge=false boundaryEdge=null\nplace 25 on 2 at-line guide 1 between t4 t5 +u +n\n# R18 角材 25: onBoundary=false coversEdge=false boundaryEdge=null\nplace 26 on 2 at-line guide 2 between t4 t5 +u +n\n# R18 角材 26: onBoundary=false coversEdge=false boundaryEdge=null\nplace 27 on 2 at-line guide 3 between t4 t5 +u +n\n# R18 角材 27: onBoundary=false coversEdge=false boundaryEdge=null\nplace 28 on 2 at-line guide 4 between t4 t5 +u +n\n# R18 角材 28: onBoundary=false coversEdge=false boundaryEdge=null\nplace 29 on 2 at-line guide 5 between t4 t5 +u +n\n# R18 角材 29: onBoundary=false coversEdge=false boundaryEdge=null\nplace 30 on 2 at-line guide 6 between t4 t5 +u +n\n# R18 角材 30: onBoundary=false coversEdge=false boundaryEdge=null\nplace 31 on 2 at-line guide 7 between t4 t5 +u +n\n# R18 角材 31: onBoundary=false coversEdge=false boundaryEdge=null\nplace 32 on 2 at-line guide 8 between t4 t5 +u +n\n# R18 角材 32: onBoundary=false coversEdge=false boundaryEdge=null\nplace 33 on 2 at-line guide 1 between t5 t6 +u +n\n# R18 角材 33: onBoundary=false coversEdge=false boundaryEdge=null\nplace 34 on 2 at-line guide 2 between t5 t6 +u +n\n# R18 角材 34: onBoundary=false coversEdge=false boundaryEdge=null\nplace 35 on 2 at-line guide 3 between t5 t6 +u +n\n# R18 角材 35: onBoundary=false coversEdge=false boundaryEdge=null\nplace 36 on 2 at-line guide 4 between t5 t6 +u +n\n# R18 角材 36: onBoundary=false coversEdge=false boundaryEdge=null\nplace 37 on 2 at-line guide 5 between t5 t6 +u +n\n# R18 角材 37: onBoundary=false coversEdge=false boundaryEdge=null\nplace 38 on 2 at-line guide 6 between t5 t6 +u +n\n# R18 角材 38: onBoundary=false coversEdge=false boundaryEdge=null\nplace 39 on 2 at-line guide 7 between t5 t6 +u +n\n# R18 角材 39: onBoundary=false coversEdge=false boundaryEdge=null\nplace 40 on 2 at-line guide 8 between t5 t6 +u +n\n# R18 角材 40: onBoundary=false coversEdge=false boundaryEdge=null\nplace 41 on 2 at-line guide 1 between t6 t8 +u +n\n# R18 角材 41: onBoundary=false coversEdge=false boundaryEdge=null\nplace 42 on 2 at-line guide 2 between t6 t8 +u +n\n# R18 角材 42: onBoundary=false coversEdge=false boundaryEdge=null\nplace 43 on 2 at-line guide 3 between t6 t8 +u +n\n# R18 角材 43: onBoundary=false coversEdge=false boundaryEdge=null\nplace 44 on 2 at-line guide 4 between t6 t8 +u +n\n# R18 角材 44: onBoundary=false coversEdge=false boundaryEdge=null\nplace 45 on 2 at-line guide 5 between t6 t8 +u +n\n# R18 角材 45: onBoundary=false coversEdge=false boundaryEdge=null\nplace 46 on 2 at-line guide 6 between t6 t8 +u +n\n# R18 角材 46: onBoundary=false coversEdge=false boundaryEdge=null\nplace 47 on 2 at-line guide 7 between t6 t8 +u +n\n# R18 角材 47: onBoundary=false coversEdge=false boundaryEdge=null\nplace 48 on 2 at-line guide 8 between t6 t8 +u +n\n# R18 角材 48: onBoundary=false coversEdge=false boundaryEdge=null\nplace 49 on 2 at-line grid 1 v 0 between t7 t3 +u +n\n# R18 角材 49: onBoundary=false coversEdge=false boundaryEdge=null\nplace 50 on 2 at-line grid 1 v 0 between t3 t4 +u +n\n# R18 角材 50: onBoundary=false coversEdge=false boundaryEdge=null\nplace 51 on 2 at-line grid 1 v 0 between t4 t5 +u +n\n# R18 角材 51: onBoundary=false coversEdge=false boundaryEdge=null\nplace 52 on 2 at-line grid 1 v 0 between t5 t6 +u +n\n# R18 角材 52: onBoundary=false coversEdge=false boundaryEdge=null\nplace 53 on 2 at-line grid 1 v 0 between t6 t8 +u +n\n# R18 角材 53: onBoundary=false coversEdge=false boundaryEdge=null\ncanvas-pos boundary 1 122 194\ncanvas-pos parameter 1 60 660\ncanvas-pos placement 2 -101 1022\n",
+ "network": [
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "t": 1795331262388
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "t": 1795331313237
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331315412
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "t": 1795331364296
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331366473
+  },
+  {
+   "path": "/framing-template/preview",
+   "cmd": null,
+   "schema": "framing-template-generate/1",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331370135
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "t": 1795331419406
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331421577
+  },
+  {
+   "path": "/framing-template/preview",
+   "cmd": null,
+   "schema": "framing-template-generate/1",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331425292
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "t": 1795331476283
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331478438
+  },
+  {
+   "path": "/framing-template/preview",
+   "cmd": null,
+   "schema": "framing-template-generate/1",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "t": 1795331482098
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "t": 1795331487067
+  }
+ ],
+ "errs": [],
+ "summary": {
+  "pass": 15,
+  "fail": []
+ }
+}

@@ -1,0 +1,21 @@
+PASS FRESH_CONTEXT 
+STEP 12-cold-open {"sceneSha":"cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1","recipeSha":"876c9e0c886606525273b4ebf41bca39762b82d296877e7d06251de67b1d5279","openRequests":[],"generatorInvocations":0,"runtime":{"schema":"geometry-runtime/1","version":"2493abf0db05dabdc6de488b3f73cc0fd6b4766d2076f273ce1919fe8961137b","fresh":true,"root":"/tmp/r03a-l4/wt","pid":6098,"session":"02ec955947534c16b3d229505819db68"},"fileSha256":"ff42721bae1364d0c7136db44ee83eb1b37ed9076daa6871047bee60556e3960"}
+PASS COLD_FILE_IS_SAVED_FILE 
+PASS COLD_SCENE_EXACT 
+PASS COLD_RECIPE_V2_EXACT 
+PASS COLD_NO_SEARCH 
+PASS COLD_VIEW_ZERO_WRITE 
+STEP 12c-cold-form {"form":{"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"L4 R03A 3740×3301 固定治具 · flat-ceiling/2","recipeOptions":["請明選","L4 R03A 3740×3301 固定治具 · flat-ceiling/2"],"name":"L4 R03A 3740×3301 固定治具","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。","sources":["","",""],"materials":false}}
+PASS COLD_FORM_SHOWS_V2_RECIPE_SOURCES_BLANK 
+PASS COLD_FORM_NO_GENERATION 
+STEP reject-3700x2000 {"size":[3700,2000],"boundary":2,"outline":[[420,120],[4120,120],[4120,2120],[420,2120]],"dims":[3700,2000],"placement":"placement 3 on boundary 2 origin 0 0 2500 u +x v +y","form":{"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"L4 R03A 3740×3301 固定治具 · flat-ceiling/2","recipeOptions":["請明選","L4 R03A 3740×3301 固定治具 · flat-ceiling/2"],"name":"L4 R03A 3740×3301 固定治具","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無
+PASS REJECT_3700x2000_POLICY_RULE_CONFLICT 
+PASS REJECT_3700x2000_ZERO_WRITE 
+STEP reject-3709x2000 {"size":[3709,2000],"boundary":3,"outline":[[720,120],[4429,120],[4429,2120],[720,2120]],"dims":[3709,2000],"placement":"placement 4 on boundary 3 origin 0 0 2500 u +x v +y","form":{"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"L4 R03A 3740×3301 固定治具 · flat-ceiling/2","recipeOptions":["請明選","L4 R03A 3740×3301 固定治具 · flat-ceiling/2"],"name":"L4 R03A 3740×3301 固定治具","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無
+PASS REJECT_3709x2000_POLICY_RULE_CONFLICT 
+PASS REJECT_3709x2000_ZERO_WRITE 
+STEP reject-3720x2000 {"size":[3720,2000],"boundary":4,"outline":[[434,228],[4154,228],[4154,2228],[434,2228]],"dims":[3720,2000],"placement":"placement 5 on boundary 4 origin 0 0 2500 u +x v +y","form":{"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"L4 R03A 3740×3301 固定治具 · flat-ceiling/2","recipeOptions":["請明選","L4 R03A 3740×3301 固定治具 · flat-ceiling/2"],"name":"L4 R03A 3740×3301 固定治具","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無
+PASS REJECT_3720x2000_NATIVE_INVALID 
+PASS REJECT_3720x2000_ZERO_WRITE 
+PASS REJECTS_KEEP_RECIPE_AND_FACE1 
+SUMMARY {"pass":15,"fail":[]}
