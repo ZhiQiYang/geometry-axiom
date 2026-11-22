@@ -17,12 +17,16 @@ const r03Extension = require('./diagnostics/r03_framing_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
+const touchExtension = require('./diagnostics/r433_canvas_touch_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 // PF-4A (#128): P1284 is an independent measured section after P128 and before
 // P353. Project exactly it (plan position and raw golden line) out first, so every
 // main oracle below judges the same plan, golden and raw bytes it was written for.
 const plan = shards.loadPlan(), golden = shards.loadGolden();
+// P1162 is checked before the historical projection chain. The CLI and current
+// complete-coverage tests below still use the unprojected plan and golden.
+const touchBase = touchExtension.project(golden, plan);
 // R386: the retired aggregate files are judged through the current legacy
 // projection; its golden encoding is byte-identical to the former file.
 const legacy = registry.legacyView(ROOT);
@@ -201,6 +205,9 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
   assert.equal(verdict.summary.total, context.golden.total);
+  {
+  // Keep this historical oracle's input and every assertion byte unchanged.
+  const context = touchBase;
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
   const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(r03Extension.projectGolden(context.golden)));
@@ -242,6 +249,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
   assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(context.golden.total, rawGolden.total + context.golden.sections.P205, 'R03_EXACT_COUNT_UNION_IN_VERDICT');
+  }
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });
