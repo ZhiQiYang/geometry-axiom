@@ -132,6 +132,17 @@ PF4A_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_transaction', 'node:pane
 R03_ADDED_SUITES = frozenset({'py:test_framing_template', 'node:framing_recipe_project_store',
                             'node:framing_template_session', 'node:framing_template_browser_scope'})
 PF6_ADDED_SUITES = frozenset({'py:test_panel_fill_builder', 'py:test_builder_token_owners'})
+R443_ADDED_SUITES = frozenset({
+    'node:engineering_override_display', 'node:face_length_overlay',
+})
+R443_ADDED_ORDERS = {
+    'node:engineering_override_display': 'new/node__engineering_override_display',
+    'node:face_length_overlay': 'new/node__face_length_overlay',
+}
+R443_ADDED_COSTS = {
+    'node:engineering_override_display': 120000,
+    'node:face_length_overlay': 120000,
+}
 
 
 class BrowserPathScopeWiring(unittest.TestCase):
@@ -887,13 +898,33 @@ class NativeShardCoverage(unittest.TestCase):
         # 318-suite history and the current 324-suite/six-shard plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        # Project only validated post-migration identities out of this history.
-        # An unknown cost without a new/ declaration must still fail equality.
-        fragment_additions = ({row['name'] for row in native_registry.load_registry(run_all.ROOT)
-                               if row['order'].startswith('new/')}
-                              if native_registry.active(run_all.ROOT) else set())
-        self.assertEqual(R396_ADDED_SUITES, set(added) - fragment_additions - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
-                         'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        # Only explicitly reviewed additions may leave the 321-suite history.
+        # A fabricated new/ row with a matching cost is never an exemption.
+        rows = (native_registry.load_registry(run_all.ROOT)
+                if native_registry.active(run_all.ROOT) else [])
+        pf6_rows = [row for row in rows if row['name'] in PF6_ADDED_SUITES]
+        self.assertEqual(len(PF6_ADDED_SUITES), len(pf6_rows),
+                         'PF6_NEW_SUITES_REGISTERED_ONCE')
+        self.assertEqual(PF6_ADDED_SUITES,
+                         {row['name'] for row in pf6_rows if row['order'].startswith('new/')},
+                         'PF6_NEW_SUITES_REGISTERED_IN_NEW_FRAGMENT')
+        self.assertEqual(PF6_ADDED_SUITES, set(added) & PF6_ADDED_SUITES,
+                         'R396_REGISTERED_NEW_SUITES_HAVE_INDEPENDENT_COSTS')
+        r443_rows = [row for row in rows if row['name'] in R443_ADDED_SUITES]
+        self.assertEqual(len(R443_ADDED_SUITES), len(r443_rows),
+                         'R443_NEW_SUITES_REGISTERED_ONCE')
+        self.assertEqual(R443_ADDED_ORDERS,
+                         {row['name']: row['order'] for row in r443_rows},
+                         'R443_NEW_SUITES_REGISTERED_IN_NEW_FRAGMENT')
+        self.assertEqual(R443_ADDED_COSTS,
+                         {name: added.get(name) for name in R443_ADDED_SUITES},
+                         'R443_REGISTERED_NEW_SUITES_HAVE_INDEPENDENT_COSTS')
+        self.assertEqual(
+            R396_ADDED_SUITES,
+            set(added) - PF6_ADDED_SUITES - R443_ADDED_SUITES
+            - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES
+            - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+            'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
         selected_names = historical_names | R380_ADDED_SUITES | R396_ADDED_SUITES
