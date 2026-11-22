@@ -9,10 +9,11 @@ const ROOT = path.resolve(__dirname, '../..');
 const registry = require('../../geometry-web/canvas_registry.js');
 const extension = require('./r16_canvas_extension.cjs');
 const BASE = '883e68688f6480a5f1de6e86e6a056cc20339cb9';
+const DRIVER_BASE = '7d426259fe5c002ccefe07998be34ce2ec5bfd03';
 const MAIN_GOLDEN_HASH = '0acd8bdccce2eb3aae13b94bd04d9dfa89521dcd58d085e0e634698d4ca41e7b';
 const HISTORICAL_GOLDEN_HASH = 'cfbe3dc18bf983b3ea3d468c456c8dfddf33e893e5ed85916edfaa2be7e87bca';
-function original(relative) {
-  const run = spawnSync('git', ['cat-file', 'blob', BASE + ':' + relative], {cwd:ROOT});
+function original(relative, base=BASE) {
+  const run = spawnSync('git', ['cat-file', 'blob', base + ':' + relative], {cwd:ROOT});
   assert.equal(run.status, 0, 'R16_BASE_BLOB_AVAILABLE:' + relative);
   return run.stdout;
 }
@@ -77,7 +78,11 @@ function selfTest() {
   assert.ok(!fs.existsSync(path.join(ROOT, 'geometry-web/workspace_height_test.js')), 'R16_NO_RETIRED_DRIVER_ALIAS');
   for (const relative of ['geometry-web/cdp_test.js', registry.META, registry.ARCHIVE_PLAN,
     registry.ARCHIVE_GOLDEN, ...current.baseline.ids.map(id => registry.DIRECTORY + '/' + id + '.json')]) {
-    assert.ok(fs.readFileSync(path.join(ROOT, relative)).equals(original(relative)),
+    // #445 legitimately changed the dispatcher. Pin its exact accepted main
+    // bytes when that driver is present; keep the pre-driver pin otherwise.
+    const driverPresent=(current.drivers||[]).some(row=>row.id==='P2052');
+    const base=relative==='geometry-web/cdp_test.js'&&driverPresent?DRIVER_BASE:BASE;
+    assert.ok(fs.readFileSync(path.join(ROOT, relative)).equals(original(relative,base)),
       'R16_LEGACY_FILE_BYTES_UNCHANGED:' + relative);
   }
   for (const relative of [registry.PLAN, registry.GOLDEN])
@@ -87,6 +92,7 @@ function selfTest() {
   const one = structuredClone(current);
   one.golden = structuredClone(synthetic);
   one.extensions = [{id:'P1231',assertions:17}];
+  one.drivers = []; // This synthetic fixture deliberately contains one module only.
   one.plan = structuredClone(withR16);
   const two = structuredClone(one);
   two.extensions.unshift({id:'P1162',assertions:23});

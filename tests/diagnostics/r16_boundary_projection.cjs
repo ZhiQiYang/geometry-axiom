@@ -11,7 +11,12 @@ const file=path.join(root,'tests/test_boundary_pair_browser_scope.js');
 const actualRequire=createRequire(file);
 const registry=actualRequire('../geometry-web/canvas_registry.js');
 const shards=actualRequire('../geometry-web/canvas_shards.js');
-const oldLine='  const r03Plan=r03Extension.projectPlan(shards.loadPlan()),r03Golden=r03Extension.projectGolden(shards.loadGolden());';
+// On #445 main keep its exact P2052 projection even in this module-projection
+// withdrawal, so the same TRAIN3_CANVAS_TAIL regression still names P1231.
+const hasDriverProjection=fs.readFileSync(file,'utf8').includes("const r03aExtension=require('./diagnostics/r03a_framing_canvas_extension.cjs');");
+const oldLine=hasDriverProjection
+  ? '  const r03Plan=r03Extension.projectPlan(r03aExtension.projectPlan(shards.loadPlan())),r03Golden=r03Extension.projectGolden(r03aExtension.projectGolden(shards.loadGolden()));'
+  : '  const r03Plan=r03Extension.projectPlan(shards.loadPlan()),r03Golden=r03Extension.projectGolden(shards.loadGolden());';
 const newLine="  const legacy=require('../geometry-web/canvas_registry.js').legacyView();\n  const r03Plan=r03Extension.projectPlan(legacy.plan),r03Golden=r03Extension.projectGolden(legacy.golden);";
 const fullGuard="  assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');";
 

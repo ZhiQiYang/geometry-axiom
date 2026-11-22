@@ -27,6 +27,7 @@ const plan = shards.loadPlan(), golden = shards.loadGolden();
 // First verify every declared extension in the full current union; only
 // historical oracles see a projection. All formal receipts retain that union.
 const registered = registry.load(ROOT), r16View = r16Extension.registeredView(registered);
+const registeredIndependent = [...registered.extensions, ...(registered.drivers || [])];
 const r16Base = {plan:r16Extension.projectPlan(r16View.plan), golden:r16Extension.projectGolden(r16View.golden)};
 // R386: the retired aggregate files are judged through the current legacy
 // projection; its golden encoding is byte-identical to the former file.
@@ -156,8 +157,8 @@ const moveSection = (r, name, from) => { r.sections[name] = from.sections[name];
 test('已提交的分片計畫恰好覆蓋 golden 全部段落一次，P359 仍是所在片的最後一段', () => {
   assert.deepEqual(r16Base, legacy, 'R16_EXACT_CURRENT_TO_LEGACY_PROJECTION');
   assert.deepEqual(shards.validatePlan(context.plan, context.golden), [], 'R16_ACTUAL_PLAN_COMPLETE');
-  assert.deepEqual(Object.keys(context.golden.sections).sort(), [...Object.keys(legacy.golden.sections), ...registered.extensions.map(row=>row.id)].sort(), 'R16_EXACT_SECTION_UNION');
-  assert.equal(context.golden.total, legacy.golden.total + registered.extensions.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION');
+  assert.deepEqual(Object.keys(context.golden.sections).sort(), [...Object.keys(legacy.golden.sections), ...registeredIndependent.map(row=>row.id)].sort(), 'R16_EXACT_SECTION_UNION');
+  assert.equal(context.golden.total, legacy.golden.total + registeredIndependent.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION');
   const missing = clone(r16View.plan); missing.shards[1].sections = missing.shards[1].sections.filter(name => name !== 'P1231');
   assert.throws(() => r16Extension.projectPlan(missing), /R16_EXACT_OWNER/, 'R16_MISSING_SECTION_REJECTED');
   const duplicate = clone(r16View.plan); duplicate.shards[0].sections.push('P1231');
@@ -219,7 +220,7 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(verdict.summary.total, context.golden.total);
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
-  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(r03Extension.projectGolden(r16Base.golden)));
+  const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(r03Extension.projectGolden(legacy.golden)));
   const beforeWorkspace=projectWorkspaceGolden(r335Extension.projectGolden(beforeR420));
   // R06 finding 6 adds exactly five R06 assertions; project them out too.
   // R20 findings 1-3 add exactly two P76 assertions; project them out too.
@@ -257,8 +258,8 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(Object.keys(pf4aBase.golden.sections).length, 98, 'R420_ONE_ADDITIVE_SECTION: train 3 also keeps P335 and P1161');
   assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
   assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
-  assert.equal(r16Base.golden.total, rawGolden.total + r16Base.golden.sections.P205, 'R03_EXACT_COUNT_UNION_IN_VERDICT');
-  assert.equal(context.golden.total, r16Base.golden.total + registered.extensions.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(legacy.golden.total, rawGolden.total + legacy.golden.sections.P205, 'R03_EXACT_COUNT_UNION_IN_VERDICT');
+  assert.equal(context.golden.total, legacy.golden.total + registeredIndependent.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

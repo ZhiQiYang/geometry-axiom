@@ -73,7 +73,7 @@ function registeredView(current) {
   // explicitly allowCandidates only for Node diagnostics or measurement.
   // No unknown section is projected away. Every independently registered
   // extension is checked in the complete union before selecting R16's layer.
-  const legacyIds = current.baseline.ids, extensions = current.extensions;
+  const legacyIds = current.baseline.ids, extensions = [...current.extensions, ...(current.drivers || [])];
   const ids = [...legacyIds, ...extensions.map(row => row.id)];
   assert.equal(new Set(ids).size, ids.length, 'R16_REGISTRY_UNIQUE_IDS');
   assert.deepEqual(Object.keys(current.golden.sections).sort(), [...ids].sort(), 'R16_REGISTRY_EXACT_UNION');

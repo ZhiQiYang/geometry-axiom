@@ -22,7 +22,7 @@ import sys
 import tempfile
 
 
-BASE_SHA = "142cc84986db7a5372f5fa16a32dac407617f938"
+BASE_SHA = "57bb3dd8101fc2a05750b52edaa0ceab2a081a1a"
 CASE = "P1231"
 MAX_TIMEOUT = 900  # Existing browser_mutation_check.py budget, never extended.
 
@@ -121,6 +121,11 @@ def definitions(root: Path):
         "@media (max-width: 560px) { body.canvas-composition { --statusbar-h: 32px; } }",
         "R123H_STATUSBAR_CONTAINS_COMMAND",
         "Restore the old 560px-only status row: the 561px composition falls back to 26px and its command button overlaps the canvas by 0.5px.")
+    guidance = block(texts[css], "R123H_FACE_GUIDANCE_WIDTH")
+    add("R123H_WITHDRAW_FACE_GUIDANCE_INTRINSIC_WIDTH", css, guidance,
+        "/* Original icon-sized .tool-button width applies to the full guidance label. */",
+        "R123H_CONTROLS",
+        "Restore the 29px guidance button at 390px; its overflowing text intercepts the pan tool's unchanged right-hand hit point.")
     return result
 
 
@@ -138,7 +143,7 @@ def manifest_for(root: Path, mutations):
             "geometry-web/browser_mutation_check.py", "geometry-web/workspace-height.js",
             "geometry-web/workspace-height.css", "geometry-web/workspace-height-dialogs.css",
             "tests/diagnostics/r16_height_mutations.py", "tests/diagnostics/r16_control_probe.cjs",
-            "tests/diagnostics/r16_statusbar_probe.cjs"
+            "tests/diagnostics/r16_statusbar_probe.cjs", "tests/diagnostics/r16_face_guidance_probe.cjs"
         ] + (["geometry-web/canvas_sections/P1231.js", "geometry-web/cdp_sections.d/P1231.json"]
              if fragmented else ["geometry-web/workspace_height_test.js"]),
         "mutations": mutations,

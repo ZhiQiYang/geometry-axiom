@@ -159,6 +159,9 @@ observer 記錄 footer 真高度，控制欄與設定捲動留出相應空間，
 dock 的直接子節點，不隨設定態的 stage 隱藏，仍可切回預覽；模型庫維持原分頁隱藏規則，
 原「使用目前面」與「返回建模」仍可用。兩者正常 canvas 使用
 V−56px／V−96px，因而高於本節最低界線；原 3D desktop 設定欄與手機設定切換保持。
+`#feSelectionSummaryHelp`／`#faceCanvasHintHelp` 仍由 `WorkspaceGuidance` 加入
+頂端 `#faceWorkspaceTools`；教學卡本身在 dock。說明鈕依完整文字取寬，保留原 handler、
+水平捲動及 Tab 路徑，不繼承圖示鈕的 29／34px 固定寬，文字不得侵入相鄰工具的命中區。
 CDP 段、golden 的真執行產生方式，以及 #434 合入前後的登錄路徑見
 [R16-HEIGHT-REGISTRY-HANDOFF.md](R16-HEIGHT-REGISTRY-HANDOFF.md)。
 
