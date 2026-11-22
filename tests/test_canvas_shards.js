@@ -208,6 +208,9 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   {
   // Keep this historical oracle's input and every assertion byte unchanged.
   const context = touchBase;
+  assert.deepEqual([Object.hasOwn(context.golden.sections, 'P1162'),
+    context.plan.shards.some(shard => shard.sections.includes('P1162'))], [false, false],
+    'R433_P1162_PROJECTED_BEFORE_LEGACY_ORACLES');
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
   // R386/#445: historical oracles start from the legacy view; independent modules
