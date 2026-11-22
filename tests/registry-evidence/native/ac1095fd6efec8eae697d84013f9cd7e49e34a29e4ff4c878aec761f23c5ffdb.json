@@ -1,0 +1,470 @@
+{
+  "api_originals": {
+    "artifact": "{\"id\":14726433741,\"node_id\":\"MDg6QXJ0aWZhY3QxNDcyNjQzMzc0MQ==\",\"name\":\"native-suite-measurement\",\"size_in_bytes\":1388,\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/14726433741\",\"archive_download_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/14726433741/zip\",\"expired\":false,\"digest\":\"sha256:58d75e9471256c1cb5a2b1bec89b2e5c1206e630439fbe36c7bba100eb0c4243\",\"created_at\":\"2026-11-21T22:04:49Z\",\"updated_at\":\"2026-11-21T22:04:49Z\",\"expires_at\":\"2026-12-05T22:04:48Z\",\"workflow_run\":{\"id\":44954592086,\"repository_id\":1375165580,\"head_repository_id\":1375165580,\"head_branch\":\"codex/l4-findings-fix-20261121\",\"head_sha\":\"455c7b790047a9b0c2c102061b62ed8017995ce7\"}}",
+    "checkout": "{\"sha\":\"455c7b790047a9b0c2c102061b62ed8017995ce7\",\"node_id\":\"C_kwDOUfdcjNoAKDQ1NWM3Yjc5MDA0N2E5YjBjMmMxMDIwNjFiNjJlZDgwMTc5OTVjZTc\",\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/455c7b790047a9b0c2c102061b62ed8017995ce7\",\"html_url\":\"https://github.com/ZhiQiYang/geometry-axiom/commit/455c7b790047a9b0c2c102061b62ed8017995ce7\",\"author\":{\"name\":\"Claude\",\"email\":\"noreply@anthropic.com\",\"date\":\"2026-11-21T21:49:20Z\"},\"committer\":{\"name\":\"Claude\",\"email\":\"noreply@anthropic.com\",\"date\":\"2026-11-21T21:49:20Z\"},\"tree\":{\"sha\":\"c5ad719674400565a745250d9615eea6f3d61330\",\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees/c5ad719674400565a745250d9615eea6f3d61330\"},\"message\":\"R443：片段格式下的具名撤回（0/1/0）\\n\\ntests/diagnostics/r443_registry_withdrawals.py 逐例改一個檔、以獨立子程序呼叫\\nmain #434 原有的守門（run_all.check_registry、native_registry.load_registry、\\n_verify_legacy_catalog／verify_legacy_execution 對可信 main e0db7e47），再逐 byte\\n還原。六例全部 baseline/withdrawn/restored = 0/1/0，且紅在指定斷言：\\n\\n- 拿掉新套件片段 → 「tests/test_face_length_overlay.js 沒有登記在 tests/suites.d」\\n- 新套件冒稱 legacy order → R386_NATIVE_LEGACY_EXECUTION_PIN（claims a legacy order）\\n- 把新套件塞進封存執行宣告 → R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE\\n- 把新套件塞進歷史成本目錄 → R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS\\n- 改既有套件執行宣告 → R386_NATIVE_LEGACY_EXECUTION_PIN（differs ... in execution）\\n- 拿掉既有套件 node:cdp_settle → R386_NATIVE_LEGACY_EXECUTION_PIN（COVERAGE）\\n\\n不改任何守門、封存檔或既有 expected。\\n\\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\",\"parents\":[{\"sha\":\"6058bb9ff75d84c39a8794ac539215c654ae234f\",\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/6058bb9ff75d84c39a8794ac539215c654ae234f\",\"html_url\":\"https://github.com/ZhiQiYang/geometry-axiom/commit/6058bb9ff75d84c39a8794ac539215c654ae234f\"}],\"verification\":{\"verified\":true,\"reason\":\"valid\",\"signature\":\"-----BEGIN SSH SIGNATURE-----\\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQFPO7w1n\\nYbZL02DWfZ/Lcdvskgh7JiSOADcpkuK3yd8DDXTGMOWqK/5sfm5fytxW6HrgWN1uxqS7KK+gBrkE\\nRgk=\\n-----END SSH SIGNATURE-----\",\"payload\":\"tree c5ad719674400565a745250d9615eea6f3d61330\\nparent 6058bb9ff75d84c39a8794ac539215c654ae234f\\nauthor Claude <noreply@anthropic.com> 1795297760 +0000\\ncommitter Claude <noreply@anthropic.com> 1795297760 +0000\\n\\nR443：片段格式下的具名撤回（0/1/0）\\n\\ntests/diagnostics/r443_registry_withdrawals.py 逐例改一個檔、以獨立子程序呼叫\\nmain #434 原有的守門（run_all.check_registry、native_registry.load_registry、\\n_verify_legacy_catalog／verify_legacy_execution 對可信 main e0db7e47），再逐 byte\\n還原。六例全部 baseline/withdrawn/restored = 0/1/0，且紅在指定斷言：\\n\\n- 拿掉新套件片段 → 「tests/test_face_length_overlay.js 沒有登記在 tests/suites.d」\\n- 新套件冒稱 legacy order → R386_NATIVE_LEGACY_EXECUTION_PIN（claims a legacy order）\\n- 把新套件塞進封存執行宣告 → R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE\\n- 把新套件塞進歷史成本目錄 → R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS\\n- 改既有套件執行宣告 → R386_NATIVE_LEGACY_EXECUTION_PIN（differs ... in execution）\\n- 拿掉既有套件 node:cdp_settle → R386_NATIVE_LEGACY_EXECUTION_PIN（COVERAGE）\\n\\n不改任何守門、封存檔或既有 expected。\\n\\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\\n\",\"verified_at\":\"2026-11-21T21:49:23Z\"}}",
+    "job": "{\"id\":136999777254,\"run_id\":44954592086,\"workflow_name\":\"Native suite measurement\",\"head_branch\":\"codex/l4-findings-fix-20261121\",\"run_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086\",\"run_attempt\":1,\"node_id\":\"CR_kwDOUfdcjM8AAAAf5dKz5g\",\"head_sha\":\"455c7b790047a9b0c2c102061b62ed8017995ce7\",\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/136999777254\",\"html_url\":\"https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44954592086/job/136999777254\",\"status\":\"completed\",\"conclusion\":\"success\",\"created_at\":\"2026-11-21T22:02:04Z\",\"started_at\":\"2026-11-21T22:02:05Z\",\"completed_at\":\"2026-11-21T22:04:51Z\",\"name\":\"Measure one native suite\",\"steps\":[{\"name\":\"Set up job\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":1,\"started_at\":\"2026-11-21T22:02:06Z\",\"completed_at\":\"2026-11-21T22:02:07Z\"},{\"name\":\"Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":2,\"started_at\":\"2026-11-21T22:02:07Z\",\"completed_at\":\"2026-11-21T22:02:51Z\"},{\"name\":\"Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":3,\"started_at\":\"2026-11-21T22:02:51Z\",\"completed_at\":\"2026-11-21T22:02:51Z\"},{\"name\":\"Run the exact suite and preserve its original result\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":4,\"started_at\":\"2026-11-21T22:02:51Z\",\"completed_at\":\"2026-11-21T22:04:48Z\"},{\"name\":\"Collect the exact suite logs beside its report\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":5,\"started_at\":\"2026-11-21T22:04:48Z\",\"completed_at\":\"2026-11-21T22:04:48Z\"},{\"name\":\"Preserve original measurement and suite logs\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":6,\"started_at\":\"2026-11-21T22:04:48Z\",\"completed_at\":\"2026-11-21T22:04:49Z\"},{\"name\":\"Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":11,\"started_at\":\"2026-11-21T22:04:49Z\",\"completed_at\":\"2026-11-21T22:04:49Z\"},{\"name\":\"Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":12,\"started_at\":\"2026-11-21T22:04:49Z\",\"completed_at\":\"2026-11-21T22:04:50Z\"},{\"name\":\"Complete job\",\"status\":\"completed\",\"conclusion\":\"success\",\"number\":13,\"started_at\":\"2026-11-21T22:04:50Z\",\"completed_at\":\"2026-11-21T22:04:50Z\"}],\"check_run_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/136999777254\",\"labels\":[\"ubuntu-latest\"],\"runner_id\":1000023566,\"runner_name\":\"GitHub Actions 1000023566\",\"runner_group_id\":0,\"runner_group_name\":\"GitHub Actions\"}",
+    "run": "{\"id\":44954592086,\"name\":\"Native suite measurement\",\"node_id\":\"WFR_kwLOUfdcjM8AAAAKd4CjVg\",\"head_branch\":\"codex/l4-findings-fix-20261121\",\"head_sha\":\"455c7b790047a9b0c2c102061b62ed8017995ce7\",\"path\":\".github/workflows/native-suite-measure.yml\",\"display_title\":\"Native suite measurement\",\"run_number\":1,\"event\":\"workflow_dispatch\",\"status\":\"completed\",\"conclusion\":\"success\",\"workflow_id\":426277400,\"check_suite_id\":121666566086,\"check_suite_node_id\":\"CS_kwDOUfdcjM8AAAAcU-R3xg\",\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086\",\"html_url\":\"https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44954592086\",\"pull_requests\":[{\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls/443\",\"id\":5428849303,\"number\":443,\"head\":{\"ref\":\"codex/l4-findings-fix-20261121\",\"sha\":\"455c7b790047a9b0c2c102061b62ed8017995ce7\",\"repo\":{\"id\":1375165580,\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom\",\"name\":\"geometry-axiom\"}},\"base\":{\"ref\":\"main\",\"sha\":\"e0db7e478f15df4a90ea130ad17d74406db75586\",\"repo\":{\"id\":1375165580,\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom\",\"name\":\"geometry-axiom\"}}}],\"created_at\":\"2026-11-21T22:02:02Z\",\"updated_at\":\"2026-11-21T22:04:52Z\",\"actor\":{\"login\":\"ZhiQiYang\",\"id\":59477728,\"node_id\":\"MDQ6VXNlcjU5NDc3NzI4\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/59477728?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ZhiQiYang\",\"html_url\":\"https://github.com/ZhiQiYang\",\"followers_url\":\"https://api.github.com/users/ZhiQiYang/followers\",\"following_url\":\"https://api.github.com/users/ZhiQiYang/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ZhiQiYang/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ZhiQiYang/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ZhiQiYang/orgs\",\"repos_url\":\"https://api.github.com/users/ZhiQiYang/repos\",\"events_url\":\"https://api.github.com/users/ZhiQiYang/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ZhiQiYang/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"run_attempt\":1,\"referenced_workflows\":[],\"run_started_at\":\"2026-11-21T22:02:02Z\",\"triggering_actor\":{\"login\":\"ZhiQiYang\",\"id\":59477728,\"node_id\":\"MDQ6VXNlcjU5NDc3NzI4\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/59477728?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ZhiQiYang\",\"html_url\":\"https://github.com/ZhiQiYang\",\"followers_url\":\"https://api.github.com/users/ZhiQiYang/followers\",\"following_url\":\"https://api.github.com/users/ZhiQiYang/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ZhiQiYang/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ZhiQiYang/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ZhiQiYang/orgs\",\"repos_url\":\"https://api.github.com/users/ZhiQiYang/repos\",\"events_url\":\"https://api.github.com/users/ZhiQiYang/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ZhiQiYang/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"jobs_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/attempts/1/jobs\",\"logs_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/attempts/1/logs\",\"check_suite_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-suites/121666566086\",\"artifacts_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/artifacts\",\"cancel_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/cancel\",\"rerun_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/rerun\",\"previous_attempt_url\":null,\"workflow_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/workflows/426277400\",\"head_commit\":{\"id\":\"455c7b790047a9b0c2c102061b62ed8017995ce7\",\"tree_id\":\"c5ad719674400565a745250d9615eea6f3d61330\",\"message\":\"R443：片段格式下的具名撤回（0/1/0）\\n\\ntests/diagnostics/r443_registry_withdrawals.py 逐例改一個檔、以獨立子程序呼叫\\nmain #434 原有的守門（run_all.check_registry、native_registry.load_registry、\\n_verify_legacy_catalog／verify_legacy_execution 對可信 main e0db7e47），再逐 byte\\n還原。六例全部 baseline/withdrawn/restored = 0/1/0，且紅在指定斷言：\\n\\n- 拿掉新套件片段 → 「tests/test_face_length_overlay.js 沒有登記在 tests/suites.d」\\n- 新套件冒稱 legacy order → R386_NATIVE_LEGACY_EXECUTION_PIN（claims a legacy order）\\n- 把新套件塞進封存執行宣告 → R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE\\n- 把新套件塞進歷史成本目錄 → R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS\\n- 改既有套件執行宣告 → R386_NATIVE_LEGACY_EXECUTION_PIN（differs ... in execution）\\n- 拿掉既有套件 node:cdp_settle → R386_NATIVE_LEGACY_EXECUTION_PIN（COVERAGE）\\n\\n不改任何守門、封存檔或既有 expected。\\n\\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\",\"timestamp\":\"2026-11-21T21:49:20Z\",\"author\":{\"name\":\"Claude\",\"email\":\"noreply@anthropic.com\"},\"committer\":{\"name\":\"Claude\",\"email\":\"noreply@anthropic.com\"}},\"repository\":{\"id\":1375165580,\"node_id\":\"R_kgDOUfdcjA\",\"name\":\"geometry-axiom\",\"full_name\":\"ZhiQiYang/geometry-axiom\",\"private\":false,\"owner\":{\"login\":\"ZhiQiYang\",\"id\":59477728,\"node_id\":\"MDQ6VXNlcjU5NDc3NzI4\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/59477728?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ZhiQiYang\",\"html_url\":\"https://github.com/ZhiQiYang\",\"followers_url\":\"https://api.github.com/users/ZhiQiYang/followers\",\"following_url\":\"https://api.github.com/users/ZhiQiYang/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ZhiQiYang/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ZhiQiYang/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ZhiQiYang/orgs\",\"repos_url\":\"https://api.github.com/users/ZhiQiYang/repos\",\"events_url\":\"https://api.github.com/users/ZhiQiYang/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ZhiQiYang/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"html_url\":\"https://github.com/ZhiQiYang/geometry-axiom\",\"description\":\"Geometry model and editor governed by explicit axioms, with reference-based placement and verified implementation.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom\",\"forks_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/forks\",\"keys_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/teams\",\"hooks_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/events\",\"assignees_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/tags\",\"blobs_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/languages\",\"stargazers_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscription\",\"commits_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/merges\",\"archive_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/downloads\",\"issues_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/deployments\"},\"head_repository\":{\"id\":1375165580,\"node_id\":\"R_kgDOUfdcjA\",\"name\":\"geometry-axiom\",\"full_name\":\"ZhiQiYang/geometry-axiom\",\"private\":false,\"owner\":{\"login\":\"ZhiQiYang\",\"id\":59477728,\"node_id\":\"MDQ6VXNlcjU5NDc3NzI4\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/59477728?v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/ZhiQiYang\",\"html_url\":\"https://github.com/ZhiQiYang\",\"followers_url\":\"https://api.github.com/users/ZhiQiYang/followers\",\"following_url\":\"https://api.github.com/users/ZhiQiYang/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/ZhiQiYang/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/ZhiQiYang/subscriptions\",\"organizations_url\":\"https://api.github.com/users/ZhiQiYang/orgs\",\"repos_url\":\"https://api.github.com/users/ZhiQiYang/repos\",\"events_url\":\"https://api.github.com/users/ZhiQiYang/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/ZhiQiYang/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"html_url\":\"https://github.com/ZhiQiYang/geometry-axiom\",\"description\":\"Geometry model and editor governed by explicit axioms, with reference-based placement and verified implementation.\",\"fork\":false,\"url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom\",\"forks_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/forks\",\"keys_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/keys{/key_id}\",\"collaborators_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/collaborators{/collaborator}\",\"teams_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/teams\",\"hooks_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/hooks\",\"issue_events_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/events{/number}\",\"events_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/events\",\"assignees_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/assignees{/user}\",\"branches_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches{/branch}\",\"tags_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/tags\",\"blobs_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/blobs{/sha}\",\"git_tags_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/tags{/sha}\",\"git_refs_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs{/sha}\",\"trees_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees{/sha}\",\"statuses_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/statuses/{sha}\",\"languages_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/languages\",\"stargazers_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/stargazers\",\"contributors_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/contributors\",\"subscribers_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscribers\",\"subscription_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscription\",\"commits_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits{/sha}\",\"git_commits_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits{/sha}\",\"comments_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/comments{/number}\",\"issue_comment_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/comments{/number}\",\"contents_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/{+path}\",\"compare_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/compare/{base}...{head}\",\"merges_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/merges\",\"archive_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/{archive_format}{/ref}\",\"downloads_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/downloads\",\"issues_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues{/number}\",\"pulls_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls{/number}\",\"milestones_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/milestones{/number}\",\"notifications_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/notifications{?since,all,participating}\",\"labels_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/labels{/name}\",\"releases_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/releases{/id}\",\"deployments_url\":\"https://api.github.com/repos/ZhiQiYang/geometry-axiom/deployments\"}}"
+  },
+  "archive_base64": "UEsDBBQACAAIAJiwdV0AAAAAAAAAAAAAAAAhAAAAbG9ncy9ub2RlX2ZhY2VfbGVuZ3RoX292ZXJsYXkubG9nVZJNjtswDIX3cwoup4sEdpwfe997FIxEx8TIkkDS9njfI3TZi/Q6c5LCHidIdiQFvI98el9//8DP4gA2Z/IQKN6sA6EeOSoIocdrIJjYOrCOoGVR2w1KIOQFJwikmiKocQiQMkV4P+xPx+bU9Prj7WtTr5oif8LINOUkBh9EWVe9qUuBNviIYSDgqOwJMHpwgVAgtXBN1kEaSQLOugCKw7muy2eCZ+1ZleNt1X1ZKxCO9M17Jj3klwc3iCaBnlAHoZ6iwXuxr8uqOr9wspCS3OXok9UWpjqKtLO0UydEETC6LglMHUWI6b47pKuaDM4U2OC93B+PVXF4cYr6bDNch7YlWU3giM54fBguZMhxpSfhG0cM0LGnXYphhit1OHKSZfnmdKqb+lkcIdIUZsjI0cjfj3aYdQgE3PfkGY3CDEI5KRun+GTcbstHzyILo9xXZX0+Xp4ZDnsSXFd//PeQPRotedr8/c5SSLiat6kuIUuDgesw3pa5F2wNPBouqKJqirJaUb//gZGawmWtdeBFvVibjHqft8hhmzqMjkIgv/X6wTk/Oks+baUfBJerf/UKdbE/VJeqOL39B1BLBwjlGkPOugEAACYDAABQSwMEFAAIAAgAmLB1XQAAAAAAAAAAAAAAAAsAAAByZXBvcnQuanNvbq1U226cMBB9369Afk5SX/Btf6WqkC/DrlMwyDabRFH+vQJ2CUlTqZX6YokzM2cOM8d+PVQVyu4MvUHHCp1g6KGkl/toSrjAfQ8mTwl6iOUbQXdL8tkkj45VnLpuAdzQ96E0+bww1Jw7aaXGuJZGW+yoI5hiQayg4BUmUmvuQK5kUwwXSBnQsfp+qKqqQnHwcGyNg6aDeCrnZrhA6swLOlTVj1UAdOAK+H+pScNT3vJfl3OuM/3c+c/1d7dMN0xxbVnSBBtchmI6dKzkhowm5yXvHWpN6BYIb1D+GcbxMwZuiH5WiR8IxYoLThknTGqm+ZaVTPwsYkyDg5wbeA6lcYOHD7Sm64Yn8M3cMn+IQLw0YxpsBz06Vq3p8junSyafF4EfcXgel9nvChFagm/brH/Tsfs1QsSD0FIKJYTEGGO6rgdOIZf00kBKQ1o2deP62O+rUD4bysWsxHIlwTHuGeWCelyDtVKBax0hhCvMhQNBpGKGYUp9rSTzQBx1mGorMFs9WUIf4im/825ON87BWEx0sB8MchDzlJsRog/xtFvPu0Znog/elLlwtR/q1wmt1ro67fqxuWe+H+Xm0KpALvOw39ahTqFAY8Ot6ZX2Lz2NPLjOJFPCEHcTpFSbulZEYy1BsJYYhxlrnaItWKG8qjmTshWmbhW3THmuhZeOE66pU1Tf2NvQQd5EzUOFXPK3+Wy+EPXwuE+uKmRfylLPNd+8v749V6HOEyu0t7j2hlNwRjHNqWxbD95QRjRQSQkTlCnLpLSi5kJaxXALVnpm0Y61a5v/SHzlfdtuxXVdw5QcNLkY28HeIy40aYpN8MvrWWtec02xEmgfNaVAPy5WIFvgcbAzcH2j0eHt8AtQSwcIgOi7U4wCAADOBQAAUEsBAi0DFAAIAAgAmLB1XeUaQ866AQAAJgMAACEAAAAAAAAAAAAgAKSBAAAAAGxvZ3Mvbm9kZV9mYWNlX2xlbmd0aF9vdmVybGF5LmxvZ1BLAQItAxQACAAIAJiwdV2A6LtTjAIAAM4FAAALAAAAAAAAAAAAIACkgQkCAAByZXBvcnQuanNvblBLBQYAAAAAAgACAIgAAADOBAAAAAA=",
+  "artifact": {
+    "archive_download_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/14726433741/zip",
+    "created_at": "2026-11-21T22:04:49Z",
+    "digest": "sha256:58d75e9471256c1cb5a2b1bec89b2e5c1206e630439fbe36c7bba100eb0c4243",
+    "expired": false,
+    "expires_at": "2026-12-05T22:04:48Z",
+    "id": 14726433741,
+    "name": "native-suite-measurement",
+    "node_id": "MDg6QXJ0aWZhY3QxNDcyNjQzMzc0MQ==",
+    "size_in_bytes": 1388,
+    "updated_at": "2026-11-21T22:04:49Z",
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/artifacts/14726433741",
+    "workflow_run": {
+      "head_branch": "codex/l4-findings-fix-20261121",
+      "head_repository_id": 1375165580,
+      "head_sha": "455c7b790047a9b0c2c102061b62ed8017995ce7",
+      "id": 44954592086,
+      "repository_id": 1375165580
+    }
+  },
+  "checkout": {
+    "author": {
+      "date": "2026-11-21T21:49:20Z",
+      "email": "noreply@anthropic.com",
+      "name": "Claude"
+    },
+    "committer": {
+      "date": "2026-11-21T21:49:20Z",
+      "email": "noreply@anthropic.com",
+      "name": "Claude"
+    },
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/commit/455c7b790047a9b0c2c102061b62ed8017995ce7",
+    "message": "R443：片段格式下的具名撤回（0/1/0）\n\ntests/diagnostics/r443_registry_withdrawals.py 逐例改一個檔、以獨立子程序呼叫\nmain #434 原有的守門（run_all.check_registry、native_registry.load_registry、\n_verify_legacy_catalog／verify_legacy_execution 對可信 main e0db7e47），再逐 byte\n還原。六例全部 baseline/withdrawn/restored = 0/1/0，且紅在指定斷言：\n\n- 拿掉新套件片段 → 「tests/test_face_length_overlay.js 沒有登記在 tests/suites.d」\n- 新套件冒稱 legacy order → R386_NATIVE_LEGACY_EXECUTION_PIN（claims a legacy order）\n- 把新套件塞進封存執行宣告 → R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE\n- 把新套件塞進歷史成本目錄 → R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS\n- 改既有套件執行宣告 → R386_NATIVE_LEGACY_EXECUTION_PIN（differs ... in execution）\n- 拿掉既有套件 node:cdp_settle → R386_NATIVE_LEGACY_EXECUTION_PIN（COVERAGE）\n\n不改任何守門、封存檔或既有 expected。\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+    "node_id": "C_kwDOUfdcjNoAKDQ1NWM3Yjc5MDA0N2E5YjBjMmMxMDIwNjFiNjJlZDgwMTc5OTVjZTc",
+    "parents": [
+      {
+        "html_url": "https://github.com/ZhiQiYang/geometry-axiom/commit/6058bb9ff75d84c39a8794ac539215c654ae234f",
+        "sha": "6058bb9ff75d84c39a8794ac539215c654ae234f",
+        "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/6058bb9ff75d84c39a8794ac539215c654ae234f"
+      }
+    ],
+    "sha": "455c7b790047a9b0c2c102061b62ed8017995ce7",
+    "tree": {
+      "sha": "c5ad719674400565a745250d9615eea6f3d61330",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees/c5ad719674400565a745250d9615eea6f3d61330"
+    },
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits/455c7b790047a9b0c2c102061b62ed8017995ce7",
+    "verification": {
+      "payload": "tree c5ad719674400565a745250d9615eea6f3d61330\nparent 6058bb9ff75d84c39a8794ac539215c654ae234f\nauthor Claude <noreply@anthropic.com> 1795297760 +0000\ncommitter Claude <noreply@anthropic.com> 1795297760 +0000\n\nR443：片段格式下的具名撤回（0/1/0）\n\ntests/diagnostics/r443_registry_withdrawals.py 逐例改一個檔、以獨立子程序呼叫\nmain #434 原有的守門（run_all.check_registry、native_registry.load_registry、\n_verify_legacy_catalog／verify_legacy_execution 對可信 main e0db7e47），再逐 byte\n還原。六例全部 baseline/withdrawn/restored = 0/1/0，且紅在指定斷言：\n\n- 拿掉新套件片段 → 「tests/test_face_length_overlay.js 沒有登記在 tests/suites.d」\n- 新套件冒稱 legacy order → R386_NATIVE_LEGACY_EXECUTION_PIN（claims a legacy order）\n- 把新套件塞進封存執行宣告 → R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE\n- 把新套件塞進歷史成本目錄 → R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS\n- 改既有套件執行宣告 → R386_NATIVE_LEGACY_EXECUTION_PIN（differs ... in execution）\n- 拿掉既有套件 node:cdp_settle → R386_NATIVE_LEGACY_EXECUTION_PIN（COVERAGE）\n\n不改任何守門、封存檔或既有 expected。\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n",
+      "reason": "valid",
+      "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQFPO7w1n\nYbZL02DWfZ/Lcdvskgh7JiSOADcpkuK3yd8DDXTGMOWqK/5sfm5fytxW6HrgWN1uxqS7KK+gBrkE\nRgk=\n-----END SSH SIGNATURE-----",
+      "verified": true,
+      "verified_at": "2026-11-21T21:49:23Z"
+    }
+  },
+  "job": {
+    "check_run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-runs/136999777254",
+    "completed_at": "2026-11-21T22:04:51Z",
+    "conclusion": "success",
+    "created_at": "2026-11-21T22:02:04Z",
+    "head_branch": "codex/l4-findings-fix-20261121",
+    "head_sha": "455c7b790047a9b0c2c102061b62ed8017995ce7",
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44954592086/job/136999777254",
+    "id": 136999777254,
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "name": "Measure one native suite",
+    "node_id": "CR_kwDOUfdcjM8AAAAf5dKz5g",
+    "run_attempt": 1,
+    "run_id": 44954592086,
+    "run_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions",
+    "runner_id": 1000023566,
+    "runner_name": "GitHub Actions 1000023566",
+    "started_at": "2026-11-21T22:02:05Z",
+    "status": "completed",
+    "steps": [
+      {
+        "completed_at": "2026-11-21T22:02:07Z",
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "started_at": "2026-11-21T22:02:06Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:02:51Z",
+        "conclusion": "success",
+        "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "number": 2,
+        "started_at": "2026-11-21T22:02:07Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:02:51Z",
+        "conclusion": "success",
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "number": 3,
+        "started_at": "2026-11-21T22:02:51Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:04:48Z",
+        "conclusion": "success",
+        "name": "Run the exact suite and preserve its original result",
+        "number": 4,
+        "started_at": "2026-11-21T22:02:51Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:04:48Z",
+        "conclusion": "success",
+        "name": "Collect the exact suite logs beside its report",
+        "number": 5,
+        "started_at": "2026-11-21T22:04:48Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:04:49Z",
+        "conclusion": "success",
+        "name": "Preserve original measurement and suite logs",
+        "number": 6,
+        "started_at": "2026-11-21T22:04:48Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:04:49Z",
+        "conclusion": "success",
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "number": 11,
+        "started_at": "2026-11-21T22:04:49Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:04:50Z",
+        "conclusion": "success",
+        "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+        "number": 12,
+        "started_at": "2026-11-21T22:04:49Z",
+        "status": "completed"
+      },
+      {
+        "completed_at": "2026-11-21T22:04:50Z",
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 13,
+        "started_at": "2026-11-21T22:04:50Z",
+        "status": "completed"
+      }
+    ],
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/jobs/136999777254",
+    "workflow_name": "Native suite measurement"
+  },
+  "member": "report.json",
+  "report": {
+    "acceptance": false,
+    "census_pending": true,
+    "ci_job": "measure",
+    "ci_run_attempt": "1",
+    "ci_run_id": "44954592086",
+    "commit_sha": "455c7b790047a9b0c2c102061b62ed8017995ce7",
+    "exit_code": 0,
+    "expected_candidate": {
+      "count": 7,
+      "mode": "count",
+      "unit": "node test"
+    },
+    "expected_problems": [],
+    "expected_sha256": "b587ec35d32562d04ebb78ecfc11158056ce61783a3022d4873de1c2c029b603",
+    "registry_errors": [],
+    "rows": [
+      {
+        "allowed_skips": 0,
+        "counted": true,
+        "crashed": false,
+        "env_problem": false,
+        "expected_problem": "",
+        "failed": 0,
+        "name": "node:face_length_overlay",
+        "passed": 7,
+        "process_exit_code": 0,
+        "ran": true,
+        "seconds": 0.12085652351379395,
+        "skipped": 0,
+        "total": 7
+      }
+    ],
+    "schema": "geometry-native-measurement/1",
+    "seconds": 116.69776866700002,
+    "selected": [
+      "node:face_length_overlay"
+    ],
+    "shard": null,
+    "source_stable": true,
+    "suite_binding": {
+      "declaration_sha256": "229a44819097e63f1ac033fc82feb68d845377f6a4f85b38d596d7c51592c829",
+      "files": {
+        "tests/test_face_length_overlay.js": {
+          "bytes": 5955,
+          "lf_sha256": "cd1b69db04da52eca839527ffdeda2319e272136238b377b64567b830feb7d3b",
+          "sha256": "cd1b69db04da52eca839527ffdeda2319e272136238b377b64567b830feb7d3b"
+        }
+      },
+      "name": "node:face_length_overlay"
+    },
+    "timings_sha256": null,
+    "universe": [
+      "node:face_length_overlay"
+    ]
+  },
+  "run": {
+    "actor": {
+      "avatar_url": "https://avatars.githubusercontent.com/u/59477728?v=4",
+      "events_url": "https://api.github.com/users/ZhiQiYang/events{/privacy}",
+      "followers_url": "https://api.github.com/users/ZhiQiYang/followers",
+      "following_url": "https://api.github.com/users/ZhiQiYang/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ZhiQiYang/gists{/gist_id}",
+      "gravatar_id": "",
+      "html_url": "https://github.com/ZhiQiYang",
+      "id": 59477728,
+      "login": "ZhiQiYang",
+      "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+      "organizations_url": "https://api.github.com/users/ZhiQiYang/orgs",
+      "received_events_url": "https://api.github.com/users/ZhiQiYang/received_events",
+      "repos_url": "https://api.github.com/users/ZhiQiYang/repos",
+      "site_admin": false,
+      "starred_url": "https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ZhiQiYang/subscriptions",
+      "type": "User",
+      "url": "https://api.github.com/users/ZhiQiYang",
+      "user_view_type": "public"
+    },
+    "artifacts_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/artifacts",
+    "cancel_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/cancel",
+    "check_suite_id": 121666566086,
+    "check_suite_node_id": "CS_kwDOUfdcjM8AAAAcU-R3xg",
+    "check_suite_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/check-suites/121666566086",
+    "conclusion": "success",
+    "created_at": "2026-11-21T22:02:02Z",
+    "display_title": "Native suite measurement",
+    "event": "workflow_dispatch",
+    "head_branch": "codex/l4-findings-fix-20261121",
+    "head_commit": {
+      "author": {
+        "email": "noreply@anthropic.com",
+        "name": "Claude"
+      },
+      "committer": {
+        "email": "noreply@anthropic.com",
+        "name": "Claude"
+      },
+      "id": "455c7b790047a9b0c2c102061b62ed8017995ce7",
+      "message": "R443：片段格式下的具名撤回（0/1/0）\n\ntests/diagnostics/r443_registry_withdrawals.py 逐例改一個檔、以獨立子程序呼叫\nmain #434 原有的守門（run_all.check_registry、native_registry.load_registry、\n_verify_legacy_catalog／verify_legacy_execution 對可信 main e0db7e47），再逐 byte\n還原。六例全部 baseline/withdrawn/restored = 0/1/0，且紅在指定斷言：\n\n- 拿掉新套件片段 → 「tests/test_face_length_overlay.js 沒有登記在 tests/suites.d」\n- 新套件冒稱 legacy order → R386_NATIVE_LEGACY_EXECUTION_PIN（claims a legacy order）\n- 把新套件塞進封存執行宣告 → R386_NATIVE_LEGACY_EXECUTION_CATALOG_IS_IMMUTABLE\n- 把新套件塞進歷史成本目錄 → R386_NATIVE_LEGACY_CATALOG_REAL_OBSERVATIONS\n- 改既有套件執行宣告 → R386_NATIVE_LEGACY_EXECUTION_PIN（differs ... in execution）\n- 拿掉既有套件 node:cdp_settle → R386_NATIVE_LEGACY_EXECUTION_PIN（COVERAGE）\n\n不改任何守門、封存檔或既有 expected。\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "timestamp": "2026-11-21T21:49:20Z",
+      "tree_id": "c5ad719674400565a745250d9615eea6f3d61330"
+    },
+    "head_repository": {
+      "archive_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/{archive_format}{/ref}",
+      "assignees_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/assignees{/user}",
+      "blobs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/blobs{/sha}",
+      "branches_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches{/branch}",
+      "collaborators_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/collaborators{/collaborator}",
+      "comments_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/comments{/number}",
+      "commits_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits{/sha}",
+      "compare_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/compare/{base}...{head}",
+      "contents_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/{+path}",
+      "contributors_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contributors",
+      "deployments_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/deployments",
+      "description": "Geometry model and editor governed by explicit axioms, with reference-based placement and verified implementation.",
+      "downloads_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/downloads",
+      "events_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/events",
+      "fork": false,
+      "forks_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/forks",
+      "full_name": "ZhiQiYang/geometry-axiom",
+      "git_commits_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits{/sha}",
+      "git_refs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/tags{/sha}",
+      "hooks_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/hooks",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom",
+      "id": 1375165580,
+      "issue_comment_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/comments{/number}",
+      "issue_events_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/events{/number}",
+      "issues_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues{/number}",
+      "keys_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/keys{/key_id}",
+      "labels_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/labels{/name}",
+      "languages_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/languages",
+      "merges_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/merges",
+      "milestones_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/milestones{/number}",
+      "name": "geometry-axiom",
+      "node_id": "R_kgDOUfdcjA",
+      "notifications_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/notifications{?since,all,participating}",
+      "owner": {
+        "avatar_url": "https://avatars.githubusercontent.com/u/59477728?v=4",
+        "events_url": "https://api.github.com/users/ZhiQiYang/events{/privacy}",
+        "followers_url": "https://api.github.com/users/ZhiQiYang/followers",
+        "following_url": "https://api.github.com/users/ZhiQiYang/following{/other_user}",
+        "gists_url": "https://api.github.com/users/ZhiQiYang/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/ZhiQiYang",
+        "id": 59477728,
+        "login": "ZhiQiYang",
+        "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+        "organizations_url": "https://api.github.com/users/ZhiQiYang/orgs",
+        "received_events_url": "https://api.github.com/users/ZhiQiYang/received_events",
+        "repos_url": "https://api.github.com/users/ZhiQiYang/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/ZhiQiYang/subscriptions",
+        "type": "User",
+        "url": "https://api.github.com/users/ZhiQiYang",
+        "user_view_type": "public"
+      },
+      "private": false,
+      "pulls_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls{/number}",
+      "releases_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/releases{/id}",
+      "stargazers_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/stargazers",
+      "statuses_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/statuses/{sha}",
+      "subscribers_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscribers",
+      "subscription_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscription",
+      "tags_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/tags",
+      "teams_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/teams",
+      "trees_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees{/sha}",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom"
+    },
+    "head_sha": "455c7b790047a9b0c2c102061b62ed8017995ce7",
+    "html_url": "https://github.com/ZhiQiYang/geometry-axiom/actions/runs/44954592086",
+    "id": 44954592086,
+    "jobs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/attempts/1/jobs",
+    "logs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/attempts/1/logs",
+    "name": "Native suite measurement",
+    "node_id": "WFR_kwLOUfdcjM8AAAAKd4CjVg",
+    "path": ".github/workflows/native-suite-measure.yml",
+    "previous_attempt_url": null,
+    "pull_requests": [
+      {
+        "base": {
+          "ref": "main",
+          "repo": {
+            "id": 1375165580,
+            "name": "geometry-axiom",
+            "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom"
+          },
+          "sha": "e0db7e478f15df4a90ea130ad17d74406db75586"
+        },
+        "head": {
+          "ref": "codex/l4-findings-fix-20261121",
+          "repo": {
+            "id": 1375165580,
+            "name": "geometry-axiom",
+            "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom"
+          },
+          "sha": "455c7b790047a9b0c2c102061b62ed8017995ce7"
+        },
+        "id": 5428849303,
+        "number": 443,
+        "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls/443"
+      }
+    ],
+    "referenced_workflows": [],
+    "repository": {
+      "archive_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/{archive_format}{/ref}",
+      "assignees_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/assignees{/user}",
+      "blobs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/blobs{/sha}",
+      "branches_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/branches{/branch}",
+      "collaborators_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/collaborators{/collaborator}",
+      "comments_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/comments{/number}",
+      "commits_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/commits{/sha}",
+      "compare_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/compare/{base}...{head}",
+      "contents_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contents/{+path}",
+      "contributors_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/contributors",
+      "deployments_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/deployments",
+      "description": "Geometry model and editor governed by explicit axioms, with reference-based placement and verified implementation.",
+      "downloads_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/downloads",
+      "events_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/events",
+      "fork": false,
+      "forks_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/forks",
+      "full_name": "ZhiQiYang/geometry-axiom",
+      "git_commits_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/commits{/sha}",
+      "git_refs_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/refs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/tags{/sha}",
+      "hooks_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/hooks",
+      "html_url": "https://github.com/ZhiQiYang/geometry-axiom",
+      "id": 1375165580,
+      "issue_comment_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/comments{/number}",
+      "issue_events_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues/events{/number}",
+      "issues_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/issues{/number}",
+      "keys_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/keys{/key_id}",
+      "labels_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/labels{/name}",
+      "languages_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/languages",
+      "merges_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/merges",
+      "milestones_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/milestones{/number}",
+      "name": "geometry-axiom",
+      "node_id": "R_kgDOUfdcjA",
+      "notifications_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/notifications{?since,all,participating}",
+      "owner": {
+        "avatar_url": "https://avatars.githubusercontent.com/u/59477728?v=4",
+        "events_url": "https://api.github.com/users/ZhiQiYang/events{/privacy}",
+        "followers_url": "https://api.github.com/users/ZhiQiYang/followers",
+        "following_url": "https://api.github.com/users/ZhiQiYang/following{/other_user}",
+        "gists_url": "https://api.github.com/users/ZhiQiYang/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/ZhiQiYang",
+        "id": 59477728,
+        "login": "ZhiQiYang",
+        "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+        "organizations_url": "https://api.github.com/users/ZhiQiYang/orgs",
+        "received_events_url": "https://api.github.com/users/ZhiQiYang/received_events",
+        "repos_url": "https://api.github.com/users/ZhiQiYang/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/ZhiQiYang/subscriptions",
+        "type": "User",
+        "url": "https://api.github.com/users/ZhiQiYang",
+        "user_view_type": "public"
+      },
+      "private": false,
+      "pulls_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/pulls{/number}",
+      "releases_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/releases{/id}",
+      "stargazers_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/stargazers",
+      "statuses_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/statuses/{sha}",
+      "subscribers_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscribers",
+      "subscription_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/subscription",
+      "tags_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/tags",
+      "teams_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/teams",
+      "trees_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/git/trees{/sha}",
+      "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom"
+    },
+    "rerun_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086/rerun",
+    "run_attempt": 1,
+    "run_number": 1,
+    "run_started_at": "2026-11-21T22:02:02Z",
+    "status": "completed",
+    "triggering_actor": {
+      "avatar_url": "https://avatars.githubusercontent.com/u/59477728?v=4",
+      "events_url": "https://api.github.com/users/ZhiQiYang/events{/privacy}",
+      "followers_url": "https://api.github.com/users/ZhiQiYang/followers",
+      "following_url": "https://api.github.com/users/ZhiQiYang/following{/other_user}",
+      "gists_url": "https://api.github.com/users/ZhiQiYang/gists{/gist_id}",
+      "gravatar_id": "",
+      "html_url": "https://github.com/ZhiQiYang",
+      "id": 59477728,
+      "login": "ZhiQiYang",
+      "node_id": "MDQ6VXNlcjU5NDc3NzI4",
+      "organizations_url": "https://api.github.com/users/ZhiQiYang/orgs",
+      "received_events_url": "https://api.github.com/users/ZhiQiYang/received_events",
+      "repos_url": "https://api.github.com/users/ZhiQiYang/repos",
+      "site_admin": false,
+      "starred_url": "https://api.github.com/users/ZhiQiYang/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/ZhiQiYang/subscriptions",
+      "type": "User",
+      "url": "https://api.github.com/users/ZhiQiYang",
+      "user_view_type": "public"
+    },
+    "updated_at": "2026-11-21T22:04:52Z",
+    "url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/runs/44954592086",
+    "workflow_id": 426277400,
+    "workflow_url": "https://api.github.com/repos/ZhiQiYang/geometry-axiom/actions/workflows/426277400"
+  },
+  "schema": "geometry-native-ci-receipt/1"
+}

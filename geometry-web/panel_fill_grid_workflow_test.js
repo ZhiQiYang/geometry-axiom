@@ -70,7 +70,8 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   check('PF4_NATIVE_CREATE_WIRE action never sends a fabricated id or evaluated coordinates',same(p.body.operations,[{op:'create-from-fill-grid',value:{fillId:1,hostId:10,mainAlong:'u'}}]));
   check('PF4_NEGATIVE_STAGGER native lattice and panel-row mapping remain exact',created.definition.hostId===10&&created.definition.fillId===1&&created.definition.mainAlong==='u'&&created.derived.side===-1&&created.derived.staggerAxis==='u'&&created.derived.staggerDelta==='20'&&created.derived.axes.u.baseCoordinate==='101'&&created.derived.axes.v.baseCoordinate==='-101'&&created.derived.axes.v.pitch==='-103'&&created.derived.bandIndexSpace==='panel-row',created);
   check('PF4_PREVIEW_ZERO_WRITE native dump revision and history remain unchanged',same(await snapshot(),baseline)&&await history.unchanged(baselineHistory));
-  check('PF4_IMPACT visible native grid before after and shared confirm row',await read(`!!document.querySelector('[data-pf-grid-impact]')&&document.querySelector('[data-pf-native-changes]').textContent.includes('來源主格')&&document.querySelectorAll('[data-pf-action="confirm"]').length===1`));
+  const displayEvidence=await inspectReadablePreview({send,read,ctl,gridId:created.id});
+  check('PF4_IMPACT visible native grid before after and shared confirm row; PF4A_DISPLAY_390_1400 readable exact fields',await read(`!!document.querySelector('[data-pf-grid-impact]')&&document.querySelector('[data-pf-native-changes]').textContent.includes('來源主格')&&document.querySelectorAll('[data-pf-action="confirm"]').length===1`)&&displayEvidence.every(r=>r.ok)&&same(await snapshot(),baseline)&&await history.unchanged(baselineHistory),displayEvidence);
   await ctl(action('cancel'));
   check('PF4_CANCEL_ZERO_WRITE cancel keeps the exact original native world and history',same(await snapshot(),baseline)&&await history.unchanged(baselineHistory));
   await openPF();await createDraft();await preview();const committed=await confirm(),grid=committed.state.fillGrids[0],gridId=grid.id;
@@ -101,6 +102,45 @@ module.exports=async({send,eval_:evaluate,sleep,click,dblclick,waitForUI,excepti
   await saveAndReopen({send,read,ctl,wait,check,out,gridId});
   check('PF4_NO_UNEXPECTED_EXCEPTION no uncaught browser exception in this slice',exceptionCount()===initialExceptions,{before:initialExceptions,after:exceptionCount()});
 };
+
+// Strengthens the existing P1284 preview assertion; it registers no extra
+// section or check and does not change the original interaction deadlines.
+// Run by the cloud browser operator, never substitute a synthetic DOM receipt.
+async function inspectReadablePreview({send,read,ctl,gridId}){
+  const output=process.env.GEOMETRY_PANEL_FILL_ARTIFACT_DIR||path.join(os.tmpdir(),'geometry-tests','panel-fill-grid-ui');fs.mkdirSync(output,{recursive:true});
+  const evidence=[];
+  // ctl opens closed ancestor details by a trusted summary click. Target a
+  // harmless existing cell so its final click does not close that summary.
+  await ctl(`[data-pf-grid-result="${gridId}"] tbody tr:first-child td`);
+  try{
+    for(const width of [390,1400]){
+      await send('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:width===390});
+      if(await read(`(()=>{const r=document.querySelector('[data-pf-workspace]')?.getBoundingClientRect();return !r||r.width===0||r.right<=0||r.left>=innerWidth;})()`))await ctl('#workspaceToggleRight');
+      await read('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+      const result=await read(`(()=>{
+        const roots=[...document.querySelectorAll('[data-pf-definition-impact],[data-pf-grid-impact],[data-pf-grid-result]')],tables=roots.flatMap(e=>[...e.querySelectorAll('.pf-readable-table')]);
+        const row=(root,key)=>[...(root?.querySelectorAll('[data-pf-field-path]')||[])].find(e=>e.dataset.pfFieldPath===key);
+        const values=e=>e?[...e.cells].map(c=>c.textContent):[];
+        const definition=document.querySelector('[data-pf-definition-impact] [data-pf-record="fill-grid:${gridId}"]'),grid=document.querySelector('[data-pf-grid-result="${gridId}"]');
+        const labels=tables.flatMap(t=>[...t.querySelectorAll('thead th')].map(th=>{const r=document.createRange();r.selectNodeContents(th);return {text:th.textContent,lines:r.getClientRects().length,width:th.getBoundingClientRect().width};}));
+        const boxes=roots.map(e=>({width:e.getBoundingClientRect().width,client:e.clientWidth,scroll:e.scrollWidth}));
+        const tableBoxes=tables.map(e=>({width:e.getBoundingClientRect().width,client:e.clientWidth,scroll:e.scrollWidth}));
+        const primary=document.querySelector('[data-pf-definition-impact]')?.textContent||'';
+        const checks={hasTables:roots.length===3&&tables.length>=3,noOverflow:boxes.every(b=>b.width>150&&b.scroll<=b.client+1)&&tableBoxes.every(b=>b.width>150&&b.scroll<=b.client+1),headers:labels.length>0&&labels.every(h=>h.lines===1&&h.width>=32),readable:primary.includes('宿主編號')&&!/\\{["\\s]/.test(primary),host:JSON.stringify(values(row(definition,'hostId')))===JSON.stringify(['宿主編號','不存在','10']),pitch:JSON.stringify(values(row(grid,'derived.axes.v.pitch')))===JSON.stringify(['原生有效值 · 各軸 · v 軸 · 節距（mm）','-103']),index:JSON.stringify(values(row(grid,'derived.axes.v.baseIndex')))===JSON.stringify(['原生有效值 · 各軸 · v 軸 · 基準索引 k','0'])};
+        return {ok:Object.values(checks).every(Boolean),checks,boxes,tableBoxes,labels};
+      })()`);
+      for(const [name,selector] of [['impact','[data-pf-definition-impact]'],['grid',`[data-pf-grid-result="${gridId}"]`]]){
+        await read(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'start'})`);
+        const image=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(output,`PF4A-readable-${width}-${name}.png`),Buffer.from(image.result.data,'base64'));
+      }
+      evidence.push({width,...result});
+    }
+  }finally{
+    await send('Emulation.setDeviceMetricsOverride',{width:1280,height:1000,deviceScaleFactor:1,mobile:false});
+  }
+  fs.writeFileSync(path.join(output,'PF4A-readable-layout.json'),JSON.stringify(evidence,null,2)+'\n');
+  console.log('PF4A_DISPLAY_LAYOUT '+JSON.stringify(evidence));return evidence;
+}
 
 async function saveAndReopen({send,read,ctl,wait,check,out,gridId}){
   const before=await read(`(async()=>({dump:(await apiRequest('dump')).text,state:(await apiRequest('panel-fill-read')).uiContract.state,references:await apiRequest('references')}))()`);

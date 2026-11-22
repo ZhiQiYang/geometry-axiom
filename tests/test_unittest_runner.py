@@ -131,6 +131,18 @@ R12_ADDED_SUITES = frozenset({'py:test_space_profile_runs', 'py:test_space_profi
 PF4A_ADDED_SUITES = frozenset({'py:test_panel_fill_grid_transaction', 'node:panel_fill_grid_ui'})
 R03_ADDED_SUITES = frozenset({'py:test_framing_template', 'node:framing_recipe_project_store',
                             'node:framing_template_session', 'node:framing_template_browser_scope'})
+PF6_ADDED_SUITES = frozenset({'py:test_panel_fill_builder', 'py:test_builder_token_owners'})
+R443_ADDED_SUITES = frozenset({
+    'node:engineering_override_display', 'node:face_length_overlay',
+})
+R443_ADDED_ORDERS = {
+    'node:engineering_override_display': 'new/node__engineering_override_display',
+    'node:face_length_overlay': 'new/node__face_length_overlay',
+}
+R443_ADDED_COSTS = {
+    'node:engineering_override_display': 120000,
+    'node:face_length_overlay': 120000,
+}
 
 
 class BrowserPathScopeWiring(unittest.TestCase):
@@ -357,6 +369,69 @@ class NativeShardCoverage(unittest.TestCase):
                          'R378_SIX_SHARDS_COVER_FULL_REGISTRY')
         self.assertEqual(sum(map(len, six)), len(suites))
         self._assert_six_native_workflow()
+        self._assert_rejected_trial_capacity_and_ties()
+
+    def _assert_rejected_trial_capacity_and_ties(self):
+        # Count actual scoring work, not runner seconds. Every shard is
+        # balanced at [100, 100], while every cross-shard swap or two-for-one
+        # exchange exceeds 100 in at least one scenario. Such a trial cannot
+        # improve the descending score and must not sort its full score.
+        for count in (2, 4, 6):
+            parts = [{'s-%d-a' % i, 's-%d-b' % i} for i in range(count)]
+            costs = {name: ([i + 1, 99 - i] if name.endswith('-a')
+                            else [99 - i, i + 1])
+                     for i, part in enumerate(parts) for name in part}
+            loads = [[100, 100] for _ in parts]
+            for method, kind in (('_swap_scenarios', 'SWAP'),
+                                 ('_exchange_scenarios', 'EXCHANGE')):
+                marker = 'R443_NATIVE_' + kind + '_REJECTED_TRIAL_CAPACITY'
+                with self.subTest(method=method, capacity_parts=count):
+                    wanted_parts, wanted_loads = [set(p) for p in parts], [p[:] for p in loads]
+                    getattr(native_score_reference, method)(wanted_parts, wanted_loads, costs)
+                    scalar_inputs = 0
+                    def counted_sorted(values, *args, **kwargs):
+                        nonlocal scalar_inputs
+                        values = list(values)
+                        if values and all(type(value) is int for value in values):
+                            scalar_inputs += len(values)
+                        return sorted(values, *args, **kwargs)
+                    actual_parts, actual_loads = [set(p) for p in parts], [p[:] for p in loads]
+                    with mock.patch.object(native_shards, 'sorted', counted_sorted, create=True):
+                        getattr(native_shards, method)(actual_parts, actual_loads, costs)
+                    self.assertEqual(actual_parts, wanted_parts, marker + ': owners')
+                    self.assertEqual(actual_loads, wanted_loads, marker + ': loads')
+                    # Only the initial pair scores remain; exchange also
+                    # compares one initial complete score. No trial is accepted.
+                    bound = (4 * (count * (count - 1) // 2) if kind == 'SWAP'
+                             else 2 * count + 4 * count * (count - 1))
+                    self.assertLessEqual(scalar_inputs, bound, marker)
+        # Equal maxima are not grounds for rejection: lower score components
+        # can still improve. Pin both the owners and every resulting load, and
+        # independently compare the frozen full-score oracle. Using >= instead
+        # of > for the early rejection leaves these candidates wrongly untouched.
+        fixtures = (
+            ('_swap_scenarios', 'SWAP',
+             {'a': [1, 3], 'b': [5, 3], 'c': [1, 1], 'd': [3, 1]},
+             [{'b', 'c'}, {'a', 'd'}], [[6, 4], [4, 4]]),
+            ('_exchange_scenarios', 'EXCHANGE',
+             {'a': [2, 1], 'b': [6, 6], 'c': [3, 3], 'd': [3, 1]},
+             [{'a', 'c', 'd'}, {'b'}], [[8, 5], [6, 6]]),
+        )
+        for method, kind, costs, pinned_parts, pinned_loads in fixtures:
+            marker = 'R443_NATIVE_' + kind + '_EQUAL_PEAK_REMAINS_ELIGIBLE'
+            with self.subTest(method=method, equal_peak=True):
+                parts = [{'a', 'b'}, {'c', 'd'}]
+                loads = [[sum(costs[name][r] for name in part) for r in range(2)]
+                         for part in parts]
+                wanted_parts, wanted_loads = [set(p) for p in parts], [p[:] for p in loads]
+                getattr(native_score_reference, method)(wanted_parts, wanted_loads, costs)
+                self.assertEqual(wanted_parts, pinned_parts, marker + ': oracle owners')
+                self.assertEqual(wanted_loads, pinned_loads, marker + ': oracle loads')
+                actual_parts, actual_loads = [set(p) for p in parts], [p[:] for p in loads]
+                getattr(native_shards, method)(actual_parts, actual_loads, costs)
+                self.assertEqual(actual_parts, wanted_parts, marker + ': owners')
+                self.assertEqual(actual_loads, wanted_loads, marker + ': loads')
+
 
     def test_partition_is_deterministic(self):
         suites = run_all.build_suites()
@@ -823,8 +898,33 @@ class NativeShardCoverage(unittest.TestCase):
         # 318-suite history and the current 324-suite/six-shard plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        self.assertEqual(R396_ADDED_SUITES, set(added) - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
-                         'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
+        # Only explicitly reviewed additions may leave the 321-suite history.
+        # A fabricated new/ row with a matching cost is never an exemption.
+        rows = (native_registry.load_registry(run_all.ROOT)
+                if native_registry.active(run_all.ROOT) else [])
+        pf6_rows = [row for row in rows if row['name'] in PF6_ADDED_SUITES]
+        self.assertEqual(len(PF6_ADDED_SUITES), len(pf6_rows),
+                         'PF6_NEW_SUITES_REGISTERED_ONCE')
+        self.assertEqual(PF6_ADDED_SUITES,
+                         {row['name'] for row in pf6_rows if row['order'].startswith('new/')},
+                         'PF6_NEW_SUITES_REGISTERED_IN_NEW_FRAGMENT')
+        self.assertEqual(PF6_ADDED_SUITES, set(added) & PF6_ADDED_SUITES,
+                         'R396_REGISTERED_NEW_SUITES_HAVE_INDEPENDENT_COSTS')
+        r443_rows = [row for row in rows if row['name'] in R443_ADDED_SUITES]
+        self.assertEqual(len(R443_ADDED_SUITES), len(r443_rows),
+                         'R443_NEW_SUITES_REGISTERED_ONCE')
+        self.assertEqual(R443_ADDED_ORDERS,
+                         {row['name']: row['order'] for row in r443_rows},
+                         'R443_NEW_SUITES_REGISTERED_IN_NEW_FRAGMENT')
+        self.assertEqual(R443_ADDED_COSTS,
+                         {name: added.get(name) for name in R443_ADDED_SUITES},
+                         'R443_REGISTERED_NEW_SUITES_HAVE_INDEPENDENT_COSTS')
+        self.assertEqual(
+            R396_ADDED_SUITES,
+            set(added) - PF6_ADDED_SUITES - R443_ADDED_SUITES
+            - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES
+            - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
+            'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
         historical_names = set(profiles[0]) - set(added)
         self.assertEqual(315, len(historical_names), 'R348_HISTORICAL_315_UNCHANGED')
         selected_names = historical_names | R380_ADDED_SUITES | R396_ADDED_SUITES

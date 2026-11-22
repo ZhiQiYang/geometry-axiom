@@ -2,7 +2,9 @@
 
 Mutants run in a separate, sparse committed checkout. The invoking repository and
 its live runtime are never temporarily mutated. Every record includes baseline,
-real failing unittest results, restored results, binaries and official sidecars.
+real unittest results, a byte-exact restoration witness, binaries and official
+sidecars. The complete baseline runs once per pass; restoration reauthenticates
+that same tested binary and its inputs, without rebuilding or replaying tests.
 
 Verdicts follow tests/mutate.py: only a failed test assertion is `killed`. A bridge process that died under
 the test (the oracle's `bridge_closed` failure kind, with its exit status) is not an assertion: it is `crashed`
@@ -25,6 +27,7 @@ import re
 import signal
 import subprocess
 import sys
+import time
 
 PREFIX = "tests.test_parameters_core.ParametersCore."
 RESTORED = [
@@ -66,7 +69,7 @@ RESTORED = [
     ]],
 ]
 
-# #314: baseline/restoration must run these exact judges before a verdict.
+# #314: the shared baseline must run these exact judges before a verdict.
 RESTORED += [
     "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_fact_bytes_order_count_revision_and_provider_tampering_are_rejected",
     "tests.test_geo314_ordered_facts.OrderedStaggerFacts.test_failed_preview_clears_evidence_and_keeps_definition_and_revision",
@@ -83,7 +86,7 @@ RESTORED += [
     ]],
 ]
 
-# #318: exact typed-fact witnesses are baseline/restored judges. They do not
+# #318: exact typed-fact witnesses are shared baseline judges. They do not
 # claim a CLI construction path; that separate acceptance remains explicit.
 RESTORED += [
     'tests.test_geo318_reading_a_native.ReadingANative.test_fixed_whole_positioning_edge_endpoint_placed_contact_and_roles',
@@ -95,7 +98,7 @@ RESTORED += [
 RESTORED += ['tests.test_geo318_reading_a_native.ReadingANative.test_actual_host_collector_partial_and_i11_wiring_on_explicit_world']
 
 
-# #360 R09a: native judges must pass before and after every official mutation.
+# #360 R09a: native judges pass on the baseline retained for every restoration.
 RESTORED += ["tests.test_identity_ledger_review.IdentityLedgerReview." + name for name in [
     "test_B1_zero_ids_save_and_reopen_in_a_new_process",
     "test_B3_line_noop_receipt_matches_native_undo_active_and_inactive",
@@ -109,6 +112,26 @@ RESTORED += ["tests.test_identity_ledger_review.IdentityLedgerReview." + name fo
 RESTORED += ["tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge." + name for name in [
     "test_successful_import_commits_serials_before_the_next_covered_key",
     "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch",
+]]
+
+# #128 PF-6N: the tested baseline is reauthenticated after every withdrawal.
+RESTORED += ["tests.test_panel_fill_builder.PanelFillBuilder." + name for name in [
+    "test_PF6_last_outer_failure_never_publishes_successful_prefix",
+    "test_PF6_empty_explicit_selection_creates_nothing",
+    "test_PF6_post_edit_revalidates_existing_dependent_timber",
+]]
+
+
+RESTORED += ["tests.test_builder_token_owners.BuilderTokenOwners." + name for name in [
+    "test_general_batch_cannot_consume_pf6_or_framing_candidates",
+    "test_other_terminal_owners_preserve_builder_candidates",
+    "test_pf6_and_framing_reject_each_others_confirmation_and_cancellation",
+    "test_pf6_and_framing_cannot_consume_engineering_candidate",
+    "test_simultaneous_load_and_builders_reject_both_foreign_terminals",
+    "test_load_shared_serial_survives_reset",
+    "test_load_shared_serial_refuses_uint32_exhaustion",
+    "test_reference_stage_shared_serial_refuses_uint32_exhaustion",
+    "test_builder_capacity_reports_refusal_without_aliasing_live_load",
 ]]
 
 
@@ -307,7 +330,8 @@ def judge_trials(mt, trials, methods):
 
 
 def _portable(value, root, work, cache):
-    for path, marker in [(work, "<work>"), (root, "<repo>"), (cache, "<cache>")]:
+    for path, marker in sorted([(work, "<work>"), (root, "<repo>"), (cache, "<cache>")],
+                               key=lambda item: len(str(item[0])), reverse=True):
         value = value.replace(str(path), marker)
     return value
 
@@ -315,6 +339,7 @@ def _portable(value, root, work, cache):
 def _run(argv, cwd, env, folder, label, root, work, cache, timeout=900):
     folder.mkdir(parents=True, exist_ok=True)
     out, err = folder / (label + ".stdout"), folder / (label + ".stderr")
+    started = time.monotonic()
     p, timed_out = None, False
     def terminate_owned():
         if p is None:
@@ -358,7 +383,11 @@ def _run(argv, cwd, env, folder, label, root, work, cache, timeout=900):
             result = json.loads(_portable(records[0], root, work, cache))
         except ValueError:
             pass
+    elapsed = time.monotonic() - started
+    print("BRIDGE_PHASE " + json.dumps({"folder": _portable(str(folder), root, work, cache),
+          "phase": label, "seconds": elapsed, "exit_code": code}, sort_keys=True), flush=True)
     return {"command": [_portable(str(a), root, work, cache) for a in argv],
+            "seconds": elapsed,
             "exit_code": code, "process_returncode": p.returncode if p else None, "timed_out": timed_out,
             "stdout_sha256": sha(stdout), "stderr_sha256": sha(stderr),
             "stdout_file": label + ".stdout", "stderr_file": label + ".stderr", "result": result}
@@ -418,17 +447,60 @@ def _metadata_sources(side, m, root, mutated):
             raise ValueError("bridge sidecar source mismatch: " + rel)
 
 
+def restoration_proof(execution, closure):
+    """Bind the restored inputs to this pass's actual, complete baseline run."""
+    return {"schema": "geometry-bridge-baseline-equivalence/1",
+            "baseline_receipt_sha256": sha(json.dumps(execution["baseline"], ensure_ascii=False,
+                sort_keys=True, separators=(",", ":")).encode("utf-8")),
+            "source_closure_sha256": closure, "oracle_sha256": execution["oracle_sha256"],
+            "tool_sha256": execution["tool_sha256"], "head": execution["head"],
+            "baseline_exe_sha256": execution["baseline_identity"]["exe_sha256"]}
+
+
+def verify_restoration(execution, closure, mutant_id):
+    """Verify /2's witness; both strict checks and downloaded artifacts use it.
+
+    The original baseline receipt is retained, not presented as a second run.
+    Its command binds the execution head to the actual baseline binary; changing
+    both the head and proof cannot move that run to a different checkout.
+    """
+    if execution.get("schema") != "geometry-bridge-mutation-execution/2":
+        raise ValueError("missing bridge equivalence execution receipt")
+    if ("restored" in execution or "restored_build" in execution
+            or execution.get("byte_restored") is not True
+            or execution["restored_identity"] != execution["baseline_identity"]
+            or execution["restoration"] != restoration_proof(execution, closure)):
+        raise ValueError("bridge restoration proof does not bind the tested baseline")
+    if (execution["restored_methods"] != RESTORED
+            or classify(execution["baseline"], RESTORED) != "survived"
+            or execution["platform"] not in ("posix", "nt")
+            or not re.fullmatch(r"[0-9a-f]{40}", execution["head"])):
+        raise ValueError("bridge restoration lacks a complete baseline")
+    binary = "bridge.exe" if execution["platform"] == "nt" else "bridge"
+    trials = execution.get("mutant_attempts") or [execution["mutant"]]
+    for row, expected in [(execution["baseline"], "<cache>/_bridge-baseline/" + execution["head"] + "/" + binary),
+                          *[(t, "<cache>/" + mutant_id + "/bridge-mutant/" + binary) for t in trials]]:
+        command = row.get("command")
+        if (not isinstance(command, list) or len(command) < 4
+                or not isinstance(command[3], str) or command[3].replace("\\", "/") != expected):
+            raise ValueError("bridge restoration binary/head differs from actual oracle command")
+
+
 def execution_problems(mt, m, rec, verdict, src):
     e = rec.get("execution")
     try:
-        if not isinstance(e, dict) or e.get("schema") != "geometry-bridge-mutation-execution/1":
+        if not isinstance(e, dict) or e.get("schema") not in (
+                "geometry-bridge-mutation-execution/1", "geometry-bridge-mutation-execution/2"):
             raise ValueError("missing bridge execution receipt")
+        equivalence = e["schema"] == "geometry-bridge-mutation-execution/2"
         if not re.fullmatch(r"[0-9a-f]{40}", e["head"]) or e["tool_sha256"] != mt.tool_hash():
             raise ValueError("bridge execution tool/head")
         if e["methods"] != m["tests"] or e["restored_methods"] != RESTORED:
             raise ValueError("bridge oracle methods changed")
-        if classify(e["baseline"], RESTORED) != "survived" or classify(e["restored"], RESTORED) != "survived":
+        if classify(e["baseline"], RESTORED) != "survived" or (not equivalence and classify(e["restored"], RESTORED) != "survived"):
             raise ValueError("bridge baseline/restoration did not pass every declared method")
+        if equivalence:
+            verify_restoration(e, src.closure, m["id"])
         trials = e.get("mutant_attempts") or [e["mutant"]]
         if not isinstance(trials, list) or trials[-1] != e["mutant"]:
             raise ValueError("bridge mutant_attempts must end with the recorded mutant run")
@@ -452,7 +524,8 @@ def execution_problems(mt, m, rec, verdict, src):
             raise ValueError("bridge killed_by contradicts raw assertion results")
         if verdict == "crashed" and rec.get("crashed_on") != crashed_on:
             raise ValueError("bridge crashed_on contradicts repeated access violations")
-        for build in (e["baseline_build"], e["mutant_build"], e["restored_build"]):
+        builds = [e["baseline_build"], e["mutant_build"]] + ([] if equivalence else [e["restored_build"]])
+        for build in builds:
             if build["exit_code"] != 0:
                 raise ValueError("bridge build did not succeed")
         for label, mutated in (("baseline_identity", False), ("mutant_identity", True), ("restored_identity", False)):
@@ -462,11 +535,14 @@ def execution_problems(mt, m, rec, verdict, src):
             _metadata_sources(identity["sidecar"], m, src.root, mutated)
         if e["platform"] == "posix" and e["baseline_identity"]["exe_sha256"] != e["restored_identity"]["exe_sha256"]:
             raise ValueError("restored bridge bytes differ from baseline")
-        for row in (e["baseline"], *trials, e["restored"], e["baseline_build"], e["mutant_build"], e["restored_build"]):
+        oracles = [(e["baseline"], RESTORED), *[(t, m["tests"]) for t in trials]]
+        if not equivalence:
+            oracles.append((e["restored"], RESTORED))
+        for row in [*[row for row, _ in oracles], *builds]:
             for key in ("stdout_sha256", "stderr_sha256"):
                 if not re.fullmatch(r"[0-9a-f]{64}", row[key]):
                     raise ValueError("missing bridge raw output hash")
-        for row, methods in [(e["baseline"], RESTORED), *[(t, m["tests"]) for t in trials], (e["restored"], RESTORED)]:
+        for row, methods in oracles:
             if row["command"][2] != "tests/bridge_mutation_oracle.py" or row["command"][-len(methods):] != methods:
                 raise ValueError("bridge oracle command differs from declared methods")
         if not e.get("byte_restored") or e["oracle_sha256"] != oracle_hash(m, src.root):
@@ -500,14 +576,25 @@ def run_pass(mt, mutants, root, results_path, today=None):
     if (subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=work).decode().strip() != head
             or mt.Sources(work).closure != src.closure or subprocess.check_output(["git", "diff", "--name-only", "HEAD"], cwd=work).strip()):
         raise RuntimeError("bridge scratch checkout is not the exact committed source")
+    # Pin before executing the baseline, rather than blessing changed inputs
+    # after it ran. No baseline verdict is reused across separate invocations.
+    tool = mt.tool_hash()
+    judges = {m["id"]: oracle_hash(m, root) for m in mutants}
+    if any(oracle_hash(m, work) != judges[m["id"]] for m in mutants):
+        raise RuntimeError("bridge baseline judge differs from committed source")
     base_dir = cache / "_bridge-baseline" / head
     baseline_build, baseline_identity = _build(work, base_dir, env, base_dir, "baseline-build", root, cache)
     binary_name = "bridge.exe" if os.name == "nt" else "bridge"
     baseline = _test(work, base_dir / binary_name, RESTORED, env, base_dir, "baseline", root, cache)
     if classify(baseline, RESTORED) != "survived":
         raise RuntimeError("bridge baseline blocked: all %d methods must actually pass" % len(RESTORED))
+    if (mt.Sources(work).closure != src.closure or mt.tool_hash() != tool
+            or _identity(work, base_dir) != baseline_identity
+            or subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=work).decode().strip() != head
+            or any(oracle_hash(m, work) != judges[m["id"]] or oracle_hash(m, root) != judges[m["id"]] for m in mutants)):
+        raise RuntimeError("bridge inputs or binary changed during baseline")
     for m in mutants:
-        judge = oracle_hash(m, root); folder = cache / m["id"]; folder.mkdir(parents=True, exist_ok=True)
+        judge = judges[m["id"]]; folder = cache / m["id"]; folder.mkdir(parents=True, exist_ok=True)
         kind, why = mt.definition_kind(m, src)
         if kind not in ("run", "equivalent"):
             records[m["id"]] = mt.make_record(m, src, "invalid", why or "bridge mutants must be executable", today, judge)
@@ -515,8 +602,8 @@ def run_pass(mt, mutants, root, results_path, today=None):
         path = work / m["file"]; fixed = path.read_bytes(); old, new = m["old"].encode(), m["new"].encode()
         if fixed.count(old) != 1 or judge != oracle_hash(m, work):
             raise RuntimeError("bridge source/judge differs before mutation")
-        evidence = {"schema": "geometry-bridge-mutation-execution/1", "head": head, "platform": os.name,
-                    "tool_sha256": mt.tool_hash(), "oracle_sha256": judge, "methods": m["tests"], "restored_methods": RESTORED,
+        evidence = {"schema": "geometry-bridge-mutation-execution/2", "head": head, "platform": os.name,
+                    "tool_sha256": tool, "oracle_sha256": judge, "methods": m["tests"], "restored_methods": RESTORED,
                     "baseline_build": baseline_build, "baseline_identity": baseline_identity, "baseline": baseline}
         verdict, reason, judged_killers, judged_crashed_on = "blocked", "not executed", [], []
         try:
@@ -537,18 +624,26 @@ def run_pass(mt, mutants, root, results_path, today=None):
             verdict, reason = "blocked", str(exc)
         finally:
             path.write_bytes(fixed); evidence["byte_restored"] = path.read_bytes() == fixed
+        restoration_started = time.monotonic()
         try:
-            if mt.Sources(work).closure != src.closure:
-                raise RuntimeError("bridge scratch source was not restored")
-            b, identity = _build(work, folder / "bridge-restored", env, folder, "restored-build", root, cache)
-            restored = _test(work, folder / "bridge-restored" / binary_name, RESTORED, env, folder, "restored", root, cache)
-            evidence.update(restored_build=b, restored_identity=identity, restored=restored)
-            if (classify(restored, RESTORED) != "survived" or (os.name == "posix" and identity["exe_sha256"] != baseline_identity["exe_sha256"])
-                    or _identity(work, folder / "bridge-restored") != identity or oracle_hash(m, root) != judge
-                    or oracle_hash(m, work) != judge):
-                raise RuntimeError("restored bridge/judge did not match baseline")
+            # Reauthenticate the original, already-tested official binary against
+            # the restored source and compile fingerprint. This does not build or
+            # run a second binary and does not manufacture a restored test receipt.
+            if (not evidence["byte_restored"] or mt.Sources(work).closure != src.closure
+                    or oracle_hash(m, root) != judge or oracle_hash(m, work) != judge
+                    or mt.tool_hash() != tool
+                    or subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=work).decode().strip() != head):
+                raise RuntimeError("bridge restored source/judge/tool/head differs from baseline")
+            identity = _identity(work, base_dir)
+            if identity != baseline_identity:
+                raise RuntimeError("restored bridge identity differs from tested baseline")
+            evidence["restored_identity"] = identity
+            evidence["restoration"] = restoration_proof(evidence, src.closure)
         except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
             verdict, reason = "blocked", str(exc)
+        evidence["restoration_seconds"] = time.monotonic() - restoration_started
+        print("BRIDGE_PHASE " + json.dumps({"mutant": m["id"], "phase": "restoration-proof",
+              "seconds": evidence["restoration_seconds"], "verified": "restoration" in evidence}, sort_keys=True), flush=True)
         if kind == "equivalent" and verdict == "survived":
             verdict, reason = "equivalent", why
         elif kind == "equivalent" and verdict != "blocked":

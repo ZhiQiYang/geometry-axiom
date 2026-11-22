@@ -18,6 +18,7 @@ const r16Extension = require('./diagnostics/r16_canvas_extension.cjs');
 const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
+const touchExtension = require('./diagnostics/r433_canvas_touch_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 // PF-4A (#128): P1284 is an independent measured section after P128 and before
@@ -29,6 +30,9 @@ const plan = shards.loadPlan(), golden = shards.loadGolden();
 const registered = registry.load(ROOT), r16View = r16Extension.registeredView(registered);
 const registeredIndependent = [...registered.extensions, ...(registered.drivers || [])];
 const r16Base = {plan:r16Extension.projectPlan(r16View.plan), golden:r16Extension.projectGolden(r16View.golden)};
+// P1162 is checked before the historical projection chain. The CLI and current
+// complete-coverage tests below still use the unprojected plan and golden.
+const touchBase = touchExtension.project(golden, plan);
 // R386: the retired aggregate files are judged through the current legacy
 // projection; its golden encoding is byte-identical to the former file.
 const legacy = registry.legacyView(ROOT);
@@ -218,6 +222,12 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.deepEqual(verdict.problems, []);
   assert.equal(verdict.passed, true);
   assert.equal(verdict.summary.total, context.golden.total);
+  {
+  // Keep this historical oracle's input and every assertion byte unchanged.
+  const context = touchBase;
+  assert.deepEqual([Object.hasOwn(context.golden.sections, 'P1162'),
+    context.plan.shards.some(shard => shard.sections.includes('P1162'))], [false, false],
+    'R433_P1162_PROJECTED_BEFORE_LEGACY_ORACLES');
   // #400 adds exactly three P90 assertions; project them out before the
   // historical per-section oracles below.
   const beforeR420 = r420Extension.projectGolden(pf4aExtension.projectGolden(r03Extension.projectGolden(legacy.golden)));
@@ -259,13 +269,15 @@ test('完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 g
   assert.equal(pf4aBase.golden.total, beforeR420.total + r420Extension.P420_ADDED, 'R420_EXACT_COUNT_UNION');
   assert.equal(rawGolden.total, pf4aBase.golden.total + rawGolden.sections.P1284, 'PF4A_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(legacy.golden.total, rawGolden.total + legacy.golden.sections.P205, 'R03_EXACT_COUNT_UNION_IN_VERDICT');
-  assert.equal(context.golden.total, legacy.golden.total + registeredIndependent.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION_IN_VERDICT');
   // R445 N4 (7072484935 §7): restore the original patch's R03A union over the
   // current fragment composition: exactly the legacy view plus the independent
   // sections it does not own, P2052 among them at its measured 28.
   const independent = Object.keys(context.golden.sections).filter(name => !Object.hasOwn(legacy.golden.sections, name));
   assert.ok(independent.includes('P2052') && context.golden.sections.P2052 === 28, 'R03A_P2052_REGISTERED_IN_VERDICT');
   assert.equal(context.golden.total, legacy.golden.total + independent.reduce((total, name) => total + context.golden.sections[name], 0), 'R03A_EXACT_COUNT_UNION_IN_VERDICT');
+  }
+  // R16 judges the complete current union (outer context), not main's R433 projection.
+  assert.equal(context.golden.total, legacy.golden.total + registeredIndependent.reduce((sum,row)=>sum+row.assertions,0), 'R16_EXACT_COUNT_UNION_IN_VERDICT');
   assert.equal(verdict.summary.sectionCount, Object.keys(context.golden.sections).length);
   assert.equal(verdict.summary.shards['1'].expectedBrowserExceptions, 1);
 });

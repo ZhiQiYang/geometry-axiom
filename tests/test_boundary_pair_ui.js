@@ -221,6 +221,32 @@ test('R335-UI-DIAGNOSTICS: discarded invalid candidates display violations with 
   await finish(f,false);assert.equal(await pending,false);
   assert.equal(f.requests('cancel').length,0,'discarded diagnostics own no native token');
   assert.equal(f.history.undo.length,0);assert.equal(f.env.timberPreview,null);assert.equal(f.adapter.hasWork,true);
+
+  // The real P1-A diagnostic from the native core, not a JS geometry verdict.
+  // Only this known clause + expectation is localized; unfamiliar text survives.
+  const expected='two real end faces with opposite normals, one plane and positive contact';
+  const actual='timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕';
+  for(const [clause,nativeExpected,shown] of [
+    ['D16a',expected,'兩個真實端面須法向相反、位於同一平面，且有正長度接觸。'],
+    ['unrecognized-clause',expected,expected],
+    ['D16a',expected+'; additional constraint',expected+'; additional constraint']
+  ]){
+    const issue={timber:1,clause,expected:nativeExpected,actual};
+    const rejected={...preview(),valid:false,token:null,violations:[issue]},original=copy(rejected);
+    const isolated=await fixture();let confirms=0;
+    const pending=isolated.env.confirmReferenceImpact(rejected,{boundaryPair:true,
+      confirm:async()=>{confirms++;return {ok:false};},cancel:async()=>({ok:true})});
+    await isolated.awaitDialog();
+    const violation=isolated.dialog().descendants().find(node=>node.className==='impact-violation');
+    assert(violation,'the actual shared impact renderer must create a violation row');
+    assert.equal(violation.textContent,
+      `角材 1 · ${clause}\n預期：${shown}\n實際：${actual}`,'R432_R17_P1A_EXPECTATION_PRESENTATION');
+    assert.deepEqual(rejected,original,'translation must not rewrite the native diagnostic');
+    assert.equal(isolated.node('impact-confirm').disabled,true);
+    await isolated.node('impact-confirm').onclick();assert.equal(confirms,0);
+    await finish(isolated,false);assert.equal((await pending).ok,false);
+    assert.deepEqual(isolated.commands(),[]);assert.equal(isolated.history.undo.length,0);
+  }
 });
 
 test('R335-UI-PREPARE-RECEIPT: lost preparation is queried once and only its exact owner is cancelled during recovery',async()=>{

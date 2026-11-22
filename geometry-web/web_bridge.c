@@ -27,6 +27,7 @@
 #define main geometry_cli_main
 #include "../current_geometry.c"
 #undef main
+#include "../geometry-app/native/panel_fill_builder.inc"
 
 static World g_world;
 static int g_input_line_no = 0;
@@ -1115,6 +1116,7 @@ static void cmd_host_gate_check(const char *arg)
 #include "workspace_view_bridge.inc"
 #include "boundary_pair_bridge.inc"
 #include "framing_template_bridge.inc"
+#include "panel_fill_builder_bridge.inc"
 
 /* 視圖點已包含 frame 原點與構件尺寸；不能套用局部定義的單項上限。 */
 static bool view_coord_in_range(Coord value)
@@ -1165,6 +1167,14 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_replace_world(false);
         } else if (strcmp(line, "line") == 0 && arg != NULL) {
             cmd_line(arg);
+        } else if (strcmp(line,"pf6-suggest")==0 && arg) {
+            cmd_pf6_suggest(arg);
+        } else if (strcmp(line,"pf6-select")==0 && arg) {
+            cmd_pf6_select(arg);
+        } else if (strcmp(line,"pf6-confirm")==0) {
+            cmd_pf6_confirm(arg);
+        } else if (strcmp(line,"pf6-cancel")==0) {
+            cmd_pf6_cancel(arg);
         } else if (strcmp(line,"panel-fill-read")==0 && !arg) {
             cmd_panel_fill_read();
         } else if (strcmp(line,"panel-fill-preview")==0 && arg) {

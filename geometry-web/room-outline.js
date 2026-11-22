@@ -264,7 +264,14 @@
           if(draw===0){finish();pts.push(point(state.matrix,data[at++],data[at++]));}
           else if(draw===1)pts.push(point(state.matrix,data[at++],data[at++]));
           else if(draw===2||draw===3){at+=draw===2?6:4;curved=true;}
-          else if(draw===4){if(pts.length)pts.push(pts[0]);finish(true);}
+          else if(draw===4){
+            // PDF closePath leaves the current point at the subpath start. A
+            // following line continues from there, without closing that new path.
+            const start=pts[0];
+            if(start)pts.push(start);
+            finish(true);
+            if(start)pts.push(start);
+          }
           else {curved=true;break;}
         }
         if([OPS.closeStroke,OPS.closeFillStroke,OPS.closeEOFillStroke].includes(a[0]) && pts.length){pts.push(pts[0]);finish(true);}else finish();

@@ -567,7 +567,11 @@ static void cmd_definition_import_preview(const char *dir)
     bool ok = app_world_candidate_evaluate(target, di_apply_candidate, &call) == GEO_CANDIDATE_OK && app_world_candidate_seal(target);
     if (!ok) { eng_bridge_error("INVALID", g_engineering_error[0] ? g_engineering_error : (scene_last_error()[0] ? scene_last_error() : "匯入候選無法封存")); goto done; }
     app_world_candidate_destroy(source); source = NULL;
-    char *label = "definition-import"; reference_stage(target, &label, 1, true); staged = true; g_preview.definition_import = true;
+    char *label = "definition-import";
+    if (!reference_stage(target, &label, 1, true)) {
+        eng_bridge_error("CAPACITY", "Preview token capacity exhausted; restart the service"); goto done;
+    }
+    staged = true; g_preview.definition_import = true;
     snprintf(g_di_sha, sizeof g_di_sha, "%s", scene_hash); g_di_sha_token = g_preview.token;
     printf("{\"ok\":true,\"preview\":{\"valid\":true,\"token\":%u,\"revision\":%llu,", g_preview.token, (unsigned long long)g_preview.revision);
     di_json_map(plan, &target->after); di_json_notes(plan); fputs("}}\n", stdout);

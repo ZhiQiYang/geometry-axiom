@@ -88,8 +88,57 @@ test('PF4_DEPENDENCY_GRID_IDENTITY: omitted or rebound native dependency records
     await assert.rejects(()=>session.preview([create]),/主格.*依賴.*身分/);assert.notEqual(session.phase,'confirmable');
   }
 });
-test('PF4_NATIVE_IMPACT: grid and guide before/after records are visible, including unchanged identities',()=>{
+test('PF4_NATIVE_IMPACT: grid and guide before/after records are visible, including unchanged identities',async()=>{
   const {W,state,grid,preview}=environment(),after=clone(state);after.fillGrids.push(grid());const p=preview(after);p.before=p.uiContract.before;p.after=p.uiContract.after;
   p.dependencies.before.geometry.guides=[{id:17,coordinate:101}];p.dependencies.after.geometry.guides=[{id:17,coordinate:111}];
+  Object.assign(p.dependencies.after.geometry.grids[0],{geometryMode:'sample',geometryExact:false,query:{axes:{u:{lines:[{index:'-1',coordinate:101,segments:[{a:[101,0],b:[101,100]}]}]}}}});
   const html=W._test.impact(p);assert.match(html,/來源主格 #7/);assert.match(html,/data-pf-grid-impact/);assert.match(html,/data-pf-guide-impact/);assert.match(html,/#17/);assert.match(html,/101/);assert.match(html,/111/);
+  // Read the product renderer, not a duplicate formatter. No native result is
+  // computed here; the fixture deliberately includes zero, null and a signed
+  // integer beyond Number's exact range to detect coercion or false defaults.
+  const text=value=>value.replace(/<[^>]*>/g,'').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+  const row=(markup,key)=>{
+    const match=[...markup.matchAll(/<tr data-pf-field-path="([^"]+)"[^>]*>([\s\S]*?)<\/tr>/g)].find(r=>r[1]===key);
+    assert.ok(match,'PF4A_DISPLAY_FIELDS: labelled native field is missing: '+key);
+    return [...match[2].matchAll(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/g)].map(m=>text(m[1]));
+  };
+  const primary=html.split('<details data-pf-impact-full>')[0];
+  assert.deepEqual(row(primary,'hostId'),['宿主編號','不存在','0']);
+  assert.deepEqual(row(primary,'mainAlong'),['主支偏好','不存在','沿 u']);
+  assert.deepEqual(row(primary,'geometryMode'),['幾何列舉方式','不存在','抽樣']);
+  assert.deepEqual(row(primary,'geometryExact'),['完整幾何列舉','不存在','否']);
+  assert.doesNotMatch(primary,/data-pf-field-path="query\./,'PF4A_DISPLAY_SUMMARY: sampled query geometry belongs in the complete folded evidence');
+  const dependencyRaw=html.match(/<pre data-pf-dependencies-after>([\s\S]*?)<\/pre>/);
+  assert.ok(dependencyRaw);assert.deepEqual(JSON.parse(text(dependencyRaw[1])),p.dependencies.after,'PF4A_DISPLAY_FULL: source summary retains all sample lines and exact native metadata in folded evidence');
+  assert.doesNotMatch(primary.split('<section data-pf-dependency-impact')[0],/\{&quot;/,'PF4A_DISPLAY_FIELDS: visible definition, grid and guide cells must not dump JSON');
+  const before=clone(after),changed=clone(after);before.fillGrids[0].definition.mainAlong=null;changed.fillGrids[0].definition.mainAlong='v';
+  const exact='-9007199254740993';
+  before.fillGrids[0].derived.axes.v={baseCoordinate:exact,pitch:'-103',baseIndex:'-1'};
+  changed.fillGrids[0].derived.axes.v={baseCoordinate:'-9007199254740992',pitch:'-103',baseIndex:'-1'};
+  const moved={before,after:changed,changes:[{record:'fill-grid',id:7,change:'modified'}],dependencies:{before:{geometry:{grids:[{id:7,surface:0,lattice:{v:before.fillGrids[0].derived.axes.v}}],guides:[{id:17,off:0,source:{index:'-1',band:'-2'}}],timbers:[]}},after:{geometry:{grids:[{id:7,surface:0,lattice:{v:changed.fillGrids[0].derived.axes.v}}],guides:[{id:17,off:-10,source:{index:'-1',band:'-2'}}],timbers:[]}}}};
+  const pin=clone(moved),movedHTML=W._test.impact(moved);
+  assert.deepEqual(row(movedHTML,'mainAlong'),['主支偏好','未設定','沿 v']);
+  assert.deepEqual(row(movedHTML,'lattice.v.baseCoordinate'),['週期基準 · v 軸 · 基準座標（mm）',exact,'-9007199254740992']);
+  assert.deepEqual(row(movedHTML,'off'),['位置（mm）','0','-10']);
+  assert.deepEqual(row(movedHTML,'source.index'),['引用來源 · 格線索引 k','-1','-1']);
+  assert.deepEqual(row(movedHTML,'source.band'),['引用來源 · 面材列索引 band','-2','-2']);
+  for(const [attr,value] of [['impact-before',before],['impact-after',changed],['impact-changes',moved.changes],['dependencies-before',moved.dependencies.before],['dependencies-after',moved.dependencies.after]]){
+    const raw=movedHTML.match(new RegExp('<pre data-pf-'+attr+'>([\\s\\S]*?)<\\/pre>'));
+    assert.ok(raw);assert.deepEqual(JSON.parse(text(raw[1])),value,'PF4A_DISPLAY_FULL: complete native evidence remains available: '+attr);
+  }
+  assert.deepEqual(moved,pin,'PF4A_DISPLAY_READ_ONLY: rendering must not mutate native data');
+  // Formal results use the same shipped open/render entry, with a minimal DOM
+  // sink. The browser suite separately measures real layout and hit targets.
+  const env=environment();env.state.fillGrids.push(clone(before.fillGrids[0]));env.c.document={querySelector:()=>null};
+  // main's R03 render also wires the face-mode select; give the sink only that hook.
+  await env.W.open(4);let rendered='';const region={addEventListener(){},querySelector:selector=>selector==='[data-face-product-mode]'?{addEventListener(){}}:null};
+  const pane={id:'test-pane',querySelector:()=>rendered?region:null,set innerHTML(value){rendered=value;}};
+  assert.equal(env.W.render(pane,4),true);
+  const result=rendered.match(/<details data-pf-grid-result="7">([\s\S]*?)<\/details>/);
+  assert.ok(result);assert.deepEqual(row(result[1],'definition.hostId'),['定義來源 · 宿主編號','0']);
+  assert.deepEqual(row(result[1],'definition.mainAlong'),['定義來源 · 主支偏好','未設定']);
+  assert.deepEqual(row(result[1],'derived.axes.v.baseCoordinate'),['原生有效值 · 各軸 · v 軸 · 基準座標（mm）',exact]);
+  assert.deepEqual(row(result[1],'derived.axes.v.pitch'),['原生有效值 · 各軸 · v 軸 · 節距（mm）','-103']);
+  assert.deepEqual(row(result[1],'derived.axes.v.baseIndex'),['原生有效值 · 各軸 · v 軸 · 基準索引 k','-1']);
+  assert.doesNotMatch(result[1],/\{&quot;/,'PF4A_DISPLAY_FIELDS: formal grid values must also be readable');
 });
