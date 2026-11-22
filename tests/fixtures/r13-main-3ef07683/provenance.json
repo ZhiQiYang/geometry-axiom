@@ -1,0 +1,30 @@
+{
+  "schema": "r13-previous-main-producer/1",
+  "producer_head": "3ef07683b76837fd08f8737ac5f515a3e46d6b6b",
+  "producer_axiom_revision": "73f31618a84d4feb6fdb526a9f419c24270a0d90",
+  "producer_axiom_sha256": "323de5e3ffdecef5019be784e8dd263f135f244ba0761ddfd89a59f1a3b823b3",
+  "method": "Unmodified producer verify_package (rebuild through build_package with the native C adapter) at main 3ef07683 on the R17 previous-main inputs; json.dumps(indent=2, ensure_ascii=False) + newline; no manifest restamping.",
+  "outputs": [
+    {
+      "name": "profile",
+      "bytes": 96374,
+      "sha256": "5db918f51d0dd5cf628a00c9b53971fe885db4c2e3e3ac63b2b5b037a3875246",
+      "input": "tests/fixtures/r17-main-343a8abe/profile.json",
+      "input_sha256": "fdb8bac718acb0534ec37fa30b4c86ec8a0336d430f9984bb9993ce65a0e84fb"
+    },
+    {
+      "name": "stagger",
+      "bytes": 8826,
+      "sha256": "f986e1113c2b27586ea5bdcfecb516ea4730729a5911c021c3dd64473b8efa0e",
+      "input": "tests/fixtures/r17-main-343a8abe/stagger.json",
+      "input_sha256": "aea91c046bee429c4b04fef724c3f27754949059bc1ef58c2f74f73a25fabf66"
+    },
+    {
+      "name": "card",
+      "bytes": 37934,
+      "sha256": "f270d4148ea193082e03d0f97cdb4a82c5419ef6197c5ec3f6209f366236c261",
+      "input": "tests/fixtures/r17-main-343a8abe/card.json",
+      "input_sha256": "98a0b5b927ff56afe06d722ffd932ca193db9f81b1c24b8dce1d627f4e370952"
+    }
+  ]
+}
