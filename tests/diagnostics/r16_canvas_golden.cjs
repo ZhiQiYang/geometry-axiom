@@ -1,30 +1,35 @@
 'use strict';
-// Run the original full CDP writer, then preserve the existing golden bytes
-// through an exact additive projection. This is not a browser substitute.
+// Fragmented registry adapter: the original official measurement importer is
+// the only writer. --capture verifies a full run after cost adoption and
+// writes external diagnostics only. No retired aggregate is recreated.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {spawnSync} = require('node:child_process');
 const extension = require('./r16_canvas_extension.cjs');
-const GOLDEN = 'geometry-web/cdp_sections.golden.json';
-const PLAN = 'geometry-web/canvas_shards.json';
 const ROOT = path.resolve(__dirname, '../..');
+const registryAt = root => require(path.join(root, 'geometry-web/canvas_registry.js'));
 function git(root, args) {
   const r = spawnSync('git', args, {cwd:root, encoding:'utf8', maxBuffer:16 * 1024 * 1024});
   assert.equal(r.status, 0, 'R16_GIT:' + (r.stderr || r.error || args.join(' ')));
   return r.stdout;
 }
 function baseFiles(root) {
-  return {
-    raw:git(root, ['show', extension.BASE_SHA + ':' + GOLDEN]).replace(/\r\n/g, '\n'),
-    plan:JSON.parse(git(root, ['show', extension.BASE_SHA + ':' + PLAN]))
-  };
+  const registry = registryAt(root);
+  // This is a projection of current fragments, not the archived fixture as
+  // the actual input. The registry itself rechecks every inherited fragment.
+  const current = registry.legacyView(root, {allowCandidates:true});
+  const raw = registry.encode(current.golden);
+  assert.equal(extension.sha256(raw), extension.REGISTRY_GOLDEN_SHA256,
+    'R16_CAPTURE_STARTS_WITH_UNCHANGED_BASE_GOLDEN');
+  extension.projectP205Raw(raw);
+  return {raw, plan:current.plan};
 }
 function checkCleanSources(root) {
-  git(root, ['diff', '--exit-code', 'HEAD', '--', '.', ':(exclude)' + GOLDEN]);
+  git(root, ['diff', '--exit-code', 'HEAD', '--', '.']);
   assert.equal(git(root, ['ls-files', '--others', '--exclude-standard']).trim(), '',
     'R16_CAPTURE_NO_UNTRACKED_SOURCES');
-  git(root, ['ls-files', '--error-unmatch', 'geometry-web/workspace_height_test.js',
+  git(root, ['ls-files', '--error-unmatch', 'geometry-web/canvas_sections/P1231.js',
     'tests/diagnostics/r16_canvas_extension.cjs', 'tests/diagnostics/r16_canvas_golden.cjs']);
 }
 function outsideOutput(root, output) {
@@ -36,13 +41,14 @@ function outsideOutput(root, output) {
   return out;
 }
 function capture(root, output) {
-  const {raw:baseRaw, plan:basePlan} = baseFiles(root), goldenPath = path.join(root, GOLDEN);
-  assert.equal(extension.sha256(baseRaw), extension.BASE_GOLDEN_SHA256, 'R16_TRUSTED_BASE_BYTES');
-  const before = fs.readFileSync(goldenPath);
-  assert.equal(before.toString('utf8').replace(/\r\n/g, '\n'), baseRaw, 'R16_CAPTURE_STARTS_WITH_UNCHANGED_BASE_GOLDEN');
+  const {raw:baseRaw, plan:basePlan} = baseFiles(root), registry = registryAt(root);
+  const current = registry.load(root); // Pending count/cost MUST remain red.
+  const before = registry.encode(current.golden);
+  assert.deepEqual(extension.projectGolden(extension.registeredView(current).golden), JSON.parse(baseRaw), 'R16_EXACT_ADDITIVE_SET');
   checkCleanSources(root);
   const sourceHead = git(root, ['rev-parse', 'HEAD']).trim();
-  const env = {...process.env, GEOMETRY_CDP_UPDATE_GOLDEN:'1'};
+  const env = {...process.env};
+  assert.equal(env.GEOMETRY_CDP_UPDATE_GOLDEN, undefined, 'R16_FRAGMENTED_IMPORT_ONLY');
   const scope = require(path.join(root, 'geometry-web/cdp_test.js')).runConfiguration(env);
   assert.equal(scope.mode, 'full', 'R16_CAPTURE_REQUIRES_FULL_MODE');
   const out = outsideOutput(root, output);
@@ -61,28 +67,27 @@ function capture(root, output) {
     const lines = run.stdout.split(/\r?\n/).filter(line => line.startsWith('CDP_RESULT '));
     assert.equal(lines.length, 1, 'R16_ONE_COMPLETE_RESULT');
     const result = JSON.parse(lines[0].slice('CDP_RESULT '.length));
-    const currentPlan = JSON.parse(fs.readFileSync(path.join(root, PLAN), 'utf8'));
-    const raw = extension.fromFullResult(baseRaw, basePlan, currentPlan, result);
-    const original = fs.readFileSync(goldenPath, 'utf8');
-    assert.deepEqual(JSON.parse(original).sections, result.sections, 'R16_ORIGINAL_WRITER_MATCHES_RESULT');
-    fs.writeFileSync(path.join(out, 'original-full-writer.golden.json'), original);
-    fs.writeFileSync(path.join(out, 'after.golden.json'), raw);
+    const raw = extension.fromRegisteredFullResult(baseRaw, basePlan, current, result);
+    const original = registry.encode(registry.load(root).golden);
+    assert.equal(original, before, 'R16_FRAGMENT_BYTES_UNCHANGED_BY_FULL_RUN');
+    assert.equal(raw, registry.encode(extension.registeredView(current).golden), 'R16_OFFICIAL_FRAGMENTS_MATCH_FULL_RESULT');
+    fs.writeFileSync(path.join(out, 'verified-full.golden.json'), original);
+    fs.writeFileSync(path.join(out, 'verified-r16-layer.golden.json'), raw);
     const receipt = {
-      schema:'r16-full-canvas-capture/1', acceptance:false,
-      base:extension.BASE_SHA, sourceHead, section:extension.SECTION,
+      schema:'r16-fragmented-full-verification/1', acceptance:false,
+      base:extension.REGISTRY_BASE_SHA, historicalBase:extension.BASE_SHA, sourceHead, section:extension.SECTION,
       count:result.sections[extension.SECTION], sectionCount:Object.keys(result.sections).length,
       passedAssertions:result.passedAssertions, failedAssertions:result.failedAssertions,
       beforeSha256:extension.sha256(baseRaw), afterSha256:extension.sha256(raw),
-      originalWriterSha256:extension.sha256(original),
+      registeredGoldenSha256:extension.sha256(original),
       stdoutSha256:extension.sha256(run.stdout), stderrSha256:extension.sha256(run.stderr || ''),
-      note:'Original full browser execution measured the count. Exact legacy bytes are retained. Final-head shard and complete-coverage CI remain required.'
+      note:'Official imported fragments matched a complete full browser run. Exact P205 and historical 99-section bytes are retained. Final-head two-shard/complete-coverage CI remain required.'
     };
     fs.writeFileSync(path.join(out, 'capture.json'), extension.encode(receipt));
-    fs.writeFileSync(goldenPath, raw);
     console.log(extension.encode(receipt));
   } catch (error) {
-    fs.writeFileSync(goldenPath, before);
-    fs.writeFileSync(path.join(out, 'refused.json'), extension.encode({ok:false, error:error.message, restoredBeforeSha256:extension.sha256(before)}));
+    fs.writeFileSync(path.join(out, 'refused.json'), extension.encode({ok:false, error:error.message,
+      sourceRegistryWasNotWritten:true, beforeSha256:extension.sha256(before)}));
     throw error;
   }
 }
@@ -94,7 +99,7 @@ function fixture(root) {
     schema:'geometry-cdp-result/1', scope:{mode:'full', filters:[], modifiers:[]},
     completed:true, passedAssertions:base.total + 17, failedAssertions:0, skipped:[],
     sections, sectionOrder:plan.shards.flatMap(shard => shard.sections),
-    goldenCompare:'golden updated', unexpectedBrowserExceptions:0
+    goldenCompare:'matched', unexpectedBrowserExceptions:0
   };
   return {raw, basePlan, plan, result};
 }
@@ -125,7 +130,7 @@ function selfTest(root) {
 }
 const WITHDRAWALS = [
   ['R16_WITHDRAW_LEGACY_BYTE_PIN',
-    "  assert.equal(sha256(encode(projected)), BASE_GOLDEN_SHA256, 'R16_LEGACY_GOLDEN_BYTES');",
+    "  assert.equal(sha256(encode(projectP205Golden(projected))), BASE_GOLDEN_SHA256, 'R16_LEGACY_GOLDEN_BYTES');",
     'R16_SELFTEST_LEGACY_REJECTED'],
   ['R16_WITHDRAW_UNIQUE_OWNER',
     "  assert.deepEqual(value.shards.map(shard => shard.sections.filter(name => name === SECTION)), [[], [SECTION]], 'R16_EXACT_OWNER');",
@@ -170,18 +175,26 @@ function main(argv) {
   const options = new Map();
   for (let i = 0; i < argv.length; i++) {
     const key = argv[i];
-    if (['--self-test'].includes(key)) options.set(key, true);
+    if (['--self-test', '--import-cost'].includes(key)) options.set(key, true);
     else {
-      assert.ok(['--root', '--capture', '--prove-guards'].includes(key) && argv[i + 1], 'R16_ARGUMENT:' + key);
+      assert.ok(['--root', '--capture', '--prove-guards', '--artifact', '--artifact-id'].includes(key) && argv[i + 1], 'R16_ARGUMENT:' + key);
       assert.ok(!options.has(key), 'R16_DUPLICATE_ARGUMENT:' + key); options.set(key, argv[++i]);
     }
   }
   const root = path.resolve(options.get('--root') || ROOT);
-  assert.equal(['--self-test', '--capture', '--prove-guards'].filter(key => options.has(key)).length, 1,
-    'Usage: node tests/diagnostics/r16_canvas_golden.cjs --self-test | --capture OUTSIDE_DIR | --prove-guards OUTSIDE_DIR [--root ROOT]');
+  assert.equal(['--self-test', '--capture', '--prove-guards', '--import-cost'].filter(key => options.has(key)).length, 1,
+    'Usage: node tests/diagnostics/r16_canvas_golden.cjs --self-test | --capture OUTSIDE_DIR | --prove-guards OUTSIDE_DIR | --import-cost --artifact ORIGINAL_ZIP --artifact-id ID [--root ROOT]');
+  assert.equal(options.has('--artifact'), options.has('--import-cost'), 'R16_ARTIFACT_ONLY_FOR_IMPORT');
+  assert.equal(options.has('--artifact-id'), options.has('--import-cost'), 'R16_ARTIFACT_ID_ONLY_FOR_IMPORT');
   if (options.has('--self-test')) selfTest(root);
   else if (options.has('--capture')) capture(root, options.get('--capture'));
-  else proveGuards(root, options.get('--prove-guards'));
+  else if (options.has('--prove-guards')) proveGuards(root, options.get('--prove-guards'));
+  else {
+    baseFiles(root);
+    const imported = registryAt(root).importCost(root, {id:extension.SECTION,
+      artifactFile:options.get('--artifact'), artifactId:options.get('--artifact-id')});
+    console.log(extension.encode(imported));
+  }
 }
 if (require.main === module) main(process.argv.slice(2));
 module.exports = {selfTest, proveGuards, capture};

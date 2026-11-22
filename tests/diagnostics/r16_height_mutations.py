@@ -117,11 +117,12 @@ def manifest_for(root: Path, mutations):
         "caseFilter": "GEOMETRY_CANVAS_MODULE" if fragmented else "GEOMETRY_WORKSPACE_HEIGHT_CASE",
         "resultPrefix": "P1231_SUITE_RESULT ", "cases": [CASE],
         "inputs": [
-            "geometry-web/workspace_height_test.js", "geometry-web/cdp_test.js",
+            "geometry-web/cdp_test.js",
             "geometry-web/browser_mutation_check.py", "geometry-web/workspace-height.js",
             "geometry-web/workspace-height.css", "geometry-web/workspace-height-dialogs.css",
             "tests/diagnostics/r16_height_mutations.py"
-        ] + (["geometry-web/canvas_sections/P1231.js"] if fragmented else []),
+        ] + (["geometry-web/canvas_sections/P1231.js", "geometry-web/cdp_sections.d/P1231.json"]
+             if fragmented else ["geometry-web/workspace_height_test.js"]),
         "mutations": mutations,
         "registryFormat": "fragmented" if fragmented else "single-file"
     }

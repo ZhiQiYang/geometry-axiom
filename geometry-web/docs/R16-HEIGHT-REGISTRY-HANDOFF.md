@@ -1,129 +1,120 @@
-# R16／U123-H:A：P1231 登錄與雲端實跑交接
+# R16／U123-H:A：P1231 片段登錄與外部驗收交接
 
-本片固定基底 `1b1c66749786c238042e3ba1c3917b1ad33b31bc`。開工時 PR #434
-尚未合併，因此 T→P 按現行單檔格式交付。產品高度契約見 `DOM-CONTRACT.md`；
-本文件只說明新增測試的歸屬、golden 與片段格式的接續，不宣稱瀏覽器已通過。
+本文件回覆 issue #123 的 7064742253。來源基底是 main
+`883e68688f6480a5f1de6e86e6a056cc20339cb9`；先前產品提交是
+`38a86e71c03815b595fdb135d9d7cd62b9ba0500`。本次只處理登錄合流，
+控制被遮住的產品問題由同 issue 7064969932 的增量修正接續。
 
-## 本片的獨立段落
+## 來源與執行入口
 
-- 段 ID 是 **P1231**。`P123H` 會被現行 `cdp_floor.sectionOf()` 歸成 P123；
-  使用數字段即可保留原標頭解析規則。
-- 實作在 `geometry-web/workspace_height_test.js`，只使用傳入的 CDP helpers。
-  `makeCheck` 由 driver 提供，避免把含檔案 I/O 的通用測試工具帶進 #434 的受限 module 閉包。
-- full／第二片的派送順序為 `P1161 → P1231 → P359`。P359 仍最後，P88→P72
-  切點、storage handoff、兩片數量及原時限不變。
-- `GEOMETRY_WORKSPACE_HEIGHT_ONLY=1` 只跑此段，屬 partial，不產生或更新 golden。
-  T 的高度回歸用這個入口，避免被「新段尚未量得 count」的分片守門提前攔下。
-
-## #434 尚未合入 main：本次補丁的路徑
-
-T 已接好 driver／plan 與歷史守門；P 改產品版面。**本交付沒有手填 P1231 golden。**
-現有 golden 原件為 99 段、5693 斷言、1553 bytes，LF SHA-256：
-
-`cfbe3dc18bf983b3ea3d468c456c8dfddf33e893e5ed85916edfaa2be7e87bca`
-
-先在隔離服務上跑 T，保存真正的高度或可達性斷言紅；套 P 後用相同入口轉綠：
-
-```sh
-GEOMETRY_WORKSPACE_HEIGHT_ONLY=1 node geometry-web/cdp_test.js
-```
-
-服務的 `GEOMETRY_TEST_URL`、`GEOMETRY_FEEDBACK_DIR`、Chrome 路徑與 bridge 均沿現行
-AGENTS.md／CI 的隔離設定。測試服務不得指向使用者正在用的服務。T、P 各自的原始
-stdout／stderr、exit、source head、尺寸與 `P1231_LAYOUT` 量測收據必須保存；
-語法錯誤、缺模組、連不到 Chrome 都不是有效的紅。
-
-### D：用原 full runner 產生新 golden
-
-先把 T＋P 與 manifest 的逐檔來源審查提交在執行分支，清掉所有 partial／shard scope
-旗標。下列 wrapper 要求受驗來源是乾淨的已提交版本，不接受只有工作樹修正的來源身分。
-
-```sh
-node tests/diagnostics/r16_canvas_golden.cjs --capture /tmp/r16-height-full-capture
-```
-
-輸出目錄必須在 checkout 外且尚未存在。工具沿現行 canvas job 的 **35 分鐘**上限執行
-`GEOMETRY_CDP_UPDATE_GOLDEN=1 node geometry-web/cdp_test.js`，先驗證原 runner 的
-full／零失敗／零 skip／完整 100 段順序與原 99 段逐值不變，再從該次結果取 P1231 的
-精確 count。它保留原 99 段的序列化 bytes，只追加新段與總數；舊 byte pins 都不更改。
-`original-full-writer.golden.json` 保留原 writer 的原始輸出，`capture.json` 記真 source head、
-stdout／stderr 雜湊與前後 golden 雜湊。若任何一步拒絕，原 golden bytes 原樣還原。
-
-此 capture 記 `acceptance:false`：它提供新段的完整實跑計數，尚不代表最終 head 的兩片
-正式 CI 或 complete coverage 已通過。沒有真實成功結果時，golden 保持 99 段；正式分片、
-完整覆蓋與新增外層投影應保持紅，不可用估算 count、fixture 或 partial 的 count 續綠。
-
-原生守門的加法投影位於 `tests/diagnostics/r16_canvas_extension.cjs`。它先驗 P1231 的
-唯一 owner、精確位置、真 golden 的正整數 count 與完整總數，才投影回原 99 段。
-`test_canvas_shards.js` 的完整收據驗證仍使用實際 100 段；只有歷史 oracle 取得投影。
-原 91／93／95／98／99 段的舊斷言與所有舊 raw-byte pins 繼續生效。
-
-```sh
-node tests/diagnostics/r16_canvas_golden.cjs --self-test
-node tests/diagnostics/r16_canvas_golden.cjs --prove-guards /tmp/r16-golden-guard-proof
-node --test tests/test_canvas_shards.js tests/test_identity_canvas_merge.js
-```
-
-第一條只跑 10 個合成 fixture 檢查；第二條實際撤回三個 guard，再還原，每個要求正常
-AssertionError 的 `0／1／0`。這兩項不使用 Chromium，不能當成產品高度／遮蔽驗收。
-第三條應在 D 完成後執行，count 保留現行兩 suite 的 41 與 4；本片沒有新增 native suite。
-產品的高度與控制項具名撤回另由本片瀏覽器 runner 執行。
-
-### 架構與不可變收據
-
-`cdp_test.js` 的既有 exclusion 只更新這個已審來源的精確 hash；新增的
-`workspace_height_test.js` 按測試 driver 登記獨立 exclusion，不做 directory exemption 或
-refresh-all。兩支 diagnostics 在 `tests/`，不屬產品 JavaScript 的 search root。
-由原 scanner 與架構測試重驗來源，再經 CI 原工具產生、採入 architecture bundle。
-四個 frozen 歷史檔與正典閱讀器不手寫。mutation freshness 是否需新原件，仍以原
-`evidence_records.py materialize`＋`tests/mutate.py --check` 判定。
-
-## #434 先合入 main：改用正式片段流程
-
-先讀合流後真正的 `tests/FRAGMENTED-REGISTRIES.md`。保留本片產品修改、DOM 契約及
-完整 P1231 測試；**不恢復已退休的** `canvas_shards.json`／`cdp_sections.golden.json`，
-也不再套用本片對 `cdp_test.js` 及兩支共享歷史測試的機械追加。
-本片的舊格式 D wrapper／加法投影僅服務舊格式，不能拿來更新新格式歷史封存。
-
-建立獨立 module `geometry-web/canvas_sections/P1231.js`：
-
-```js
-'use strict';
-const run = require('../workspace_height_test.js');
-module.exports = async helpers => run(helpers);
-```
-
-```sh
-node geometry-web/canvas_registry.js stage-module --id P1231
-```
-
-T→P 與本片具名撤回的 partial 入口也改用通用 dispatcher：
+- `geometry-web/canvas_sections/P1231.js` 是原
+  `geometry-web/workspace_height_test.js` 的原樣搬移；本次未刪斷言、未延長等待。
+- 模組以 `module.exports = async helpers => {...}` 輸出，使用既有
+  `send`、`eval_`、`sleep`、`click`、`waitForUI`、`makeCheck`、`exceptionCount`。
+  原 `sourceClosure(...,{strict:true})` 直接通過；沒有 fs、process、動態 require
+  或 early observer，不依賴 #445 的新 driver 型別。
+- `cdp_test.js` 保持 main 完整 bytes，沿 #434 的通用 dispatch。
+- 片段由原命令 `node geometry-web/canvas_registry.js stage-module --id P1231` 產生。
+  它是第二片最後一個獨立模組，順序 `P1161 → P1231 → P359`，切點仍是 P88／P72。
+- `GEOMETRY_WORKSPACE_HEIGHT_ONLY` 已無接線。單段診斷一律使用：
 
 ```sh
 GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1231 node geometry-web/cdp_test.js
 ```
 
-舊的 `GEOMETRY_WORKSPACE_HEIGHT_ONLY` 接線不再存在；不可保留這個失效旗標而誤跑 full。
-新 partial 仍不是正式 count／cost 收據，不能取代下列官方量測。
+這是 partial 診斷，不是完整驗收。測試仍完整包含五尺寸
+390×844、768×1024、1400×900、560×844、561×844；教學展開／已讀、
+六工作區與空間三視圖第二入口、真 Tab、控制五點、繪區 25 點、同一份
+World／history、grid resize、visualViewport 分母、dock wheel 及 21c-1 文字堆疊。
 
-不加臆測順序依賴：本片自備場景，預設第二片尾 slot 仍在所有既有尾段之後、P359 之前。
-候選零 count 不是 golden；用 `Canvas section measurement` 在本片分支真量測，再由可
-下載官方 artifact 的 grokbot／本機 Claude 原樣導入：
+## 三層精確對帳
+
+1. 正式收據核對實際片段全集，P1231 的計數只能來自正式 Chrome measurement。
+2. 精確只移除 P1231，得到 main 的 100 段、5718 斷言；P205 仍是 25，
+   仍依 `P1284 → P205 → P353` 執行。其 1569 bytes 的 SHA-256 是
+   `0acd8bdccce2eb3aae13b94bd04d9dfa89521dcd58d085e0e634698d4ca41e7b`。
+3. 在歷史 oracle 的輸入中再精確移除 P205 的一行與 25 個斷言，得到原
+   99 段／5693 斷言／1553 bytes；舊 pin 原值仍是
+   `cfbe3dc18bf983b3ea3d468c456c8dfddf33e893e5ed85916edfaa2be7e87bca`。
+
+不是 subset 比較：全部原段的值、順序、raw spacing 和唯一 owner 都仍受檢。
+其他 PR 的獨立模組先以原 registry 載入器核 source closure／cost，再核完整
+具名聯集與分片唯一性；只有歷史 oracle 的輸入才移除那些已登錄的其他模組。
+未登錄段、重複 owner、遺失 P205、其他模組漏跑或計數漂移都會拒絕，
+不會因 P1162 等獨立新段出現而改寫 R16 的歷史 pin。
+兩支共享測試保留 R03 既有 oracle 和負控制，新增 R16 的精確投影與負控制；
+沒有新增 native suite，也沒有改原 suite expected 計數。
+`canvas-registry/legacy.*` 與 100 個既有 `cdp_sections.d` 片段保持 main 原件。
+退休的 `canvas_shards.json`、`cdp_sections.golden.json` 不重建、不改寫。
+
+## 官方測量與導入順序
+
+目前 P1231 片段是 `provenance.kind=candidate`、`assertions=0`、`cost=null`。
+0 是工具生成的未採用佔位，不是測試通過數；正式 `canvas_registry.js check`
+與共享正式測試必須以 `R386_CANVAS_COST_RECEIPT_REQUIRED` 拒絕。
+
+落檔者先合入 7064969932 的產品修正，提交乾淨完整來源，依
+`tests/FRAGMENTED-REGISTRIES.md` 執行原 `Canvas section measurement` workflow，
+輸入 `section=P1231`。保留官方 artifact 原 ZIP，不改其中 source、時間或計數。
+導入只有這一條原正式流程：
 
 ```sh
-node geometry-web/canvas_registry.js import-cost --id P1231 --artifact-id ARTIFACT_ID --artifact ORIGINAL.zip
+node geometry-web/canvas_registry.js import-cost --id P1231 --artifact-id ID --artifact ORIGINAL.zip
 ```
 
-測量 workflow 必須先隨 #434 進預設分支，才能 dispatch；雲端下載遭 403 時不得繞過。
-初次保持第二片尾 slot；只有取得兩 slot × full／shard1／shard2 的正式 proof，才可使用
-`import-slots`／自動平衡。不能拿本機耗時、斷言數或本片舊格式的 partial log 當成本原件。
+原 R16 產生器也提供等效 adapter，直接呼叫同一個 `importCost`，不自行寫片段：
 
-新測試來源 `workspace_height_test.js` 與新 wrapper `canvas_sections/P1231.js` 各自登記為
-`product-architecture.d/exclusions/` 下的獨立片段，產品 `workspace-height.js` 則登記為
-`sources/` 的 H 層片段；schema／檔名依當時 reader。不再改 `cdp_test.js` 的新增派送或
-其來源 pin，不手改已退休總表或改寫歷史封存。若本片先合入舊格式 main，
-#434 的承接者必須在合流樹重跑原 `registry_migrate.py plan/apply/check`，把新 100 段真實
-結果納入遷移輸入，不套舊 99 段的產物。
+```sh
+node tests/diagnostics/r16_canvas_golden.cjs --import-cost --artifact-id ID --artifact ORIGINAL.zip
+```
 
-兩種格式都必須以最終合流 head 的原生守門、canvas 兩片及 complete coverage 為最後
-驗收。片段化只改登錄方式，不降低 U123-H:A 的高度、可達性、具名撤回或來源驗真要求。
+新舊片段來源、官方 run、ZIP digest、count／cost、source closure 都由原 importer 重驗。
+本機沒有 Chrome，沒有附測量值、成本、正式新 golden 或宣稱任何瀏覽器綠燈。
+導入後提交完整來源，再跑完整模式與兩片／complete coverage。
+
+## Node 可重跑檢查
+
+```sh
+node tests/diagnostics/r16_fragmented_alignment.cjs
+node tests/diagnostics/r16_canvas_golden.cjs --self-test
+node tests/diagnostics/r16_canvas_golden.cjs --prove-guards /tmp/r16-golden-guards-NEW
+python3 -B tests/diagnostics/r16_height_mutations.py --preflight
+```
+
+`r16_fragmented_alignment.cjs` 的 P1231=17 僅在記憶體合成，不保存成任何正式檔。
+它檢目前實際片段、P205 和原 99 段 pin、raw bytes、缺段、重複 owner、錯位、
+模組 strict closure、cdp_test 與全部原片段 byte 相等，以及 pending 的正式拒絕。
+這些是 Node 合成／來源契約結果，不能說成 Chrome 實跑。
+
+`--prove-guards` 分別執行 `R16_WITHDRAW_LEGACY_BYTE_PIN`、
+`R16_WITHDRAW_UNIQUE_OWNER`、`R16_WITHDRAW_CAPTURE_ZERO_FAILURES`，
+要求三相退出碼恰為 0／1／0 並命中各自 oracle。
+既有七項產品撤回保留，preflight 不代表七項已殺死；須在產品基準線真正綠之後，
+用原 `r16_height_mutations.py` 各取真 Chrome 0／1／0。
+
+## 導入後的正式檢查
+
+```sh
+node geometry-web/canvas_registry.js check
+node --test tests/test_canvas_shards.js tests/test_identity_canvas_merge.js
+node tests/diagnostics/r16_canvas_golden.cjs --capture /tmp/r16-full-NEW
+```
+
+`--capture` 現在是導入後的完整驗證：仍跑原 full CDP driver，35 分鐘上限不變，
+要求 complete、zero failures、無 filters／modifiers／skip、逐段數與完整順序相等。
+只把實跑 log、核對後 golden 與 receipt 寫到 repo 外；不寫任何登錄來源。
+receipt 仍標 `acceptance:false`，最終 head 兩片與 complete coverage、其他正式 CI
+必須另外全綠。`GEOMETRY_CDP_UPDATE_GOLDEN` 在此 adapter 明確拒絕。
+
+## 架構來源
+
+新增 H 層 `workspace-height.js` 來源片段及 P1231 模組的逐檔 exclusion pin，
+兩者由 `architecture_contract.load_manifest`＋`fragment_manifest_files` 原編碼器產生。
+不更新 cdp_test pin、不加目錄豁免；三份 architecture 衍生物及 freshness 證據
+留給正式 evidence 流程重生與採入，不手寫。
+
+## 層級
+
+本次是候選補丁與 Node 驗證，沒有完成 R16 U123-H:A 的 L2／L3／L4。
+當前仍待：可達性產品增量、正式 P1231 全矩陣、官方 cost 導入、七項真 Chrome
+產品撤回、合流後完整 CI 與人工 App 核對。
