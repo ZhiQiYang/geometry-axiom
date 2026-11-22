@@ -344,6 +344,69 @@ class NativeShardCoverage(unittest.TestCase):
                          'R378_SIX_SHARDS_COVER_FULL_REGISTRY')
         self.assertEqual(sum(map(len, six)), len(suites))
         self._assert_six_native_workflow()
+        self._assert_rejected_trial_capacity_and_ties()
+
+    def _assert_rejected_trial_capacity_and_ties(self):
+        # Count actual scoring work, not runner seconds. Every shard is
+        # balanced at [100, 100], while every cross-shard swap or two-for-one
+        # exchange exceeds 100 in at least one scenario. Such a trial cannot
+        # improve the descending score and must not sort its full score.
+        for count in (2, 4, 6):
+            parts = [{'s-%d-a' % i, 's-%d-b' % i} for i in range(count)]
+            costs = {name: ([i + 1, 99 - i] if name.endswith('-a')
+                            else [99 - i, i + 1])
+                     for i, part in enumerate(parts) for name in part}
+            loads = [[100, 100] for _ in parts]
+            for method, kind in (('_swap_scenarios', 'SWAP'),
+                                 ('_exchange_scenarios', 'EXCHANGE')):
+                marker = 'R443_NATIVE_' + kind + '_REJECTED_TRIAL_CAPACITY'
+                with self.subTest(method=method, capacity_parts=count):
+                    wanted_parts, wanted_loads = [set(p) for p in parts], [p[:] for p in loads]
+                    getattr(native_score_reference, method)(wanted_parts, wanted_loads, costs)
+                    scalar_inputs = 0
+                    def counted_sorted(values, *args, **kwargs):
+                        nonlocal scalar_inputs
+                        values = list(values)
+                        if values and all(type(value) is int for value in values):
+                            scalar_inputs += len(values)
+                        return sorted(values, *args, **kwargs)
+                    actual_parts, actual_loads = [set(p) for p in parts], [p[:] for p in loads]
+                    with mock.patch.object(native_shards, 'sorted', counted_sorted, create=True):
+                        getattr(native_shards, method)(actual_parts, actual_loads, costs)
+                    self.assertEqual(actual_parts, wanted_parts, marker + ': owners')
+                    self.assertEqual(actual_loads, wanted_loads, marker + ': loads')
+                    # Only the initial pair scores remain; exchange also
+                    # compares one initial complete score. No trial is accepted.
+                    bound = (4 * (count * (count - 1) // 2) if kind == 'SWAP'
+                             else 2 * count + 4 * count * (count - 1))
+                    self.assertLessEqual(scalar_inputs, bound, marker)
+        # Equal maxima are not grounds for rejection: lower score components
+        # can still improve. Pin both the owners and every resulting load, and
+        # independently compare the frozen full-score oracle. Using >= instead
+        # of > for the early rejection leaves these candidates wrongly untouched.
+        fixtures = (
+            ('_swap_scenarios', 'SWAP',
+             {'a': [1, 3], 'b': [5, 3], 'c': [1, 1], 'd': [3, 1]},
+             [{'b', 'c'}, {'a', 'd'}], [[6, 4], [4, 4]]),
+            ('_exchange_scenarios', 'EXCHANGE',
+             {'a': [2, 1], 'b': [6, 6], 'c': [3, 3], 'd': [3, 1]},
+             [{'a', 'c', 'd'}, {'b'}], [[8, 5], [6, 6]]),
+        )
+        for method, kind, costs, pinned_parts, pinned_loads in fixtures:
+            marker = 'R443_NATIVE_' + kind + '_EQUAL_PEAK_REMAINS_ELIGIBLE'
+            with self.subTest(method=method, equal_peak=True):
+                parts = [{'a', 'b'}, {'c', 'd'}]
+                loads = [[sum(costs[name][r] for name in part) for r in range(2)]
+                         for part in parts]
+                wanted_parts, wanted_loads = [set(p) for p in parts], [p[:] for p in loads]
+                getattr(native_score_reference, method)(wanted_parts, wanted_loads, costs)
+                self.assertEqual(wanted_parts, pinned_parts, marker + ': oracle owners')
+                self.assertEqual(wanted_loads, pinned_loads, marker + ': oracle loads')
+                actual_parts, actual_loads = [set(p) for p in parts], [p[:] for p in loads]
+                getattr(native_shards, method)(actual_parts, actual_loads, costs)
+                self.assertEqual(actual_parts, wanted_parts, marker + ': owners')
+                self.assertEqual(actual_loads, wanted_loads, marker + ': loads')
+
 
     def test_partition_is_deterministic(self):
         suites = run_all.build_suites()
