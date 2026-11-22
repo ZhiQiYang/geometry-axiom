@@ -381,7 +381,9 @@ async function phase1() {
 }
 
 async function rejectCase(p, net, w, h, code, label) {
-  const spot = await freeSpot(p);
+  let spot = await freeSpot(p);
+  // 畫布空白不夠時按右下「縮小」（只改視圖縮放）再找
+  for (let i = 0; !spot && i < 4; i++) { await U.click(p, '#zoomOutButton', 800); spot = await freeSpot(p); }
   if (!spot) throw new Error('no free spot for ' + label);
   const before = await cp(p);
   await drawRect(p, spot.x, spot.y, w, h, 2500, label);
@@ -396,7 +398,8 @@ async function rejectCase(p, net, w, h, code, label) {
   const src = await pickSources(p, onOptions[0][0]);
   const b0 = await cp(p); const n0 = net.length;
   await U.click(p, A('preview'), 300); await waitPhase(p, 'rejected', 30000); await p.waitForTimeout(500);
-  const a0 = await cp(p); await L.shot(p, O, `${label}-c-rejected`);
+  const a0 = await cp(p); await L.shot(p, O, `${label}-c-rejected-actions`);
+  await L.wheelTo(p, '[data-ft-status]'); await L.shot(p, O, `${label}-c-rejected-status`);
   const res = { size: [w, h], boundary: bid, outline: o, dims: dims(o), placement: pl || null, form, onOptions, sources: src, status: await T(p, '[data-ft-status]'), phase: await phaseOf(p), confirmDisabled: await p.$eval(A('confirm'), e => e.disabled), results: await L.visible(p, '.ft-results'), requests: net.slice(n0) };
   await U.click(p, A('cancel'), 800).catch(() => {}); const c0 = await cp(p);
   res.afterCancelStatus = await T(p, '[data-ft-status]');
