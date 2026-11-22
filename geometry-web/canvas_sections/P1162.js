@@ -169,8 +169,18 @@ module.exports = async helpers => {
       const error = Error(name); error.p1162Assertion = true; throw error;
     }
   }
-  async function state() {
-    return read(`(()=>{const r=ocv.getBoundingClientRect();return {
+  // Capture each native field once. The post-wait check and its failure detail
+  // must describe this same evaluation, not a third read after state changes.
+  const nativeStateExpression = `(()=>{const values={pending:__p1162.pending,busy:oc.busy,
+    phase:connection.phase,blocked:ReferenceWorkspace.getEvidenceState().blocked,
+    previewing:window.ParameterUI?.previewing};
+    const conditions={pendingZero:values.pending===0,canvasIdle:!values.busy,
+      connectionReady:values.phase==='ready',referenceUnblocked:values.blocked===false,
+      parameterIdle:!values.previewing};
+    return {values,conditions,falseConditions:Object.keys(conditions).filter(key=>!conditions[key])};})()`;
+  function stateExpression(nativeExpression = nativeStateExpression) {
+    return `(()=>{const nativeState=${nativeExpression},r=ocv.getBoundingClientRect();return {
+      native:nativeState,
       selection:oc.selection,sel:oc.sel,focus:oc.focus,tool:oc.tool,drawTool:oc.drawTool,
       card:oc.card?{kind:oc.card.kind,id:oc.card.id,pointerId:oc.card.pointerId,moved:oc.card.moved,blocked:oc.card.blocked}:null,
       pan:oc.pan?{sx:oc.pan.sx,sy:oc.pan.sy,px:oc.pan.px,py:oc.pan.py}:null,marquee:!!canvasMarquee,
@@ -182,20 +192,25 @@ module.exports = async helpers => {
       rect:oc.rect,camera:{x:oc.panX,y:oc.panY,z:oc.zoom},
       menu:{hidden:$('canvasCtxMenu').hidden,sheet:$('canvasCtxMenu').classList.contains('fcm-sheet')},
       active:document.activeElement?.outerHTML?.slice(0,400),
-      events:__p1162.snapshot(),requests:__p1162.requests,rings:__p1162.rings,menus:__p1162.menus};})()`);
+      events:__p1162.snapshot(),requests:__p1162.requests,rings:__p1162.rings,menus:__p1162.menus};})()`;
   }
-  async function until(name, expression) {
+  async function state() { return read(stateExpression()); }
+  async function until(name, expression, nativeSettlement = false) {
     try { await waitForUI(expression, 15000); }
     catch (error) {
       if (!String(error.message).startsWith('UI condition timed out at ')) throw error;
-      check(name, false, {expression, state:await state()});
+      check(name, false, {expression, phase:'timeout', state:await state()});
     }
-    check(name, await read(`!!(${expression})`));
+    const observation = await read(nativeSettlement
+      ? `(()=>{const observedNative=${nativeStateExpression},value=Object.values(observedNative.conditions).every(value=>value);
+          return {value,state:value?undefined:${stateExpression('observedNative')}};})()`
+      : `(()=>{const value=!!(${expression});return {value,state:value?undefined:${stateExpression()}};})()`);
+    check(name, observation.value, observation.value ? undefined : {expression, phase:'post-wait-recheck', state:observation.state});
   }
   const frames = () => read('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))');
   async function settled(name = 'NATIVE_SETTLED') {
     await until(name, `__p1162.pending===0 && !oc.busy && connection.phase==='ready' &&
-      ReferenceWorkspace.getEvidenceState().blocked===false && !window.ParameterUI?.previewing`);
+      ReferenceWorkspace.getEvidenceState().blocked===false && !window.ParameterUI?.previewing`, true);
     await frames();
   }
   async function key(key, code, vk, modifiers = 0) {
