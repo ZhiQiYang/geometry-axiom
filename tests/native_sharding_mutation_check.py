@@ -179,6 +179,27 @@ if mode == 'r03-provenance-baseline' or mode.startswith('R03_'):
 if mode in ('r12-provenance-baseline', 'R12_OMIT_SOURCE_FROM_DIGEST', 'R12_ACCEPT_FAILED_CHILD',
             'R12_ALLOW_DUPLICATE_SOURCE', 'R12_RESTORE_PRE_REPAIR_COSTS'):
     target = 'test_unittest_runner.NativeShardCoverage.test_r12_receipt_provenance_rejects_named_mutations'
+if mode == 'r443-r396-baseline' or mode.startswith('R443F_R396_'):
+    target = 'test_unittest_runner.NativeShardCoverage.test_workspace_historical_budget'
+    if mode == 'R443F_R396_RESTORE_UNPROJECTED_SOURCE':
+        import inspect, textwrap, test_unittest_runner as checks
+        original = checks.NativeShardCoverage.test_workspace_historical_budget
+        source = textwrap.dedent(inspect.getsource(original))
+        projection = 'set(added) - fragment_additions'
+        assert source.count(projection) == 1, 'R443F_R396_WITHDRAWAL_SITE'
+        namespace = dict(vars(checks))
+        exec(compile(source.replace(projection, 'set(added)', 1),
+                     '<R443F_R396_RESTORE_UNPROJECTED_SOURCE>', 'exec'), namespace)
+        checks.NativeShardCoverage.test_workspace_historical_budget = namespace[original.__name__]
+    elif mode == 'R443F_R396_DROP_HISTORICAL_COST':
+        drop_added_suites({'node:workspace_view_state'})
+    elif mode == 'R443F_R396_DROP_HISTORICAL_SUITE':
+        original_registry = run_all.build_suites
+        run_all.build_suites = lambda: [s for s in original_registry() if s.name != 'node:cdp_settle']
+    elif mode == 'R443F_R396_ADMIT_UNKNOWN_HISTORICAL_COST':
+        original_added = native_shards.added_suite_costs
+        native_shards.added_suite_costs = lambda: {
+            **original_added(), 'node:r443_unregistered_historical': 1000}
 if mode == 'R348_REVERT_MEASURED_PROFILE':
     original = native_shards.partition_suites
     def legacy(suites, count, weights=None):
@@ -578,7 +599,7 @@ markers = ('R348_MEASURED_RECEIPT_BUDGET', 'R348_FOUR_NATIVE_WORKFLOW',
            'R396_ADDED_RECEIPT_failed-child', 'R396_ADDED_RECEIPT_bool-exit',
            'R396_ADDED_RECEIPT_fake-exit-only-count', 'R396_ADDED_RECEIPT_duplicate-legacy',
            'R396_PROFILE_DIGEST_BINDS_ADDED_RECEIPTS', 'R396_NAMED_WITHDRAWALS_RETAINED',
-           'R396_ADDED_RECEIPT_duplicate-r14',
+           'R396_ADDED_RECEIPT_duplicate-r14', 'R396_HISTORICAL_321_REGISTRY',
            'R17_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R17_COMPLETE_EXPECTED_REGISTRY',
            'R17_PROFILE_DIGEST_BINDS_R17_SOURCE',
            'R12_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS', 'R12_COMPLETE_EXPECTED_REGISTRY',
@@ -609,13 +630,16 @@ raise SystemExit(0 if result.wasSuccessful() else 1)
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--r03', action='store_true',
+    proof_group = parser.add_mutually_exclusive_group()
+    proof_group.add_argument('--r03', action='store_true',
                         help='run the independent R03 workspace-provenance proof; leave the existing coverage job unchanged')
+    proof_group.add_argument('--r443-r396', action='store_true',
+                        help='prove the R396 historical projection and retained cost/suite negative controls')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     rows = []
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONIOENCODING='utf-8')
-    initial = [] if args.r03 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
+    initial = [] if args.r03 or args.r443_r396 else [('baseline','baseline',0), ('removed','drop-one-suite',1), ('restored','baseline',0)]
     for label, mode, expected in initial:
         report, log = args.output/(label+'.json'), args.output/(label+'.log')
         with log.open('wb') as stream:
@@ -716,6 +740,12 @@ def main():
             'R03_CONTAMINATE_HISTORICAL_UNIVERSE': ('measured-baseline', 'R03_HISTORICAL_WEIGHT_UNIVERSE'),
             'R03_DROP_PRIOR_SUITE': ('r03-provenance-baseline', 'R03_PRIOR_324_REGISTRY_UNCHANGED'),
         }
+    r443_r396_mutations = {
+        'R443F_R396_RESTORE_UNPROJECTED_SOURCE': ('r443-r396-baseline', 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'R443F_R396_DROP_HISTORICAL_COST': ('r443-r396-baseline', 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+        'R443F_R396_DROP_HISTORICAL_SUITE': ('r443-r396-baseline', 'R396_HISTORICAL_321_REGISTRY'),
+        'R443F_R396_ADMIT_UNKNOWN_HISTORICAL_COST': ('r443-r396-baseline', 'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS'),
+    }
     def prove(item):
         mutation, (baseline, marker) = item
         proof = []
@@ -744,7 +774,9 @@ def main():
                            'path-scope-baseline': ('BrowserPathScopeWiring.'
                                                    'test_browser_jobs_skip_only_on_explicit_path_scope_false'),
                            'r03-provenance-baseline': ('NativeShardCoverage.'
-                                                       'test_r03_workspace_cost_provenance')}
+                                                       'test_r03_workspace_cost_provenance'),
+                           'r443-r396-baseline': ('NativeShardCoverage.'
+                                                 'test_workspace_historical_budget')}
                 assert all(name.startswith('test_unittest_runner.' + methods[baseline])
                            for name in row['failure_ids']), row
             proof.append(dict(label=label, exit=result.returncode, **row))
@@ -752,8 +784,10 @@ def main():
     # Independent child processes mutate only their own in-memory imports.
     # Bound concurrency to two; retain a separate real 0/1/0 for every name
     # without extending the native coverage job's existing five-minute limit.
+    selected_mutations = (r443_r396_mutations if args.r443_r396 else
+                          r03_mutations if args.r03 else mutations)
     with ThreadPoolExecutor(max_workers=2) as pool:
-        timing_proofs = dict(pool.map(prove, (r03_mutations if args.r03 else mutations).items()))
+        timing_proofs = dict(pool.map(prove, selected_mutations.items()))
     receipt = dict(passed=True, baseline_mutant_restored_exit=[r['exit'] for r in rows], rows=rows,
                    timing_proofs=timing_proofs)
     (args.output/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
