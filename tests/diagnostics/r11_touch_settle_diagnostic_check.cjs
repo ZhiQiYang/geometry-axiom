@@ -19,6 +19,7 @@ const CONDITIONS = ['pendingZero', 'canvasIdle', 'connectionReady', 'referenceUn
 const HEALTHY = {pending:0, busy:false, phase:'ready', blocked:false, previewing:false};
 const BAD = {pending:1, busy:true, phase:'reconnecting', blocked:true, previewing:true};
 const FIELDS = Object.keys(HEALTHY);
+const CLOCK_ORIGIN = 1700000000000;
 const hash = text => createHash('sha256').update(text).digest('hex');
 const plain = value => JSON.parse(JSON.stringify(value));
 const compact = text => text.replace(/\s+/g, ' ').trim();
@@ -31,19 +32,28 @@ function once(source, before, after) {
 async function harness(source, options = {}) {
   const checks = [], evals = [], waits = [];
   const native = {...HEALTHY};
-  let evidenceReads = 0, snapshotReads = 0, frames = 0;
+  let evidenceReads = 0, snapshotReads = 0, frames = 0, clockTick = 0, afterWait = false;
   const element = {hidden:true, classList:{contains:()=>false}};
   const browser = {
     oc:{selection:[], sel:null, focus:null, tool:'select', drawTool:'select',
       card:null, pan:null, rect:null, panX:17, panY:23, zoom:1},
-    ocv:{getBoundingClientRect:()=>{snapshotReads++; return {left:0, top:56, width:1400, height:844};}},
+    ocv:{getBoundingClientRect:()=>{snapshotReads++;
+      if (options.snapshotError) throw Error(options.snapshotError);
+      return {left:0, top:56, width:1400, height:844};}},
     canvasMarquee:null, scrollX:0, scrollY:0,
     document:{querySelectorAll:()=>[], activeElement:{outerHTML:'<div id="canvasViewport"></div>'}},
     $:()=>element,
     __p1162:{owner:()=>({fixture:'unchanged-owner'}), snapshot:()=>[{type:'touchend', trusted:true}],
       requests:[{command:'dump', settled:true}], rings:[], menus:[]},
     connection:{}, ParameterUI:{},
-    ReferenceWorkspace:{getEvidenceState:()=>{evidenceReads++; return {blocked:native.blocked};}},
+    ReferenceWorkspace:{getEvidenceState:()=>{evidenceReads++;
+      if (afterWait && options.nativeError) throw Error(options.nativeError);
+      return {blocked:native.blocked};}},
+    Date:class extends Date {static now(){return CLOCK_ORIGIN+1200+clockTick;}},
+    performance:{timeOrigin:CLOCK_ORIGIN,now:()=>{
+      if (options.clockError) throw Error(options.clockError);
+      return 1200+clockTick++;
+    }},
     requestAnimationFrame:callback=>{frames++; callback();},
     visualViewport:null,
   };
@@ -73,6 +83,7 @@ async function harness(source, options = {}) {
       assert.equal(vm.runInContext('!!('+expression+')', context), true, 'R433_WAIT_MUST_FIRST_BE_TRUE');
       Object.assign(native, options.flip || {});
       evidenceReads = 0;
+      afterWait = true;
     },
     eval_:async expression=>{
       evals.push(expression);
@@ -184,6 +195,62 @@ async function regression(source) {
     assert.equal(result.checks.length, 0);
     assert.equal(result.evals.length, 1);
   });
+  await test('R433_RECHECK_FIELD_TIMESTAMPS', async()=>{
+    for (const flip of [{pending:1}, {blocked:undefined}]) {
+      const result=await harness(source, {flip,restoreAfterRead:true});
+      assertFailure(result, Object.keys(flip));
+      const observed=result.checks[0].detail.state.native;
+      assert.ok(observed.samples, 'R433_EACH_FIELD_HAS_TIMESTAMP');
+      assert.deepEqual(Object.keys(observed.samples), FIELDS, 'R433_TIMESTAMP_EXACT_FIELDS');
+      for (const [i,field] of FIELDS.entries()) {
+        const sample=observed.samples[field],raw={...HEALTHY,...flip}[field];
+        assert.equal(sample.value,raw,'R433_TIMESTAMP_RETAINS_RAW_VALUE');
+        assert.equal(sample.type,typeof raw,'R433_TIMESTAMP_RETAINS_UNDEFINED_TYPE');
+        assert.deepEqual(sample.clock,{wallTimeMs:CLOCK_ORIGIN+1200+i,
+          monotonicMs:1200+i,timeOriginMs:CLOCK_ORIGIN},'R433_FIELD_OBSERVATION_CLOCK');
+      }
+    }
+  });
+  for (const [id,options,name,phase,badFields] of [
+    ['RECHECK',{flip:{pending:1}},'NATIVE_SETTLED','post-wait-recheck',['pending']],
+    ['GENERIC',{generic:true,flip:{busy:true}},'GENERIC_RECHECK','post-wait-recheck',['busy']],
+    ['TIMEOUT',{timeout:true,flip:{busy:true}},'NATIVE_SETTLED','timeout',['busy']],
+  ]) await test('R433_SNAPSHOT_ERROR_KEEPS_'+id+'_FAILURE', async()=>{
+    const result=await harness(source,{...options,snapshotError:'snapshot getter unavailable'});
+    assert.equal(result.error?.p1162Assertion,true,'R433_FALSE_VERDICT_SURVIVES_SNAPSHOT_ERROR');
+    assert.equal(result.checks.length,1,'R433_SNAPSHOT_ERROR_STILL_ONE_ASSERTION');
+    const row=result.checks[0];
+    assert.ok(row.detail,'R433_RECHECK_FAILURE_DETAIL');
+    assert.equal(row.name,name);assert.equal(row.value,false);assert.equal(row.detail.phase,phase);
+    assert.ok(row.detail.state?.native?.conditions,'R433_SETTLE_FIVE_CONDITIONS');
+    assert.match(row.detail.state.diagnosticError,/snapshot getter unavailable/,'R433_SNAPSHOT_ERROR_RECORDED');
+    assert.deepEqual(row.detail.state.native.falseConditions,badFields.map(field=>CONDITIONS[FIELDS.indexOf(field)]));
+    assert.equal(result.active.assertions.failed,1);assert.deepEqual(result.active.firstFailure.detail,row.detail);
+    assert.equal(result.waits.length,1);assert.equal(result.waits[0].timeout,15000);
+    assert.equal(result.evals.length,1);assert.equal(result.evidenceReads,1);assert.equal(result.frames,0);
+    assert.ok(row.detail.state.native.samples,'R433_FALLBACK_RETAINS_TIMESTAMPS');
+    assert.equal(Object.keys(row.detail.state.native.samples).length,5,'R433_FALLBACK_RETAINS_TIMESTAMPS');
+  });
+  await test('R433_CLOCK_ERROR_KEEPS_FALSE_VERDICT', async()=>{
+    const result=await harness(source,{flip:{pending:1},clockError:'clock unavailable'});
+    assertFailure(result,['pending']);
+    assert.ok(result.checks[0].detail.state.native.samples,'R433_CLOCK_ERROR_RECORDED');
+    for (const sample of Object.values(result.checks[0].detail.state.native.samples))
+      assert.match(sample.clock.error,/clock unavailable/,'R433_CLOCK_ERROR_RECORDED');
+  });
+  await test('R433_CLOCK_ERROR_KEEPS_SUCCESS_VERDICT', async()=>{
+    const result=await harness(source,{clockError:'clock unavailable'});
+    assert.equal(result.error,undefined,'R433_CLOCK_ERROR_CANNOT_CHANGE_SUCCESS');
+    assert.deepEqual(result.checks,[{name:'NATIVE_SETTLED',value:true}]);
+    assert.equal(result.snapshotReads,0);assert.equal(result.evidenceReads,1);
+    assert.equal(result.waits.length,1);assert.equal(result.evals.length,2);assert.equal(result.frames,2);
+  });
+  await test('R433_NATIVE_GETTER_ERROR_REMAINS_FATAL', async()=>{
+    const result=await harness(source,{nativeError:'native getter unavailable'});
+    assert.equal(result.error?.message,'native getter unavailable');
+    assert.equal(result.error?.p1162Assertion,undefined);assert.equal(result.checks.length,0);
+    assert.equal(result.evals.length,1);assert.equal(result.evidenceReads,1);assert.equal(result.frames,0);
+  });
   return {schema:'r433-touch-settle-diagnostic/1', browserExecuted:false,
     sourceSha256:hash(source), passed:results.filter(row=>row.pass).length,
     failed:results.filter(row=>!row.pass).length, results};
@@ -215,6 +282,15 @@ async function main() {
         'R433_RECHECK_DETAIL_PENDING', 'R433_SETTLE_EXACT_FALSE_CONDITIONS'],
       ['R433_SETTLE_COERCE_BLOCKED_FALSE', 'referenceUnblocked:values.blocked===false,', 'referenceUnblocked:!values.blocked,',
         'R433_RECHECK_STRICT_BLOCKED_FALSE', 'R433_RECHECK_MUST_FAIL_AS_ASSERTION'],
+      ['R433_SETTLE_DROP_FIELD_TIMESTAMPS',
+        'return {values,conditions,samples,falseConditions:', 'return {values,conditions,falseConditions:',
+        'R433_RECHECK_FIELD_TIMESTAMPS', 'R433_EACH_FIELD_HAS_TIMESTAMP'],
+      ['R433_SETTLE_DROP_SNAPSHOT_ERROR_GUARD',
+        'catch(error){return {diagnosticError:String(error),native:nativeState};}', 'catch(error){throw error;}',
+        'R433_SNAPSHOT_ERROR_KEEPS_RECHECK_FAILURE', 'R433_FALSE_VERDICT_SURVIVES_SNAPSHOT_ERROR'],
+      ['R433_SETTLE_ALLOW_CLOCK_ERROR_ESCAPE',
+        'catch(error){clock={error:String(error)};}', 'catch(error){throw error;}',
+        'R433_CLOCK_ERROR_KEEPS_FALSE_VERDICT', 'R433_RECHECK_MUST_FAIL_AS_ASSERTION'],
     ];
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'r433-settle-mutants-'));
     const rows = [];
