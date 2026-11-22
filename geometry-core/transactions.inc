@@ -2,7 +2,7 @@
 static bool g_pair_internal;   /* D16a: set only while a boundary-pair route re-enters the parser */
 typedef struct {
     bool ready, valid;
-    bool engineering_batch, assembly_batch, profile_batch, finish_batch, definition_import, timber_batch, pair_batch;
+    bool engineering_batch, assembly_batch, profile_batch, finish_batch, definition_import, timber_batch, pair_batch, pf6_batch;
     AsmDiagnostic assembly_diagnostic;
     uint64_t revision;
     uint32_t token;
@@ -523,13 +523,15 @@ static bool parameter_reference_edit(const World *w,char **tokens,int count)
     }
     return false;
 }
-static void reference_stage(AppWorldCandidate *transaction,char **tokens,int count,bool valid)
+static bool reference_stage(AppWorldCandidate *transaction,char **tokens,int count,bool valid)
 {
+    /* Every public preview/load token shares this non-reusing namespace. */
+    if(g_preview_serial==UINT32_MAX)return false;
     if(g_preview.transaction!=transaction)app_world_candidate_destroy(g_preview.transaction);
     g_preview.transaction=transaction;
     g_preview.ready=true; g_preview.valid=valid; g_preview.token=++g_preview_serial;
     g_preview.assembly_diagnostic=(AsmDiagnostic){0};
-    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.definition_import=false; g_preview.timber_batch=false; g_preview.pair_batch=false; g_preview.revision=g_definition_revision;
+    g_preview.engineering_batch=false; g_preview.assembly_batch=false; g_preview.profile_batch=false; g_preview.finish_batch=false; g_preview.definition_import=false; g_preview.timber_batch=false; g_preview.pair_batch=false; g_preview.pf6_batch=false; g_preview.revision=g_definition_revision;
     g_preview.issue_count=g_reference_issue_count;
     memcpy(g_preview.issues,g_reference_issues,g_preview.issue_count*sizeof(ReferenceIssue));
     if (!valid && !g_preview.issue_count) {
@@ -545,6 +547,7 @@ static void reference_stage(AppWorldCandidate *transaction,char **tokens,int cou
         used+=(size_t)n;
     }
     identity_explicit_capture(g_preview.identity_explicit,APP_IDENTITY_MARK_CAPACITY,&g_preview.identity_explicit_count,&g_preview.identity_explicit_overflow);
+    return true;
 }
 static void reference_preview_text(void)
 {
@@ -650,6 +653,8 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
     if (!count) return true;
     if (!strcmp(tokens[0],"cancel-preview")) {
         if (count!=1) return false;
+        if(g_preview.ready&&g_preview.pf6_batch){scene_error(path,line_no,"PF-6 cancellation requires its own token");return false;}
+        if(g_preview.ready&&!strcmp(g_preview.command,"framing-template-transaction")){scene_error(path,line_no,"Framing template cancellation requires its own token and owner key");return false;}
         if(g_preview.ready&&g_preview.timber_batch){scene_error(path,line_no,"Timber cancellation requires its own token");return false;}
         if(g_preview.ready&&g_preview.pair_batch&&!g_pair_internal){scene_error(path,line_no,"D16a: boundary-pair 預覽請用 boundary-pair cancel");return false;}
         g_preview.ready=false;
@@ -716,7 +721,11 @@ static bool apply_scene_line_candidate(const char *path,int line_no,char *tokens
         char replay_error[512];snprintf(replay_error,sizeof replay_error,"%s",g_scene_last_error);
         if(ok&&!app_world_candidate_seal(transaction)){ok=false;scene_error(path,line_no,"I8: candidate seal failed; World unchanged");}
         if(!ok)transaction->after=g_reference_trial;
-        reference_stage(transaction,tokens,count,ok);*retained=true;
+        if(!reference_stage(transaction,tokens,count,ok)){
+            scene_error(path,line_no,"I8a: preview token capacity exhausted; restart service before another preview (World unchanged)");
+            return false;
+        }
+        *retained=true;
         reference_preview_text();
         if (explicit_preview) return true;
         if(g_parsing_scene_file&&!ok&&replay_error[0]){

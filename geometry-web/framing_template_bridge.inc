@@ -310,7 +310,12 @@ static void cmd_framing_template_preview(const char *path)
     if(valid)valid=app_world_candidate_seal(transaction);
     if(valid&&c->version==2)valid=eng_definition_hash(&transaction->after,c->candidate_fingerprint);
     if(!valid){eng_bridge_error("NATIVE_INVALID",g_engineering_error[0]?g_engineering_error:"原生完整候選封存失敗");app_world_candidate_destroy(transaction);identity_drop_serials();goto free_call;}
-    char *label="framing-template-transaction";reference_stage(transaction,&label,1,true);g_preview.engineering_batch=true;g_framing_token=g_preview.token;
+    char *label="framing-template-transaction";
+    if(!reference_stage(transaction,&label,1,true)){
+        app_world_candidate_destroy(transaction);identity_drop_serials();
+        eng_bridge_error("CAPACITY","Preview token capacity exhausted; restart the service");goto free_call;
+    }
+    g_preview.engineering_batch=true;g_framing_token=g_preview.token;
     printf("{\"ok\":true,\"history_changed\":false,\"ownerKey\":\"%s\",\"preview\":",g_framing_owner);framing_template_json_preview(c,&transaction->after);fputs("}\n",stdout);
 free_call:free(c);
 done:geo_json_free(&j);free(text);
