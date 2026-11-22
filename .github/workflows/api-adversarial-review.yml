@@ -47,6 +47,11 @@ jobs:
       REVIEW_MODEL: claude-opus-5-5
       REVIEW_EFFORT: high
       REVIEW_MAX_TURNS: "120"
+      # 審查與預檢共用的 CLI 旗標（單一來源，避免兩處漂移）。不用 --bare：在 2.1.330 它會把工具縮成只剩 Read。
+      # --restricted 已忽略 user／project／local 設定（含 hooks）並把檔案工具限在工作目錄內。
+      REVIEW_CLI_FLAGS: >-
+        --restricted --strict-mcp-config --disable-slash-commands --no-session-persistence
+        --tools Read,Grep,Glob --allowedTools Read,Grep,Glob --permission-mode dontAsk
     steps:
       - name: Validate inputs and resolve PR (fork heads are rejected)
         id: pr
@@ -170,6 +175,32 @@ jobs:
             printf -- '- 資料目錄：%s/review-data（refs.txt 記錄 main、merge-base、head 的完整 SHA）\n' "$GITHUB_WORKSPACE"
           } > "$RUNNER_TEMP/review-prompt.md"
 
+      - name: Preflight the tool list without the API key
+        run: |
+          set -euo pipefail
+          home="$RUNNER_TEMP/claude-preflight-home"
+          mkdir -p "$home"
+          cd "$GITHUB_WORKSPACE"
+          out="$RUNNER_TEMP/preflight.jsonl"
+          # 用假金鑰指向關閉的本機埠：不連外、不花錢，只取 CLI 啟動時的 init 訊息（實際生效的工具清單）。
+          # shellcheck disable=SC2086
+          echo preflight | HOME="$home" ANTHROPIC_API_KEY=preflight-not-a-key ANTHROPIC_BASE_URL=http://127.0.0.1:9 \
+            DISABLE_AUTOUPDATER=1 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+            CLAUDE_CODE_DISABLE_CLAUDE_MDS=1 CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 \
+            "$RUNNER_TEMP/claude-cli/package/claude" -p $REVIEW_CLI_FLAGS \
+            --model "$REVIEW_MODEL" --max-turns 1 --output-format stream-json --verbose > "$out" 2>/dev/null &
+          pid=$!
+          for _ in $(seq 1 120); do
+            grep -q '"subtype":"init"' "$out" && break
+            sleep 0.5
+          done
+          kill "$pid" 2>/dev/null || true
+          wait "$pid" 2>/dev/null || true
+          init="$(grep -m1 '"subtype":"init"' "$out" || true)"
+          echo "$init" | jq -c '{tools, mcp_servers, permissionMode, slash_commands}'
+          echo "$init" | jq -e '(.tools | sort) == ["Glob","Grep","Read"] and (.mcp_servers | length) == 0 and .permissionMode == "dontAsk"' > /dev/null \
+            || { echo "::error::CLI 實際工具清單不是 Glob/Grep/Read（或有 MCP／權限模式不符），中止" >&2; exit 1; }
+
       - name: Run read-only review (the only step that receives the API key)
         timeout-minutes: 40
         env:
@@ -183,12 +214,10 @@ jobs:
           # 子行程環境只留金鑰與必要變數；不帶任何 GitHub token。
           unset GH_TOKEN GITHUB_TOKEN ACTIONS_RUNTIME_TOKEN ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
           status=0
+          # shellcheck disable=SC2086
           HOME="$home" DISABLE_AUTOUPDATER=1 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-          "$RUNNER_TEMP/claude-cli/package/claude" -p \
-            --bare --restricted --strict-mcp-config --disable-slash-commands --no-session-persistence \
-            --tools "Read,Grep,Glob" \
-            --allowedTools "Read,Grep,Glob" \
-            --permission-mode dontAsk \
+          CLAUDE_CODE_DISABLE_CLAUDE_MDS=1 CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 \
+          "$RUNNER_TEMP/claude-cli/package/claude" -p $REVIEW_CLI_FLAGS \
             --model "$REVIEW_MODEL" --effort "$REVIEW_EFFORT" \
             --max-turns "$REVIEW_MAX_TURNS" --max-budget-usd "$MAX_BUDGET_USD" \
             --output-format json \
