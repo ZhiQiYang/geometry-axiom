@@ -1,0 +1,243 @@
+/* R16 U123-H:A. Loaded after the established workspace styles.
+ * V is window.innerHeight (layout viewport). A dock uses width, never a strip
+ * of the drawing's height. Existing IDs, hit targets and scroll routes remain.
+ */
+:root {
+  --r123h-header: 56px;
+  --r123h-dock: 156px;
+}
+/* R123H_BREAKPOINT_BEGIN */
+@media (max-width: 560px) {
+  :root { --r123h-header: 96px; }
+}
+/* R123H_BREAKPOINT_END */
+
+/* R123H_NORMAL_HEIGHT_BEGIN */
+#app { height: var(--r123h-layout-height, 100vh); }
+#objectWorkspace {
+  height: var(--r123h-layout-height, 100vh);
+  grid-template-rows: var(--r123h-header) minmax(0, 1fr) 32px;
+}
+#canvasViewport, #faceEditorViewport { overflow: visible; }
+#canvasViewport > :is(#ocv, #cv), #faceEditorSvg { overflow: hidden; }
+/* R123H_NORMAL_HEIGHT_END */
+
+.wsh-dock {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 60px 8px 8px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scroll-padding: 60px 6px 6px;
+  border-inline: 1px solid var(--border);
+  background: var(--panel);
+  touch-action: auto;
+  cursor: auto;
+}
+.wsh-dock > * { flex: 0 0 auto; min-width: 0; max-width: 100%; }
+.wsh-dock :is(button, input, select, summary) { scroll-margin: 6px; }
+.wsh-dock :is(button, label, input, select) { cursor: auto !important; }
+.wsh-dock button { cursor: pointer !important; }
+
+/* R123H_DOCK_BEGIN: main keeps #ocv == #canvasViewport and its right edge.
+ * The desktop library retains its previous content width beside the dock.
+ * At drawer widths the lane occupies the left 156px of the workspace.
+ */
+body.canvas-composition { --left-w: calc(278px + var(--r123h-dock)); }
+body.v3-mode { --left-w: calc(200px + var(--r123h-dock)); }
+body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
+  padding-inline-end: var(--r123h-dock);
+}
+#mainCanvasDock, #faceCanvasDock {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--r123h-dock);
+  z-index: 7;
+}
+#mainCanvasDock { left: calc(-1 * var(--r123h-dock)); }
+#faceEditorViewport { margin-inline-end: var(--r123h-dock); }
+#faceCanvasDock { left: 100%; }
+@media (min-width: 901px) {
+  body.canvas-composition.canvas-library-collapsed { --left-w: calc(64px + var(--r123h-dock)); }
+}
+@media (max-width: 900px) {
+  body:is(.canvas-composition, .v3-mode) #canvasViewport { margin-inline-start: var(--r123h-dock); }
+  body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left { padding-inline-end: 0; }
+  body.v3-mode { --left-w: 0px; }
+}
+/* R123H_DOCK_END */
+
+/* These are the same original nodes, including their help/dismiss controls. */
+#mainCanvasDock :is(#canvasDrawToolbar, #ocSelectionSummary, #canvasModeHint, #focusBar, #emptyState),
+#faceCanvasDock :is(#feSelectionSummary, #faceCanvasHint, #calibrationCanvasPrompt, #gridLegend, #gridReturnSettings, #faceCoordinateReadout) {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  flex-wrap: wrap;
+}
+#mainCanvasDock #canvasDrawToolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 3px;
+  gap: 4px;
+}
+#mainCanvasDock #canvasDrawToolbar .tool-button { width: 100%; min-width: 44px; }
+#mainCanvasDock #canvasDrawToolbar .guidance-help { grid-column: 1 / -1; width: 100%; min-width: 0; }
+#mainCanvasDock .selection-copy, #faceCanvasDock .selection-copy { min-width: 0; }
+#faceCanvasDock #feSelectionSummary {
+  /* Keep the established camera-fit top inset below its 30% cap. Long teaching
+   * text scrolls inside the same original lesson; it is never discarded. */
+  max-height: calc(30% - 100px);
+  overflow: auto;
+}
+#faceCanvasDock :is(.fe-lattice-density, .fe-rule-density) {
+  position: relative; inset: auto; margin: 0; padding: 6px; max-width: 100%; font-size: 12px;
+}
+#mainCanvasDock .empty-illustration { max-width: 100%; }
+#mainCanvasDock #emptyState { padding: 10px 4px; font-size: 12px; }
+#mainCanvasDock #emptyState h2 { font-size: 14px; }
+#mainCanvasDock .minimap-shell {
+  display: block;
+  position: relative;
+  inset: auto;
+  width: 112px;
+  height: 72px;
+  margin: auto auto 0;
+}
+#mainCanvasDock .minimap-shell.collapsed { width: 46px; height: 46px; }
+#mainCanvasDock #minimapToggle { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+#mainCanvasDock .minimap-shell.collapsed #minimapToggle { margin: 0; }
+#mainCanvasDock > .canvas-controls,
+#faceCanvasDock > .face-canvas-controls {
+  position: relative;
+  inset: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: auto 0 0;
+  flex: 0 0 auto;
+}
+#mainCanvasDock .canvas-controls .toolbar-separator,
+#faceCanvasDock .face-canvas-controls .toolbar-separator { display: none; }
+#mainCanvasDock .canvas-controls :is(.icon-button, .zoom-level, .mini-toggle),
+#faceCanvasDock .face-canvas-controls :is(button, .mini-toggle) { width: 100%; min-width: 44px; }
+#faceCanvasDock .face-grid-size { grid-column: 1 / -1; margin-left: 0; justify-content: center; }
+#mainCanvasDock #v3ZoomBar { display: block; }
+#mainCanvasDock .v3-zoom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+body.v3-mode #mainCanvasDock > .canvas-controls:not(#v3ZoomBar),
+body.v3-mode #mainCanvasDock :is(#canvasDrawToolbar, #ocSelectionSummary, #canvasModeHint, .minimap-shell) { display: none; }
+#mainCanvasDock > [hidden], #faceCanvasDock > [hidden] { display: none; }
+
+/* Retain the readonly segment buffer above the decorative cursor's z=60.
+ * The lesson lives in the dock; neither is allowed to cover the typed digits.
+ */
+/* R123H_LENGTH_PAINT_BEGIN */
+#faceEditorViewport > #feLenInput { z-index: 61; }
+/* R123H_LENGTH_PAINT_END */
+
+/* R123H_SPACE_HEIGHT_BEGIN */
+.space-workspace-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--r123h-dock);
+  grid-template-rows: minmax(0, 1fr);
+  padding: 0;
+}
+.space-workspace-stage > .ss-pane { grid-area: 1 / 1; height: 100%; min-width: 0; }
+#spaceCanvasDock { grid-area: 1 / 2; }
+.space-workspace-stage :is(.space-plan-strip, .space-hero-preview) {
+  width: 100%; height: 100%; border: 0; border-radius: 0; margin: 0;
+}
+#spacePlanSvg, #spaceProjSvg { height: 100%; min-width: 0; }
+#spaceCanvasDock #spaceStageTabs { display: flex; flex-direction: column; margin: 0; padding: 2px; }
+#spaceCanvasDock #spaceStageTabs button { width: 100%; }
+#spaceCanvasDock #spaceWorkspaceTools { display: flex; flex-direction: column; gap: 6px; padding: 0; }
+#spaceCanvasDock #spaceWorkspaceTools[hidden] { display: none; }
+#spaceCanvasDock #spaceWorkspaceTools .workspace-tool { width: 100%; }
+#spaceCanvasDock #spacePlanMetrics { padding: 6px 0; margin: 0; }
+.space-workspace-stage:has(> [data-ss-pane="plan"][hidden]) #spacePlanMetrics { display: none; }
+/* R123H_SPACE_HEIGHT_END */
+
+/* R123H_THREE_VIEW_HEIGHT_BEGIN */
+body.v3-mode .topbar {
+  display: grid;
+  grid-template-columns: minmax(50px, 120px) minmax(96px, 1fr) minmax(200px, auto);
+  grid-template-rows: 44px;
+  height: 56px;
+  gap: 0 8px;
+  padding: 6px 8px;
+}
+body.v3-mode .topbar > .brand { grid-column: 1; grid-row: 1; min-width: 0; overflow: hidden; }
+body.v3-mode .topbar > #viewToolbar {
+  grid-column: 2; grid-row: 1;
+  width: 100%; height: 44px; min-height: 44px;
+  padding: 0; border: 0;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin;
+}
+body.v3-mode #viewToolbar .v3-seg { padding: 0; height: 44px; }
+body.v3-mode #viewToolbar .v3-seg-btn { min-width: 44px; min-height: 44px; }
+body.v3-mode .topbar > .top-actions {
+  grid-column: 3; grid-row: 1; min-width: 0; max-width: 58vw;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin;
+}
+body.v3-mode .top-actions > * { flex-shrink: 0; }
+body.v3-mode #cv { width: 100%; height: 100%; flex: 1; }
+/* R123H_THREE_VIEW_HEIGHT_END */
+
+/* R123H_FEEDBACK_DOCK_BEGIN */
+body #fbRoot > #fbButton:not([hidden]) {
+  position: fixed;
+  left: var(--r123h-feedback-left, 12px);
+  top: var(--r123h-feedback-top, calc(var(--topbar-h) + 8px));
+  right: auto; bottom: auto;
+  width: var(--r123h-feedback-width, 140px);
+  height: 44px; min-height: 44px; margin: 0;
+  border-radius: 8px; opacity: 1;
+}
+/* R123H_FEEDBACK_DOCK_END */
+@media (max-width: 560px) {
+  body.canvas-composition { --statusbar-h: 32px; }
+  .object-workspace-topbar, .reference-editor .object-workspace-topbar {
+    grid-template-rows: 44px 44px;
+    padding-block: 4px;
+  }
+  .workspace-tools-row, .workspace-tools-row .face-workspace-tools {
+    padding-block: 0;
+    scrollbar-width: none;
+  }
+  .workspace-tools-row::-webkit-scrollbar,
+  .workspace-tools-row .face-workspace-tools::-webkit-scrollbar { height: 0; }
+  body.v3-mode { --topbar-h: 96px; }
+  body.v3-mode .topbar {
+    grid-template-columns: minmax(44px, 100px) minmax(0, 1fr);
+    grid-template-rows: 44px 44px; height: 96px; padding: 4px 8px;
+  }
+  body.v3-mode .topbar > .top-actions { grid-column: 1 / -1; grid-row: 2; max-width: 100%; width: 100%; }
+  body.v3-mode .topbar > :is(.top-actions, #viewToolbar) { scrollbar-width: none; }
+  body.v3-mode .topbar > :is(.top-actions, #viewToolbar)::-webkit-scrollbar { height: 0; }
+  .wsh-dock :is(button, select, .mini-toggle) { min-height: 44px; }
+}
+@media (max-width: 680px) {
+  /* Keep the established mobile editing sheet, beside the control lane. Its
+   * fields and the zoom/feedback controls must not cover one another. */
+  body.canvas-composition.canvas-has-inspector .sidebar-right {
+    left: calc(var(--r123h-dock) + 8px);
+  }
+}

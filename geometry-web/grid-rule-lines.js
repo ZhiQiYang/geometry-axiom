@@ -138,7 +138,11 @@
       if(selected&&l.segments.length){const a=l.segments[0][0];el('text',{x:a[0]+5/z,y:a[1]+15/z,'font-size':11/z,class:'fe-rule-label','data-rule-label':k},group).textContent=`rule ${l.ruleKey} · ${l.axis} 子線 ${l.innerIndex} · ${l.coordinate} mm`;}
     }
     let note=$('feRuleDensity');const messages=owner&&current(owner)?owner.messages:[];
-    if(messages.length&&!note){note=document.createElement('p');note.id='feRuleDensity';note.className='fe-rule-density';note.setAttribute('role','status');$('faceEditorViewport').append(note);}
+    if(messages.length&&!note){
+      note=document.createElement('p');note.id='feRuleDensity';note.className='fe-rule-density';note.setAttribute('role','status');
+      const dock=$('faceCanvasDock');
+      if(dock)dock.insertBefore(note,dock.querySelector('.face-canvas-controls'));else $('faceEditorViewport').append(note);
+    }
     if(note){note.hidden=!messages.length;note.textContent=messages.join('；');}
   }
   function html(g){
