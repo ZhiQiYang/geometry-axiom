@@ -143,6 +143,21 @@ def project_r17_boundary_pair_native(case, value):
     return projected
 
 
+def project_pf6_native_capability(case, value):
+    """Extract only PF-6's reviewed partial capability; keep the R14 oracle."""
+    projected = json.loads(json.dumps(value))
+    state = projected["engineering-read"]["state"]
+    capabilities = state["native_capabilities"]
+    case.assertEqual(1, capabilities.count("panel-fill-builder-native/1"),
+                     "K1_PF6_NATIVE_CAPABILITY_EXACTLY_ONCE")
+    at = capabilities.index("panel-fill-builder-native/1")
+    case.assertEqual(len(capabilities) - 1, at, "K1_PF6_NATIVE_CAPABILITY_FIXED_LAST")
+    case.assertNotIn("panel-fill/1", state["capabilities"],
+                     "K1_PF6_NOT_CLAIMED_AS_COMPLETE")
+    del capabilities[at]
+    return projected
+
+
 def project_r14_native_capability(case, value):
     """Project exactly the approved native-only addition; keep the old oracle."""
     projected = json.loads(json.dumps(value))
@@ -278,7 +293,8 @@ class EngineeringTerminal(unittest.TestCase):
         expected_json = json.dumps(original, ensure_ascii=False, separators=(",", ":"))
 
         def compare(value):
-            projected = project_panel_fill_reader(self, value)
+            projected = project_pf6_native_capability(self, value)
+            projected = project_panel_fill_reader(self, projected)
             projected = project_r14_rule_capability(self, projected)
             projected = project_identity_capability(self, without_terminal(projected))
             projected = project_r14_native_capability(self, projected)
@@ -378,6 +394,39 @@ class EngineeringTerminal(unittest.TestCase):
                 else:
                     caps.insert(at, "unreviewed-native-capability/1")
                 with self.assertRaises(AssertionError, msg="K1_R14_NATIVE_NEGATIVE_" + fault):
+                    compare(probe)
+
+        # PF-6 is one reviewed native-only extension, at one fixed position.
+        # Require its own diagnostic, so another projection cannot accidentally
+        # hide a broken PF-6 check while the independent legacy oracle stays red.
+        pf6_faults = {
+            "missing": "K1_PF6_NATIVE_CAPABILITY_EXACTLY_ONCE",
+            "duplicate": "K1_PF6_NATIVE_CAPABILITY_EXACTLY_ONCE",
+            "version": "K1_PF6_NATIVE_CAPABILITY_EXACTLY_ONCE",
+            "moved": "K1_PF6_NATIVE_CAPABILITY_FIXED_LAST",
+            "unknown": "K1_PF6_NATIVE_CAPABILITY_FIXED_LAST",
+            "full-capability": "K1_PF6_NOT_CLAIMED_AS_COMPLETE",
+        }
+        for fault, marker in pf6_faults.items():
+            with self.subTest(pf6_native_projection_negative=fault):
+                probe = json.loads(json.dumps(replies))
+                state = probe["engineering-read"]["state"]
+                caps = state["native_capabilities"]
+                at = caps.index("panel-fill-builder-native/1")
+                if fault == "missing":
+                    del caps[at]
+                elif fault == "duplicate":
+                    caps.append("panel-fill-builder-native/1")
+                elif fault == "version":
+                    caps[at] = "panel-fill-builder-native/2"
+                elif fault == "moved":
+                    caps[0], caps[at] = caps[at], caps[0]
+                elif fault == "unknown":
+                    caps.append("unreviewed-native-capability/1")
+                else:
+                    state["capabilities"].append("panel-fill/1")
+                with self.assertRaisesRegex(AssertionError, marker,
+                                           msg="K1_PF6_NATIVE_NEGATIVE_" + fault):
                     compare(probe)
 
 

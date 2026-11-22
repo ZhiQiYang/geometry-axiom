@@ -9,7 +9,8 @@
   retired     邏輯已從產品整個移除(寫明依據),不編譯;舊錨點若又出現會被判 invalid。
   binary="bridge" 使用獨立的已提交稀疏 checkout、官方 binaries.py 編譯及 tests 指定的
          真 bridge unittest 方法。先跑基準，變異後只以完成的行為斷言判 killed；每筆還原
-         來源、重新編譯並跑共用回歸。錯誤、略過、逾時與不完整方法清單都算 blocked。
+         來源，重驗完整來源／裁判／工具與同次已通過基準的二進位／sidecar 身分，保存
+         還原等價證明；不把證明冒充重跑收據。錯誤、略過、逾時與不完整方法清單都算 blocked。
          bridge 行程在測試中死亡(tests/_bridge.py 的 BridgeClosed,帶結束碼)不是斷言失敗。
          crashed 判準同核心:同一測試連續 RUN_RETRIES 次都以存取違規(is_access_violation_code)
          結束、且沒有任何斷言失敗;重跑範圍較窄,只重跑存取違規(核心則重跑所有 blocked)。
@@ -784,6 +785,69 @@ MUTANTS += [
          tests=["tests.test_identity_definition_import_merge.IdentityDefinitionImportMerge." + name for name in [
              "test_successful_import_commits_serials_before_the_next_covered_key",
              "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch"]]),
+]
+
+
+# #128 PF-6N: actual product withdrawals, judged by the native builder bridge.
+# The directed runner reads these definitions; there is no second mutant table.
+PF6_JUDGE = "tests.test_panel_fill_builder.PanelFillBuilder."
+MUTANTS += [
+    dict(id="PF6_PARTIAL_SUCCESS_WRITES", desc="R45/I8：吞掉最後一個外層步驟失敗，合法前置＋R45＋後置前綴不得成為可確認候選", binary="bridge",
+         file="geometry-web/panel_fill_builder_bridge.inc",
+         old="if(!call->suggesting)for(size_t i=p->pre_count;i<p->pre_count+p->post_count&&ok;++i)\n        if(!pf6_outer_operation(candidate,call->before,&p->operations[i],setup.host_id,setup.host_present,&call->created[i]))ok=false;",
+         new="if(!call->suggesting)for(size_t i=p->pre_count;i<p->pre_count+p->post_count&&ok;++i)\n        if(!pf6_outer_operation(candidate,call->before,&p->operations[i],setup.host_id,setup.host_present,&call->created[i])){ /* mutation: swallow failed last step */ }",
+         tests=[PF6_JUDGE + "test_PF6_last_outer_failure_never_publishes_successful_prefix"]),
+    dict(id="PF6_UNSELECTED_CREATES", desc="D45/R45：撤掉空明選的零寫入，未選 R45 卻建立 host/grid 須紅", binary="bridge",
+         file="geometry-app/native/panel_fill_builder.inc",
+         old="if(!suggestions&&!selected_count)return true; /* PF6_EMPTY_SELECTION_ZERO_WRITE */",
+         new="/* mutation: empty selection still prepares host and grid */",
+         tests=[PF6_JUDGE + "test_PF6_empty_explicit_selection_creates_nothing"]),
+    dict(id="PF6_OMIT_DEPENDENT_REVALIDATION", desc="I8/I24/I53：外層後置略過完整重驗，既有料件 B≠h 的候選不得有效", binary="bridge",
+         file="geometry-web/panel_fill_builder_bridge.inc",
+         old='if(!world_revalidate(candidate))return eng_fail(g_revalidate_error[0]?g_revalidate_error:"I8: PF-6 complete candidate rejected");',
+         new="/* mutation: skip full existing-and-new dependency revalidation */",
+         tests=[PF6_JUDGE + "test_PF6_post_edit_revalidates_existing_dependent_timber"]),
+]
+
+
+# #128/#438 owner merge: each withdrawal exercises real bridge commands, and
+# the unchanged semantic judges also retain the correct owner's token/history.
+PF6_OWNER_JUDGE = "tests.test_builder_token_owners.BuilderTokenOwners."
+MUTANTS += [
+    dict(id="PF6_OWNER_PF6_REJECTS_ENGINEERING_CONFIRM", desc="PF-6/main 合流：撤掉 PF-6 owner 排除，一般批次不得提交或取消明選候選", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="&& !g_preview.pf6_batch && strcmp(g_preview.command,\"framing-template-transaction\")",
+         new="&& strcmp(g_preview.command,\"framing-template-transaction\")",
+         tests=[PF6_OWNER_JUDGE + "test_general_batch_cannot_consume_pf6_or_framing_candidates"]),
+    dict(id="PF6_OWNER_FRAMING_TEMPLATE_REJECTS_ENGINEERING_CONFIRM", desc="PF-6/main 合流：撤掉 framing owner 排除，一般批次不得提交或取消模板候選", binary="bridge",
+         file="geometry-web/engineering_bridge.inc",
+         old="&& !g_preview.pf6_batch && strcmp(g_preview.command,\"framing-template-transaction\")",
+         new="&& !g_preview.pf6_batch",
+         tests=[PF6_OWNER_JUDGE + "test_general_batch_cannot_consume_pf6_or_framing_candidates"]),
+    dict(id="PF6_OWNER_FRAMING_TEMPLATE_REJECTS_LINE_CANCEL", desc="I8a/FT1：撤掉無 token 通用取消的 owner 守門，不得丟棄 framing 原候選", binary="bridge",
+         file="geometry-core/transactions.inc",
+         old='if(g_preview.ready&&!strcmp(g_preview.command,"framing-template-transaction")){scene_error(path,line_no,"Framing template cancellation requires its own token and owner key");return false;}',
+         new='/* mutation: let foreign generic cancellation discard framing candidate */',
+         tests=[PF6_OWNER_JUDGE + "test_other_terminal_owners_preserve_builder_candidates"]),
+    dict(id="PF6_OWNER_SHARED_LOAD_TOKEN", desc="I8a/PF-6/FT1：撤回共享配號，不同 owner 的雙活候選不得同號而誤收確認或取消", binary="bridge",
+         file="geometry-web/scene-import-bridge.inc",
+         old="g_load_revision=g_definition_revision;g_load_token=++g_preview_serial;g_load_ready=true;return true;",
+         new="g_load_revision=g_definition_revision;++g_load_token;g_load_ready=true;return true;",
+         tests=[PF6_OWNER_JUDGE + "test_simultaneous_load_and_builders_reject_both_foreign_terminals",
+                PF6_OWNER_JUDGE + "test_load_shared_serial_survives_reset"]),
+    dict(id="PF6_OWNER_LOAD_COUNTER_CAPACITY", desc="I8a：撤掉共享配號容量檢查，載入不得繞回重用 token 或寫入任何狀態", binary="bridge",
+         file="geometry-web/scene-import-bridge.inc",
+         old="if(g_preview_serial==UINT32_MAX)", new="if(false)",
+         tests=[PF6_OWNER_JUDGE + "test_load_shared_serial_refuses_uint32_exhaustion"]),
+    dict(id="PF6_OWNER_PREVIEW_COUNTER_CAPACITY", desc="I8a：撤掉一般 preview 的有限配號拒絕，容量耗盡不得替換原候選或重用 token", binary="bridge",
+         file="geometry-core/transactions.inc",
+         old="if(g_preview_serial==UINT32_MAX)return false;", new="if(false)return false;",
+         tests=[PF6_OWNER_JUDGE + "test_reference_stage_shared_serial_refuses_uint32_exhaustion",
+                PF6_OWNER_JUDGE + "test_builder_capacity_reports_refusal_without_aliasing_live_load"]),
+    dict(id="PF6_OWNER_LOAD_CAPACITY_RETAINS_CANDIDATE", desc="I8a：容量拒絕前清除 load ready 必須紅，分配不可能時保留兩個存活候選", binary="bridge",
+         file="geometry-web/scene-import-bridge.inc",
+         old="if(g_preview_serial==UINT32_MAX)", new="g_load_ready=false;\n    if(g_preview_serial==UINT32_MAX)",
+         tests=[PF6_OWNER_JUDGE + "test_load_shared_serial_refuses_uint32_exhaustion"]),
 ]
 
 

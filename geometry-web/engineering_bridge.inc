@@ -36,7 +36,7 @@ static void json_engineering_capabilities(const World *w)
     fputs("\"capabilities\":[\"engineering-spec/1\",\"parameters/1\",\"assembly-rule-authoring/1\",\"assembly-timber-generation/1\",\"assembly-bay-repeat/1\",\"grid-subdivision-rules/1\",\"grid-subdivision-rules/2\",\"section-profile/1\",\"grid-card-reference/1\",\"identity-ledger/1\",\"definition-import/1\"],\"required_capabilities\":[",stdout);
     for(size_t i=0;i<sizeof required/sizeof required[0];++i)if(required[i].used){if(!first)putchar(',');first=false;js_string(required[i].name);}
     putchar(']');
-    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\",\"grid-subdivision-native/2\"]",stdout);
+    fputs(",\"native_capabilities\":[\"section-profile-native/1\",\"" FS_NATIVE_CAPABILITY "\",\"grid-subdivision-native/2\",\"panel-fill-builder-native/1\"]",stdout);
     fputs(",\"panel_fill_reader\":{\"schema\":\"panel-fill-definition-reader/1\",\"capability\":\"" FS_CAPABILITY "\","
           "\"supportedRecords\":[\"finish-surface\",\"panel-fill\",\"derived-placement\"],\"complete\":false}",stdout);
 }
@@ -210,7 +210,12 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
     bool ok=app_world_candidate_evaluate(transaction,app_batch_candidate_apply,&call)==GEO_CANDIDATE_OK;
     if(ok&&!app_world_candidate_seal(transaction)){ok=false;eng_fail("I8: candidate seal failed; World unchanged");}
     if(!ok)app_world_candidate_clear_stagger(transaction);
-    char *stage_label=(char *)label;reference_stage(transaction,&stage_label,1,ok);g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
+    char *stage_label=(char *)label;
+    if(!reference_stage(transaction,&stage_label,1,ok)){
+        app_world_candidate_destroy(transaction);geo_json_free(&j);free(text);
+        eng_bridge_error("CAPACITY","Preview token capacity exhausted; restart the service");return;
+    }
+    g_preview.engineering_batch=true;g_preview.assembly_batch=kind==1;g_preview.profile_batch=kind==2;g_preview.finish_batch=kind==3;
     g_deleted_fields_token=g_preview.token;
     if(!ok)g_preview.assembly_diagnostic=g_asm_diagnostic;
     fputs("{\"ok\":true,\"preview\":",stdout);g_parameter_preview_order=&order;write_preview();g_parameter_preview_order=NULL;fputs("}\n",stdout);
@@ -218,7 +223,7 @@ static void batch_preview(const char *path,const char *schema_name,const char *s
 }
 static bool batch_token_kind(int kind)
 {
-    return g_preview.engineering_batch && !g_preview.timber_batch && strcmp(g_preview.command,"framing-template-transaction") && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
+    return g_preview.engineering_batch && !g_preview.timber_batch && !g_preview.pf6_batch && strcmp(g_preview.command,"framing-template-transaction") && (kind==3?g_preview.finish_batch:kind==2?g_preview.profile_batch:kind==1?g_preview.assembly_batch:!g_preview.assembly_batch&&!g_preview.profile_batch&&!g_preview.finish_batch);
 }
 static void batch_confirm(const char *arg,int kind,const char *token_message,const char *stale_message)
 {

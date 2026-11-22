@@ -82,6 +82,34 @@ bundle 的封裝在原執行 head 的乾淨 CI checkout 完成；下載後只原
 
 證據繼續留在 repo，沒有 main 合併後再補證據的 stale 窗口；原正式 GitHub CI、原 timeout、原 assertions 與原 binary artifact verify 都不變。這個格式不免除現行 main 前進後的終審，也不承諾免除每次來源變更的整輪 Geometry。
 
+## Bridge 還原等價證明（PR #447）
+
+`geometry-bridge-mutation-execution/2` 保留每片一次完整 `RESTORED` 基準與每筆突變的
+官方建置、指定裁判真實執行、原始輸出及判決；基準必須全部通過，不能借用另一次 pass
+的成功收據。78 個 bridge 定義與三片各 26 個的指派不變，67 個 `RESTORED` 方法不減，
+45 分鐘 job 上限、900 秒 subprocess 上限、斷言、重試及 crashed／killed 判準均不變。
+
+每筆 finally 寫回突變目標的原始 bytes，接著核對完整來源閉包、原裁判閉包、工具、
+scratch HEAD，並以官方 `binaries.py` 的 freshness 檢查重新讀取**同次基準已實跑的原
+二進位與完整 sidecar**。全部身分必須與執行基準前後釘住的值一致。這裡沒有重新編譯或
+再跑整份 `RESTORED`：同一份已通過基準的程式與輸入被逐筆驗回，沒有偽造第二份綠燈。
+
+`restoration` 綁定基準收據的 canonical JSON SHA-256、source closure、oracle、tool、
+head 及基準 exe SHA-256；`restored_identity` 必須與完整 `baseline_identity` 相等。
+基準與突變的實際 oracle command 也分別綁定該 head 的 baseline 路徑與該 ID 的 mutant
+路徑。`/2` 禁止 `restored`／`restored_build` 欄位，避免把位元組證明當成執行收據。
+來源、裁判、工具、head、基準二進位或 sidecar 任一被改壞，仍須 fail closed。
+
+下載驗證仍要求基準及每筆 mutant 的實體二進位、官方 sidecar、build／oracle 原始
+stdout／stderr 全部存在且 hash 相符，另驗同一份還原證明。`/1` 歷史收據仍走原三份
+二進位與真實 restored 執行的驗法；不改寫 seed 或舊收據，不減少來源／裁判 hash 閉包。
+工具／裁判變動照常使舊證據 stale，須由完整 Mutation evidence 真跑後原樣採入。
+
+每次 build／oracle 完成會輸出 `BRIDGE_PHASE` 的單調時鐘秒數並存入該原收據；還原
+證明另存 `restoration_seconds`。這些是新執行的實測，不能倒填取消 run 原來沒有的時間。
+容量回歸在既有 freshness 方法內驗兩筆突變只跑一次完整基準、三次建置、兩次真實裁判，
+並以改壞 proof、原始 artifacts 與還原中的來源／裁判／工具／head／binary 驗拒絕。
+
 ## 從另一個乾淨環境重驗
 
 需要 Git、GitHub CLI 與 Python 3.12 以上。使用該次 run 的完整 head SHA 簽出 repo，保持來源不改；下載 artifact 後，以下驗證只讀取二進位 bytes，不執行它們，也不重編：

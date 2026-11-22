@@ -2,15 +2,17 @@
  * final typed objects before confirmation installs this exact candidate. */
 static AppWorldCandidate *g_load_transaction;
 static World *g_load_before, *g_load_after;
-static uint32_t g_load_serial, g_load_token;
+static uint32_t g_load_token;
 static uint64_t g_load_revision;
 static bool g_load_ready;
 
 static bool scene_load_prepare(const char *path)
 {
+    /* Load and ordinary previews can both remain live. Allocate globally so a
+     * token from either owner cannot designate the other's candidate. */
+    if(g_preview_serial==UINT32_MAX){eng_bridge_error("CAPACITY","Restart the service before another scene import");return false;}
     g_load_ready=false;
     if(g_history.grouping){eng_bridge_error("HISTORY_GROUP","Finish or cancel the current history group first");return false;}
-    if(g_load_serial==UINT32_MAX){eng_bridge_error("CAPACITY","Restart the service before another scene import");return false;}
     app_world_candidate_destroy(g_load_transaction);g_load_transaction=app_world_candidate_create(&g_world);
     g_load_before=g_load_transaction?&g_load_transaction->before:NULL;
     g_load_after=g_load_transaction?&g_load_transaction->after:NULL;
@@ -18,7 +20,7 @@ static bool scene_load_prepare(const char *path)
     if(app_world_candidate_evaluate(g_load_transaction,app_scene_load_evaluate,(void*)path)!=GEO_CANDIDATE_OK){
         eng_bridge_error("VALIDATION",scene_last_error());return false;}
     if(!app_world_candidate_seal(g_load_transaction)){eng_bridge_error("VALIDATION","Scene import candidate changed during validation");return false;}
-    g_load_revision=g_definition_revision;g_load_token=++g_load_serial;g_load_ready=true;return true;
+    g_load_revision=g_definition_revision;g_load_token=++g_preview_serial;g_load_ready=true;return true;
 }
 static void cmd_load_prepare(const char *path)
 {

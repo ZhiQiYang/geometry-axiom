@@ -380,7 +380,7 @@ class R14RepeatPanelNative(unittest.TestCase):
             "assembly-timber-generation/1", "assembly-bay-repeat/1", "grid-subdivision-rules/1", "grid-subdivision-rules/2",
             "section-profile/1", "grid-card-reference/1", "identity-ledger/1", "definition-import/1",
         ], state["capabilities"], "R14_COMPLETE_HOST_CAPABILITIES_INCLUDE_PANEL_RULES")
-        self.assertEqual(["section-profile-native/1", "panel-fill-native/1", "grid-subdivision-native/2"],
+        self.assertEqual(["section-profile-native/1", "panel-fill-native/1", "grid-subdivision-native/2", "panel-fill-builder-native/1"],
                          state["native_capabilities"], "R14_NATIVE_CAPABILITY_EXPLICIT_AND_ORDERED")
         self.seed()
         self.assertIn("grid-subdivision-rules/2", self.capabilities())

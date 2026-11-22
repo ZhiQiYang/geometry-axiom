@@ -273,6 +273,22 @@ class LiveMutationAnchorMigration(unittest.TestCase):
         self.assertEqual(4, len(r17))
         added.update(r17)
         self.assertEqual(77, len(added))
+        # PF-6's ten live bridge definitions in their declaration order.
+        pf6 = {
+            "PF6_PARTIAL_SUCCESS_WRITES": "geometry-web/panel_fill_builder_bridge.inc",
+            "PF6_UNSELECTED_CREATES": "geometry-app/native/panel_fill_builder.inc",
+            "PF6_OMIT_DEPENDENT_REVALIDATION": "geometry-web/panel_fill_builder_bridge.inc",
+            "PF6_OWNER_PF6_REJECTS_ENGINEERING_CONFIRM": "geometry-web/engineering_bridge.inc",
+            "PF6_OWNER_FRAMING_TEMPLATE_REJECTS_ENGINEERING_CONFIRM": "geometry-web/engineering_bridge.inc",
+            "PF6_OWNER_FRAMING_TEMPLATE_REJECTS_LINE_CANCEL": "geometry-core/transactions.inc",
+            "PF6_OWNER_SHARED_LOAD_TOKEN": "geometry-web/scene-import-bridge.inc",
+            "PF6_OWNER_LOAD_COUNTER_CAPACITY": "geometry-web/scene-import-bridge.inc",
+            "PF6_OWNER_PREVIEW_COUNTER_CAPACITY": "geometry-core/transactions.inc",
+            "PF6_OWNER_LOAD_CAPACITY_RETAINS_CANDIDATE": "geometry-web/scene-import-bridge.inc",
+        }
+        self.assertEqual(list(pf6), [m["id"] for m in mutate.MUTANTS if m["id"].startswith("PF6_")],
+                         "PF6_NATIVE_IDS_IN_DECLARATION_ORDER")
+        added.update(pf6)
         # #360 / D59-D61, I70-I72: the original 123 owners remain exact.
         # Independently enumerate all 15 official native additions and their
         # real bridge judges; N15/N16 are private fault probes, not ledger rows.
@@ -326,8 +342,9 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                          "R360_NATIVE_COMPLETE_UNION")
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.
-        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger) | set(reading_a) | set(identity),
-                         {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"})
+        self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger) | set(reading_a) | set(identity) | set(pf6),
+                         {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"},
+                         "NATIVE_BRIDGE_IDS_EXACT")
         self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
         self.assertEqual({"M09", "M23", "M36", "M56", "M110"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
         src = mutate.Sources(mutate.ROOT)

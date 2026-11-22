@@ -72,12 +72,18 @@ def require_binaries(mutants, records, cache):
             paths = [
                 (baseline / binary, execution["baseline_identity"]),
                 (folder / "bridge-mutant" / binary, execution["mutant_identity"]),
-                (folder / "bridge-restored" / binary, execution["restored_identity"]),
             ]
             trials = execution.get("mutant_attempts") or [execution["mutant"]]
             raw = [(baseline, execution["baseline_build"]), (baseline, execution["baseline"]),
-                   (folder, execution["mutant_build"]), (folder, execution["restored_build"]),
-                   (folder, execution["restored"]), *[(folder, trial) for trial in trials]]
+                   (folder, execution["mutant_build"]), *[(folder, trial) for trial in trials]]
+            if execution["schema"] == "geometry-bridge-mutation-execution/2":
+                import mutation_bridge
+                mutation_bridge.verify_restoration(execution, sources.closure, mutant["id"])
+            elif execution["schema"] == "geometry-bridge-mutation-execution/1":
+                paths.append((folder / "bridge-restored" / binary, execution["restored_identity"]))
+                raw += [(folder, execution["restored_build"]), (folder, execution["restored"])]
+            else:
+                raise ValueError("unknown bridge execution schema")
             for directory, receipt in raw:
                 for stream in ("stdout", "stderr"):
                     path = directory / receipt[stream + "_file"]
