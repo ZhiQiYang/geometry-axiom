@@ -1,7 +1,7 @@
 {
   "schema": "geometry-canvas-section/1",
   "id": "P2052",
-  "assertions": 0,
+  "assertions": 28,
   "unit": 2,
   "order": {
     "anchor": {
@@ -15,7 +15,14 @@
     "flag": "GEOMETRY_FRAMING_JIG_ONLY"
   },
   "provenance": {
-    "kind": "candidate"
+    "kind": "ci-capture",
+    "executionSha": "abc94d6e7f419410b75fda9947a4fda91b129a65",
+    "headSha": "abc94d6e7f419410b75fda9947a4fda91b129a65",
+    "runId": "44981096790",
+    "attempt": "1"
   },
-  "cost": null
+  "cost": {
+    "receipt": "geometry-web/canvas-registry/costs/P2052/14737557625/receipt.json",
+    "sha256": "94a1c8bbf53c585151d3d15b583477597bf5fa0b788ff2418849314ffb66df75"
+  }
 }
