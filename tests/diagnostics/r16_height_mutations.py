@@ -22,7 +22,7 @@ import sys
 import tempfile
 
 
-BASE_SHA = "1b1c66749786c238042e3ba1c3917b1ad33b31bc"
+BASE_SHA = "883e68688f6480a5f1de6e86e6a056cc20339cb9"
 CASE = "P1231"
 MAX_TIMEOUT = 900  # Existing browser_mutation_check.py budget, never extended.
 
@@ -104,6 +104,18 @@ def definitions(root: Path):
     add("R123H_WITHDRAW_LENGTH_PAINT", css, length,
         "/* R123H_WITHDRAW_LENGTH_PAINT: original readonly-buffer stacking applies. */",
         "R123H_LENGTH_DISPLAY", "Restore the old readonly segment-buffer stacking below the decorative cursor layer.")
+    clearance = block(texts[css], "R123H_SIDEBAR_CLEARANCE")
+    add("R123H_RESTORE_SIDEBAR_DOCK_OCCLUSION", css, clearance,
+        clearance.replace("margin-inline-end: var(--r123h-dock)", "padding-inline-end: var(--r123h-dock)"),
+        "R123H_ENTRY_CONTROL_REACH", "Restore the sidebar's painted padding over the dock; the initial 1400px five-point audit must fail before any fit click.")
+    scroll = block(texts[css], "R123H_THREE_VIEW_SCROLL_CLEARANCE")
+    add("R123H_WITHDRAW_THREE_VIEW_SCROLL_CLEARANCE", css, scroll,
+        "/* R123H_WITHDRAW_THREE_VIEW_SCROLL_CLEARANCE: old 44px clipped row applies. */",
+        "R123H_CONTROLS", "Restore the old three-view toolbar row that also has to contain its horizontal scrollbar.")
+    gutter = block(texts[css], "R123H_FACE_TOOL_END_GUTTER")
+    add("R123H_WITHDRAW_FACE_TOOL_END_GUTTER", css, gutter,
+        "/* R123H_WITHDRAW_FACE_TOOL_END_GUTTER: old end-of-scroll extent applies. */",
+        "R123H_CONTROLS", "Remove the physical trailing scroll extent; retain all five hit points and the original narrow face-tool controls.")
     return result
 
 
@@ -120,7 +132,7 @@ def manifest_for(root: Path, mutations):
             "geometry-web/cdp_test.js",
             "geometry-web/browser_mutation_check.py", "geometry-web/workspace-height.js",
             "geometry-web/workspace-height.css", "geometry-web/workspace-height-dialogs.css",
-            "tests/diagnostics/r16_height_mutations.py"
+            "tests/diagnostics/r16_height_mutations.py", "tests/diagnostics/r16_control_probe.cjs"
         ] + (["geometry-web/canvas_sections/P1231.js", "geometry-web/cdp_sections.d/P1231.json"]
              if fragmented else ["geometry-web/workspace_height_test.js"]),
         "mutations": mutations,

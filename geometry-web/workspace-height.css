@@ -50,9 +50,14 @@
  */
 body.canvas-composition { --left-w: calc(278px + var(--r123h-dock)); }
 body.v3-mode { --left-w: calc(200px + var(--r123h-dock)); }
+/* R123H_SIDEBAR_CLEARANCE_BEGIN: padding is still painted by the z=10
+ * sidebar over the z=7 dock. A margin reserves the same lane outside its
+ * border box; the library's content width and the canvas rectangle stay put.
+ */
 body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
-  padding-inline-end: var(--r123h-dock);
+  margin-inline-end: var(--r123h-dock);
 }
+/* R123H_SIDEBAR_CLEARANCE_END */
 #mainCanvasDock, #faceCanvasDock {
   position: absolute;
   top: 0;
@@ -68,7 +73,7 @@ body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
 }
 @media (max-width: 900px) {
   body:is(.canvas-composition, .v3-mode) #canvasViewport { margin-inline-start: var(--r123h-dock); }
-  body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left { padding-inline-end: 0; }
+  body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left { margin-inline-end: 0; }
   body.v3-mode { --left-w: 0px; }
 }
 /* R123H_DOCK_END */
@@ -200,6 +205,23 @@ body.v3-mode .topbar > .top-actions {
 body.v3-mode .top-actions > * { flex-shrink: 0; }
 body.v3-mode #cv { width: 100%; height: 100%; flex: 1; }
 /* R123H_THREE_VIEW_HEIGHT_END */
+
+/* R123H_THREE_VIEW_SCROLL_CLEARANCE_BEGIN: 44px buttons plus the thin
+ * horizontal scrollbar need 52px inside the same adopted 56px header.
+ * Narrow headers already use scrollbar-width:none and retain two 44px rows.
+ */
+@media (min-width: 561px) {
+  body.v3-mode .topbar { grid-template-rows: 52px; padding-block: 2px; }
+  body.v3-mode .topbar > #viewToolbar { height: 52px; min-height: 52px; }
+}
+/* R123H_THREE_VIEW_SCROLL_CLEARANCE_END */
+
+/* R123H_FACE_TOOL_END_GUTTER_BEGIN: scroll-padding changes alignment but
+ * adds no scrollable extent. Keep an actual end gutter after the final tool
+ * so its right-hand hit point can leave the rounded/clipped scrollport edge.
+ */
+.workspace-tools-row #faceWorkspaceTools::after { content: ''; flex: 0 0 8px; }
+/* R123H_FACE_TOOL_END_GUTTER_END */
 
 /* R123H_FEEDBACK_DOCK_BEGIN */
 body #fbRoot > #fbButton:not([hidden]) {
