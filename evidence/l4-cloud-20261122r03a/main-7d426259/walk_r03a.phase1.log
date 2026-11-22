@@ -1,0 +1,35 @@
+STEP 1-rect {"lines":["boundary 1 outline 122,194 3862,194 3862,3495 122,3495","placement 1 on boundary 1 origin 0 0 2500 u +x v +y"],"dims":[3740,3301]}
+PASS RECT_3740x3301_PLACED 
+STEP 2-entry {"modeOptions":[["finish","完成面與鋪排"],["framing","平釘天花骨架（矩形第一片）"],["framing-fixed","平釘天花骨架（政策 A 固定治具）"]],"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"請明選","recipeOptions":["請明選"],"name":"平釘天花（固定治具）","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。","sources":["","",""],"materials":false,"
+PASS ENTRY_V2_EXPLICIT 
+PASS SCOPE_TEXT_V2 
+PASS SOURCES_BLANK 
+STEP 3-material {"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"請明選","recipeOptions":["請明選"],"name":"平釘天花（固定治具）","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。","sources":["","",""],"materials":false,"status":"已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。","phase":"ready","panelOptions":["請明選","L4 R03A 面材 915×183
+PASS MATERIAL_SOURCE_RETURN_V2 
+STEP 4-threshold {"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"請明選","recipeOptions":["請明選"],"name":"平釘天花（固定治具）","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","scope":"政策 A 固定治具：矩形、無孔、無柱樑，邊界明設 RC。副支沿用同一治具的固定 M 步距；不足一格仍沿用治具，末兩步重疊時依既定規則合併或分段。主支整支連續，裁切只在對牆。需退縫或貼邊移主支的排法仍明確拒絕；不自動換角、換方向或改舊配方版本。確認前仍須整組通過原生合法性與逐側承接。","sources":["","",""],"materials":false,"status":"已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。","phase":"ready","thresholdOptions":["請明選","鋪排承接門檻／X · 8/1
+PASS THRESHOLD_SOURCE_RETURN_V2 
+STEP 3-4-sources-history {"undoDelta":2,"engRevision":["15","17"]}
+STEP 5-save-recipe {"status":"配方已保存為一筆專案紀錄，尚未新增骨架。","undoDelta":1,"lastKind":"local","recipe":{"schema":"framing-template-recipes/1","recipes":[{"id":"7d004e21-c00c-4f4e-b18d-45cc00eb433f","name":"L4 R03A 3740×3301 固定治具","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"defaults":{"panelWidth":915,"panelLength":1830,"gap":2,"timberWidth":27,"timberDepth":33,"maxSecondarySpacing":367},"preference":{"corner":"min-min","lengthAlong":"v
+PASS SAVE_RECIPE_V2_INTENT_ONLY 
+STEP 6-preview {"head":"候選 53 支 · 確認前未寫入","members":53,"marks":[363,730,1097,1464,2198,2565,2932,3117],"status":"整組候選已通過原生驗證；確認才寫入一筆歷史。","confirmDisabled":false,"requests":[{"path":"/framing-template/preview","cmd":null,"schema":"framing-template-generate/1","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"t":1795331181845}]}
+PASS PREVIEW_53_MEMBERS 
+PASS PREVIEW_MARKS_FIXED_JIG 
+PASS PREVIEW_ZERO_WRITE 
+PASS PREVIEW_TABLE_MATCHES_DIAGRAM 
+STEP 6b-readability [{"width":390,"openedRightPanel":true,"cells":212,"wrapped":0,"clipped":0,"numberBroken":0,"brokenSamples":[],"bad":[],"tableScroll":{"scrollWidth":316,"clientWidth":316},"workspace":{"left":71,"width":319},"docScrollWidth":390,"innerWidth":390,"confirm":{"w":316,"h":44,"disabled":false},"cancel":{"w":316,"h":44,"disabled":false},"head":"候選 53 支 · 確認前未寫入"},{"width":1400,"openedRightPanel":false,"cells":212,"wrapped":64,"clipped":0,"numberBroken":6,"brokenSamples":[{"row":"2","col":2,"text":"3247
+PASS RESIZE_ZERO_WRITE 
+STEP 7-cancel {"status":"本次生成已取消，配方與場景保持取消前原狀。","requests":[{"path":"/framing-template/preview","cmd":null,"schema":"framing-template-generate/1","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"t":1795331181845},{"path":"/api","cmd":"framing-template-cancel","schema":null,"template":null,"t":1795331202433}],"resultsShown":false,"form":{"mode":"framing-fixed","modeText":"平釘天花骨架（政策 A 固定治具）","recipe":"L4 R03A 3740×3301 固定治具 · fl
+PASS CANCEL_ZERO_WRITE 
+PASS CANCEL_SENT_NO_CONFIRM 
+PASS CANCEL_KEEPS_RECIPE_MATERIAL_X 
+PASS PREVIEW2_SAME_AS_PREVIEW1 
+PASS PREVIEW2_ZERO_WRITE 
+STEP 8-confirm {"status":"骨架已整筆確認為一般正式物件；配方不擁有物件，冷開不重新搜尋。","undoDelta":1,"redo":0,"revision":["17","18"],"requests":[{"path":"/framing-template/preview","cmd":null,"schema":"framing-template-generate/1","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"t":1795331204371},{"path":"/api","cmd":"framing-template-confirm","schema":null,"template":null,"t":1795331205393}],"addedLines":181,"timberLines":53,"recipeUnchanged":true}
+PASS CONFIRM_ONE_HISTORY 
+PASS CONFIRM_LIVE_DEFINITIONS 
+PASS VIEW_AFTER_COMMIT_ZERO_WRITE 
+PASS UNDO_ONE_STEP_KEEPS_RECIPE 
+PASS REDO_SAME_COMMIT_NO_SEARCH 
+PASS SAVE_IS_COMMITTED_STATE 
+STEP 11-save {"savedName":"未命名專案.gcanvas","bytes":12197,"sha256":"ff42721bae1364d0c7136db44ee83eb1b37ed9076daa6871047bee60556e3960","sceneSha":"cbaad2b9fbcf811a3102ff0e737c64b6481a61b3174f516a16c18442042171e1","dirty":true,"generatorInvocations":2}
+SUMMARY {"pass":23,"fail":[]}

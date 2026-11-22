@@ -40,6 +40,8 @@ R14_ON_R17_ADOPTION_VERSION = ("42ac2f737828e04b301cbbfa97f7f57a18ceb050", "41bb
 R03_ADOPTION_VERSION = ("73f31618a84d4feb6fdb526a9f419c24270a0d90", "323de5e3ffdecef5019be784e8dd263f135f244ba0761ddfd89a59f1a3b823b3")
 # R13 C/D (#43) adopts the approved text only; the executor retains its current capabilities.
 R13_ADOPTION_VERSION = ("fd52705bbcbc387679b02b8bef0bb80db174a6e9", "3628b16ba37fc84e193a57fb8523a6290882c8e4a005382beb74faba392645a0")
+# R09b (#44, Q1-A + Q2-A) adopts the approved text only; the executor retains its current capabilities.
+R09B_ADOPTION_VERSION = ("4423f5b76ed37db71edf28f7d22c97358711efe4", "480708e9b2547b31bd29164bc0310cb69007d9112d6b3bc4376d5c9a7b1bcecd")
 # The #309 commit's executor pair (#260 A/B text). #309 reaches main only as the second parent
 # of a merge commit, so no first-parent state of main ever declared it (P-181): like the
 # interim digests listed in modeling/__init__.py it is deliberately NOT an accepted version.
@@ -49,7 +51,8 @@ NEVER_DECLARED_309_AB_VERSION = ("0d9015bc5a83fbb0b39e52555ce2da78f1c668ea", "f1
 # pair from CARD_REFERENCE_AXIOM_VERSIONS cannot also shrink the list that checks it.
 POST_D64_MAIN_VERSIONS = (D64_ADOPTION_MAIN_VERSION, PRE_ONE_AXIS_STAGGER_MAIN_VERSION,
                           PRE_READING_A_MAIN_VERSION, PRE_R14_MAIN_VERSION, PRE_BOUNDARY_PAIR_MAIN_VERSION,
-                          BOUNDARY_PAIR_ADOPTION_VERSION, R14_ON_R17_ADOPTION_VERSION, R03_ADOPTION_VERSION)
+                          BOUNDARY_PAIR_ADOPTION_VERSION, R14_ON_R17_ADOPTION_VERSION, R03_ADOPTION_VERSION,
+                          R13_ADOPTION_VERSION)
 # SHA-256 of the D64 / I74 / R60 blocks of 公理層.md (see card_clause_sha256), recorded per
 # revision from the committed 公理層.md bytes (LF). The pairs that may carry
 # grid-card-reference/1 -- b3c79615 (adoption), e744f531 (GEO-261 release), a00ba9e9 (#260)
@@ -72,6 +75,7 @@ CARD_CLAUSE_SHA256 = {
     '42ac2f737828e04b301cbbfa97f7f57a18ceb050': _CARD_CLAUSES,
     '73f31618a84d4feb6fdb526a9f419c24270a0d90': _CARD_CLAUSES,
     'fd52705bbcbc387679b02b8bef0bb80db174a6e9': _CARD_CLAUSES,
+    '4423f5b76ed37db71edf28f7d22c97358711efe4': _CARD_CLAUSES,
 }
 
 
@@ -746,8 +750,10 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
 
     def test_r17_adopted_source_pair_and_executor_scope_are_exact(self):
         self.assertEqual((modeling.AXIOM_REVISION, modeling.AXIOM_SHA256),
-                         R13_ADOPTION_VERSION, "R13_APPROVED_SOURCE_PAIR")
-        self.assertEqual(modeling._axiom_hash(), R13_ADOPTION_VERSION[1])
+                         R09B_ADOPTION_VERSION, "R09B_APPROVED_SOURCE_PAIR")
+        self.assertEqual(modeling._axiom_hash(), R09B_ADOPTION_VERSION[1])
+        self.assertEqual(getattr(modeling, "PRE_SOURCE_REASSOCIATION_AXIOM_VERSIONS", frozenset()),
+                         frozenset({R13_ADOPTION_VERSION}), "R13_APPROVED_SOURCE_PAIR")
         self.assertEqual(getattr(modeling, "PRE_RECONSTRUCTION_AXIOM_VERSIONS", frozenset()),
                          frozenset({R03_ADOPTION_VERSION}), "R03_APPROVED_SOURCE_PAIR")
         self.assertEqual(getattr(modeling, "PRE_FLAT_TIMBER_AXIOM_VERSIONS", frozenset()),
@@ -782,7 +788,7 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
                 before = deepcopy(package)
                 rebuilt = verify_package(package)
                 expected = deepcopy(package)
-                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R13_ADOPTION_VERSION
+                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R09B_ADOPTION_VERSION
                 self.assertEqual(rebuilt, expected, "R03_REOPEN_PRESERVES_FULL_PACKAGE")
                 self.assertEqual(package, before, "R03_REOPEN_READONLY")
 
@@ -825,7 +831,7 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
                 before = deepcopy(package)
                 rebuilt = verify_package(package)
                 expected = deepcopy(package)
-                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R13_ADOPTION_VERSION
+                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R09B_ADOPTION_VERSION
                 self.assertEqual(rebuilt, expected, "R13_REOPEN_PRESERVES_FULL_PACKAGE")
                 self.assertEqual(package, before, "R13_REOPEN_READONLY")
 
@@ -855,7 +861,52 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
                     self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.clause),
                                      ("UNSUPPORTED", "CAPABILITY", "I32"), "R13_TEXT_ADOPTION_IS_NOT_PRODUCT_CAPABILITY")
 
+    R09B_PREVIOUS_FIXTURES = {'profile': (96374, 'd1ab44676b3d5abdec86d92db29ead0e252baecd0495f9737a5ca9da6fb12a06'), 'stagger': (8826, '5aab8d78cd1ec32ea52bf3bf9689abd30d15780389ae86b44c6de802caa9650c'), 'card': (37934, '57e0e8c1d64b141eed50d4318db550d4a44cfcb756d5fd0660d51cea984cd17a')}
+
+    def check_r09b_previous_main_packages(self):
+        """Frozen outputs of the real R13 main executor (883e6868); see provenance.json."""
+        for name, (size, pin) in self.R09B_PREVIOUS_FIXTURES.items():
+            with self.subTest(r09b_previous=name):
+                raw = (ROOT / "tests/fixtures/r09b-main-883e6868" / (name + ".json")).read_bytes()
+                self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()), (size, pin), "R09B_REAL_PRODUCER_BYTES")
+                package = json.loads(raw)
+                self.assertEqual((package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"]),
+                                 R13_ADOPTION_VERSION, "R09B_REAL_PRODUCER_PAIR")
+                before = deepcopy(package)
+                rebuilt = verify_package(package)
+                expected = deepcopy(package)
+                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R09B_ADOPTION_VERSION
+                self.assertEqual(rebuilt, expected, "R09B_REOPEN_PRESERVES_FULL_PACKAGE")
+                self.assertEqual(package, before, "R09B_REOPEN_READONLY")
+
+    def check_r09b_cross_pairs_and_unsupported_capabilities(self):
+        class ReachedRebuild(Exception):
+            pass
+        previous, current = R13_ADOPTION_VERSION, R09B_ADOPTION_VERSION
+        for version in ((previous[0], current[1]), (current[0], previous[1]), ("0" * 40, current[1])):
+            package = deepcopy(self.saved()["card"])
+            package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+            with self.subTest(r09b_cross_pair=version), mock.patch.object(modeling, "build_package", side_effect=ReachedRebuild):
+                with self.assertRaises(ModelError, msg="R09B_CROSS_PAIR_REJECTED") as caught:
+                    verify_package(package)
+                self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.clause),
+                                 ("UNSUPPORTED", "AXIOM_VERSION", "I32"), "R09B_CROSS_PAIR_REJECTED")
+                self.assertIn("does not implement the supplied axiom revision", caught.exception.message)
+        # I72 names source-reassociation/1 and model-carrier-edit/1; adopting the text does not implement them.
+        for version in (previous, current):
+            for capability in ("source-reassociation/1", "model-carrier-edit/1", "reconstruction-data/1"):
+                package = deepcopy(self.saved()["card"])
+                package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
+                package["definitions"]["base_scene"] += "requires " + capability + "\n"
+                package["manifest"]["source_sha256"] = digest(package["definitions"])
+                with self.subTest(r09b_unsupported=(version, capability)):
+                    with self.assertRaises(ModelError, msg="R09B_TEXT_ADOPTION_IS_NOT_PRODUCT_CAPABILITY") as caught:
+                        verify_package(package)
+                    self.assertEqual((caught.exception.status, caught.exception.code, caught.exception.clause),
+                                     ("UNSUPPORTED", "CAPABILITY", "I32"), "R09B_TEXT_ADOPTION_IS_NOT_PRODUCT_CAPABILITY")
+
     def test_r17_previous_main_packages_reopen_without_losing_any_source_or_geometry(self):
+        self.check_r09b_previous_main_packages()
         self.check_r13_previous_main_packages()
         self.check_r03_previous_main_packages()
         for name, package in self.saved().items():
@@ -866,11 +917,12 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
                 except ModelError as error:
                     self.fail("R17_RELEASED_PACKAGE_REOPEN: " + name + ": " + str(error.as_dict()))
                 expected = deepcopy(original)
-                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R13_ADOPTION_VERSION
+                expected["manifest"]["axiom_revision"], expected["manifest"]["axiom_sha256"] = R09B_ADOPTION_VERSION
                 self.assertEqual(rebuilt, expected, "R17_ONLY_TWO_VERSION_FIELDS_MAY_CHANGE: " + name)
                 self.assertEqual(package, original, "R17_REOPEN_MUST_NOT_REWRITE_PRODUCER_INPUT: " + name)
 
     def test_r17_unknown_and_cross_paired_versions_are_rejected_before_rebuild(self):
+        self.check_r09b_cross_pairs_and_unsupported_capabilities()
         self.check_r13_cross_pairs_and_unsupported_capabilities()
         self.check_r03_cross_pairs_and_unsupported_capabilities()
         class ReachedRebuild(Exception):
@@ -924,6 +976,14 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
         subdivision["definitions"]["base_scene"] += "requires grid-subdivision-rules/1\n"
         subdivision["manifest"]["source_sha256"] = digest(subdivision["definitions"])
         packages["r13-previous-subdivision-era-only"] = subdivision
+        # The newly retired R13 pair keeps the same permissions (real 883e6868 outputs).
+        for name in self.R09B_PREVIOUS_FIXTURES:
+            packages["r09b-previous-" + name] = json.loads(
+                (ROOT / "tests/fixtures/r09b-main-883e6868" / (name + ".json")).read_bytes())
+        subdivision = deepcopy(packages["r09b-previous-stagger"])
+        subdivision["definitions"]["base_scene"] += "requires grid-subdivision-rules/1\n"
+        subdivision["manifest"]["source_sha256"] = digest(subdivision["definitions"])
+        packages["r09b-previous-subdivision-era-only"] = subdivision
         with mock.patch.object(modeling, "build_package", side_effect=ReachedRebuild):
             for name, package in packages.items():
                 with self.subTest(fixture=name):
@@ -938,7 +998,7 @@ class BoundaryPairAdoptionCompatibility(unittest.TestCase):
     def test_r17_adoption_does_not_enable_unsupported_capabilities(self):
         original = self.saved()["card"]
         for version in (PRE_BOUNDARY_PAIR_MAIN_VERSION, BOUNDARY_PAIR_ADOPTION_VERSION,
-                        R14_ON_R17_ADOPTION_VERSION, R03_ADOPTION_VERSION):
+                        R14_ON_R17_ADOPTION_VERSION, R03_ADOPTION_VERSION, R13_ADOPTION_VERSION):
             for capability in ("boundary-pair/1", "boundary-pair/999", "grid-subdivision-rules/1", "identity-ledger/1"):
                 package = deepcopy(original)
                 package["manifest"]["axiom_revision"], package["manifest"]["axiom_sha256"] = version
