@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   review:
-    name: Adversarial review of PR #${{ inputs.pr_number }}
+    name: 'Adversarial review of PR #${{ inputs.pr_number }}'
     # 只准 repo 擁有者本人、從 main 上的這份 workflow 觸發。
     if: >-
       github.event_name == 'workflow_dispatch' &&
@@ -36,7 +36,7 @@ jobs:
       github.actor == github.repository_owner &&
       github.triggering_actor == github.repository_owner
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 60
     permissions:
       contents: read
       pull-requests: write
@@ -123,15 +123,18 @@ jobs:
 
           G=(git -C "$GITHUB_WORKSPACE/pr" -c core.hooksPath=/dev/null -c diff.external= -c core.pager=cat)
           test "$("${G[@]}" rev-parse HEAD)" = "$HEAD_SHA"
-          base="$("${G[@]}" rev-parse origin/main)"
-          mb="$("${G[@]}" merge-base origin/main HEAD)"
-          printf 'main=%s\nmerge_base=%s\nhead=%s\nworkflow_main=%s\n' "$base" "$mb" "$HEAD_SHA" "$GITHUB_SHA" > "$data/refs.txt"
-          "${G[@]}" diff --no-ext-diff --no-textconv origin/main...HEAD > "$data/diff.patch"
-          "${G[@]}" diff --no-ext-diff --no-textconv --stat=200 origin/main...HEAD > "$data/diff-stat.txt"
-          "${G[@]}" diff --no-ext-diff --no-textconv --name-status origin/main...HEAD > "$data/diff-name-status.txt"
-          "${G[@]}" log --no-color --format='commit %H%nAuthor: %an%nDate:   %aI%n%n%B' origin/main..HEAD > "$data/log.txt"
-          for c in $("${G[@]}" rev-list origin/main..HEAD); do
-            "${G[@]}" show --no-ext-diff --no-textconv --no-color --stat --patch "$c" > "$data/commits/$c.txt"
+          # 差異基底固定用 main 目錄簽出的同一個 commit（github.sha），讓「main 目錄」與 diff 基底一致。
+          base="$GITHUB_SHA"
+          "${G[@]}" cat-file -e "$base^{commit}"
+          mb="$("${G[@]}" merge-base "$base" HEAD)"
+          printf 'main=%s\nmerge_base=%s\nhead=%s\norigin_main_at_fetch=%s\n' "$base" "$mb" "$HEAD_SHA" "$("${G[@]}" rev-parse origin/main)" > "$data/refs.txt"
+          "${G[@]}" diff --no-ext-diff --no-textconv "$base...HEAD" > "$data/diff.patch"
+          "${G[@]}" diff --no-ext-diff --no-textconv --stat=200 "$base...HEAD" > "$data/diff-stat.txt"
+          "${G[@]}" diff --no-ext-diff --no-textconv --name-status "$base...HEAD" > "$data/diff-name-status.txt"
+          "${G[@]}" log --no-color --format='commit %H%nAuthor: %an%nDate:   %aI%n%n%B' "$base..HEAD" > "$data/log.txt"
+          # 合併 commit 用 --remerge-diff：只列出與自動合併結果不同的部分（衝突解法或手改），乾淨合併為空。
+          for c in $("${G[@]}" rev-list "$base..HEAD"); do
+            "${G[@]}" show --no-ext-diff --no-textconv --no-color --remerge-diff --stat --patch "$c" > "$data/commits/$c.txt"
           done
 
           api() { gh api --paginate "$1" --jq '.[]' | jq -s "$2"; }
@@ -211,7 +214,7 @@ jobs:
           home="$RUNNER_TEMP/claude-home"
           mkdir -p "$home"
           cd "$GITHUB_WORKSPACE"
-          # 子行程環境只留金鑰與必要變數；不帶任何 GitHub token。
+          # 移除 GitHub 相關 token，其餘 runner 環境照常繼承（模型沒有 shell，讀檔限工作目錄內）。
           unset GH_TOKEN GITHUB_TOKEN ACTIONS_RUNTIME_TOKEN ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
           status=0
           # shellcheck disable=SC2086

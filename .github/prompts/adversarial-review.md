@@ -20,7 +20,11 @@
   - `diff.patch`：`git diff <main>...<head>` 完整差異（merge-base 到 head）。
   - `diff-stat.txt`、`diff-name-status.txt`：差異統計與檔案清單（先看這兩份決定讀什麼）。
   - `log.txt`：`<main>..<head>` 的 commit 紀錄（含完整訊息）。
-  - `commits/<sha>.txt`：每個 commit 的 `git show --stat` 與完整 patch。
+  - `commits/<sha>.txt`：每個 commit 的 `git show --stat` 與完整 patch。**合併 commit** 以 `--remerge-diff` 產生：
+    只列出與 git 自動合併結果不同的部分（衝突解法或合併時的手改）；乾淨合併只有標頭、沒有差異。
+    判斷 A、C、F 時以 `diff.patch`（淨差異）為準，不要把合併帶進來的 main 內容當成本 PR 的改動。
+  - `refs.txt`：`main`（＝main 目錄簽出的 commit，也是 diff 基底）、`merge_base`、`head` 的完整 SHA，
+    以及抓取當下的 `origin_main_at_fetch`（若與 `main` 不同，表示觸發後 main 又前進了）。
   - `symlinks.txt`：PR 樹裡被換成純文字佔位檔的符號連結清單（若有）。
 - 「PR 目錄」是 head 的完整檔案樹；「main 目錄」是 main 的完整檔案樹（可信版本）。
   比對改前改後時兩邊都讀。
