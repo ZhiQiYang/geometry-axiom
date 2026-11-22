@@ -4,6 +4,7 @@
  * The isolated profile reloads with only the three named teaching preferences
  * reset, so first-visit and read states use the ordinary App lifecycle.
  */
+const {controlProbe,entryControlReady,sweepEntryControl}=require('../../tests/diagnostics/r16_control_probe.cjs');
 module.exports = async helpers => {
   const {send, eval_, sleep, click, waitForUI, makeCheck, exceptionCount} = helpers;
   console.log('=== P1231. U123-H:A 六工作區正常畫布與既有控制可達性 ===');
@@ -69,26 +70,6 @@ module.exports = async helpers => {
     await settle();
   };
   const shown = selector => read(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)return false;const r=e.getBoundingClientRect(),s=getComputedStyle(e);return !e.hidden&&s.display!=='none'&&s.visibility==='visible'&&r.width>0&&r.height>0;})()`);
-  function controlProbe(selector) {
-    const e = document.querySelector(selector);
-    if (!e) return {selector, exists:false, visible:false, reachable:false, disabled:false};
-    const r = e.getBoundingClientRect(), s = getComputedStyle(e);
-    const native = e.matches('label') ? e.querySelector('input,select,textarea') : e;
-    const disabled = !!native?.matches(':disabled') || e.getAttribute('aria-disabled')==='true';
-    const points = [
-      [r.left+r.width/2,r.top+r.height/2], [r.left+Math.min(5,r.width/4),r.top+r.height/2],
-      [r.right-Math.min(5,r.width/4),r.top+r.height/2], [r.left+r.width/2,r.top+Math.min(5,r.height/4)],
-      [r.left+r.width/2,r.bottom-Math.min(5,r.height/4)]
-    ].map(([x,y])=>({x,y,hit:e.contains(document.elementFromPoint(x,y))}));
-    const visible = !e.hidden && s.display!=='none' && s.visibility==='visible' && Number(s.opacity)>0 &&
-      r.width>0 && r.height>0 && r.left>=0 && r.right<=innerWidth && r.top>=0 && r.bottom<=innerHeight;
-    const name = e.getAttribute('aria-label') || e.title || native?.getAttribute('aria-label') ||
-      [...(native?.labels||[])].map(label=>label.textContent.trim()).join(' ') || e.textContent.trim();
-    return {selector, exists:true, visible, disabled, name, points,
-      reachable:visible&&points.every(point=>point.hit),
-      rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
-      pointerEvents:s.pointerEvents, active:e===document.activeElement||e.contains(document.activeElement)};
-  }
   const point = async selector => {
     let observation;
     // Match the established P74 16x70ms reachability budget for drawer and
@@ -111,7 +92,7 @@ module.exports = async helpers => {
     // The permanent grid entry is in the existing object-library drawer.
     if (selector==='#btnNewGridSystem' && !(await point(selector)).reachable) await ctl('#toggleLeft');
     const p = await point(selector);
-    if (!p.reachable || p.disabled) throw Error('P1231 real control unavailable '+JSON.stringify(p));
+    check('R123H_CONTROL_REACH '+selector,entryControlReady(p),p);
     await click(p.points.at(0).x, p.points.at(0).y);
     await sleep(100);
     await settle();
@@ -310,6 +291,11 @@ module.exports = async helpers => {
       'space 1 boundary 1','grid-system 31 name-hex 553132332d48 main-along u u repeat 0 400 v repeat 0 600']){
       const result=await apiRequest('line '+line);if(!result.ok)throw Error('P1231 fixture '+JSON.stringify(result));}
     if(!await renderObjects())throw Error('P1231 render fixture');setOcTool('select');return true;})()`);
+  const initialControls=await sweepEntryControl({sizes:sizes.slice(0,3),viewport,point,selector:'#btnZoom',
+    record:row=>console.log('P1231_ENTRY_CONTROL '+JSON.stringify(row))});
+  for(const row of initialControls)check('R123H_ENTRY_CONTROL_REACH main '+row.requested.width,
+    entryControlReady(row.observation),row);
+  await viewport({width:1400,height:900});
   await ctl('#btnZoom');
   await matrix('main','#ocv',rootControls,'#ocSelectionSummary','#btnZoom');
 
