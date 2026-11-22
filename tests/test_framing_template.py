@@ -37,7 +37,7 @@ def oracle_module():
     return module
 
 
-class FramingTemplateNative(unittest.TestCase):
+class FramingTemplateHarness(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.executable = os.environ.get('GEOMETRY_TEST_BRIDGE')
@@ -179,6 +179,7 @@ class FramingTemplateNative(unittest.TestCase):
             self.assertEqual([row['rect'][0], row['rect'][1], 2506, row['rect'][2], row['rect'][3], 2539], bounds, 'R03_NATIVE_EIGHT_VERTEX_FACES')
         self.assertTrue(self.terminal(result, cancel=True)['cancelled'])
 
+class FramingTemplateNative(FramingTemplateHarness):
     def test_N01_read_fixed_version_and_explicit_source(self):
         before = self.snapshot()
         read = self.read()
@@ -368,7 +369,198 @@ class FramingTemplateNative(unittest.TestCase):
         self.assertEqual(invocations, self.read()['generatorInvocations'], 'R03_SOURCE_EDIT_NEVER_SEARCHES_TEMPLATE')
 
 
+POLICY_A = '3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58'
+
+
+class FramingTemplatePolicyA(FramingTemplateHarness):
+    """The new immutable version changes jig marks, not any native legality."""
+
+    def read(self):
+        result = self.packet('framing-template-read', {
+            'schema': 'framing-template-read/2', 'boundaryId': 1,
+            'template': {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY_A}})
+        self.assertTrue(result.get('ok'), 'R03A_NATIVE_ENTRY_AVAILABLE: ' + repr(result))
+        return result
+
+    def request(self, **kwargs):
+        value = super().request(**kwargs)
+        value['template'] = {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY_A}
+        return value
+
+    def test_A01_explicit_new_version_and_immutable_old_contract(self):
+        before = self.snapshot()
+        read = self.read()
+        self.assertEqual('framing-template-read-result/2', read['schema'])
+        self.assertEqual(('flat-ceiling', 2, POLICY_A, 'rectangle-fixed-jig-no-retreat'),
+                         tuple(read['generator'][k] for k in ('id', 'version', 'policyFingerprint', 'scope')))
+        header = (ROOT / 'geometry-templates/woodworking/native/flat_ceiling_jig.h').read_text()
+        descriptor = re.search(r'#define WOOD_FLAT_JIG_POLICY_DESCRIPTOR "([^"\n]+)"', header).group(1)
+        self.assertEqual(POLICY_A, hashlib.sha256(descriptor.encode('ascii')).hexdigest(), 'R03A_POLICY_RECOMPUTABLE')
+        old = self.packet('framing-template-read', {'schema': 'framing-template-read/1', 'boundaryId': 1})
+        self.assertEqual(('flat-ceiling', 1, POLICY), tuple(old['generator'][k] for k in ('id', 'version', 'policyFingerprint')))
+        for template in ({'id': 'flat-ceiling', 'version': 1, 'policyFingerprint': POLICY_A},
+                         {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY},
+                         {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': '0' * 64},
+                         {'id': 'flat-ceiling', 'version': 3, 'policyFingerprint': POLICY_A}):
+            bad = self.packet('framing-template-read', {'schema': 'framing-template-read/2',
+                                                      'boundaryId': 1, 'template': template})
+            self.assertFalse(bad.get('ok'), 'R03A_VERSION_FINGERPRINT_PAIR')
+        self.assertEqual(before, self.snapshot())
+
+    def test_A02_frozen_and_new_rectangles_every_native_member(self):
+        golden = json.loads((ROOT / 'geometry-core/framing-template/oracle/oracle-golden.json').read_text())
+        for name, along in [('F3次臥', 'v'), ('F4走道', 'u')]:
+            for corner in ('min-min', 'max-min', 'min-max', 'max-max'):
+                with self.subTest(frozen=name, along=along, corner=corner):
+                    self.assert_oracle(golden['rooms'][name]['room'], corner, along, golden['rooms'][name]['layouts'])
+        for width, height, along in ((3740, 3301, 'v'), (2500, 3000, 'v')):
+            room = {'outer': [[0, 0], [width, 0], [width, height], [0, height]]}
+            for corner in ('min-min', 'max-min', 'min-max', 'max-max'):
+                with self.subTest(width=width, height=height, corner=corner):
+                    self.assert_oracle(room, corner, along)
+
+    def test_A03_same_jig_and_last_two_step_collision_split(self):
+        self.surface(3740, 3301)
+        old_read = self.packet('framing-template-read', {'schema': 'framing-template-read/1', 'boundaryId': 1})
+        old_request = FramingTemplateHarness.request(self, read=old_read)
+        old = self.packet('framing-template-preview', old_request)
+        self.assertFalse(old.get('ok'), 'R03A_V1_REMAINS_COMMON_DOMAIN')
+        self.assertEqual('POLICY_RULE_CONFLICT', old['code'])
+        current = self.accepted(marker='R03A_FIXED_JIG')
+        self.assertEqual([363, 730, 1097, 1464, 2198, 2565, 2932, 3117],
+                         current['preview']['marks'], 'R03A_FIXED_JIG')
+        self.assertEqual([185, 184], [3117 - 2932, 3301 - 3117], 'R03A_LAST_TWO_STEPS_SPLIT')
+        self.assertEqual(53, len(current['preview']['members']))
+        self.assertTrue(self.terminal(current, cancel=True)['cancelled'])
+
+    def test_A04_rejected_candidate_cannot_write_any_formal_state(self):
+        for width, height, code in ((3700, 2000, 'POLICY_RULE_CONFLICT'),
+                                    (3709, 2000, 'POLICY_RULE_CONFLICT'),
+                                    (3720, 2000, 'NATIVE_INVALID')):
+            with self.subTest(width=width):
+                self.surface(width, height)
+                before = self.snapshot()
+                result = self.preview()
+                self.assertFalse(result.get('ok'), 'R03A_REJECT_WRITES')
+                self.assertEqual(code, result.get('code'), result)
+                self.assertNotIn('preview', result)
+                self.assertEqual(before, self.snapshot(), 'R03A_REJECT_WRITES')
+        self.surface(3740, 3301)
+        self.seed_sources(threshold='14')
+        before = self.snapshot()
+        self.assertFalse(self.preview().get('ok'), 'R03A_R43_EACH_SIDE_REMAINS_REQUIRED')
+        self.assertEqual(before, self.snapshot(), 'R03A_REJECT_WRITES')
+        # An accepted preview must still be cancellable after a previous reject.
+        self.surface(3740, 3301)
+        pending = self.accepted()
+        self.assertTrue(self.terminal(pending, cancel=True)['cancelled'])
+
+    def test_A05_cancel_exact_commit_one_history_and_cold_load(self):
+        self.surface(3740, 3301)
+        before = self.snapshot()
+        pending = self.accepted()
+        self.assertEqual(before, self.snapshot(), 'R03A_PREVIEW_ZERO_WRITE')
+        self.assertTrue(self.terminal(pending, cancel=True)['cancelled'])
+        self.assertEqual(before, self.snapshot(), 'R03A_CANCEL_ZERO_WRITE')
+        pending = self.accepted()
+        self.assertEqual({'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY_A},
+                         pending['preview']['template'], 'R03A_PREVIEW_SELECTED_VERSION')
+        committed = self.terminal(pending)
+        self.assertTrue(committed.get('ok') and committed.get('history_changed'),
+                        'R03A_CONFIRM_DIFFERENT_CANDIDATE: ' + repr(committed))
+        rows = self.ok('references')['timbers']
+        self.assertEqual([row['geometry'] for row in pending['preview']['members']],
+                         [row['geometry'] for row in rows], 'R03A_CONFIRM_DIFFERENT_CANDIDATE')
+        after = self.ok('dump')['text']
+        self.assertEqual(pending['preview']['definitionFingerprint'],
+                         self.ok('engineering-read')['definition_sha256'], 'R03A_CONFIRM_DIFFERENT_CANDIDATE')
+        self.assertFalse(self.terminal(pending).get('ok'), 'R03A_CONFIRM_ONLY_ONCE')
+        self.ok('line undo')
+        self.assertEqual(before[0], self.ok('dump')['text'], 'R03A_CONFIRM_ONE_HISTORY')
+        self.ok('line redo')
+        self.assertEqual(after, self.ok('dump')['text'])
+        file = self.directory / 'policy-a.scene'
+        file.write_text(after, encoding='utf-8')
+        cold = Session(self.executable)
+        try:
+            self.assertTrue(cold.command('loadfile ' + str(file))['ok'])
+            self.assertEqual(after, cold.command('dump')['text'], 'R03A_PERSIST_ORDINARY_DEFINITIONS')
+            read = self.packet('framing-template-read', {'schema': 'framing-template-read/2', 'boundaryId': 1,
+                'template': {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY_A}}, cold)
+            self.assertTrue(read.get('ok'), read)
+            self.assertEqual(0, read['generatorInvocations'], 'R03A_COLD_OPEN_NO_SEARCH')
+        finally:
+            cold.stop()
+
+    def test_A06_holes_columns_wrong_version_and_stale_owner_still_rejected(self):
+        self.ok('line surface 1 origin 0 0 2500 u +x v +y outline 0,0 3740,0 3740,3301 0,3301 hole 1000,500 1200,500 1200,700 1000,700')
+        before = self.snapshot()
+        result = self.preview()
+        self.assertEqual('UNSUPPORTED_SCOPE', result.get('code'), result)
+        self.assertEqual(before, self.snapshot())
+        self.surface(3740, 3301)
+        self.ok('line column 1 at 900 900 size 100 100 z 0 3000')
+        before = self.snapshot()
+        self.assertEqual('UNSUPPORTED_SCOPE', self.preview().get('code'))
+        self.assertEqual(before, self.snapshot())
+        self.surface(3740, 3301)
+        pending = self.accepted()
+        self.assertFalse(self.terminal(pending, owner='0' * 64).get('ok'))
+        self.ok('line spec r03a_unrelated 123')
+        before = self.snapshot()
+        self.assertFalse(self.terminal(pending).get('ok'))
+        self.assertEqual(before, self.snapshot(), 'R03A_STALE_ZERO_WRITE')
+
+
 class FramingTemplateHTTP(unittest.TestCase):
+    def test_H02_read_two_transport_is_exact_and_reaches_native(self):
+        executable = os.environ.get('GEOMETRY_TEST_BRIDGE')
+        if not executable:
+            self.skipTest('GEOMETRY_TEST_BRIDGE required for actual transport/native execution')
+        path = ROOT / 'geometry-web/framing_template_transport.py'
+        spec = importlib.util.spec_from_file_location('r03_policy_a_transport', path)
+        transport = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(transport)
+        session = Session(executable)
+        paths, seen = [], []
+        try:
+            self.assertTrue(session.command('reset')['ok'])
+            self.assertTrue(session.command('line surface 1 origin 0 0 2500 u +x v +y outline 0,0 3740,0 3740,3301 0,3301')['ok'])
+
+            def ask(command):
+                private = Path(command.split(' ', 1)[1])
+                paths.append(private)
+                seen.append(json.loads(private.read_bytes()))
+                return json.dumps(session.command(command)).encode()
+
+            body = {'schema': 'framing-template-read/2', 'boundaryId': 1,
+                    'template': {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY_A}}
+            result = json.loads(transport.request(json.dumps(body).encode(), ask, mode='read'))
+            self.assertTrue(result.get('ok'), 'R03A_TRANSPORT_READ_TWO: ' + repr(result))
+            self.assertEqual(body, seen[-1], 'R03A_TRANSPORT_EXACT_PAYLOAD')
+            self.assertEqual(POLICY_A, result['generator']['policyFingerprint'])
+            before = len(seen)
+            bad = [dict(body, path='/tmp/not-client-controlled')]
+            for template in ({}, {'id': 'flat-ceiling', 'version': True, 'policyFingerprint': POLICY_A},
+                             {'id': 'flat-ceiling', 'version': 1, 'policyFingerprint': POLICY},
+                             {'id': 'flat-ceiling', 'version': 2, 'policyFingerprint': POLICY_A, 'extra': 0}):
+                bad.append(dict(body, template=template))
+            for value in bad:
+                rejected = json.loads(transport.request(json.dumps(value).encode(), ask, mode='read'))
+                self.assertFalse(rejected.get('ok'), 'R03A_TRANSPORT_STRICT_SCHEMA')
+            duplicate = json.dumps(body).replace('"boundaryId": 1', '"boundaryId": 1, "boundaryId": 1').encode()
+            self.assertFalse(json.loads(transport.request(duplicate, ask, mode='read')).get('ok'))
+            self.assertEqual(before, len(seen), 'R03A_TRANSPORT_BAD_INPUT_ZERO_NATIVE_CALLS')
+            # A well-shaped but wrong fingerprint reaches the authoritative
+            # native policy gate; the transport must not invent a policy table.
+            wrong_pin = dict(body, template=dict(body['template'], policyFingerprint='0' * 64))
+            rejected = json.loads(transport.request(json.dumps(wrong_pin).encode(), ask, mode='read'))
+            self.assertFalse(rejected.get('ok'), 'R03A_NATIVE_POLICY_GATE')
+            self.assertEqual(before + 1, len(seen))
+            self.assertTrue(all(not p.exists() for p in paths), 'R03A_PRIVATE_TRANSPORT_FILES_CLEANED')
+        finally:
+            session.stop()
+
     def test_H01_real_http_receipts_cancel_and_single_confirm(self):
         executable = os.environ.get('GEOMETRY_TEST_BRIDGE')
         if not executable:

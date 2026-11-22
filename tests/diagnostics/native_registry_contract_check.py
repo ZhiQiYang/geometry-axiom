@@ -82,6 +82,57 @@ def make_fixture(root, destination):
     return inventory
 
 
+CI_RECEIPT_SCHEMA = 'geometry-native-ci-receipt/1'
+# Named withdrawals of the R443 isolation (tests/diagnostics/r443_contract_fixture_withdrawals.py).
+ISOLATION_WITHDRAWALS = ('R443_NO_ISOLATION', 'R443_LEAK_ONE_CI_SOURCE', 'R443_TAMPER_SYNTHETIC_ZIP')
+ISOLATION_WITHDRAWAL = None
+
+
+def isolate_synthetic_ci(root):
+    """R443: leave only historical sources in a *temporary* synthetic-CI fixture.
+
+    `make_fixture()` copies the checkout's fragments, and once a real CI cost
+    is adopted (e.g. run 44954592086) the copy also holds real
+    `geometry-native-ci-receipt/1` originals.  `verify_ci_sources()` rightly
+    re-authenticates every such original, so a synthetic API dictionary
+    cannot answer for them.  The synthetic tests therefore remove, from their
+    own temporary copy only, every pre-existing new-style CI suite/cost and
+    every CI source original; the production full-table check is untouched
+    and still covers the real originals in the checkout.
+    """
+    root = Path(root)
+    if root.resolve() == ROOT.resolve() or not (root / '.git').is_file():
+        raise AssertionError('R443_ISOLATE_ONLY_TEMPORARY_FIXTURE: ' + str(root))
+    sealed = registry._execution_catalog(root)['suites']
+    removed = {'suites': [], 'sources': []}
+    for path in sorted((root / registry.COSTS).glob('*.json')):
+        cost = json.loads(path.read_bytes())
+        if cost['kind'] != 'ci-report':
+            continue
+        suite = root / registry.SUITES / path.name
+        declaration = json.loads(suite.read_bytes())
+        if cost['name'] in sealed or not declaration['order'].startswith('new/'):
+            # A sealed suite cannot be dropped without changing what is tested.
+            raise AssertionError('R443_ISOLATE_SEALED_SUITE_HAS_CI_COST: ' + cost['name'])
+        suite.unlink()
+        path.unlink()
+        removed['suites'].append(cost['name'])
+    referenced = {json.loads(path.read_bytes())['source_sha256']
+                  for path in (root / registry.COSTS).glob('*.json')}
+    for path in sorted((root / registry.SOURCES).glob('*.json')):
+        if json.loads(path.read_bytes()).get('schema') != CI_RECEIPT_SCHEMA:
+            continue
+        if path.stem in referenced:
+            raise AssertionError('R443_ISOLATE_CI_SOURCE_STILL_REFERENCED: ' + path.stem)
+        path.unlink()
+        removed['sources'].append(path.stem)
+    left = [path.stem for path in (root / registry.SOURCES).glob('*.json')
+            if json.loads(path.read_bytes()).get('schema') == CI_RECEIPT_SCHEMA]
+    if left:
+        raise AssertionError('R443_ISOLATE_CI_SOURCES_REMAIN: %r' % left)
+    return removed
+
+
 def validate_fixture(root, observed):
     records = registry.load_registry(root)
     registry.timing_profile(root)
@@ -196,8 +247,24 @@ class NativeRegistryContract(unittest.TestCase):
     def write(self, path, value):
         path.write_bytes(registry.canonical_bytes(value))
 
+    def isolate_synthetic_ci(self):
+        removed = isolate_synthetic_ci(self.root)
+        if ISOLATION_WITHDRAWAL == 'R443_NO_ISOLATION':
+            # Named withdrawal (a): restore the pre-fix fixture verbatim.
+            shutil.rmtree(self.root)
+            shutil.copytree(self.template, self.root)
+        elif ISOLATION_WITHDRAWAL == 'R443_LEAK_ONE_CI_SOURCE' and removed['sources']:
+            # Named withdrawal (b): one real CI original leaks back in.
+            relative = registry.SOURCES / (removed['sources'][0] + '.json')
+            shutil.copyfile(self.template / relative, self.root / relative)
+        return removed
+
     def verify_ci(self, responses, *, trusted_ref=None):
         trusted_ref = trusted_ref or registry._legacy_catalog(self.root)['base_sha']
+        if ISOLATION_WITHDRAWAL == 'R443_TAMPER_SYNTHETIC_ZIP':
+            # Named withdrawal (c): every synthetic archive answer is altered.
+            responses = {endpoint: raw + b'withdrawn' if endpoint.endswith('/zip') else raw
+                         for endpoint, raw in responses.items()}
         return registry.verify_ci_sources(self.root, fetch=responses.__getitem__, trusted_ref=trusted_ref)
 
     def test_migration_is_lossless_and_idempotent(self):
@@ -553,6 +620,7 @@ class NativeRegistryContract(unittest.TestCase):
         return responses, arguments
 
     def test_cost_import_requires_original_archive_and_run_job_identity(self):
+        self.isolate_synthetic_ci()
         responses, arguments = self.ci_fixture()
         bad = dict(responses)
         job = json.loads(bad['/actions/jobs/2001'])
@@ -591,6 +659,7 @@ class NativeRegistryContract(unittest.TestCase):
             registry.timing_profile(self.root)
 
     def test_live_authentication_rejects_self_filled_or_changed_receipt_bytes(self):
+        self.isolate_synthetic_ci()
         responses, arguments = self.ci_fixture()
         registry.import_ci_cost(self.root, self.root, **arguments, fetch=responses.__getitem__)
         verified = self.verify_ci(responses)
@@ -715,7 +784,10 @@ def main():
     parser.add_argument('--probe', action='store_true')
     parser.add_argument('--withdraw', choices=WITHDRAWALS)
     parser.add_argument('--probe-for', choices=WITHDRAWALS)
+    parser.add_argument('--withdraw-isolation', choices=ISOLATION_WITHDRAWALS)
     args = parser.parse_args()
+    global ISOLATION_WITHDRAWAL
+    ISOLATION_WITHDRAWAL = args.withdraw_isolation
     if args.probe or args.withdraw or args.probe_for:
         marker = WITHDRAWAL_MARKERS.get(args.withdraw)
         try:
