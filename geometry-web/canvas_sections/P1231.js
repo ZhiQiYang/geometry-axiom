@@ -6,6 +6,7 @@
  */
 const {controlProbe,entryControlReady,sweepEntryControl}=require('../../tests/diagnostics/r16_control_probe.cjs');
 const {statusbarProbe,statusbarReady,statusbarMatrixReady}=require('../../tests/diagnostics/r16_statusbar_probe.cjs');
+const {faceGuidanceProbe,faceGuidanceReady}=require('../../tests/diagnostics/r16_face_guidance_probe.cjs');
 module.exports = async helpers => {
   const {send, eval_, sleep, click, waitForUI, makeCheck, exceptionCount} = helpers;
   console.log('=== P1231. U123-H:A 六工作區正常畫布與既有控制可達性 ===');
@@ -25,6 +26,7 @@ module.exports = async helpers => {
     {width:560, height:844}, {width:561, height:844}
   ];
   const mainStatusbarRows=[];
+  const workspaceRows=[];
   const save = '#projectBar [data-project-action="save"]';
   const project = [save, '#projectInfoButton'];
   const common = [...project, '#fileMenuBtn'];
@@ -38,6 +40,7 @@ module.exports = async helpers => {
     '#shapeToolButton', '#faceWorkspaceTools [data-face-tool="guide"]',
     '#faceWorkspaceTools [data-face-tool="hole"]', '#faceWorkspaceTools [data-face-tool="timber"]',
     '#faceWorkspaceTools [data-face-tool="grid"]', '#faceWorkspaceTools [data-face-tool="pan"]',
+    '#feSelectionSummaryHelp',
     '#feZoomOut', '#feZoomLevel', '#feZoomIn', '#feZoomFit',
     '.mini-toggle:has(#faceSnapToggle)', '.mini-toggle:has(#faceGridToggle)', '#faceGridSizeSelect'];
   const spaceControls = [...common, '#workspaceBackButton', ...history,
@@ -202,16 +205,27 @@ module.exports = async helpers => {
       p.exists===true&&p.obstructions.length===0&&p.samples.every(s=>s.hit),
       {obstructions:p.obstructions,samples:p.samples});
     check('R123H_NO_PAGE_OVERFLOW '+label+' '+state+' '+size.width,p.pageOverflow===false,p.viewport);
+    workspaceRows.push({label,state,width:size.width,height:size.height,
+      actualWidth:p.viewport.innerWidth,actualHeight:p.viewport.innerHeight});
     return p;
   }
-  async function auditControls(label, selectors, size) {
+  async function auditControls(label, selectors, size, state='normal-read') {
     const rows=[];
-    for(const selector of selectors)rows.push(await point(selector));
-    console.log('P1231_CONTROLS '+JSON.stringify({label,requested:size,controls:rows}));
+    let faceGuidance;
+    for(const selector of selectors){
+      rows.push(await point(selector));
+      if(selector==='#faceWorkspaceTools [data-face-tool="pan"]'){
+        faceGuidance=await call(faceGuidanceProbe);
+        console.log('P1231_FACE_GUIDANCE '+JSON.stringify({label,state,requested:size,observation:faceGuidance}));
+      }
+    }
+    console.log('P1231_CONTROLS '+JSON.stringify({label,state,requested:size,controls:rows}));
     check('R123H_CONTROLS '+label+' '+size.width,
       rows.length===selectors.length&&rows.every(row=>row.exists&&row.reachable&&!!row.name),rows);
     check('R123H_TOUCH_TARGETS '+label+' '+size.width,
       size.width>560||rows.every(row=>row.exists&&row.rect.width>=44&&row.rect.height>=44),rows);
+    if(faceGuidance)check('R123H_FACE_GUIDANCE_CONTAINS_TEXT '+state+' '+size.width,
+      faceGuidanceReady(faceGuidance),faceGuidance);
     // A disabled control remains part of the visible/pointer audit above.
     // Only browser-disabled controls are excluded from sequential Tab focus.
     const enabled=rows.filter(row=>row.exists&&!row.disabled).map(row=>row.selector);
@@ -231,7 +245,7 @@ module.exports = async helpers => {
     }finally{
       await read(`document.removeEventListener('focusin',__p1231Tab.record);delete window.__p1231Tab;void 0`);
     }
-    console.log('P1231_TAB '+JSON.stringify({label,requested:size,wanted:enabled,limit,...focused}));
+    console.log('P1231_TAB '+JSON.stringify({label,state,requested:size,wanted:enabled,limit,...focused}));
     check('R123H_TAB_REACH '+label+' '+size.width,focused.complete&&focused.visits.every(v=>
       v.left>=0&&v.top>=0&&v.right<=size.width&&v.bottom<=size.height),focused);
   }
@@ -259,13 +273,24 @@ module.exports = async helpers => {
   async function matrix(label, surface, controls, lesson=null, fit=null){
     for(const size of sizes){
       await pin();await viewport(size);
-      if(lesson){await lessonState(lesson,true);await measure(label,surface,size,'teaching-open');await lessonState(lesson,false);}
+      if(lesson){
+        await lessonState(lesson,true);await measure(label,surface,size,'teaching-open');
+        await auditControls(label,controls,size,'teaching-open');await lessonState(lesson,false);
+      }else if(label!=='full-grid')await noLessonEntry(label,surface,controls,size);
       await measure(label,surface,size,'normal-read');
       await auditControls(label,controls,size);
       if(label==='face')await faceDockScroll(size);
       if(fit)await ctl(fit);
       await unchanged(label+' '+size.width);
     }
+  }
+  async function noLessonEntry(label,surface,controls,size){
+    // These existing surfaces have no dismissible first-use lesson. Verify
+    // that fact in the active workspace; do not manufacture an "open" card.
+    const active=await read(`(()=>{const surface=document.querySelector(${JSON.stringify(surface)}),host=surface.closest('dialog[open],#objectWorkspace,#app');return [...host.querySelectorAll('[data-guidance-dismiss]')].filter(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return !e.hidden&&s.display!=='none'&&s.visibility==='visible'&&r.width>0&&r.height>0;}).map(e=>e.closest('[data-guidance-key]')?.id||e.id);})()`);
+    check('R123H_NO_ACTIVE_LESSON '+label+' '+size.width,active.length===0,active);
+    await measure(label,surface,size,'first-entry-no-lesson');
+    await auditControls(label,controls,size,'first-entry-no-lesson');
   }
 
   // As in the existing P74 fixture, reset named teaching preferences only.
@@ -341,9 +366,11 @@ module.exports = async helpers => {
   await waitForUI(`oc.focus?.t==='space'&&oc.focus.id===1`);
   for(const size of sizes){
     await pin();await viewport(size);await ctl('#spaceStageTabs [data-ss-tab="plan"]');
+    await noLessonEntry('space-plan','#spacePlanSvg',spaceControls,size);
     await measure('space-plan','#spacePlanSvg',size,'normal-read');
     await auditControls('space-plan',spaceControls,size);
     await ctl('#spaceStageTabs [data-ss-tab="proj"]');
+    await noLessonEntry('space-projection-second-entry','#spaceProjSvg',projectionControls,size);
     await measure('space-projection-second-entry','#spaceProjSvg',size,'normal-read');
     await auditControls('space-projection-second-entry',projectionControls,size);
     await unchanged('space-plan-and-projection '+size.width);
@@ -360,6 +387,7 @@ module.exports = async helpers => {
   for(const size of sizes){
     await viewport(size);await measure('full-grid','#igGridView',size,'first-visit-teaching-open');
     gridResizes.push(await gridGeometry());
+    await auditControls('full-grid',gridControls,size,'first-visit-teaching-open');
   }
   await viewport({width:1400,height:900});const gridRestored=await gridGeometry();
   console.log('P1231_GRID_RESIZE '+JSON.stringify({before:gridBefore,resizes:gridResizes,restored:gridRestored}));
@@ -379,6 +407,7 @@ module.exports = async helpers => {
   for(const size of sizes){
     await pin();await viewport(size);
     if(await shown('#smTabPreview'))await ctl('#smTabPreview');
+    await noLessonEntry('3d','#smCanvas',modelControls,size);
     await measure('3d','#smCanvas',size,'normal-read');
     await auditControls('3d',modelControls,size);await ctl('#smFit');
     // Setup is an explicit task tab: it is audited for controls, never used as
@@ -389,6 +418,16 @@ module.exports = async helpers => {
     await unchanged('3d '+size.width);
   }
   await ctl('#smClose');
+
+  const statePairs=[['main','teaching-open'],['face','teaching-open'],
+    ['full-grid','first-visit-teaching-open'],['space-plan','first-entry-no-lesson'],
+    ['space-projection-second-entry','first-entry-no-lesson'],
+    ['three-view','first-entry-no-lesson'],['3d','first-entry-no-lesson']];
+  const expectedStates=statePairs.flatMap(([label,first])=>sizes.flatMap(size=>
+    [first,'normal-read'].map(state=>label+' '+state+' '+size.width+'x'+size.height))).sort();
+  const actualStates=workspaceRows.map(row=>row.label+' '+row.state+' '+row.width+'x'+row.height).sort();
+  check('R123H_ALL_WORKSPACE_STATES',JSON.stringify(actualStates)===JSON.stringify(expectedStates)&&
+    workspaceRows.every(row=>row.width===row.actualWidth&&row.height===row.actualHeight),workspaceRows);
 
   // G in the original 43-row audit is an inspector, not a seventh canvas.
   // Its existing source editor must remain reachable in the same host.
