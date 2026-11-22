@@ -148,6 +148,83 @@ node geometry-web/canvas_registry.js propose-balance
 
 模組匯出 `async helpers => { ... }`，使用既有 CDP helpers、`makeCheck()` 與自己的 fixture。它的 literal require/import（含轉遞 `.js/.cjs/.mjs/.json`）全部入來源閉包；動態或別名 loader、`module/createRequire`、`eval/Function/vm`、反射 constructor、動態 computed property、`fs/fs.promises` 不在可採用子集。JSON fixture 用 literal `require('./fixture.json')`；動態陣列索引用 `.at(i)`、map 用 `.get(key)`。這個保守限制讓被執行的來源可完整釘選；需要擴展語法時應連同閉包解析守門審查，不能用宣告繞過。
 
+## 獨立 CDP driver 段（`execution.kind: "driver"`，#445）
+
+有些驗收段需要 module 子集不准的能力：讀寫實檔、解 ZIP、另開原生服務與新的 Chrome 進程。例如 P2052（R03 固定治具）的冷開 6 項。這類段不改寫成 module，改登錄成 **driver**：原 driver 檔一字不動，由 `cdp_test.js` 的固定一句派發，`module` 的 strict 限制一個字都不放寬。裁定見 ChatGPT 7070056758（四項硬條件），加嚴見 7072803590。
+
+### 誰能新增
+
+driver 只能是 `geometry-web/canvas_registry.js` 裡寫死的 `DRIVER_SECTIONS` 封閉清單上的一筆（目前只有 `P2052`）。片段 JSON 只能逐值重述清單內容，寫別的檔名、flag、unit、錨點、多一個鍵，都會 `R386_CANVAS_DRIVER_UNREVIEWED`。
+
+**信任層級（對抗審查 7072484935 X1，#434 既有，本 PR 不修，只如實記載）**：清單和檢查它的程式都在 `canvas_registry.js`，而這支檔 PR 可以改。所謂「重審」，只是用工具把 `tests/registry-source-reviews/` 和架構排除 pin 的雜湊重算一遍，沒有對可信 base 鎖定。所以真正的防線是**人審 `canvas_registry.js` 的 diff**。同理，量測 workflow 與 `.github/scripts/canvas_section_measure.py` 跑的是分支上的版本（X2）。
+
+### 新增或修改的步驟
+
+1. 寫 driver 檔，並在 `cdp_test.js` 加 SCOPE flag、外層 guard 與一句派發。派發的位置、前一句、後一句都要固定。
+2. 在 `DRIVER_SECTIONS` 加一筆。要寫的欄位：
+   - `driver`、`flag`、`unit`、`after`／`before`；
+   - 28 類的具名斷言名單；
+   - `dispatch`：派發區塊原文；`following`：派發後的下一句原文；`guard`；
+   - `closure`：依賴閉包的檔案集合；`builtins`、`vendor`、`processProperties`；
+   - `computed`：已審的動態成員位置；
+   - `subprocess`：唯一的 child_process import、可呼叫的名稱、每個呼叫點，以及被執行的腳本；
+   - `outputs`：driver 會寫出的檔。
+   `computed` 和 `subprocess.sites` 的每一項寫成「原文@所在最內層函式的 LF SHA-256」。閉包內的檔改動到這些函式，就要重算並重審。
+3. `node geometry-web/canvas_registry.js stage-driver --id <ID>` 產生候選（assertions 0、cost null）。這時正式 check 會拒絕，canvas 兩片會紅，這是預期的。
+4. 推送後，派發 `Canvas section measurement`，section 填 `<ID>`，ref 選分支。
+5. 由 grokbot 或本機 Claude 執行 `node geometry-web/canvas_registry.js import-cost --id <ID> --artifact-id ID --artifact ORIGINAL.zip`，並採入（雲端 agent 下載不了 artifact，見本文開頭前提 2）。
+6. 新 head 觸發 Mutation evidence 並採入，再跑正式 CI。
+
+改閉包內任何檔、被執行的腳本、`cdp_test.js` 的派發區塊或清單本身，`driverIdentity` 都會變，舊收據就以 `R386_CANVAS_COST_SOURCE` 失效，要從第 4 步重做。`node geometry-web/canvas_registry.js driver-identity --id <ID>` 可以先看閉包守門是否通過。
+
+### 靜態守門驗什麼
+
+**閉包**（`driverClosure`，`R386_CANVAS_DRIVER_CLOSURE_*`／`_SUBPROCESS`／`_PROCESS_CAPABILITY`）：
+
+- `require`／`import` 只准字面，而且只能直接呼叫。
+- 禁用 `eval`／`Function`／`Reflect`／`Proxy`／`globalThis` 等名稱，名稱當成員或字串常量也一樣禁。
+- 禁止成員 `constructor`／`__proto__`／`getPrototypeOf`／`getOwnPropertyDescriptor` 等反射路徑，包括解構取用（`{constructor:F}=fn`）。
+- 計算屬性和 module strict 一樣只准字面，例外是 `computed` 清單上的已審位置，清單必須逐一相等。
+- `process` 只准 `env`（唯讀）、`kill`、`platform`。
+- child_process 只能經那一句已審 import 取得，每個 `spawn`／`spawnSync`／`ownedSpawn` 呼叫點都要在 `subprocess.sites` 上，集合必須逐一相等。
+- 閉包的實際檔案集合必須等於清單。vendor 葉節點只把 bytes 納入 hash，不審它的語法。
+
+**派發**（`driverDispatch`，`R386_CANVAS_DRIVER_DISPATCH`）：
+
+- 用 AST 解析 `cdp_test.js`。所有 `require()`／`import()` 的模組路徑先正規化，引號、副檔名不拘，指向 driver 的必須恰好一次；字串常量中出現 driver 名稱的也必須恰好一次。
+- 派發句必須是已審 `if` 的唯一結果。前一句是 guard 區塊（最後一句是 P205），後一句是 `following`。
+- 片段順序另由 `_ANCHOR`／`_OWNER`／`_ORDER`／`R386_CANVAS_TERMINAL_SLOT` 擋。
+
+**來源身分**（`driverIdentity`）包含：
+
+- 閉包逐檔 LF sha256；
+- `subprocess.scripts`，也就是被執行的 `serve.py`、`start_local.py`、`tests/binaries.py` 的 LF sha256；
+- 派發區塊 sha256；
+- 清單條目本身。
+
+### 收據（`geometry-canvas-driver-measurement/2`）驗什麼
+
+- ZIP 的檔案集合、每檔 hash。
+- 唯一一行 CDP_RESULT：partial 模式、0 失敗、`sectionOrder==[ID]`、計數等於清單長度。
+- 28 個具名 `✓` 各恰好一次，沒有 `✗`。
+- **F1**：
+  - `sourceService` 逐值等於量測腳本自己的 `runtime.stdout` 探測。
+  - 冷開服務的 `version`／`root` 等於量測版本與 root。
+  - 冷開服務（argv 是 `serve.py <port>`）與冷開 Chrome（argv 含 `--user-data-dir=<profile>`）必須出現在量測腳本自己取樣 `/proc` 的 `process-ledger.json` 中，並且是 `cdp_test.js` 的子孫；來源服務不得是它的子孫。
+- **F2**：`CDP_SCOPE` 恰好一行，且等於結果的 scope。段標題 < 具名檢查 < SCOPE 行 < CDP_RESULT，PACKAGE 行在段內。
+- **F3**：兩份竄改檔是合法 ZIP，`world.scene` 與存檔相同，manifest 恰好是存檔加上 driver 的那一處修改。
+- **F4**：存檔是合法 `.gcanvas`：只含 `manifest.json`＋`world.scene`，`format`、`sceneHash` 正確，恰有一份 v2 配方，至少有一份 v1 配方。
+
+### 不驗什麼（如實記載）
+
+- **進程帳不依賴 driver，但依賴量測腳本。** 量測腳本由分支提供（X2），手寫 ZIP 過不了 `import-cost` 的在線 digest，但改了腳本的官方 artifact 過得了。最後一道是正式 canvas 第 2 片的真執行與逐段計數。
+- **「竄改檔被產品拒收」這一層只看 driver 自己印的 `WRONG_V2_POLICY`／`UNKNOWN_VERSION ✓`。** 收據驗的是竄改內容確實如預期，不驗瀏覽器裡的拒收行為本身。
+- **log 是否完整無刪，收據層無法獨立驗。** F2 只驗結構與順序。
+- **間接依賴只在量測當時涵蓋。** `serve.py` 間接 import 的 `geometry-web/*.py`、bridge 來源由 runtime 指紋（`runtime_version.py::source_version`，含 `geometry-web`、`geometry-core` 等目錄的 `.py`／`.c`／`.h`／`.inc`）涵蓋：量測當時冷開服務的 `version` 必須等於該指紋，量測腳本收尾時再重算一次。但這不進 `driverIdentity`，所以這些檔之後改了，舊收據不會失效。Chrome 執行檔、Python 直譯器、`taskkill` 是外部程式，不在 hash 內。
+- **執行期寫檔不擋。** driver 執行時用 `fs` 改寫再還原 repo 檔，靜態守門擋不住；量測腳本收尾的 `driver_identity()` 與 `source_identity()` 只擋「改了沒還原」。
+- **`cdp_test.js` 本體不在 hash 內**（X4，#434 既有）：派發區塊以外的部分不進 `driver_sha256`。module 也是一樣。
+- **module strict 的既有缺口**（X3，#434 既有）：module strict closure 目前仍接受解構取 `constructor`。本 PR 沒有改 module strict。`R386_CANVAS_STRICT_MODULE_SOURCE_PINNED` 把 module strict 路徑 8 個函式的原文釘在 main `883e6868`，要補這個缺口必須另開審查。
+
 ## 行尾（審查 7056059753 問題 B）
 
 讀取端拒絕 CR，因為片段 bytes 直接進 `source_digest`、成本綁定與來源閉包。Windows 的 `core.autocrlf` 會把沒有標記的檔簽出成 CRLF（`公理層.md` 就是這樣），所以 `.gitattributes` 把作者編寫的片段目錄設成 `text eol=lf`（`tests/suites.d/**`、`tests/native-costs.d/**`、`tests/registry-layout.json`、`tests/registry-evidence/*.json`、`native-amendments/**`、`tests/registry-source-reviews/**`、`geometry-web/cdp_sections.d/**`、`geometry-web/canvas_sections/**`、`product-architecture.json` 與 `.d/**`），內容定址原件（`tests/registry-evidence/native/**`、`geometry-web/canvas-registry/**`）設成 `-text`，逐 byte 不轉換。若本機仍看到 `R386_NATIVE_PURE_LF`，先查 `git check-attr text eol -- <檔>`，不要放寬讀取端。
