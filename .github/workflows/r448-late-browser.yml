@@ -1,0 +1,112 @@
+name: PR448 late canvas partials
+on:
+  push:
+    branches: [codex/r448-late-browser-20261123]
+    paths: [.github/workflows/r448-late-browser.yml]
+permissions:
+  contents: read
+jobs:
+  browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {group: canvas, first: P352, second: P205, third: P2052, fourth: P359}
+          - {group: timber-and-workspace, first: P116, second: P1161}
+          - {group: boundary-and-grid, first: P335, second: P128-P1284, third: P353-P420}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 'aa5ccfda67ecf55a33975ffb35cee1fead2119d4'
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm run build
+      - uses: ./.github/actions/install-cjk-fonts
+        timeout-minutes: 8
+      - name: Install diagnostic observer outside product checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCBkYXRldGltZSwganNvbiwgb3MsIHNpZ25hbCwgc3VicHJvY2Vzcywgc3lzLCB0aW1lLCB0cmFjZWJhY2sKCkhFQUQ9J2FhNWNjZmRhNjdlY2Y1NWEzMzk3NWZmYjM1Y2VlMWZlYWQyMTE5ZDQnCk1PREVTPXsKICAgICdQMzUyJzooJ0dFT01FVFJZX0NBTlZBU19DT05URVhUX01FTlVfT05MWScsWydQMzUyJ10pLAogICAgJ1AxMTYnOignR0VPTUVUUllfVElNQkVSX1JFVVNFX09OTFknLFsnUDExNiddKSwKICAgICdQMzM1JzooJ0dFT01FVFJZX0JPVU5EQVJZX1BBSVJfT05MWScsWydQMzM1J10pLAogICAgJ1AxMjgtUDEyODQnOignR0VPTUVUUllfUEFORUxfRklMTF9PTkxZJyxbJ1AxMjgnLCdQMTI4NCddKSwKICAgICdQMjA1JzooJ0dFT01FVFJZX0ZSQU1JTkdfVEVNUExBVEVfT05MWScsWydQMjA1J10pLAogICAgJ1AyMDUyJzooJ0dFT01FVFJZX0ZSQU1JTkdfSklHX09OTFknLFsnUDIwNTInXSksCiAgICAnUDM1My1QNDIwJzooJ0dFT01FVFJZX0dSSURfQ0FSRF9FTlRSWV9PTkxZJyxbJ1AzNTMnLCdQNDIwJ10pLAogICAgJ1AxMTYxJzooJ0dFT01FVFJZX1dPUktTUEFDRV9DT05URVhUX01FTlVfT05MWScsWydQMTE2MSddKSwKICAgICdQMzU5JzooJ0dFT01FVFJZX0RFRklOSVRJT05fSU1QT1JUX09OTFknLFsnUDM1OSddKSwKICAgICdQNDIwLWZhbGxiYWNrJzooJ0dFT01FVFJZX0dSSURfQ0FSRF9FTlRSWV9PTkxZJyxbJ1A0MjAnXSl9CmRlZiBub3coKTogcmV0dXJuIGRhdGV0aW1lLmRhdGV0aW1lLm5vdyhkYXRldGltZS50aW1lem9uZS51dGMpLmlzb2Zvcm1hdCgpCmRlZiBydW4obW9kZSwgZGVzdCk6CiAgICBudW1iZXI9bGlzdChNT0RFUykuaW5kZXgobW9kZSkKICAgIGZsYWcsc2VjdGlvbnM9TU9ERVNbbW9kZV0KICAgIHBvcnQ9MTg4MzkrbnVtYmVyCiAgICBvdXQ9UGF0aChvcy5lbnZpcm9uWydSVU5ORVJfVEVNUCddKS8ncjQ0OC1sYXRlJy9kZXN0CiAgICBvdXQubWtkaXIocGFyZW50cz1UcnVlLGV4aXN0X29rPUZhbHNlKQogICAgYXNzZXJ0IHN1YnByb2Nlc3MuY2hlY2tfb3V0cHV0KFsnZ2l0JywncmV2LXBhcnNlJywnSEVBRCddLHRleHQ9VHJ1ZSkuc3RyaXAoKT09SEVBRAogICAgZXhwZWN0ZWQ9e3g6anNvbi5sb2FkcyhQYXRoKCdnZW9tZXRyeS13ZWIvY2RwX3NlY3Rpb25zLmQnLHgrJy5qc29uJykucmVhZF9ieXRlcygpKVsnYXNzZXJ0aW9ucyddIGZvciB4IGluIHNlY3Rpb25zfQogICAgZW52PXsqKm9zLmVudmlyb24sJ1RNUERJUic6b3MuZW52aXJvblsnUlVOTkVSX1RFTVAnXSwnR0VPTUVUUllfRkVFREJBQ0tfRElSJzpzdHIoUGF0aChvcy5lbnZpcm9uWydSVU5ORVJfVEVNUCddKS8oJ3I0NDgtZmVlZGJhY2stJyttb2RlKSksCiAgICAgICAgICdHRU9NRVRSWV9URVNUX1VSTCc6ZidodHRwOi8vMTI3LjAuMC4xOntwb3J0fS8nLGZsYWc6JzEnfQogICAgaWYgbW9kZT09J1A0MjAtZmFsbGJhY2snOgogICAgICAgIHF1ZXJ5PSJjb25zdCBtPXJlcXVpcmUoJy4vZ2VvbWV0cnktd2ViL2dyaWRfY2FyZF9lbnRyeV90ZXN0LmpzJyk7Y29uc29sZS5sb2cobS5jYXNlSWRzLmZpbHRlcihjPT5tLmNhc2VTZWN0aW9uKGMpPT09J1A0MjAnKS5qb2luKCcsJykpOyIKICAgICAgICBlbnZbJ0dFT01FVFJZX0dSSURfQ0FSRF9FTlRSWV9DQVNFJ109c3VicHJvY2Vzcy5jaGVja19vdXRwdXQoWydub2RlJywnLWUnLHF1ZXJ5XSx0ZXh0PVRydWUpLnN0cmlwKCkKICAgIFBhdGgoZW52WydHRU9NRVRSWV9GRUVEQkFDS19ESVInXSkubWtkaXIoKQogICAgcmVjb3JkPXsnc2NoZW1hJzoncjQ0OC1sYXRlLXBhcnRpYWwvMScsJ21vZGUnOm1vZGUsJ2ZsYWcnOmZsYWcsJ2hlYWQnOkhFQUQsJ2V4cGVjdGVkJzpleHBlY3RlZCwnc3RhcnQnOm5vdygpLCdjb3VudGVkJzpGYWxzZX0KICAgIHRyeToKICAgICAgICB3aXRoIChvdXQvJ3NlcnZlci5sb2cnKS5vcGVuKCd3YicpIGFzIHNlcnZlcmxvZzoKICAgICAgICAgICAgc2VydmVyPXN1YnByb2Nlc3MuUG9wZW4oW3N5cy5leGVjdXRhYmxlLCctQnUnLCdnZW9tZXRyeS13ZWIvc3RhcnRfbG9jYWwucHknLCctLXBvcnQnLHN0cihwb3J0KV0sZW52PWVudiwKICAgICAgICAgICAgICAgICBzdGFydF9uZXdfc2Vzc2lvbj1UcnVlLHN0ZG91dD1zZXJ2ZXJsb2csc3RkZXJyPXN1YnByb2Nlc3MuU1RET1VUKQogICAgICAgICAgICB0cnk6CiAgICAgICAgICAgICAgICBmb3IgbiBpbiByYW5nZSgxODApOgogICAgICAgICAgICAgICAgICAgIGlmIHNlcnZlci5wb2xsKCkgaXMgbm90IE5vbmU6IHJhaXNlIFJ1bnRpbWVFcnJvcignU2VydmVyIHN0b3BwZWQgYmVmb3JlIHJlYWR5OiAnK3N0cihzZXJ2ZXIucmV0dXJuY29kZSkpCiAgICAgICAgICAgICAgICAgICAgcHJvYmU9c3VicHJvY2Vzcy5ydW4oW3N5cy5leGVjdXRhYmxlLCctQicsJ2dlb21ldHJ5LXdlYi9ydW50aW1lX3ZlcnNpb24ucHknLCctLXByb2JlJyxzdHIocG9ydCldLAogICAgICAgICAgICAgICAgICAgICAgICAgZW52PWVudixjYXB0dXJlX291dHB1dD1UcnVlKQogICAgICAgICAgICAgICAgICAgIGlmIHByb2JlLnJldHVybmNvZGU9PTA6YnJlYWsKICAgICAgICAgICAgICAgICAgICB0aW1lLnNsZWVwKDEpCiAgICAgICAgICAgICAgICBlbHNlOnJhaXNlIFJ1bnRpbWVFcnJvcignT3JpZ2luYWwgcnVudGltZSBwcm9iZSB0aW1lZCBvdXQnKQogICAgICAgICAgICAgICAgKG91dC8ncnVudGltZS1iZWZvcmUuanNvbicpLndyaXRlX2J5dGVzKHByb2JlLnN0ZG91dCkKICAgICAgICAgICAgICAgIHJlY29yZFsnYnJvd3NlclN0YXJ0J109bm93KCkKICAgICAgICAgICAgICAgIHdpdGggKG91dC8nc3Rkb3V0LmxvZycpLm9wZW4oJ3diJykgYXMgcmF3LChvdXQvJ3N0ZGVyci5sb2cnKS5vcGVuKCd3YicpIGFzIGVycm9yOgogICAgICAgICAgICAgICAgICAgIHByb2M9c3VicHJvY2Vzcy5ydW4oWydub2RlJywnZ2VvbWV0cnktd2ViL2NkcF90ZXN0LmpzJ10sZW52PWVudixzdGRvdXQ9cmF3LHN0ZGVycj1lcnJvcikKICAgICAgICAgICAgICAgIHJlY29yZFsnZXhpdENvZGUnXT1wcm9jLnJldHVybmNvZGUKICAgICAgICAgICAgICAgIHJlY29yZFsnYnJvd3NlckVuZCddPW5vdygpCiAgICAgICAgICAgICAgICBwcm9iZT1zdWJwcm9jZXNzLnJ1bihbc3lzLmV4ZWN1dGFibGUsJy1CJywnZ2VvbWV0cnktd2ViL3J1bnRpbWVfdmVyc2lvbi5weScsJy0tcHJvYmUnLHN0cihwb3J0KV0sZW52PWVudixjYXB0dXJlX291dHB1dD1UcnVlKQogICAgICAgICAgICAgICAgKG91dC8ncnVudGltZS1hZnRlci5qc29uJykud3JpdGVfYnl0ZXMocHJvYmUuc3Rkb3V0KQogICAgICAgICAgICAgICAgcmVjb3JkWydydW50aW1lQWZ0ZXJFeGl0Q29kZSddPXByb2JlLnJldHVybmNvZGUKICAgICAgICAgICAgZmluYWxseToKICAgICAgICAgICAgICAgIHRyeTpvcy5raWxscGcoc2VydmVyLnBpZCxzaWduYWwuU0lHVEVSTSkKICAgICAgICAgICAgICAgIGV4Y2VwdCBQcm9jZXNzTG9va3VwRXJyb3I6cGFzcwogICAgICAgICAgICAgICAgdHJ5OnNlcnZlci53YWl0KHRpbWVvdXQ9MTApCiAgICAgICAgICAgICAgICBleGNlcHQgc3VicHJvY2Vzcy5UaW1lb3V0RXhwaXJlZDoKICAgICAgICAgICAgICAgICAgICBvcy5raWxscGcoc2VydmVyLnBpZCxzaWduYWwuU0lHS0lMTCkKICAgICAgICAgICAgICAgICAgICBzZXJ2ZXIud2FpdCgpCiAgICAgICAgbGluZXM9KG91dC8nc3Rkb3V0LmxvZycpLnJlYWRfdGV4dChlbmNvZGluZz0ndXRmOCcpLnNwbGl0bGluZXMoKQogICAgICAgIHJlY29yZFsnc3RhcnRzJ109W2xpbmVbOjI3MF0gZm9yIGxpbmUgaW4gbGluZXMgaWYgbGluZS5zdGFydHN3aXRoKCc9PT0gJyldCiAgICAgICAgbGFzdD1banNvbi5sb2FkcyhsaW5lLnNwbGl0KCcgJywxKVsxXSkgZm9yIGxpbmUgaW4gbGluZXMgaWYgbGluZS5zdGFydHN3aXRoKCdDRFBfUkVTVUxUICcpXQogICAgICAgIHJlY29yZFsnZm9vdGVyQ291bnQnXT1sZW4obGFzdCkKICAgICAgICBpZiBsZW4obGFzdCkhPTE6cmFpc2UgVmFsdWVFcnJvcignRXhwZWN0ZWQgb25lIG9yaWdpbmFsIENEUF9SRVNVTFQnKQogICAgICAgIHJlc3VsdD1sYXN0WzBdCiAgICAgICAgKG91dC8nQ0RQX1JFU1VMVC5qc29uJykud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlc3VsdCxlbnN1cmVfYXNjaWk9RmFsc2UsaW5kZW50PTIpKQogICAgICAgIHJlY29yZC51cGRhdGUoe2s6cmVzdWx0LmdldChrKSBmb3IgayBpbiBbJ2NvbXBsZXRlZCcsJ3Bhc3NlZEFzc2VydGlvbnMnLCdmYWlsZWRBc3NlcnRpb25zJywnc2VjdGlvbnMnLCdzZWN0aW9uc0ZhaWxlZCcsJ3NlY3Rpb25PcmRlcicsJ2ZhdGFsJywndW5leHBlY3RlZEJyb3dzZXJFeGNlcHRpb25zJywnc2VjdGlvbkVsYXBzZWRNcyddfSkKICAgICAgICByZWNvcmRbJ3Njb3BlJ109cmVzdWx0WydzY29wZSddCiAgICAgICAgcmVjb3JkWydjb3VudGVkJ109KHJlY29yZFsnZXhpdENvZGUnXT09MCBhbmQgcmVjb3JkWydydW50aW1lQWZ0ZXJFeGl0Q29kZSddPT0wIGFuZCByZXN1bHRbJ2NvbXBsZXRlZCddCiAgICAgICAgICAgICAgICAgICAgICAgICAgIGFuZCByZXN1bHRbJ3Njb3BlJ11bJ21vZGUnXT09J3BhcnRpYWwnIGFuZCByZXN1bHRbJ3Njb3BlJ11bJ2ZpbHRlcnMnXT09W2ZsYWddCiAgICAgICAgICAgICAgICAgICAgICAgICAgIGFuZCByZXN1bHRbJ2ZhaWxlZEFzc2VydGlvbnMnXT09cmVzdWx0Wyd1bmV4cGVjdGVkQnJvd3NlckV4Y2VwdGlvbnMnXT09MCBhbmQKICAgICAgICAgICAgICAgICAgICAgICAgICAgYWxsKHJlc3VsdFsnc2VjdGlvbnMnXS5nZXQoc2VjdGlvbik9PWNvdW50IGFuZCBzZWN0aW9uIGluIHJlc3VsdFsnc2VjdGlvbk9yZGVyJ10gZm9yIHNlY3Rpb24sY291bnQgaW4gZXhwZWN0ZWQuaXRlbXMoKSkpCiAgICBleGNlcHQgRXhjZXB0aW9uOgogICAgICAgIHJlY29yZFsnZXJyb3InXT10cmFjZWJhY2suZm9ybWF0X2V4YygpCiAgICByZWNvcmRbJ2VuZCddPW5vdygpCiAgICAob3V0LydvYnNlcnZhdGlvbi5qc29uJykud3JpdGVfdGV4dChqc29uLmR1bXBzKHJlY29yZCxpbmRlbnQ9MixlbnN1cmVfYXNjaWk9RmFsc2UpLGVuY29kaW5nPSd1dGY4JykKICAgIHByaW50KGpzb24uZHVtcHMocmVjb3JkLGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICByZXR1cm4gcmVjb3JkCgppZiBfX25hbWVfXz09J19fbWFpbl9fJzoKICAgIG1vZGU9c3lzLmFyZ3ZbMV0KICAgIHJlcG9ydD1ydW4obW9kZSxtb2RlKQogICAgaWYgbW9kZT09J1AzNTMtUDQyMCcgYW5kICdQNDIwJyBub3QgaW4gKHJlcG9ydC5nZXQoJ3NlY3Rpb25PcmRlcicpIG9yIFtdKToKICAgICAgICBydW4oJ1A0MjAtZmFsbGJhY2snLG1vZGUrJy9QNDIwLWZhbGxiYWNrJykKICAgIHN5cy5leGl0KDAgaWYgcmVwb3J0Wydjb3VudGVkJ10gZWxzZSAxKQoK' | base64 -d > "$RUNNER_TEMP/r448-partials.py"
+          echo 'cd112c4c81c550507e1a1efeaef5e0c8cc05b1526c4f9ca1c1b3cacc99283abe  '"$RUNNER_TEMP/r448-partials.py" | sha256sum -c -
+          test "$(git rev-parse HEAD)" = aa5ccfda67ecf55a33975ffb35cee1fead2119d4
+      - name: Run ${{ matrix.first }}
+        if: ${{ !cancelled() && matrix.first != '' }}
+        id: run_first
+        continue-on-error: true
+        env:
+          PARTIAL: ${{ matrix.first }}
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          python3 -Bu "$RUNNER_TEMP/r448-partials.py" "$PARTIAL"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() && matrix.first != '' }}
+        with:
+          name: r448-late-${{ matrix.first }}
+          path: ${{ runner.temp }}/r448-late/${{ matrix.first }}
+          if-no-files-found: error
+      - name: Run ${{ matrix.second }}
+        if: ${{ !cancelled() && matrix.second != '' }}
+        id: run_second
+        continue-on-error: true
+        env:
+          PARTIAL: ${{ matrix.second }}
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          python3 -Bu "$RUNNER_TEMP/r448-partials.py" "$PARTIAL"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() && matrix.second != '' }}
+        with:
+          name: r448-late-${{ matrix.second }}
+          path: ${{ runner.temp }}/r448-late/${{ matrix.second }}
+          if-no-files-found: error
+      - name: Run ${{ matrix.third }}
+        if: ${{ !cancelled() && matrix.third != '' }}
+        id: run_third
+        continue-on-error: true
+        env:
+          PARTIAL: ${{ matrix.third }}
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          python3 -Bu "$RUNNER_TEMP/r448-partials.py" "$PARTIAL"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() && matrix.third != '' }}
+        with:
+          name: r448-late-${{ matrix.third }}
+          path: ${{ runner.temp }}/r448-late/${{ matrix.third }}
+          if-no-files-found: error
+      - name: Run ${{ matrix.fourth }}
+        if: ${{ !cancelled() && matrix.fourth != '' }}
+        id: run_fourth
+        continue-on-error: true
+        env:
+          PARTIAL: ${{ matrix.fourth }}
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          python3 -Bu "$RUNNER_TEMP/r448-partials.py" "$PARTIAL"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ !cancelled() && matrix.fourth != '' }}
+        with:
+          name: r448-late-${{ matrix.fourth }}
+          path: ${{ runner.temp }}/r448-late/${{ matrix.fourth }}
+          if-no-files-found: error
+      - name: Assert strict partial outcomes
+        if: ${{ !cancelled() }}
+        env:
+          OUTCOMES: ${{ format('{0},{1},{2},{3}', steps.run_first.outcome, steps.run_second.outcome, steps.run_third.outcome, steps.run_fourth.outcome) }}
+        run: |
+          echo "$OUTCOMES"
+          [[ "$OUTCOMES" != *failure* ]]
+
