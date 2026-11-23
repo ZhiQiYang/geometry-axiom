@@ -1,0 +1,33 @@
+name: PR448 historical canvas projection
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-projection.yml]
+permissions:
+  contents: read
+jobs:
+  projection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: '2d5a6d99ac3c9e9fddddda83ff3f17ba699c74a6'
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Run the original nine source withdrawals
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          git rev-parse HEAD
+          node tests/diagnostics/r433_canvas_projection_mutations.cjs "$RUNNER_TEMP/r433-754"
+      - name: Preserve phase logs and original receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r433-withdrawals-754
+          path: ${{ runner.temp }}/r433-754/
+          if-no-files-found: error
