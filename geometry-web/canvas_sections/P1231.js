@@ -1,7 +1,7 @@
 /* U123-H:A. Real layout and real input, loaded only by the CDP driver.
  * No screenshot/golden is manufactured here. P1231_LAYOUT records the actual
  * drawable surface, clipping ancestors and every detected UI obstruction.
- * The isolated profile reloads with only the three named teaching preferences
+ * The isolated profile reloads with only this section's teaching preferences
  * reset, so first-visit and read states use the ordinary App lifecycle.
  */
 const {controlProbe,entryControlReady,controlWithinClip,sweepEntryControl}=require('../../tests/diagnostics/r16_control_probe.cjs');
@@ -336,12 +336,17 @@ module.exports = async helpers => {
     if(!reloaded)throw Error('P1231 new document did not load within the existing 20-second reload budget');
     await waitForUI(`typeof ReferenceWorkspace!=='undefined'&&typeof connection!=='undefined'&&connection.phase==='ready'&&!ReferenceWorkspace.busy&&ReferenceWorkspace.getProjectInfo().recovery.state!=='pending'`);
   };
-  const lessonPreference=await read(`localStorage.getItem('geometry-tool-lessons-v1')`);
+  const lessonStorageKey='geometry-tool-lessons-v1';
+  const lessonKeys=['canvas:select','face:select','grid:infinite-first','face:redraw'];
+  const lessonPreference=await call(key=>localStorage.getItem(key),lessonStorageKey);
   try {
-    await read(`(()=>{const key='geometry-tool-lessons-v1',all=JSON.parse(localStorage.getItem(key)||'[]');
-      const reset=['canvas:select','face:select','grid:infinite-first'];
-      localStorage.setItem(key,JSON.stringify(all.filter(item=>!reset.includes(item))));return true;})()`);
-    console.log('P1231_TEACHING_FIXTURE '+JSON.stringify({keys:['canvas:select','face:select','grid:infinite-first'],
+    await call((key,prior,reset)=>{
+      const seen=prior===null?[]:JSON.parse(prior);
+      const otherLessons=seen.filter(item=>!reset.includes(item));
+      localStorage.setItem(key,JSON.stringify(otherLessons));
+      return true;
+    },lessonStorageKey,lessonPreference,lessonKeys);
+    console.log('P1231_TEACHING_FIXTURE '+JSON.stringify({keys:lessonKeys,
       priorValue:lessonPreference,scope:'isolated CDP profile; no project/source storage touched'}));
     await reload();
 
@@ -520,7 +525,11 @@ module.exports = async helpers => {
     // errors continue to throw and cannot masquerade as killed withdrawals.
     if(!(error instanceof LayoutAssertion))throw error;
   } finally {
-    const restored=await read(`(()=>{const value=${JSON.stringify(lessonPreference)};if(value===null)localStorage.removeItem('geometry-tool-lessons-v1');else localStorage.setItem('geometry-tool-lessons-v1',value);return localStorage.getItem('geometry-tool-lessons-v1');})()`);
+    const restored=await call((key,value)=>{
+      if(value===null)localStorage.removeItem(key);
+      else localStorage.setItem(key,value);
+      return localStorage.getItem(key);
+    },lessonStorageKey,lessonPreference);
     if(restored!==lessonPreference)throw Error('P1231 teaching preference exact restoration failed');
     console.log('P1231_TEACHING_RESTORED '+JSON.stringify({priorValue:lessonPreference,restoredValue:restored}));
     await reload();
