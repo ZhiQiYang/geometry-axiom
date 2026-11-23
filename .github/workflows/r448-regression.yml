@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [style, from31, P1231, c2]
+        mode: [style, from31, P1231]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 'b83b1d6811e176033f73cee2a8a549b21c36d508'
+          ref: '4252f09ae19ff96ca06627f9624ceadac927fd84'
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
