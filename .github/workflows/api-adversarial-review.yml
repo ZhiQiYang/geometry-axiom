@@ -133,8 +133,20 @@ jobs:
           "${G[@]}" diff --no-ext-diff --no-textconv --name-status "$base...HEAD" > "$data/diff-name-status.txt"
           "${G[@]}" log --no-color --format='commit %H%nAuthor: %an%nDate:   %aI%n%n%B' "$base..HEAD" > "$data/log.txt"
           # 合併 commit 用 --remerge-diff：只列出與自動合併結果不同的部分（衝突解法或手改），乾淨合併為空。
+          # 三親以上（octopus）的合併，git 會寫「Skipping remerge-diff for octopus merges」且沒有任何差異；
+          # 這種 commit 另在同一檔尾端附上對各父節點的差異（git diff <父> <commit>），讓審查者仍看得到歸屬。
           for c in $("${G[@]}" rev-list "$base..HEAD"); do
-            "${G[@]}" show --no-ext-diff --no-textconv --no-color --remerge-diff --stat --patch "$c" > "$data/commits/$c.txt"
+            out="$data/commits/$c.txt"
+            "${G[@]}" show --no-ext-diff --no-textconv --no-color --remerge-diff --stat --patch "$c" > "$out"
+            read -r -a parents <<< "$("${G[@]}" rev-list --parents -n 1 "$c" | cut -d' ' -f2-)"
+            if [ "${#parents[@]}" -gt 2 ]; then
+              n=0
+              for p in "${parents[@]}"; do
+                n=$((n + 1))
+                printf '\n=== octopus 合併（%d 個父節點）：對第 %d 個父節點 %s 的差異（git diff %s %s）===\n' "${#parents[@]}" "$n" "$p" "$p" "$c" >> "$out"
+                "${G[@]}" diff --no-ext-diff --no-textconv --no-color --stat=200 --patch "$p" "$c" >> "$out"
+              done
+            fi
           done
 
           api() { gh api --paginate "$1" --jq '.[]' | jq -s "$2"; }
@@ -323,6 +335,8 @@ jobs:
               "---",
               "這是**唯讀審查**：審查過程只讀檔與搜尋，**未執行任何測試、build 或 PR 內的程式**；"
               "需要執行才能確認的事項見上方「未驗項」。",
+              "為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B），程式碼片段也一樣；"
+              "複製程式碼片段（例如 action 版本釘選）前要先移除。",
               f"模型 `{env['REVIEW_MODEL']}`（effort {env['REVIEW_EFFORT']}）／Claude Code {env['CLAUDE_CODE_VERSION']}／"
               f"輪數 {res.get('num_turns') if res.get('num_turns') is not None else '未知'}／花費 {cost_text}／"
               f"[run]({env['RUN_URL']})／head `{env['HEAD_SHA']}`",
