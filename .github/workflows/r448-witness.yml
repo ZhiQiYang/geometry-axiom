@@ -10,7 +10,7 @@ permissions:
 
 env:
   T_SHA: '762d2c3d47e05f1487d11a93251899a9f98f31d8'
-  P_SHA: 'b513583cf74532ca3fa95e8b794ce11e38186fdb'
+  P_SHA: '96b35f86446fc75aa1e9cdd0e897b51fdddfcb43'
   GEOMETRY_CHROME: /usr/bin/google-chrome
   GEOMETRY_CHROME_FLAGS: --no-sandbox
   PYTHONDONTWRITEBYTECODE: '1'
@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        leg: [T, P]
+        leg: [P]
     runs-on: ubuntu-latest
     timeout-minutes: ${{ matrix.leg == 'withdrawals-12' && 180 || 35 }}
     env:
