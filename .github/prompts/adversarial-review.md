@@ -22,6 +22,11 @@
   - `log.txt`：`<main>..<head>` 的 commit 紀錄（含完整訊息）。
   - `commits/<sha>.txt`：每個 commit 的 `git show --stat` 與完整 patch。**合併 commit** 以 `--remerge-diff` 產生：
     只列出與 git 自動合併結果不同的部分（衝突解法或合併時的手改）；乾淨合併只有標頭、沒有差異。
+    **例外：三個父節點以上的合併（octopus）**。git 不支援這種合併的 `--remerge-diff`，檔內會出現
+    「Skipping remerge-diff for octopus merges」且標頭後沒有差異——**這不代表它是乾淨合併**，
+    也看不出合併時有沒有手改。這種 commit 的檔尾另附「=== octopus 合併…對第 N 個父節點…的差異 ===」，
+    是 `git diff <父節點> <commit>` 的原始輸出（每個父節點一段，會含其他父節點帶進來的全部內容，篇幅大）。
+    它只用來看歸屬；是否有手改、改了什麼，一律以淨差異 `diff.patch` 為準，並在報告中註明此限制。
     判斷 A、C、F 時以 `diff.patch`（淨差異）為準，不要把合併帶進來的 main 內容當成本 PR 的改動。
   - `refs.txt`：`main`（＝main 目錄簽出的 commit，也是 diff 基底）、`merge_base`、`head` 的完整 SHA，
     以及抓取當下的 `origin_main_at_fetch`（若與 `main` 不同，表示觸發後 main 又前進了）。
