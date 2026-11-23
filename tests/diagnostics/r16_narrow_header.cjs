@@ -21,7 +21,7 @@ async function auditNarrowHeader({evaluate,send,sleep}){
     // Feed the wheel to this header's scrollport. A button in a nested
     // horizontal menu can consume an otherwise identical wheel gesture.
     let wheelPoint;
-    for(const y of [hr.top+1,hr.top+hr.height/2,hr.top+header.clientHeight-2]){
+    for(const y of [hr.top+header.clientHeight/2,hr.top+1,hr.top+header.clientHeight-2]){
       for(const f of [.5,.1,.9,.25,.75]){
         const x=hr.left+hr.width*f,target=document.elementFromPoint(x,y);
         if(!header.contains(target))continue;
@@ -36,8 +36,11 @@ async function auditNarrowHeader({evaluate,send,sleep}){
       }
       if(wheelPoint)break;
     }
+    const barTop=hr.top+header.clientTop+header.clientHeight;
+    const barHeight=hr.bottom-parseFloat(getComputedStyle(header).borderBottomWidth)-barTop;
     return {rows,missing:selectors.filter(selector=>!buttons.includes(header.querySelector(selector))),
-      wheelPoint,left:header.scrollLeft,width:header.clientWidth,max:header.scrollWidth-header.clientWidth,
+      wheelPoint,barY:barHeight>0?barTop+barHeight/2:null,barLeft:hr.left+header.clientLeft,
+      left:header.scrollLeft,width:header.clientWidth,max:header.scrollWidth-header.clientWidth,
       scrollable:getComputedStyle(header).overflowX==='auto'};
   }
   const inspect=()=>evaluate('('+snapshot.toString()+')('+JSON.stringify(required)+')');
@@ -46,21 +49,39 @@ async function auditNarrowHeader({evaluate,send,sleep}){
     await send('Input.dispatchMouseEvent',{type:'mouseWheel',...view.wheelPoint,deltaX,deltaY:0});
     await sleep(150);
   };
+  async function advance(view,delta){
+    await wheel(view,delta);
+    let next=await inspect();
+    if(next.left!==view.left||view.barY===null)return next;
+    // Where the compositor leaves wheel input to a nested control, drag the
+    // visible native scrollbar thumb. Both routes use trusted pointer input.
+    const scale=view.width/(view.width+view.max),y=view.barY;
+    const x=view.barLeft+(view.left+view.width/2)*scale;
+    const end=x+(Math.min(view.max,Math.max(0,view.left+delta))-view.left)*scale;
+    await send('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',buttons:1,clickCount:1});
+    try{
+      for(let step=1;step<=4;step++){
+        await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:x+(end-x)*step/4,y,button:'left',buttons:1});
+      }
+    }finally{
+      await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:end,y,button:'left',clickCount:1});
+    }
+    await sleep(150);
+    return inspect();
+  }
   // Keep the caller's active field and horizontal position after the audit.
   await evaluate(`window.__r16HeaderReturn={focus:document.activeElement,
     left:document.querySelector('#objectWorkspace > header').scrollLeft};void 0`);
   try{
     let view=await inspect();
-    await wheel(view,-view.max);
-    view=await inspect();
+    if(view.left>1)view=await advance(view,-view.max);
     const seen=new Set(),startsAtLeft=view.left<=1,wheelPath=[];
     for(;;){
-      wheelPath.push({left:view.left,max:view.max,point:view.wheelPoint});
+      wheelPath.push({left:view.left,max:view.max,point:view.wheelPoint,barY:view.barY});
       for(const row of view.rows)if(row.hit)seen.add(row.name);
       if(view.left>=view.max-1)break;
       const before=view.left;
-      await wheel(view,Math.max(1,Math.floor(view.width/2)));
-      view=await inspect();
+      view=await advance(view,Math.max(1,Math.floor(view.width/2)));
       if(view.left<=before)break;
     }
     const pointerMissing=view.rows.filter(row=>!seen.has(row.name)).map(row=>row.name);

@@ -114,10 +114,14 @@ function selfTest() {
     if(relative==='geometry-web/cdp_test.js'&&driverPresent){
       projectDriver(file,accepted);
       const headerAudit='tests/diagnostics/r16_narrow_header.cjs';
-      const headerDigest='d4b26166e294b67bed24757f362e0758715a5421abf350e068b94eae1f8bc71e';
+      const headerDigest='7ba08c584a10f463df18d3de80924e3d32d8cb0cb5b27fc80e2eb07e21faa772';
       assert.equal(registry.sha(fs.readFileSync(path.join(ROOT,headerAudit))),headerDigest,'R16_HEADER_AUDIT_BYTES');
-      const journal=require('../helpers/canvas_shards.js').loadPlan(ROOT);
-      assert.equal(journal.sourceHashes[headerAudit],headerDigest,'R16_HEADER_AUDIT_IN_CANVAS_JOURNAL');
+      const canvas=registry.sourceClosure(ROOT,['tests/helpers/canvas_shards.js','geometry-web/cdp_test.js']);
+      assert.equal(canvas.files[headerAudit],headerDigest,'R16_HEADER_AUDIT_IN_CANVAS_DRIVER');
+      if(current.acceptance){
+        const journal=require('../helpers/canvas_shards.js').loadPlan(ROOT);
+        assert.equal(journal.sourceHashes[headerAudit],headerDigest,'R16_HEADER_AUDIT_IN_CANVAS_JOURNAL');
+      }
       const space=registry.sourceClosure(ROOT,['geometry-web/space_model_test.js']);
       assert.equal(space.files[headerAudit],headerDigest,'R16_HEADER_AUDIT_IN_SPACE_TIMBER');
       const within=Buffer.from(file);

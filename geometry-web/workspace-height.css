@@ -280,11 +280,10 @@ body #fbRoot > #fbButton:not([hidden]) {
     overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-padding-inline: 8px;
-    scrollbar-width: auto;
+    scrollbar-width: thin;
   }
-  /* The 46px bordered tool row and its scrollbar share the 56px header. */
-  .object-workspace-topbar::-webkit-scrollbar:horizontal { height: 6px; }
-  .object-workspace-topbar::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
+  /* Keep the 44px controls inside the 56px header with its native scrollbar. */
+  .object-workspace-topbar .face-workspace-tools { border-block-width: 0; }
   .object-workspace-topbar > :is(.object-workspace-trail, .workspace-tools-row, .object-workspace-actions) {
     flex: 0 0 auto;
     width: max-content;
