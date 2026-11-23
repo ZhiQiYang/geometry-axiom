@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 82ab173db34912008e8fe9199ccc1cc53b17b49d
+          ref: 32fc2922e59e5eca540d5bfb585eb38d9621d272
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -22,14 +22,14 @@ jobs:
       - name: Measure the original P37 expression on an isolated Linux Chrome
         shell: bash
         env:
-          R448_P37_EXPECT: fail
+          R448_P37_EXPECT: pass
         run: |
           set -euo pipefail
           ulimit -s 16384
           export TMPDIR="$RUNNER_TEMP" GEOMETRY_FEEDBACK_DIR="$RUNNER_TEMP/p37-feedback" PYTHONDONTWRITEBYTECODE=1
           export R448_P37_OUT="$RUNNER_TEMP/p37-out"
           mkdir -p "$R448_P37_OUT" "$GEOMETRY_FEEDBACK_DIR"
-          test "$(git rev-parse HEAD)" = 82ab173db34912008e8fe9199ccc1cc53b17b49d
+          test "$(git rev-parse HEAD)" = 32fc2922e59e5eca540d5bfb585eb38d9621d272
           git rev-parse HEAD > "$R448_P37_OUT/source"
           git rev-parse 'HEAD^{tree}' > "$R448_P37_OUT/tree"
           google-chrome --version > "$R448_P37_OUT/chrome-version.txt"
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: r448-p37-header-82ab173db34912008e8fe9199ccc1cc53b17b49d
+          name: r448-p37-header-32fc2922e59e5eca540d5bfb585eb38d9621d272
           path: ${{ runner.temp }}/p37-out
           if-no-files-found: error
           retention-days: 7
