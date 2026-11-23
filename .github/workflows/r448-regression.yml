@@ -1,0 +1,65 @@
+name: PR448 canvas regression diagnostics
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-regression.yml]
+permissions:
+  contents: read
+jobs:
+  browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [parameters, c2, P1231]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-r448-browser-feedback
+      PYTHONDONTWRITEBYTECODE: '1'
+      MODE: ${{ matrix.mode }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 'af9812bea965367c22b6b32a7bdf4aee0a8bd42b'
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm run build
+      - uses: ./.github/actions/install-cjk-fonts
+        timeout-minutes: 8
+      - name: Execute original browser test
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          out="$RUNNER_TEMP/r448-diagnostic"
+          mkdir -p "$out" "$GEOMETRY_FEEDBACK_DIR"
+          git rev-parse HEAD > "$out/source"
+          python3 -Bu geometry-web/start_local.py --port 18839 > "$out/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            kill -0 "$server"
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > "$out/runtime.json" 2> "$out/probe.stderr"; then break; fi
+            sleep 1
+          done
+          python3 -B geometry-web/runtime_version.py --probe 18839
+          case "$MODE" in
+            parameters) export GEOMETRY_PARAMETERS_ONLY=1 ;;
+            documents) node geometry-web/documents_browser_test.js > "$out/documents.log" 2>&1; exit ;;
+            c1) export GEOMETRY_CDP_SHARD=1/2 ;;
+            c2) export GEOMETRY_CDP_SHARD=2/2 ;;
+            P1231) export GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1231 ;;
+            *) exit 2 ;;
+          esac
+          node geometry-web/cdp_test.js > "$out/stdout.log" 2> "$out/stderr.log"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: r448-diagnostic-${{ matrix.mode }}
+          path: ${{ runner.temp }}/r448-diagnostic
+          if-no-files-found: error
