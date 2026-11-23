@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [from31, P1231, P1162, composition, parameters, c1]
+        mode: [space, timber]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: '32fc2922e59e5eca540d5bfb585eb38d9621d272'
+          ref: '37458f4e6847f11d867e3052b69812a4a8b30b7f'
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -52,6 +52,8 @@ jobs:
             parameters) export GEOMETRY_PARAMETERS_ONLY=1 ;;
             composition) export GEOMETRY_COMPOSITION_ONLY=1 ;;
             style) GEOMETRY_SPACE_STYLE_ONLY=1 node geometry-web/space_model_test.js > "$out/stdout.log" 2> "$out/stderr.log"; exit ;;
+            space) GEOMETRY_CDP_PORT=9347 node geometry-web/space_model_test.js > "$out/stdout.log" 2> "$out/stderr.log"; exit ;;
+            timber) GEOMETRY_CDP_PORT=9348 GEOMETRY_TIMBER_ONLY=1 node geometry-web/space_model_test.js > "$out/stdout.log" 2> "$out/stderr.log"; exit ;;
             from31) export GEOMETRY_CDP_FROM_P31=1 ;;
             uireview) export GEOMETRY_UI_REVIEW_ONLY=1 ;;
             documents) node geometry-web/documents_browser_test.js > "$out/documents.log" 2>&1; exit ;;
