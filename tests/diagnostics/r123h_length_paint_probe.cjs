@@ -28,28 +28,33 @@ function lengthPaintProbe() {
     });
   };
   let naturalSamples,fixture=null;
+  const sheet=document.createElement('style');
+  const pointerRules='#feLenInput { pointer-events:auto !important; } '+
+    '.cx-layer[data-cx-host="fe"] .cx-cur :is(rect,text,path,line,circle,ellipse,polygon,polyline) { pointer-events:visiblePainted !important; }';
   try{
-    // Only expose the actual decorations to hit testing. No pointer event is sent.
-    input.style.pointerEvents='auto';
-    for(const node of cursor)node.style.pointerEvents='visiblePainted';
+    // Use a removable sheet. Writing to an SVG element's style property can
+    // materialize a formerly absent style attribute on its first observation.
+    sheet.textContent=pointerRules;
+    document.head.append(sheet);
     naturalSamples=samples();
     const target=cursor.find(node=>node.tagName.toLowerCase()==='rect'&&getComputedStyle(node).fill!=='none'&&visible(node));
     if(target){
       const painted=rect(target),left=parseFloat(style.left),top=parseFloat(style.top);
       // Put the input center on the actual painted rectangle. Moving via
       // left/top retains z-index and stacking contexts; no transform is added.
-      input.style.left=(left+painted.left+painted.width/2-box.left-box.width/2)+'px';
-      input.style.top=(top+painted.top+painted.height/2-box.top-box.height/2)+'px';
+      const fixtureLeft=left+painted.left+painted.width/2-box.left-box.width/2;
+      const fixtureTop=top+painted.top+painted.height/2-box.top-box.height/2;
+      sheet.textContent=pointerRules+' #feLenInput { left:'+fixtureLeft+'px !important; top:'+fixtureTop+'px !important; }';
       fixture={target:painted,input:rect(input),samples:samples()};
     }
   }finally{
-    if(saved===null)input.removeAttribute('style');else input.setAttribute('style',saved);
-    for(const [node,original] of originalStyles){
-      if(original===null)node.removeAttribute('style');else node.setAttribute('style',original);
-    }
+    sheet.remove();
   }
+  const restored=rect(input);
   return {value:input.value,readonly:input.readOnly,hidden:input.hidden,originalPointerEvents,computed,
-    restoredStyle:input.getAttribute('style')===saved&&cursor.every(node=>node.getAttribute('style')===originalStyles.get(node)),
+    restoredStyle:!sheet.isConnected&&input.getAttribute('style')===saved&&
+      cursor.every(node=>node.getAttribute('style')===originalStyles.get(node))&&
+      restored.left===box.left&&restored.top===box.top&&restored.width===box.width&&restored.height===box.height,
     natural:{input:box,viewport:frame,blockers,samples:naturalSamples},overlapFixture:fixture};
 }
 

@@ -312,6 +312,7 @@ body #fbRoot > #fbButton:not([hidden]) {
   body.v3-mode .topbar > :is(.top-actions, #viewToolbar) { scrollbar-width: none; }
   body.v3-mode .topbar > :is(.top-actions, #viewToolbar)::-webkit-scrollbar { height: 0; }
   .wsh-dock :is(button, select, .mini-toggle) { min-height: 44px; }
+  #gridInlineInspector :is(.gi-actions .btn, input, select, .primary-button) { min-height: 44px; }
 }
 @media (max-width: 680px) {
   /* Keep the established mobile editing sheet, beside the control lane. Its
