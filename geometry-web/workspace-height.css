@@ -389,3 +389,43 @@ body #fbRoot > #fbButton:not([hidden]) {
     margin: 0 8px 8px;
   }
 }
+
+@media (max-width: 560px) {
+  /* Share the existing second header row between the project actions and
+     canvas controls. The cards and their gestures keep the full phone width. */
+  body.canvas-composition { --main-mobile-dock: min(36vw, 156px); }
+  body.canvas-composition #canvasViewport { margin-inline-start: 0; }
+  body.canvas-composition #mainCanvasDock {
+    position: fixed;
+    inset: 48px 8px auto auto;
+    z-index: 46;
+    width: var(--main-mobile-dock);
+    height: 48px;
+    padding: 0 3px;
+    scroll-padding: 0;
+    border-block: 0;
+  }
+  body.canvas-composition #mainCanvasDock :is(button, label, select) { scroll-margin-block: 0; }
+  body.canvas-composition #mainCanvasDock #ocSelectionSummary {
+    order: -1;
+    padding-block: 0;
+    pointer-events: auto;
+  }
+  body.canvas-composition #ocSelectionSummary > .guidance-dismiss { order: -1; }
+  body.canvas-composition .topbar > .top-actions {
+    margin-inline-end: calc(var(--main-mobile-dock) + 4px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  body.canvas-composition #fileMenuPop {
+    position: fixed;
+    inset: var(--topbar-h) 8px auto auto;
+  }
+  body.canvas-composition .topbar > .brand .brand-mark { visibility: hidden; }
+  body.canvas-composition:has(#objectWorkspace[hidden]) #fbRoot > #fbButton:not([hidden]) {
+    inset: 4px auto auto 4px;
+    width: 44px;
+    padding-inline: 0;
+  }
+  body.canvas-composition.canvas-has-inspector .sidebar-right { left: 8px; }
+}
