@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [from31]
+        mode: [style, from31, P1231, c2]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: '610d9c003163955b1188f1c3f9f802df63b4a9ef'
+          ref: 'b83b1d6811e176033f73cee2a8a549b21c36d508'
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -50,6 +50,7 @@ jobs:
           python3 -B geometry-web/runtime_version.py --probe 18839
           case "$MODE" in
             parameters) export GEOMETRY_PARAMETERS_ONLY=1 ;;
+            style) GEOMETRY_SPACE_STYLE_ONLY=1 node geometry-web/space_model_test.js > "$out/stdout.log" 2> "$out/stderr.log"; exit ;;
             from31) export GEOMETRY_CDP_FROM_P31=1 ;;
             uireview) export GEOMETRY_UI_REVIEW_ONLY=1 ;;
             documents) node geometry-web/documents_browser_test.js > "$out/documents.log" 2>&1; exit ;;
