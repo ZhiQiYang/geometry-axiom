@@ -31,6 +31,7 @@ module.exports = async helpers => {
   const mainStatusbarRows=[];
   const workspaceRows=[];
   const controlMatrixRows=[];
+  const blockedFaceInputs=new Map();
   const save = '#projectBar [data-project-action="save"]';
   const project = [save, '#projectInfoButton'];
   const common = [...project, '#fileMenuBtn'];
@@ -205,9 +206,15 @@ module.exports = async helpers => {
     if(label==='main'&&size.width===561)
       recordCheck('R123H_STATUSBAR_CONTAINS_COMMAND '+label+' '+state+' '+size.width,
         statusbarReady(statusbar),statusbar);
-    recordCheck('R123H_UNOBSCURED '+label+' '+state+' '+size.width,
+    const hitCase='R123H_UNOBSCURED '+label+' '+state+' '+size.width;
+    const hitEvidence={obstructions:p.obstructions,samples:p.samples};
+    const unobscured=recordCheck(hitCase,
       p.exists===true&&p.obstructions.length===0&&p.samples.every(s=>s.hit),
-      {obstructions:p.obstructions,samples:p.samples});
+      hitEvidence);
+    if(!unobscured&&label==='face'&&state==='normal-read'&&
+       p.viewport?.innerWidth===size.width&&p.viewport.innerHeight===size.height){
+      blockedFaceInputs.set(size,{prerequisite:hitCase,observation:hitEvidence});
+    }
     recordCheck('R123H_NO_PAGE_OVERFLOW '+label+' '+state+' '+size.width,p.pageOverflow===false,p.viewport);
     workspaceRows.push({label,state,width:size.width,height:size.height,
       actualWidth:p.viewport.innerWidth,actualHeight:p.viewport.innerHeight});
@@ -478,16 +485,18 @@ module.exports = async helpers => {
   // 21c-1: verify numeric mirror clearance separately from the paint-order fixture.
   // Reproduce through New polygon, real point clicks, real digit key events.
   async function checkDraftLengthPaint(size){
-    for(const [x,y] of [[0,0],[2000,0]]){
-      const p=await read(`(()=>{const p=new DOMPoint(${x},${y}).matrixTransform($('faceEditorRoot').getScreenCTM());
-        const hit=document.elementFromPoint(p.x,p.y);
-        return {x:p.x,y:p.y,dockHit:$('faceCanvasDock').contains(hit),hit:hit?.id||hit?.tagName};})()`);
-      const prerequisite='R123H_UNOBSCURED face normal-read '+size.width;
-      if(p.dockHit&&failures.some(f=>f.caseName===prerequisite)){
-        // The dock intercepted a required vertex and the same width already failed its hit audit.
-        console.log('P1231_21C1_BLOCKED '+JSON.stringify({requested:size,vertex:[x,y],observation:p,prerequisite}));
-        return;
+    // Both input states need the unobscured face measured at this same size.
+    // Keep its original failure and report each dependent observation as blocked.
+    const blocked=blockedFaceInputs.get(size);
+    if(blocked){
+      for(const teachingOpen of [true,false]){
+        console.log('P1231_21C1_BLOCKED '+JSON.stringify({case:'D02',status:'blocked-by-prerequisite',
+          requested:size,teachingOpen,...blocked}));
       }
+      return;
+    }
+    for(const [x,y] of [[0,0],[2000,0]]){
+      const p=await read(`(()=>{const p=new DOMPoint(${x},${y}).matrixTransform($('faceEditorRoot').getScreenCTM());return {x:p.x,y:p.y};})()`);
       await click(p.x,p.y);await sleep(90);
     }
     await waitForUI('fe.draft?.pts?.length===2');
