@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [c2]
+        mode: [P1162, P1231, parameters]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: '3df9cf1c11a109788d4711c0da36f3d889517889'
+          ref: '12fb38146a75288f0852e0914c7f7e8a4231cd1e'
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -57,6 +57,7 @@ jobs:
             c1) export GEOMETRY_CDP_SHARD=1/2 ;;
             c2) export GEOMETRY_CDP_SHARD=2/2 ;;
             P1231) export GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1231 ;;
+            P1162) export GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1162 ;;
             *) exit 2 ;;
           esac
           node geometry-web/cdp_test.js > "$out/stdout.log" 2> "$out/stderr.log"
