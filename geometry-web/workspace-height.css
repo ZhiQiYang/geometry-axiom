@@ -76,6 +76,11 @@ body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
 #faceCanvasDock { left: 100%; }
 @media (min-width: 901px) {
   body.canvas-composition.canvas-library-collapsed { --left-w: calc(64px + var(--r123h-dock)); }
+  /* Share the dock's width between the face sidebars as the workspace narrows.
+   * The actual SVG still fits the established 700 mm drawing at 1 px/mm. */
+  #faceWorkspaceLayout {
+    grid-template-columns: min(var(--left-w), 16vw) minmax(0, 1fr) min(var(--right-w), 21vw);
+  }
 }
 @media (max-width: 900px) {
   body:is(.canvas-composition, .v3-mode) #canvasViewport { margin-inline-start: var(--r123h-dock); }
@@ -107,6 +112,13 @@ body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
 #mainCanvasDock #canvasDrawToolbar .tool-button { width: 100%; min-width: 44px; }
 #mainCanvasDock #canvasDrawToolbar .guidance-help { grid-column: 1 / -1; width: 100%; min-width: 0; }
 #mainCanvasDock .selection-copy, #faceCanvasDock .selection-copy { min-width: 0; }
+#mainCanvasDock #canvasModeHint { anchor-name: --r123h-mode-hint; }
+/* The drawing hint now wraps in the control lane. Follow its visible bottom
+ * when placing the existing toast, including after a resize or dock scroll. */
+body.canvas-composition:has(#mainCanvasDock #canvasModeHint:not([hidden])) .toast-region {
+  top: max(calc(var(--topbar-h) + 116px), calc(anchor(--r123h-mode-hint bottom) + 8px));
+  position-try-fallbacks: flip-block;
+}
 #faceCanvasDock #feSelectionSummary {
   /* Keep the established camera-fit top inset below its 30% cap. Long teaching
    * text scrolls inside the same original lesson; it is never discarded. */
