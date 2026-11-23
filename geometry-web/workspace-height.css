@@ -81,6 +81,15 @@ body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
   #faceWorkspaceLayout {
     grid-template-columns: min(var(--left-w), 16vw) minmax(0, 1fr) min(var(--right-w), 21vw);
   }
+  /* Let the separate delete action wrap before it squeezes the grid summary.
+   * The open button keeps its 26px icon, 8px gap and 120px of readable text. */
+  .face-layer-row[data-grid-id] { display: flex; flex-wrap: wrap; }
+  .face-layer-row[data-grid-id] > .grid-layer-open {
+    flex: 1 0 min(100%, 154px);
+    flex-wrap: wrap;
+  }
+  .face-layer-row[data-grid-id] .face-layer-copy { flex: 1 1 min(100%, 120px); }
+  .face-layer-row[data-grid-id] > .face-layer-del { margin-inline-start: auto; }
 }
 @media (max-width: 900px) {
   body:is(.canvas-composition, .v3-mode) #canvasViewport { margin-inline-start: var(--r123h-dock); }
