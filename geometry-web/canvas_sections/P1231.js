@@ -472,12 +472,17 @@ module.exports = async helpers => {
 
   // 21c-1: verify numeric mirror clearance separately from the paint-order fixture.
   // Reproduce through New polygon, real point clicks, real digit key events.
-  for(const size of sizes){
-    await viewport(size);await ctl('#btnNewPoly');
-    await waitForUI(`oc.focus?.t==='face'&&fe.tool==='redraw'&&!!fe.draft`);
-    await pin();
+  async function checkDraftLengthPaint(size){
     for(const [x,y] of [[0,0],[2000,0]]){
-      const p=await read(`(()=>{const p=new DOMPoint(${x},${y}).matrixTransform($('faceEditorRoot').getScreenCTM());return {x:p.x,y:p.y};})()`);
+      const p=await read(`(()=>{const p=new DOMPoint(${x},${y}).matrixTransform($('faceEditorRoot').getScreenCTM());
+        const hit=document.elementFromPoint(p.x,p.y);
+        return {x:p.x,y:p.y,dockHit:$('faceCanvasDock').contains(hit),hit:hit?.id||hit?.tagName};})()`);
+      const prerequisite='R123H_UNOBSCURED face normal-read '+size.width;
+      if(p.dockHit&&failures.some(f=>f.caseName===prerequisite)){
+        // The dock intercepted a required vertex and the same width already failed its hit audit.
+        console.log('P1231_21C1_BLOCKED '+JSON.stringify({requested:size,vertex:[x,y],observation:p,prerequisite}));
+        return;
+      }
       await click(p.x,p.y);await sleep(90);
     }
     await waitForUI('fe.draft?.pts?.length===2');
@@ -496,6 +501,12 @@ module.exports = async helpers => {
       recordCheck('R123H_LENGTH_DISPLAY '+size.width+' teaching='+open,
         lengthPaintOrderReady(observation),{overlapFixture:observation.overlapFixture,restoredStyle:observation.restoredStyle});
     }
+  }
+  for(const size of sizes){
+    await viewport(size);await ctl('#btnNewPoly');
+    await waitForUI(`oc.focus?.t==='face'&&fe.tool==='redraw'&&!!fe.draft`);
+    await pin();
+    await checkDraftLengthPaint(size);
     await key('Escape','Escape',27);await sleep(100);
     await key('Escape','Escape',27);await sleep(100);
     await unchanged('21c-draft-cancel '+size.width);
