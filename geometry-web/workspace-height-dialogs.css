@@ -219,3 +219,12 @@
   #smWorkspace { --r123h-dialog-header: 96px; }
   #infiniteGridWorkspace .ig-header .ig-back { min-height: 44px; }
 }
+
+@media (max-width: 720px) {
+  /* Reveal focused controls below the two sticky tab buttons and their divider. */
+  #smWorkspace:not(.sm-in-library) #smHeightDock {
+    --sm-mobile-tab-height: 44px;
+    scroll-padding-block-start: calc(2 * var(--sm-mobile-tab-height) + 1px);
+  }
+  #smHeightDock .sm-mobile-tabs button { height: var(--sm-mobile-tab-height, 44px); }
+}

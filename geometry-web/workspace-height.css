@@ -304,6 +304,11 @@ body #fbRoot > #fbButton:not([hidden]) {
     grid-template-rows: 44px 44px; height: 96px; padding: 4px 8px;
   }
   body.v3-mode .topbar > .top-actions { grid-column: 1 / -1; grid-row: 2; max-width: 100%; width: 100%; }
+  body.v3-mode .top-actions > .icon-button,
+  body.v3-mode .top-actions :is(#fileMenuBtn, #viewSwitch > .seg) {
+    min-width: 44px; min-height: 44px;
+  }
+  body.v3-mode #viewSwitch { padding-block: 0; border-block-width: 0; }
   body.v3-mode .topbar > :is(.top-actions, #viewToolbar) { scrollbar-width: none; }
   body.v3-mode .topbar > :is(.top-actions, #viewToolbar)::-webkit-scrollbar { height: 0; }
   .wsh-dock :is(button, select, .mini-toggle) { min-height: 44px; }

@@ -33,6 +33,15 @@
     '#feSelectionSummary', '#faceCanvasHint', '#calibrationCanvasPrompt',
     '#gridLegend', '#gridReturnSettings', '#faceCoordinateReadout', '#feLatticeDensity', '#feRuleDensity', '.face-canvas-controls'
   ]);
+  const objectHeader = document.querySelector('#objectWorkspace > .object-workspace-topbar');
+  objectHeader.addEventListener('focusin', ({target}) => {
+    // The middle breakpoint scrolls the entire header. Native Tab can leave
+    // the focused tool partly outside it when its center is already visible.
+    if (target.closest('.workspace-tools-row') && getComputedStyle(objectHeader).overflowX === 'auto' &&
+        objectHeader.scrollWidth > objectHeader.clientWidth) {
+      target.scrollIntoView({block:'nearest', inline:'nearest', behavior:'instant'});
+    }
+  });
   // V1/V2 still require the three-view toolbar above the drawing. Reuse the
   // existing project header, whose horizontal scrolling preserves button size.
   document.querySelector('#app > .topbar').append(byId('viewToolbar'));
