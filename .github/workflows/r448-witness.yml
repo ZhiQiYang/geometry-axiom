@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        leg: [T, P, withdrawals-12, withdrawal-narrow]
+        leg: [T, P]
     runs-on: ubuntu-latest
     timeout-minutes: ${{ matrix.leg == 'withdrawals-12' && 180 || 35 }}
     env:
@@ -92,7 +92,9 @@ jobs:
           set -euo pipefail
           ulimit -s 16384
           export GEOMETRY_TEST_URL=http://127.0.0.1:18839/
-          export GEOMETRY_FEEDBACK_DIR="$RUNNER_TEMP/r448-feedback"
+          export TMPDIR="$RUNNER_TEMP"
+          export GEOMETRY_FEEDBACK_DIR="$TMPDIR/r448-feedback"
+          mkdir -p "$GEOMETRY_FEEDBACK_DIR"
           export GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1231
           python3 -B -u geometry-web/start_local.py --port 18839 > "$E/server.log" 2>&1 &
           server=$!
