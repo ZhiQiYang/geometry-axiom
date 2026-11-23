@@ -1,0 +1,112 @@
+name: PR448 selective original dock withdrawal
+
+on:
+  push:
+    branches: [codex/r448-dock-only-20261123]
+    paths: [.github/workflows/r448-dock-selective.yml]
+
+permissions:
+  contents: read
+
+env:
+  T_SHA: '9df103d2238e0ddf1558ce7990015e8b446834a5'
+  P_SHA: '9df103d2238e0ddf1558ce7990015e8b446834a5'
+  GEOMETRY_CHROME: /usr/bin/google-chrome
+  GEOMETRY_CHROME_FLAGS: --no-sandbox
+  PYTHONDONTWRITEBYTECODE: '1'
+  LANG: C.UTF-8
+
+jobs:
+  witness:
+    strategy:
+      fail-fast: false
+      matrix:
+        leg: [withdrawal-dock-selective]
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.leg == 'withdrawals-12' && 180 || 35 }}
+    env:
+      LEG: ${{ matrix.leg }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          ref: ${{ matrix.leg == 'T' && env.T_SHA || env.P_SHA }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Check source and reserve snapshot space
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/r448-$LEG"
+          mkdir -p "$E"
+          actual=$(git rev-parse HEAD)
+          expected=$P_SHA
+          if [[ "$LEG" == T ]]; then expected=$T_SHA; fi
+          test "$actual" = "$expected"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          git log -1 --format='%H %T %P' | tee "$E/source.txt"
+          for base in 57bb3dd8101fc2a05750b52edaa0ceab2a081a1a 883e68688f6480a5f1de6e86e6a056cc20339cb9; do
+            if ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              git -c protocol.version=2 fetch --no-tags --filter=blob:none --depth=1 origin "$base"
+            fi
+          done
+          node --version > "$E/node-version.txt"
+          python3 --version > "$E/python-version.txt"
+          "$GEOMETRY_CHROME" --version > "$E/chrome-version.txt"
+          test "$(id -u)" != 0
+          df -h /mnt /tmp > "$E/disk-before.txt"
+          if [[ "$LEG" == withdrawal* ]]; then
+            size=$(git ls-files -z | xargs -0 stat -c %s -- | awk '{s += $1} END {printf "%.0f", s}')
+            # Baseline and one mutant exist at once. Retained Chrome profiles,
+            # app feedback and diagnostic output require additional free space.
+            need=$(( 2 * size + 6 * 1024 * 1024 * 1024 ))
+            pick_volume() {
+              local mount free
+              for mount in /mnt /tmp; do
+                [[ -d "$mount" ]] || continue
+                free=$(df -B1 --output=avail "$mount" | tail -1)
+                if [[ $free -ge $need ]]; then printf '%s\n' "$mount"; return 0; fi
+              done
+              return 1
+            }
+            if ! mount=$(pick_volume); then
+              # Only preinstalled, unused SDKs on this disposable hosted runner.
+              sudo rm -rf -- /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup
+              mount=$(pick_volume)
+            fi
+            scratch="$mount/r448-snapshots-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-$LEG"
+            sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 700 "$scratch"
+            echo "TMPDIR=$scratch" >> "$GITHUB_ENV"
+            printf 'tracked_bytes=%s\nrequired_free=%s\nsnapshots=%s\n' "$size" "$need" "$scratch" > "$E/space.txt"
+          fi
+          echo "E=$E" >> "$GITHUB_ENV"
+      - name: Exercise original named baseline, withdrawn and restored browser cases
+        if: startsWith(matrix.leg, 'withdrawal')
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          binary_dir="$TMPDIR/r448-native"
+          python3 -B -u geometry-web/start_local.py --build-only --binary-dir "$binary_dir" | tee "$E/native-build.log"
+          grep '^LOCAL_RUNTIME ' "$E/native-build.log" | tail -1 | cut -d ' ' -f2- > "$E/local-runtime.json"
+          bridge=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["executables"]["bridge"])' "$E/local-runtime.json")
+          model=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["executables"]["model-base"])' "$E/local-runtime.json")
+          test -x "$bridge" && test -x "$model"
+          sha256sum "$bridge" "$model" > "$E/binary-sha256.txt"
+          python3 -B tests/diagnostics/r16_height_mutations.py --preflight > "$E/preflight.json"
+          echo 'IiIiUnVuIG9uZSBvcmlnaW5hbCBuYW1lZCB3aXRoZHJhd2FsLCByZXRhaW5pbmcgdGhlIG9yaWdpbmFsIHJ1bm5lciBhbmQgc3RhdHVzIGxvZ2ljLiIiIgppbXBvcnQgY29sbGVjdGlvbnMKaW1wb3J0IGhhc2hsaWIKaW1wb3J0IGltcG9ydGxpYi51dGlsCmltcG9ydCBqc29uCmltcG9ydCBvcwpmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKaW1wb3J0IHN5cwoKQ0FTRSA9ICdSMTIzSF9ET0NLX0JBQ0tfT1ZFUl9DQU5WQVMnClJPT1QgPSBQYXRoLmN3ZCgpCk9VVCA9IFBhdGgob3MuZW52aXJvblsnRSddKQpTQ1JJUFQgPSBST09UIC8gJ3Rlc3RzL2RpYWdub3N0aWNzL3IxNl9oZWlnaHRfbXV0YXRpb25zLnB5JwoKCmRlZiByb3dzKGxvZywgcHJlZml4KToKICAgIHJldHVybiBbanNvbi5sb2FkcyhsaW5lW2xlbihwcmVmaXgpOl0pIGZvciBsaW5lIGluIGxvZy5zcGxpdGxpbmVzKCkgaWYgbGluZS5zdGFydHN3aXRoKHByZWZpeCldCgoKZGVmIGluc3BlY3RfcmF3KGRpcmVjdG9yeSk6CiAgICBsb2cgPSAoZGlyZWN0b3J5LydjZHAubG9nJykucmVhZF90ZXh0KGVuY29kaW5nPSd1dGYtOCcpCiAgICBjZHAsID0gcm93cyhsb2csICdDRFBfUkVTVUxUICcpCiAgICBzdWl0ZSwgPSByb3dzKGxvZywgJ1AxMjMxX1NVSVRFX1JFU1VMVCAnKQogICAgcHJvYmVzID0gc29ydGVkKChyWydyZXF1ZXN0ZWQnXVsnd2lkdGgnXSwgclsndGVhY2hpbmdPcGVuJ10pIGZvciByIGluIHJvd3MobG9nLCAnUDEyMzFfMjFDMSAnKSkKICAgIGJsb2NrZWQgPSByb3dzKGxvZywgJ1AxMjMxXzIxQzFfQkxPQ0tFRCAnKQogICAgY2VsbHMgPSByb3dzKGxvZywgJ1AxMjMxX01BVFJJWF9DRUxMICcpCiAgICBsYWJlbHMgPSB7J21haW4nLCAnZmFjZScsICdzcGFjZS1wbGFuJywgJ3NwYWNlLXByb2plY3Rpb24tc2Vjb25kLWVudHJ5JywgJ3RocmVlLXZpZXcnLCAnM2QnLCAnZnVsbC1ncmlkJ30KICAgIGNvdW50cyA9IGNvbGxlY3Rpb25zLkNvdW50ZXIoKHJbJ3JlcXVlc3RlZCddWyd3aWR0aCddLCByWydsYWJlbCddLCByWydzdGF0ZSddKSBmb3IgciBpbiBjZWxscyBpZiByWydsYWJlbCddIGluIGxhYmVscykKICAgIGFzc2VydCBsZW4oY291bnRzKSA9PSA3MCBhbmQgYWxsKG4gPT0gMSBmb3IgbiBpbiBjb3VudHMudmFsdWVzKCkpCiAgICBhc3NlcnQgY2RwWydjb21wbGV0ZWQnXSBpcyBUcnVlIGFuZCBjZHBbJ3VuZXhwZWN0ZWRCcm93c2VyRXhjZXB0aW9ucyddID09IDAgYW5kIG5vdCBjZHBbJ3NraXBwZWQnXQogICAgcmV0dXJuIHsnY2RwJzogY2RwLCAnZmFpbHVyZXMnOiBzdWl0ZVsnZmFpbHVyZXMnXSwgJ3N1aXRlU3RhdHVzJzogc3VpdGVbJ3N0YXR1cyddLCAnZDAyUmVhZGluZ3MnOiBwcm9iZXMsCiAgICAgICAgICAgICdibG9ja2VkRDAyJzogYmxvY2tlZCwgJ21hdHJpeENlbGxzJzogbGVuKGNvdW50cyl9CgoKZGVmIHJ1bigpOgogICAgZGlnZXN0ID0gaGFzaGxpYi5zaGEyNTYoU0NSSVBULnJlYWRfYnl0ZXMoKSkuaGV4ZGlnZXN0KCkKICAgIHNwZWMgPSBpbXBvcnRsaWIudXRpbC5zcGVjX2Zyb21fZmlsZV9sb2NhdGlvbignb3JpZ2luYWxfcjE2JywgU0NSSVBUKQogICAgb3JpZ2luYWwgPSBpbXBvcnRsaWIudXRpbC5tb2R1bGVfZnJvbV9zcGVjKHNwZWMpCiAgICBzcGVjLmxvYWRlci5leGVjX21vZHVsZShvcmlnaW5hbCkKICAgICMgRWFjaCBleGFjdCBwcm9kdWN0IGFuY2hvciBhbmQgdGhlIGZ1bGwgcHJlZmxpZ2h0IG11c3QgYmUgdmFsaWQgZmlyc3QuCiAgICBkZWZpbml0aW9ucyA9IG9yaWdpbmFsLmRlZmluaXRpb25zKFJPT1QpCiAgICBzZWxlY3RlZCwgPSBbciBmb3IgciBpbiBkZWZpbml0aW9ucyBpZiByWydpZCddID09IENBU0VdCiAgICBhc3NlcnQgbGVuKGRlZmluaXRpb25zKSA9PSAxMiBhbmQgc2VsZWN0ZWRbJ2Fzc2VydGlvbnMnXSA9PSBbJ1IxMjNIX1VOT0JTQ1VSRUQnXQogICAgb3JpZ2luYWwuc3ludGF4X3ByZWZsaWdodChST09ULCBkZWZpbml0aW9ucywgJ25vZGUnKQogICAgcHJlZmxpZ2h0ID0ganNvbi5sb2FkcygoT1VULydwcmVmbGlnaHQuanNvbicpLnJlYWRfYnl0ZXMoKSkKICAgIGFzc2VydCBwcmVmbGlnaHRbJ3NvdXJjZUhlYWQnXSA9PSBvcy5lbnZpcm9uWydQX1NIQSddCiAgICBhc3NlcnQgW3JbJ2lkJ10gZm9yIHIgaW4gcHJlZmxpZ2h0Wyd3aXRoZHJhd2FscyddXSA9PSBbclsnaWQnXSBmb3IgciBpbiBkZWZpbml0aW9uc10KICAgIChPVVQvJ3NlbGVjdGlvbi5qc29uJykud3JpdGVfdGV4dChqc29uLmR1bXBzKHsnc2VsZWN0aXZlJzogVHJ1ZSwgJ29yaWdpbmFsU2NyaXB0U2hhMjU2JzogZGlnZXN0LAogICAgICAgICdkZWZpbml0aW9ucyc6IFtyWydpZCddIGZvciByIGluIGRlZmluaXRpb25zXSwgJ3NlbGVjdGVkJzogc2VsZWN0ZWRbJ2lkJ119LCBpbmRlbnQ9MikpCiAgICAjIE9ubHkgZmlsdGVyIHRoZSBhcmd1bWVudCBsaXN0IHN1cHBsaWVkIHRvIHRoZSBvcmlnaW5hbCBtYWluLiBJdHMgc25hcHNob3RzLAogICAgIyBvcmlnaW5hbC5ydW5fY2RwLCBmaXh0dXJlLCBicm93c2VyIGFzc2VydGlvbnMsIGNsZWFudXAgYW5kIHZlcmRpY3QgYXJlIHVudG91Y2hlZC4KICAgIG9yaWdpbmFsLmRlZmluaXRpb25zID0gbGFtYmRhIHJvb3Q6IFtzZWxlY3RlZF0gaWYgcm9vdCA9PSBST09UIGVsc2UgW10KICAgIHJjID0gb3JpZ2luYWwubWFpbigpCiAgICBhc3NlcnQgaGFzaGxpYi5zaGEyNTYoU0NSSVBULnJlYWRfYnl0ZXMoKSkuaGV4ZGlnZXN0KCkgPT0gZGlnZXN0CiAgICByb290ID0gT1VULyd3aXRoZHJhd2FscycKICAgIHJlY2VpcHQgPSBqc29uLmxvYWRzKChyb290LydyZWNlaXB0Lmpzb24nKS5yZWFkX2J5dGVzKCkpCiAgICByZWNvcmQsID0gcmVjZWlwdFsnbXV0YXRpb25zJ10KICAgIHBoYXNlcyA9IHtuYW1lOiBpbnNwZWN0X3Jhdyhyb290L3BhdGgpIGZvciBuYW1lLCBwYXRoIGluIFsoJ2Jhc2VsaW5lJywnYmFzZWxpbmUnKSwKICAgICAgICAgICAgICAoJ211dGFudCcsQ0FTRSsnLW11dGFudCcpLCAoJ3Jlc3RvcmVkJyxDQVNFKyctcmVzdG9yZWQnKV19CiAgICAoT1VULydkb2NrLXJhdy1zdW1tYXJ5Lmpzb24nKS53cml0ZV90ZXh0KGpzb24uZHVtcHMocGhhc2VzLCBpbmRlbnQ9MiwgZW5zdXJlX2FzY2lpPUZhbHNlKSkKICAgIGFzc2VydCByYyA9PSAwIGFuZCByZWNlaXB0Wydzb3VyY2VIZWFkJ10gPT0gb3MuZW52aXJvblsnUF9TSEEnXSBhbmQgcmVjZWlwdFsnYnJvd3NlckV4ZWN1dGVkJ10KICAgIGFzc2VydCByZWNvcmRbJ2lkJ10gPT0gQ0FTRSBhbmQgcmVjb3JkWydzdGF0dXMnXSA9PSAna2lsbGVkJyBhbmQgcmVjb3JkWydzb3VyY2VSZXN0b3JlZEV4YWN0bHknXQogICAgYXNzZXJ0IHJlY29yZFsnYmFzZWxpbmVNdXRhbnRSZXN0b3JlZEV4aXQnXSA9PSBbMCwxLDBdCiAgICBmb3IgcGhhc2UgaW4gWydiYXNlbGluZScsJ3Jlc3RvcmVkJ106CiAgICAgICAgciA9IHBoYXNlc1twaGFzZV0KICAgICAgICBhc3NlcnQgclsnc3VpdGVTdGF0dXMnXSA9PSAncGFzc2VkJyBhbmQgbm90IHJbJ2ZhaWx1cmVzJ10gYW5kIHJbJ2NkcCddWydmYWlsZWRBc3NlcnRpb25zJ10gPT0gMAogICAgICAgIGFzc2VydCByWydkMDJSZWFkaW5ncyddID09IFsodyx0KSBmb3IgdyBpbiAoMzkwLDU2MCw1NjEsNzY4LDE0MDApIGZvciB0IGluIFtGYWxzZSxUcnVlXV0KICAgICAgICBhc3NlcnQgbm90IHJbJ2Jsb2NrZWREMDInXQogICAgbSA9IHBoYXNlc1snbXV0YW50J10KICAgIGV4cGVjdGVkID0geyh3LHMpIGZvciB3IGluIFs1NjEsNzY4LDE0MDBdIGZvciBzIGluIFsndGVhY2hpbmctb3BlbicsJ25vcm1hbC1yZWFkJ119CiAgICBhc3NlcnQgbVsnc3VpdGVTdGF0dXMnXSA9PSAnZmFpbGVkJyBhbmQgbVsnY2RwJ11bJ2ZhaWxlZEFzc2VydGlvbnMnXSA9PSBsZW4obVsnZmFpbHVyZXMnXSkgPT0gNgogICAgYXNzZXJ0IHtmWydjYXNlTmFtZSddIGZvciBmIGluIG1bJ2ZhaWx1cmVzJ119ID09IHtmJ1IxMjNIX1VOT0JTQ1VSRUQgZmFjZSB7c30ge3d9JyBmb3IgdyxzIGluIGV4cGVjdGVkfQogICAgYXNzZXJ0IGFsbChmWyduYW1lJ10gPT0gJ1IxMjNIX1VOT0JTQ1VSRUQnIGFuZCBmWydraW5kJ109PSdhc3NlcnRpb24nIGZvciBmIGluIG1bJ2ZhaWx1cmVzJ10pCiAgICBhc3NlcnQgbVsnZDAyUmVhZGluZ3MnXSA9PSBbKHcsdCkgZm9yIHcgaW4gKDM5MCw1NjApIGZvciB0IGluIFtGYWxzZSxUcnVlXV0KICAgIGFzc2VydCBzb3J0ZWQoclsncmVxdWVzdGVkJ11bJ3dpZHRoJ10gZm9yIHIgaW4gbVsnYmxvY2tlZEQwMiddKSA9PSBbNTYxLDc2OCwxNDAwXQogICAgcHJpbnQoJ1NlbGVjdGl2ZSBvcmlnaW5hbCBkb2NrIHdpdGhkcmF3YWwuIEFsbCB0aHJlZSBwaGFzZXMgY29tcGxldGVkLCBzaXggc3BlY2lmaWVkIGZhaWx1cmVzLCBmb3VyIHVuYWZmZWN0ZWQgRDAyIHJlYWRpbmdzLicpCgoKaWYgX19uYW1lX18gPT0gJ19fbWFpbl9fJzoKICAgIHJ1bigpCg==' | base64 -d > "$E/dock-selective.py"
+          echo 'e139de383c4b21b45de283db48562de362481c6266b227543b2eaa6206a966ae  '"$E/dock-selective.py" | sha256sum -c -
+          python3 -B -u "$E/dock-selective.py" --repo "$GITHUB_WORKSPACE" --bridge "$bridge" --model-base "$model" --output-dir "$E/withdrawals" --timeout 900 2>&1 | tee "$E/withdrawals.log"
+      - name: Preserve raw browser logs, origins and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-${{ matrix.leg }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/r448-${{ matrix.leg }}/
+          if-no-files-found: error
+          retention-days: 14
