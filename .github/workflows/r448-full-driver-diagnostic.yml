@@ -1,0 +1,193 @@
+name: PR448 unsharded native driver diagnostic
+
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-full-driver-diagnostic.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  driver:
+    name: Unsharded diagnostic (${{ matrix.label }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: candidate
+            source: 10ab09abee4c389fa76a824ecf009ff72e88f24f
+          - label: main
+            source: ea16e3f570c22fbc73625e8fadfbfc9bd1968780
+    env:
+      SOURCE: ${{ matrix.source }}
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      PYTHONDONTWRITEBYTECODE: '1'
+      LANG: C.UTF-8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          ref: ${{ matrix.source }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Prepare isolated native service and record runner identity
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/unsharded-native-driver"
+          scratch=$(mktemp -d /tmp/r448-native-driver.XXXXXXXX)
+          mkdir -p "$E" "$scratch/feedback"
+          echo "E=$E" >> "$GITHUB_ENV"
+          echo "TMPDIR=$scratch" >> "$GITHUB_ENV"
+          echo "GEOMETRY_FEEDBACK_DIR=$scratch/feedback" >> "$GITHUB_ENV"
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          test -z "$(git status --porcelain)"
+          git cat-file commit HEAD > "$E/source.commit"
+          git rev-parse HEAD > "$E/source.sha"
+          date -u +%FT%TZ > "$E/preparation.utc"
+          { uname -a; cat /etc/os-release; cat /proc/cpuinfo | head -n 25 || true; df -h .; } > "$E/runner.txt"
+          printf '%s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$E/runner.txt"
+          "$GEOMETRY_CHROME" --version > "$E/chrome-version.txt"
+          node --version > "$E/node-version.txt"
+          sha256sum geometry-web/cdp_test.js > "$E/driver.sha256"
+      - name: Build native runtime
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          npm run build 2>&1 | tee "$E/build.log"
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Record exact registry, composed golden and all native driver inputs for comparison
+        run: |
+          set -euo pipefail
+          cat > "$E/snapshot.py" <<'PY'
+          import hashlib, io, json, os, subprocess, sys, tarfile
+          from pathlib import Path
+
+          out = Path(os.environ['E'])
+          phase = sys.argv[1]
+          paths = ['geometry-web/canvas-registry', 'geometry-web/cdp_sections.d', 'geometry-web/canvas_sections',
+                   'geometry-web/cdp_sections.golden.json', 'geometry-web/canvas_shards.json',
+                   'geometry-web/canvas_registry.js', 'geometry-web/canvas_shards.js', 'geometry-web/cdp_floor.js',
+                   'geometry-web/cdp_test.js']
+          files = sorted(subprocess.check_output(['git', 'ls-files', '-z', *paths]).decode().rstrip('\0').split('\0'))
+          assert 'geometry-web/cdp_test.js' in files and 'geometry-web/canvas-registry/legacy.cdp_sections.golden.json' in files
+          registered = b"const r=require('./geometry-web/canvas_registry.js'),v=r.load(process.cwd());process.stdout.write(r.encode(v[process.argv[1]]))"
+          for kind in ['golden', 'plan']:
+              (out/f'{phase}.{kind}.json').write_bytes(subprocess.check_output(['node','-e',registered.decode(),kind]))
+          raw_members = {f: Path(f).read_bytes() for f in files}
+          stable = out/'before.registry.tar.gz'
+          if phase == 'before':
+              with tarfile.open(stable,'w:gz',compresslevel=4) as archive:
+                  for name, raw in raw_members.items():
+                      member = tarfile.TarInfo(name)
+                      member.size = len(raw)
+                      archive.addfile(member, io.BytesIO(raw))
+          manifest = {name:{'size':len(raw),'sha256':hashlib.sha256(raw).hexdigest()} for name,raw in raw_members.items()}
+          (out/f'{phase}.registry-manifest.json').write_text(json.dumps(manifest, sort_keys=True,indent=2)+'\n')
+          if phase == 'after':
+              # Compare actual bytes of every file and the complete file set, including new files.
+              with tarfile.open(stable,'r:gz') as archive:
+                  assert set(archive.getnames()) == set(files)
+                  assert all(archive.extractfile(name).read() == raw for name,raw in raw_members.items())
+              untracked = subprocess.check_output(['git','ls-files','--others','--exclude-standard','-z',*paths])
+              assert not untracked, untracked
+              for kind in ['golden','plan','registry-manifest']:
+                  assert (out/f'before.{kind}.json').read_bytes() == (out/f'after.{kind}.json').read_bytes(), kind
+              (out/'bytes-verified.json').write_text(json.dumps({'source':os.environ['SOURCE'],'files':len(files),
+                  'bytes':sum(map(len,raw_members.values())),'byteForByteIdentical':True,'composedGoldenIdentical':True,
+                  'composedPlanIdentical':True,'manifestSha256':hashlib.sha256((out/'after.registry-manifest.json').read_bytes()).hexdigest()})+'\n')
+          PY
+          python3 "$E/snapshot.py" before
+          node - <<'JS' > "$E/configuration.json"
+          const a=require('node:assert/strict');
+          const keys=Object.keys(process.env).filter(key=>key.startsWith('GEOMETRY_')).sort();
+          a.deepEqual(keys,['GEOMETRY_CHROME','GEOMETRY_CHROME_FLAGS','GEOMETRY_FEEDBACK_DIR','GEOMETRY_TEST_URL']);
+          const scope=require('./geometry-web/cdp_test.js').runConfiguration();
+          a.equal(scope.mode,'full');a.deepEqual(scope.filters,[]);a.deepEqual(scope.modifiers,[]);
+          console.log(JSON.stringify({scope,geometryEnvironmentKeys:keys},null,2));
+          JS
+      - name: Run original plain CLI to its own exit
+        id: original
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          test "$(id -u)" -ne 0
+          python3 -B -u geometry-web/start_local.py --port 18839 > "$E/server.log" 2>&1 &
+          service=$!
+          trap 'kill "$service" 2>/dev/null || true; wait "$service" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if ! kill -0 "$service" 2>/dev/null; then cat "$E/server.log"; exit 1; fi
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json" 2> "$E/probe.stderr"; then break; fi
+            sleep 1
+          done
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json"
+          python3 - <<'PY'
+          import datetime, hashlib, json, os, subprocess, time
+          from pathlib import Path
+
+          out=Path(os.environ['E'])
+          def utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()
+          began=utc()
+          started=time.monotonic()
+          argv=['node','geometry-web/cdp_test.js']
+          with (out/'full.stdout.log').open('wb') as stdout, (out/'full.stderr.log').open('wb') as stderr:
+              completed=subprocess.run(argv,stdout=stdout,stderr=stderr)
+          proof={'kind':'independent-unfiltered-driver-diagnostic','acceptance':False,'source':os.environ['SOURCE'],
+                 'validationCommit':os.environ['GITHUB_SHA'],'runId':os.environ['GITHUB_RUN_ID'],'argv':argv,
+                 'startedUtc':began,'endedUtc':utc(),'elapsedSeconds':time.monotonic()-started,
+                 'exit':completed.returncode,'processTimeout':None}
+          for name in ('stdout','stderr'):
+              raw=(out/f'full.{name}.log').read_bytes()
+              proof[name]={'size':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+          (out/'execution.json').write_text(json.dumps(proof,indent=2)+'\n')
+          print(json.dumps(proof))
+          PY
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-after.json"
+      - name: Compare source bytes and report the real driver footer, status and all sections
+        if: always() && steps.original.outcome != 'skipped'
+        run: |
+          set -euo pipefail
+          python3 "$E/snapshot.py" after
+          git status --porcelain --untracked-files=all > "$E/status-after.txt"
+          test ! -s "$E/status-after.txt"
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          python3 - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          out=Path(os.environ['E'])
+          proof=json.loads((out/'execution.json').read_bytes())
+          prefix=b'CDP_RESULT '
+          lines=[line for line in (out/'full.stdout.log').read_bytes().splitlines() if line.startswith(prefix)]
+          assert len(lines)==1, f'raw footer count {len(lines)}, actual CLI exit {proof["exit"]}'
+          (out/'footer.json').write_bytes(lines[0][len(prefix):]+b'\n')
+          result=json.loads(lines[0][len(prefix):])
+          assert result['scope']['mode']=='full' and result['scope']['filters']==result['scope']['modifiers']==[]
+          report={k:result.get(k) for k in ['scope','completed','passedAssertions','failedAssertions','goldenCompare',
+              'skipped','unexpectedBrowserExceptions','elapsedSeconds','currentSection','fatal']}
+          report['sectionCount']=len(result['sections'])
+          report['P1231']=result['sections'].get('P1231')
+          report['exit']=proof['exit']
+          print(json.dumps(report,ensure_ascii=False),flush=True)
+          (out/'summary.json').write_text(json.dumps(report,indent=2)+'\n')
+          (out/'sections.json').write_text(json.dumps({key:result.get(key) for key in ['sections','sectionsFailed','sectionOrder','sectionElapsedMs']},indent=2)+'\n')
+          assert result['schema']=='geometry-cdp-result/1'
+          if proof['exit']: sys.exit(proof['exit'])
+          assert result['completed'] is True and not result['skipped'] and result['goldenCompare']=='matched'
+          assert result['failedAssertions']==result['unexpectedBrowserExceptions']==0
+          PY
+      - name: Archive unmodified streams and independent diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: independent-full-driver-${{ matrix.label }}-${{ matrix.source }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/unsharded-native-driver/
+          retention-days: 14
+          if-no-files-found: error
