@@ -1,7 +1,8 @@
 #!/bin/bash
 # usage（非 root）: run_one.sh <walk 腳本名> <port> <輸出目錄>
 # 以 Node 24 執行單一 walk；輸出目錄的 screens/ 與結果 JSON 由腳本寫入。
-set -e
+# 2026-11-23 修正（#453 審查須改四）：加 pipefail，node 失敗時不被 tee 吃掉，外層回非 0。
+set -eo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 [ "$(id -u)" != 0 ] || { echo "must run as non-root"; exit 1; }
 export LANG=C.UTF-8 LC_ALL=C.UTF-8 NODE_PATH=${NODE_PATH:-/opt/node-tools/node_modules}
