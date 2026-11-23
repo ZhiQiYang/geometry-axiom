@@ -445,3 +445,14 @@ body #fbRoot > #fbButton:not([hidden]) {
     overflow-x: auto;
   }
 }
+@media (max-width: 360px) {
+  /* The narrowest dock has 44px inside the lesson border and scrollbar. */
+  body.canvas-composition #mainCanvasDock #ocSelectionSummary {
+    padding-inline: 0;
+    border-block-width: 0;
+  }
+  body.canvas-composition #ocSelectionSummary > .guidance-dismiss {
+    min-width: 44px;
+    padding-inline: 2px;
+  }
+}
