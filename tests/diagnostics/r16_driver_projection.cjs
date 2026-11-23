@@ -19,6 +19,10 @@ function extension(phase){
     const anchor='[...current.extensions, ...(current.drivers || [])]';
     assert.equal(source.split(anchor).length,2,'R16_DRIVER_PROJECTION_EXACT_ANCHOR');
     source=source.replace(anchor,'current.extensions');
+  }else if(phase==='withdraw-joint-order'){
+    const anchor="  assert.deepEqual(plan.shards[1].sections.slice(-4), ['P1161', 'P1162', SECTION, 'P359'], 'R16_R433_EXACT_TAIL');";
+    assert.equal(source.split(anchor).length,2,'R16_R433_WITHDRAWAL_ANCHOR');
+    source=source.replace(anchor,'');
   }else assert.equal(phase,'baseline');
   return compile(extensionFile,source,ownRequire);
 }
@@ -75,8 +79,35 @@ function callbacks(relative,value,ext,withdrawUnion=false){
   return selected.map(row=>{try{row.fn();return {title:row.title,passed:true};}
     catch(error){return {title:row.title,passed:false,code:error.code,message:error.message};}});
 }
+// Verify the actual two-module tail before either historical judge sees its own inputs.
+function checkTouchInput(ext, current) {
+  const {golden, plan} = current;
+  const before = clone({golden, plan});
+  const expected = clone(before);
+  expected.plan.shards[1].sections.splice(-2, 1);
+  expected.golden.total -= expected.golden.sections.P1231;
+  delete expected.golden.sections.P1231;
+  assert.deepEqual(ext.beforeTouch(golden, plan), expected, 'R16_R433_ONLY_P1231_REMOVED');
+  assert.deepEqual({golden, plan}, before, 'R16_R433_INPUTS_UNCHANGED');
+  const cases = [
+    ['swapped', second => second.splice(-3, 2, 'P1231', 'P1162'), /R16_R433_EXACT_TAIL/],
+    ['missing', second => second.splice(-2, 1), /R16_R433_HEIGHT_OWNER/],
+    ['duplicate', second => second.unshift('P1231'), /R16_R433_HEIGHT_OWNER/],
+    ['intervening', second => second.splice(-2, 0, second.shift()), /R16_R433_EXACT_TAIL/]
+  ];
+  for (const [name, alter, marker] of cases) {
+    const bad = clone(plan);
+    alter(bad.shards[1].sections);
+    assert.throws(() => ext.beforeTouch(golden, bad), marker, 'R16_R433_REJECT_' + name);
+  }
+  const wrongOwner = clone(plan);
+  wrongOwner.shards[1].sections.splice(-2, 1);
+  wrongOwner.shards[0].sections.push('P1231');
+  assert.throws(() => ext.beforeTouch(golden, wrongOwner), /R16_R433_HEIGHT_OWNER/, 'R16_R433_REJECT_WRONG_UNIT');
+  return cases.map(([name]) => name).concat('wrong-unit');
+}
 function run(phase='baseline'){
-  const current=fixture(),ext=extension(phase==='withdraw-drivers'?phase:'baseline');
+  const current=fixture(),ext=extension(phase==='withdraw-union'?'baseline':phase);
   const view=ext.registeredView(current),legacy=projected(current);
   assert.deepEqual({plan:ext.projectPlan(view.plan),golden:ext.projectGolden(view.golden)},legacy,
     'R16_DRIVER_AND_MODULE_PROJECT_TO_CURRENT_LEGACY');
@@ -98,14 +129,15 @@ function run(phase='baseline'){
     results.push({file,cases});
     assert.ok(cases.every(row=>row.passed),'R16_SHARED_DRIVER_ORACLES '+JSON.stringify(results));
   }
-  return {browserExecuted:false,formalAcceptance:false,syntheticP1231:17,driverP2052:28,phase,negatives,results};
+  return {browserExecuted:false,formalAcceptance:false,syntheticP1231:17,driverP2052:28,phase,negatives,touchNegatives:checkTouchInput(ext,current),results};
 }
 function main(){
   if(!process.argv.includes('--withdraw-checks')){const i=process.argv.indexOf('--phase');console.log(JSON.stringify(run(i<0?'baseline':process.argv.at(i+1)),null,2));return;}
   const results=[];
   for(const [id,phase,marker] of [
     ['R16_WITHDRAW_DRIVER_PROJECTION','withdraw-drivers','R16_REGISTRY_EXACT_UNION'],
-    ['R16_WITHDRAW_DRIVER_FULL_UNION','withdraw-union','R16_EXACT_SECTION_UNION']]){
+    ['R16_WITHDRAW_DRIVER_FULL_UNION','withdraw-union','R16_EXACT_SECTION_UNION'],
+    ['R16_R433_WITHDRAW_JOINT_ORDER','withdraw-joint-order','R16_R433_REJECT_swapped']]){
     const execute=value=>{const r=spawnSync(process.execPath,[__filename,'--phase',value],{cwd:root,encoding:'utf8',timeout:30000});
       assert.equal(r.error,undefined);assert.equal(r.signal,null);return {exit:r.status,stdout:r.stdout,stderr:r.stderr};};
     const baseline=execute('baseline'),withdrawn=execute(phase),restored=execute('baseline');

@@ -4,29 +4,33 @@
  * The isolated profile reloads with only the three named teaching preferences
  * reset, so first-visit and read states use the ordinary App lifecycle.
  */
-const {controlProbe,entryControlReady,sweepEntryControl}=require('../../tests/diagnostics/r16_control_probe.cjs');
+const {controlProbe,entryControlReady,controlWithinClip,sweepEntryControl}=require('../../tests/diagnostics/r16_control_probe.cjs');
 const {statusbarProbe,statusbarReady,statusbarMatrixReady}=require('../../tests/diagnostics/r16_statusbar_probe.cjs');
 const {faceGuidanceProbe,faceGuidanceReady}=require('../../tests/diagnostics/r16_face_guidance_probe.cjs');
+const {lengthPaintProbe,naturalLengthClear,lengthPaintOrderReady}=require('../../tests/diagnostics/r123h_length_paint_probe.cjs');
+const {workspaceMatrixProbe}=require('../../tests/diagnostics/r123h_matrix_probe.cjs');
 module.exports = async helpers => {
   const {send, eval_, sleep, click, waitForUI, makeCheck, exceptionCount} = helpers;
   console.log('=== P1231. U123-H:A 六工作區正常畫布與既有控制可達性 ===');
   const rawCheck = makeCheck({prefix:'P1231 ', throwOnFail:false});
   const failures=[];
   class LayoutAssertion extends Error {}
-  const check=(name,value,detail)=>{
+  const recordCheck=(name,value,detail)=>{
     rawCheck(name,value,detail);
-    if(value!==true){
-      failures.push({kind:'assertion',name:name.split(' ').at(0),caseName:name});
-      throw new LayoutAssertion(name);
-    }
+    if(value!==true)failures.push({kind:'assertion',name:name.split(' ').at(0),caseName:name});
+    return value===true;
+  };
+  const check=(name,value,detail)=>{
+    if(!recordCheck(name,value,detail))throw new LayoutAssertion(name);
   };
   const exceptionsBefore = exceptionCount();
   const sizes = [
-    {width:390, height:844}, {width:768, height:1024}, {width:1400, height:900},
-    {width:560, height:844}, {width:561, height:844}
+    {width:390, height:844}, {width:560, height:844}, {width:561, height:844},
+    {width:768, height:1024}, {width:1400, height:900}
   ];
   const mainStatusbarRows=[];
   const workspaceRows=[];
+  const controlMatrixRows=[];
   const save = '#projectBar [data-project-action="save"]';
   const project = [save, '#projectInfoButton'];
   const common = [...project, '#fileMenuBtn'];
@@ -191,25 +195,25 @@ module.exports = async helpers => {
       mainStatusbarRows.push(row);
       console.log('P1231_STATUSBAR '+JSON.stringify(row));
     }
-    check('R123H_LAYOUT_VIEWPORT '+label+' '+state+' '+size.width,
+    recordCheck('R123H_LAYOUT_VIEWPORT '+label+' '+state+' '+size.width,
       p.exists===true&&p.viewport.innerWidth===size.width&&p.viewport.innerHeight===size.height,p);
-    check('R123H_HEIGHT '+label+' '+state+' '+size.width,
+    recordCheck('R123H_HEIGHT '+label+' '+state+' '+size.width,
       p.exists===true&&p.visible&&p.clipped.height>=minimum&&p.clipped.width>0,
       {minimum,actual:p.clipped,bounds:p.bounds});
     // Keep the old passing prefix intact; the observed 561px regression gets
     // its own deterministic assertion before the unchanged overlap judge.
     if(label==='main'&&size.width===561)
-      check('R123H_STATUSBAR_CONTAINS_COMMAND '+label+' '+state+' '+size.width,
+      recordCheck('R123H_STATUSBAR_CONTAINS_COMMAND '+label+' '+state+' '+size.width,
         statusbarReady(statusbar),statusbar);
-    check('R123H_UNOBSCURED '+label+' '+state+' '+size.width,
+    recordCheck('R123H_UNOBSCURED '+label+' '+state+' '+size.width,
       p.exists===true&&p.obstructions.length===0&&p.samples.every(s=>s.hit),
       {obstructions:p.obstructions,samples:p.samples});
-    check('R123H_NO_PAGE_OVERFLOW '+label+' '+state+' '+size.width,p.pageOverflow===false,p.viewport);
+    recordCheck('R123H_NO_PAGE_OVERFLOW '+label+' '+state+' '+size.width,p.pageOverflow===false,p.viewport);
     workspaceRows.push({label,state,width:size.width,height:size.height,
       actualWidth:p.viewport.innerWidth,actualHeight:p.viewport.innerHeight});
     return p;
   }
-  async function auditControls(label, selectors, size, state='normal-read') {
+  async function auditControls(label, selectors, size, state='normal-read', surface=null, includeMatrix=true) {
     const rows=[];
     let faceGuidance;
     for(const selector of selectors){
@@ -219,12 +223,19 @@ module.exports = async helpers => {
         console.log('P1231_FACE_GUIDANCE '+JSON.stringify({label,state,requested:size,observation:faceGuidance}));
       }
     }
+    const layout=await call(workspaceMatrixProbe,{label,state,requested:size,surface,selectors});
+    const matrixRow={label,state,requested:size,surface,selectors:[...selectors],controls:rows,layout};
     console.log('P1231_CONTROLS '+JSON.stringify({label,state,requested:size,controls:rows}));
-    check('R123H_CONTROLS '+label+' '+size.width,
+    console.log('P1231_MATRIX_CELL '+JSON.stringify(matrixRow));
+    if(includeMatrix)controlMatrixRows.push(matrixRow);
+    recordCheck('R123H_CONTROLS '+label+' '+state+' '+size.width,
       rows.length===selectors.length&&rows.every(row=>row.exists&&row.reachable&&!!row.name),rows);
-    check('R123H_TOUCH_TARGETS '+label+' '+size.width,
+    recordCheck('R123H_TOUCH_TARGETS '+label+' '+state+' '+size.width,
       size.width>560||rows.every(row=>row.exists&&row.rect.width>=44&&row.rect.height>=44),rows);
-    if(faceGuidance)check('R123H_FACE_GUIDANCE_CONTAINS_TEXT '+state+' '+size.width,
+    const help=rows.find(row=>row.selector==='#feSelectionSummaryHelp');
+    if(help)recordCheck('R123H_FACE_HELP_REACH '+state+' '+size.width,
+      controlWithinClip(help),help);
+    if(faceGuidance)recordCheck('R123H_FACE_GUIDANCE_CONTAINS_TEXT '+state+' '+size.width,
       faceGuidanceReady(faceGuidance),faceGuidance);
     // A disabled control remains part of the visible/pointer audit above.
     // Only browser-disabled controls are excluded from sequential Tab focus.
@@ -246,16 +257,27 @@ module.exports = async helpers => {
       await read(`document.removeEventListener('focusin',__p1231Tab.record);delete window.__p1231Tab;void 0`);
     }
     console.log('P1231_TAB '+JSON.stringify({label,state,requested:size,wanted:enabled,limit,...focused}));
-    check('R123H_TAB_REACH '+label+' '+size.width,focused.complete&&focused.visits.every(v=>
+    recordCheck('R123H_TAB_REACH '+label+' '+state+' '+size.width,focused.complete&&focused.visits.every(v=>
       v.left>=0&&v.top>=0&&v.right<=size.width&&v.bottom<=size.height),focused);
   }
   const pin=()=>read(`(async()=>{const h=ReferenceWorkspace.history,r=await apiRequest('dump');if(!r.ok)throw Error('P1231 dump fixture');window.__p1231Invariant={world:r.text,history:h,undo:h.undo.slice(),redo:h.redo.slice(),frame:h.frame,limit:h.limit};return true;})()`);
   const invariant=label=>read(`(async()=>{const p=__p1231Invariant,h=ReferenceWorkspace.history,r=await apiRequest('dump');return {label:${JSON.stringify(label)},world:r.ok&&r.text===p.world,history:h===p.history&&h.frame===p.frame&&h.limit===p.limit&&h.undo.length===p.undo.length&&h.redo.length===p.redo.length&&h.undo.every((entry,i)=>entry===p.undo.at(i))&&h.redo.every((entry,i)=>entry===p.redo.at(i))};})()`);
   async function unchanged(label){const value=await invariant(label);check('R123H_WORLD_HISTORY '+label,value.world&&value.history,value);}
-  async function lessonState(host, open){
+  async function lessonState(host, open, context=null){
     const dismiss=host+' [data-guidance-dismiss]';
-    if(open){if(!await shown(dismiss))await ctl(host+'Help');}
-    else if(await shown(dismiss))await ctl(dismiss);
+    if(open&&!await shown(dismiss)){
+      const helpSelector=host+'Help';
+      if(helpSelector==='#feSelectionSummaryHelp'&&context){
+        const observation=await point(helpSelector);
+        console.log('P1231_HELP_REACH '+JSON.stringify({...context,selector:helpSelector,observation}));
+        recordCheck('R123H_CONTROL_REACH '+helpSelector,entryControlReady(observation),observation);
+        recordCheck('R123H_FACE_HELP_REACH teaching-open '+context.size.width,
+          controlWithinClip(observation),observation);
+        const hit=observation.points?.find(point=>point.hit);
+        if(!hit)throw Error('P1231 face help has no usable real hit point '+JSON.stringify(observation));
+        await click(hit.x,hit.y);await sleep(100);await settle();
+      }else await ctl(helpSelector);
+    }else if(!open&&await shown(dismiss))await ctl(dismiss);
     const isOpen=await shown(dismiss);
     if(isOpen!==open)throw Error('P1231 teaching state not reached '+host+' '+open);
   }
@@ -267,18 +289,20 @@ module.exports = async helpers => {
     await sleep(120);await settle();
     const after=await read(`({scroll:$('faceCanvasDock').scrollTop,zoom:fe.zoom,panX:fe.panX,panY:fe.panY})`);
     console.log('P1231_DOCK_SCROLL '+JSON.stringify({requested:size,before,after}));
-    check('R123H_DOCK_SCROLL '+size.width,after.zoom===before.zoom&&after.panX===before.panX&&after.panY===before.panY&&
+    recordCheck('R123H_DOCK_SCROLL '+size.width,after.zoom===before.zoom&&after.panX===before.panX&&after.panY===before.panY&&
       (before.maximum<=0||after.scroll!==before.scroll),{before,after});
   }
   async function matrix(label, surface, controls, lesson=null, fit=null){
     for(const size of sizes){
       await pin();await viewport(size);
       if(lesson){
-        await lessonState(lesson,true);await measure(label,surface,size,'teaching-open');
-        await auditControls(label,controls,size,'teaching-open');await lessonState(lesson,false);
+        await lessonState(lesson,true,{label,state:'teaching-open',size});
+        await measure(label,surface,size,'teaching-open');
+        await auditControls(label,controls,size,'teaching-open',surface);
+        await lessonState(lesson,false,{label,state:'normal-read',size});
       }else if(label!=='full-grid')await noLessonEntry(label,surface,controls,size);
       await measure(label,surface,size,'normal-read');
-      await auditControls(label,controls,size);
+      await auditControls(label,controls,size,'normal-read',surface);
       if(label==='face')await faceDockScroll(size);
       if(fit)await ctl(fit);
       await unchanged(label+' '+size.width);
@@ -288,9 +312,9 @@ module.exports = async helpers => {
     // These existing surfaces have no dismissible first-use lesson. Verify
     // that fact in the active workspace; do not manufacture an "open" card.
     const active=await read(`(()=>{const surface=document.querySelector(${JSON.stringify(surface)}),host=surface.closest('dialog[open],#objectWorkspace,#app');return [...host.querySelectorAll('[data-guidance-dismiss]')].filter(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return !e.hidden&&s.display!=='none'&&s.visibility==='visible'&&r.width>0&&r.height>0;}).map(e=>e.closest('[data-guidance-key]')?.id||e.id);})()`);
-    check('R123H_NO_ACTIVE_LESSON '+label+' '+size.width,active.length===0,active);
+    recordCheck('R123H_NO_ACTIVE_LESSON '+label+' '+size.width,active.length===0,active);
     await measure(label,surface,size,'first-entry-no-lesson');
-    await auditControls(label,controls,size,'first-entry-no-lesson');
+    await auditControls(label,controls,size,'first-entry-no-lesson',surface);
   }
 
   // As in the existing P74 fixture, reset named teaching preferences only.
@@ -330,7 +354,7 @@ module.exports = async helpers => {
       'space 1 boundary 1','grid-system 31 name-hex 553132332d48 main-along u u repeat 0 400 v repeat 0 600']){
       const result=await apiRequest('line '+line);if(!result.ok)throw Error('P1231 fixture '+JSON.stringify(result));}
     if(!await renderObjects())throw Error('P1231 render fixture');setOcTool('select');return true;})()`);
-  const initialControls=await sweepEntryControl({sizes:sizes.slice(0,3),viewport,point,selector:'#btnZoom',
+  const initialControls=await sweepEntryControl({sizes,viewport,point,selector:'#btnZoom',
     record:row=>console.log('P1231_ENTRY_CONTROL '+JSON.stringify(row))});
   for(const row of initialControls)check('R123H_ENTRY_CONTROL_REACH main '+row.requested.width,
     entryControlReady(row.observation),row);
@@ -368,11 +392,11 @@ module.exports = async helpers => {
     await pin();await viewport(size);await ctl('#spaceStageTabs [data-ss-tab="plan"]');
     await noLessonEntry('space-plan','#spacePlanSvg',spaceControls,size);
     await measure('space-plan','#spacePlanSvg',size,'normal-read');
-    await auditControls('space-plan',spaceControls,size);
+    await auditControls('space-plan',spaceControls,size,'normal-read','#spacePlanSvg');
     await ctl('#spaceStageTabs [data-ss-tab="proj"]');
     await noLessonEntry('space-projection-second-entry','#spaceProjSvg',projectionControls,size);
     await measure('space-projection-second-entry','#spaceProjSvg',size,'normal-read');
-    await auditControls('space-projection-second-entry',projectionControls,size);
+    await auditControls('space-projection-second-entry',projectionControls,size,'normal-read','#spaceProjSvg');
     await unchanged('space-plan-and-projection '+size.width);
   }
   await ctl('#workspaceBackButton');
@@ -387,7 +411,7 @@ module.exports = async helpers => {
   for(const size of sizes){
     await viewport(size);await measure('full-grid','#igGridView',size,'first-visit-teaching-open');
     gridResizes.push(await gridGeometry());
-    await auditControls('full-grid',gridControls,size,'first-visit-teaching-open');
+    await auditControls('full-grid',gridControls,size,'first-visit-teaching-open','#igGridView');
   }
   await viewport({width:1400,height:900});const gridRestored=await gridGeometry();
   console.log('P1231_GRID_RESIZE '+JSON.stringify({before:gridBefore,resizes:gridResizes,restored:gridRestored}));
@@ -397,7 +421,7 @@ module.exports = async helpers => {
   check('R123H_GRID_RESIZE_RATIO',gridResizes.every(row=>Number.isFinite(row.scaleX)&&row.scaleX>0&&Math.abs(row.scaleX-row.scaleY)<1e-9)&&Math.abs(gridRestored.scaleX-gridBefore.scaleX)<1e-9,
     {before:gridBefore,resizes:gridResizes,restored:gridRestored});
   await unchanged('grid-first-visit-resize');
-  await lessonState('#igWorkspaceLesson',false);
+  await lessonState('#igWorkspaceLesson',false,{label:'full-grid',state:'normal-read',size:{width:1400,height:900}});
   await matrix('full-grid','#igGridView',gridControls,null,'#igFit');
   await ctl('#igDiscardDraft');await ctl('#igDiscardConfirm');
   await waitForUI(`!$('infiniteGridWorkspace')?.open`);
@@ -409,11 +433,11 @@ module.exports = async helpers => {
     if(await shown('#smTabPreview'))await ctl('#smTabPreview');
     await noLessonEntry('3d','#smCanvas',modelControls,size);
     await measure('3d','#smCanvas',size,'normal-read');
-    await auditControls('3d',modelControls,size);await ctl('#smFit');
+    await auditControls('3d',modelControls,size,'normal-read','#smCanvas');await ctl('#smFit');
     // Setup is an explicit task tab: it is audited for controls, never used as
     // the denominator for the normal 3D preview height.
     if(await shown('#smTabSetup'))await ctl('#smTabSetup');
-    await auditControls('3d-setup',[save,'#smClose','#smPreview','#smCreate'],size);
+    await auditControls('3d-setup',[save,'#smClose','#smPreview','#smCreate'],size,'setup','#smCanvas',false);
     if(await shown('#smTabPreview'))await ctl('#smTabPreview');
     await unchanged('3d '+size.width);
   }
@@ -426,8 +450,12 @@ module.exports = async helpers => {
   const expectedStates=statePairs.flatMap(([label,first])=>sizes.flatMap(size=>
     [first,'normal-read'].map(state=>label+' '+state+' '+size.width+'x'+size.height))).sort();
   const actualStates=workspaceRows.map(row=>row.label+' '+row.state+' '+row.width+'x'+row.height).sort();
-  check('R123H_ALL_WORKSPACE_STATES',JSON.stringify(actualStates)===JSON.stringify(expectedStates)&&
+  recordCheck('R123H_ALL_WORKSPACE_STATES',JSON.stringify(actualStates)===JSON.stringify(expectedStates)&&
     workspaceRows.every(row=>row.width===row.actualWidth&&row.height===row.actualHeight),workspaceRows);
+  const actualControlStates=controlMatrixRows.map(row=>
+    row.label+' '+row.state+' '+row.requested.width+'x'+row.requested.height).sort();
+  recordCheck('R123H_ALL_CONTROL_STATES',
+    JSON.stringify(actualControlStates)===JSON.stringify(expectedStates),controlMatrixRows);
 
   // G in the original 43-row audit is an inspector, not a seventh canvas.
   // Its existing source editor must remain reachable in the same host.
@@ -436,47 +464,15 @@ module.exports = async helpers => {
     await ctl('.ocard[data-kind="grid-system"][data-id="31"]');
     await waitForUI(`!!$('gridInlineInspector')&&!!$('giName')`);
     await pin();
-    await auditControls('compact-grid-inspector',[save,'#gridObjectOpen','#giName','#giUStep','#giVStep','#giPreview'],size);
+    await auditControls('compact-grid-inspector',[save,'#gridObjectOpen','#giName','#giUStep','#giVStep','#giPreview'],size,'inspector',null,false);
     await unchanged('compact-grid-inspector '+size.width);
     // Escape is the existing selection cancellation route, not a class edit.
     await key('Escape','Escape',27);
   }
 
-  function lengthPaintProbe(){
-    const input=document.getElementById('feLenInput'),r=input.getBoundingClientRect(),style=getComputedStyle(input);
-    const saved=input.getAttribute('style'),originalPointerEvents=style.pointerEvents;
-    const points=[{name:'center',x:r.left+r.width/2,y:r.top+r.height/2},
-      {name:'text-start',x:r.left+parseFloat(style.borderLeftWidth)+parseFloat(style.paddingLeft)+2,y:r.top+r.height/2}];
-    const leaves=[...document.querySelectorAll('.cx-layer[data-cx-host="fe"] .cx-cur :is(rect,text,path,line,circle,ellipse,polygon,polyline)')]
-      .filter(node=>{const s=getComputedStyle(node),b=node.getBoundingClientRect();return s.display!=='none'&&s.visibility==='visible'&&Number(s.opacity)>0&&(b.width>0||b.height>0)&&(s.fill!=='none'||s.stroke!=='none');})
-      .map(node=>{const b=node.getBoundingClientRect(),s=getComputedStyle(node);return {node,style:node.getAttribute('style'),
-        tag:node.tagName,fill:s.fill,stroke:s.stroke,originalPointerEvents:s.pointerEvents,
-        rect:{left:b.left,top:b.top,right:b.right,bottom:b.bottom,width:b.width,height:b.height},
-        overlapSamples:points.filter(p=>p.x>=b.left&&p.x<=b.right&&p.y>=b.top&&p.y<=b.bottom).map(p=>p.name)};});
-    let samples;
-    try{
-      // Pure hit-test instrumentation: no event is dispatched and no paint,
-      // size, position, visibility or stacking property is changed.
-      input.style.pointerEvents='auto';
-      // The real decorative cursor intentionally ignores pointer input. Make
-      // only its painted leaf shapes discoverable, not its full-size SVG root.
-      for(const leaf of leaves)leaf.node.style.pointerEvents='visiblePainted';
-      samples=points.map(p=>({...p,hit:input.contains(document.elementFromPoint(p.x,p.y)),
-        stack:document.elementsFromPoint(p.x,p.y).slice(0,5).map(e=>e.id||e.tagName)}));
-    }finally{
-      if(saved===null)input.removeAttribute('style');else input.setAttribute('style',saved);
-      for(const leaf of leaves){if(leaf.style===null)leaf.node.removeAttribute('style');else leaf.node.setAttribute('style',leaf.style);}
-    }
-    return {value:input.value,readonly:input.readOnly,hidden:input.hidden,originalPointerEvents,
-      restoredStyle:input.getAttribute('style')===saved&&leaves.every(leaf=>leaf.node.getAttribute('style')===leaf.style),samples,
-      cursorLeaves:leaves.map(({node,...receipt})=>receipt),
-      rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
-      computed:{visibility:style.visibility,display:style.display,opacity:style.opacity,zIndex:style.zIndex},
-      probe:'pointer-events on readonly input and existing painted cursor leaves only, synchronously restored; no dispatched input event'};
-  }
-  // 21c-1 is an existing baseline defect, recorded separately from height T.
+  // 21c-1: verify numeric mirror clearance separately from the paint-order fixture.
   // Reproduce through New polygon, real point clicks, real digit key events.
-  for(const size of sizes.slice(0,3)){
+  for(const size of sizes){
     await viewport(size);await ctl('#btnNewPoly');
     await waitForUI(`oc.focus?.t==='face'&&fe.tool==='redraw'&&!!fe.draft`);
     await pin();
@@ -494,13 +490,11 @@ module.exports = async helpers => {
       await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:cursor.x,y:cursor.y});await settle();
       const observation=await call(lengthPaintProbe);
       console.log('P1231_21C1 '+JSON.stringify({requested:size,teachingOpen:open,observation}));
-      check('R123H_LENGTH_DISPLAY '+size.width+' teaching='+open,
-        observation.readonly&&!observation.hidden&&observation.restoredStyle&&observation.value==='12'&&
-        observation.rect.width>0&&observation.rect.height>0&&observation.rect.left>=0&&
-        observation.rect.top>=0&&observation.rect.right<=size.width&&observation.rect.bottom<=size.height&&
-        observation.computed.visibility==='visible'&&Number(observation.computed.opacity)>0&&
-        observation.cursorLeaves.some(leaf=>leaf.tag==='rect'&&leaf.fill!=='none'&&leaf.overlapSamples.length>0)&&
-        observation.samples.every(sample=>sample.hit),observation);
+      recordCheck('R123H_LENGTH_CLEAR '+size.width+' teaching='+open,
+        naturalLengthClear(observation)&&observation.natural.input.left>=0&&observation.natural.input.top>=0&&
+        observation.natural.input.right<=size.width&&observation.natural.input.bottom<=size.height,observation.natural);
+      recordCheck('R123H_LENGTH_DISPLAY '+size.width+' teaching='+open,
+        lengthPaintOrderReady(observation),{overlapFixture:observation.overlapFixture,restoredStyle:observation.restoredStyle});
     }
     await key('Escape','Escape',27);await sleep(100);
     await key('Escape','Escape',27);await sleep(100);
