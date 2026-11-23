@@ -1,7 +1,7 @@
 {
   "schema": "geometry-canvas-section/1",
   "id": "P1231",
-  "assertions": 0,
+  "assertions": 754,
   "unit": 2,
   "order": {
     "after": [],
@@ -13,8 +13,15 @@
     "export": "default"
   },
   "provenance": {
-    "kind": "candidate"
+    "kind": "ci-capture",
+    "executionSha": "7cfba103d3dc199c2903c97ac42c44c8a607d38c",
+    "headSha": "7cfba103d3dc199c2903c97ac42c44c8a607d38c",
+    "runId": "45180963078",
+    "attempt": "1"
   },
-  "cost": null,
+  "cost": {
+    "receipt": "geometry-web/canvas-registry/costs/P1231/14821587027/receipt.json",
+    "sha256": "8683651c2e958a3d50d4933f3349951ab479e569091b1ba05f42de1d34fe16df"
+  },
   "balance": null
 }
