@@ -1,0 +1,79 @@
+name: PR448 P79 calibration coordinate witness
+on:
+  push:
+    branches: [codex/r448-p79-camera-20261123]
+    paths: [.github/workflows/r448-p79-calibration.yml]
+permissions:
+  contents: read
+jobs:
+  browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [aligned, adjacent]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-r448-browser-feedback
+      PYTHONDONTWRITEBYTECODE: '1'
+      MODE: ${{ matrix.mode }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 'b83b1d6811e176033f73cee2a8a549b21c36d508'
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm run build
+      - uses: ./.github/actions/install-cjk-fonts
+        timeout-minutes: 8
+      - name: Execute original browser test
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          out="$RUNNER_TEMP/r448-diagnostic"
+          mkdir -p "$out" "$GEOMETRY_FEEDBACK_DIR"
+          git rev-parse HEAD > "$out/source"
+          python3 -Bu geometry-web/start_local.py --port 18839 > "$out/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            kill -0 "$server"
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > "$out/runtime.json" 2> "$out/probe.stderr"; then break; fi
+            sleep 1
+          done
+          python3 -B geometry-web/runtime_version.py --probe 18839
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('geometry-web/room_outline_test.js')
+          text=p.read_text()
+          start="  await ctl('#ulCalibStart');await sourcePoint(220,150);await sourcePoint(320,150);"
+          judge="  check('323.5 cm calibration expands only PDF while preserving exact native scene',"
+          assert text.count(start)==1 and text.count(judge)==1
+          setup=r'''  await read(`(()=>{const points=[];window.__p79Capture=points;const handler=e=>{const ul=ReferenceWorkspace.active(1);if(!fe.ulCalib||!ul||points.length>=2)return;const r=$('faceEditorSvg').getBoundingClientRect();const intended=[[220,150],[320,150]][points.length],world=feUlImgToMm(ul,...intended),local=fePoint(e);points.push({intended,world,request:[r.left+fe.panX+world[0]*fe.zoom,r.top+fe.panY+world[1]*fe.zoom],received:[e.clientX,e.clientY],source:feUlMmToImg(ul,local.x,local.y),target:e.target.id||e.target.tagName,svg:r.toJSON(),zoom:fe.zoom,pan:[fe.panX,fe.panY],originalScale:ul.mmPerPx});if(points.length===2)document.removeEventListener('pointerdown',handler,true);}; document.addEventListener('pointerdown',handler,true);return true;})()`);'''
+          snapshot=r'''  const calibrationReceipt=await read(`(async()=>({events:window.__p79Capture,record:ReferenceWorkspace.active(1).calibration,mmPerPx:ReferenceWorkspace.active(1).mmPerPx,state:ReferenceWorkspace.reconstructionState(1),dump:(await api('dump')).text}))()`);
+            console.log('P79_CALIBRATION_EVIDENCE',JSON.stringify({...calibrationReceipt,sameNative:calibrationReceipt.dump===enlargedOriginal,before:enlargedOriginal}));'''
+          p.write_text(text.replace(start,setup+'\n'+start).replace(judge,snapshot+'\n'+judge))
+
+          import os
+          s=p.read_text(); a='  const enlargedOriginal=await read('
+          assert s.count(a)==1
+          s=s.replace(a,"  // Give both known PDF endpoints exact CSS-pixel positions for real pointer\n  // input. A fitted camera can project their 100 px separation to a fraction\n  // of a CSS pixel; platform event precision then changes the measured scale.\n  await read(`(()=>{\n    const page=ReferenceWorkspace.active(1), view=$('faceEditorSvg').getBoundingClientRect();\n    fe.zoom=1/page.mmPerPx;\n    fe.panX=Math.round(view.left+(view.width-page.imgW)/2)-view.left;\n    fe.panY=Math.round(view.top+(view.height-page.imgH)/2)-view.top;\n    feApplyZoom();\n    return true;\n  })()`);\n"+a)
+          if os.environ['MODE']=='adjacent':
+              assert s.count(start)==1
+              s=s.replace(start,start.replace('320,150','321,150'))
+          p.write_text(s)
+          PY
+          export GEOMETRY_ROOM_OUTLINE_ONLY=1
+          node geometry-web/cdp_test.js > "$out/stdout.log" 2> "$out/stderr.log"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: r448-diagnostic-${{ matrix.mode }}
+          path: ${{ runner.temp }}/r448-diagnostic
+          if-no-files-found: error
