@@ -446,7 +446,14 @@ body #fbRoot > #fbButton:not([hidden]) {
   }
 }
 @media (max-width: 360px) {
-  /* The narrowest dock has 44px inside the lesson border and scrollbar. */
+  /* Keep the full 44px height. Double gutters around the control groups
+     would otherwise add a horizontal scrollbar to the narrowest dock. */
+  body.canvas-composition #mainCanvasDock {
+    padding-inline: 0;
+    border-inline-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
   body.canvas-composition #mainCanvasDock #ocSelectionSummary {
     padding-inline: 0;
     border-block-width: 0;
