@@ -609,11 +609,23 @@ async function main() {
     const kids=[app.querySelector(':scope > .topbar'),app.querySelector(':scope > .workspace'),app.querySelector(':scope > .statusbar')];return {n:kids.filter(Boolean).length,
       cls:kids.map(k=>k.className.split(" ")[0]).join(","),
       h:kids.map(k=>Math.round(k.getBoundingClientRect().height))}})()`);
-  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 28 ? "✓ 三列殼" : "✗"));
-  /* (b) 主畫布不再保留空白右欄，物件庫與畫布共用完整寬度。 */
-  const cols = await eval_(`(()=>{const w=document.querySelector(".workspace");
-    const l=w.querySelector('.sidebar-left').getBoundingClientRect(),c=$('canvasViewport').getBoundingClientRect();return {left:l.width,leftRight:l.right,canvasLeft:c.left,canvasRight:c.right,canvasWidth:c.width,iw:innerWidth,composition:document.body.classList.contains('canvas-composition'),hasInspector:document.body.classList.contains('canvas-has-inspector')};})()`);
-  console.log("workspace composition:",JSON.stringify(cols),explicitVerdict(cols.composition&&!cols.hasInspector&&cols.left>0&&Math.abs(cols.leftRight-cols.canvasLeft)<=2&&Math.abs(cols.canvasRight-cols.iw)<=2&&cols.canvasWidth>cols.iw/2?'✓ 物件庫與完整畫布':'✗'));
+  console.log("app rows:", JSON.stringify(rows),explicitVerdict(rows.n === 3 && rows.h[0] === 56 && rows.h[2] === 32 ? "✓ 三列殼" : "✗"));
+  /* (b) 物件庫、操作停靠欄、畫布連續佔滿工作區，畫布右端沒有空白欄。 */
+  const cols = await eval_(`(()=>{
+    const library=document.querySelector('#app > .workspace > .sidebar-left').getBoundingClientRect();
+    const lane=$('mainCanvasDock'),dock=lane.getBoundingClientRect(),canvas=$('canvasViewport').getBoundingClientRect();
+    const dockPainted=[.25,.5,.75].every(fraction=>
+      lane.contains(document.elementFromPoint(dock.left+dock.width/2,dock.top+dock.height*fraction)));
+    return {libraryLeft:library.left,libraryWidth:library.width,libraryRight:library.right,
+      dockLeft:dock.left,dockWidth:dock.width,dockRight:dock.right,dockPainted,
+      canvasLeft:canvas.left,canvasRight:canvas.right,canvasWidth:canvas.width,iw:innerWidth,
+      composition:document.body.classList.contains('canvas-composition'),hasInspector:document.body.classList.contains('canvas-has-inspector')};
+  })()`);
+  const adjacent=(a,b)=>Math.abs(a-b)<=2;
+  console.log("workspace composition:",JSON.stringify(cols),explicitVerdict(cols.composition&&!cols.hasInspector&&
+    adjacent(cols.libraryLeft,0)&&cols.libraryWidth>0&&adjacent(cols.libraryRight,cols.dockLeft)&&
+    cols.dockWidth>0&&cols.dockPainted&&adjacent(cols.dockRight,cols.canvasLeft)&&
+    adjacent(cols.canvasRight,cols.iw)&&cols.canvasWidth>cols.iw/2?'✓ 物件庫與完整畫布':'✗'));
   /* (c) 專案頂列與畫布浮動工具列分工。 */
   const tb = await eval_(`!!document.querySelector('.topbar > .brand') && !!document.querySelector('.topbar > .top-actions') && $('canvasDrawToolbar').closest('#canvasViewport')!==null && !$('canvasDrawToolbar').closest('.topbar')`);
   console.log("topbar / canvas tools:",explicitVerdict(tb?'✓ 專案列與畫布工具分開':'✗'));
@@ -2933,11 +2945,11 @@ async function main() {
     return c ? c.textContent : "";})()`);
   console.log("P17 槽位語意:",explicitVerdict(sl.includes("天花") && !/\+X \d/.test(sl) ? "✓" : "✗ " + sl.slice(0, 100)));
   console.log("P17 footer管理:",explicitVerdict(sl.includes("管理成員面") && !sl.includes("缺 ") ? "✓" : "✗ " + sl.slice(-40)));
-  /* (f) 組合畫布 statusbar 28px + 摘要含物件 + 成功 toast.ok */
+  /* (f) 組合畫布 statusbar 32px + 摘要含物件 + 成功 toast.ok */
   const stb = await eval_(`(()=>({
     h:getComputedStyle(document.querySelector(".statusbar")).height,
     sum:document.getElementById("statusSummary").textContent}))()`);
-  console.log("P17 狀態列:",explicitVerdict(stb.h === "28px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb)));
+  console.log("P17 狀態列:",explicitVerdict(stb.h === "32px" && stb.sum.includes("物件") ? "✓ " + stb.sum : "✗ " + JSON.stringify(stb)));
   const successToasts=await captureNewToasts(async()=>{await eval_(`(async()=>{
     await emitLine("boundary 99 outline 0,0 500,0 500,400 0,400");
     await renderObjects();
@@ -3984,9 +3996,23 @@ async function main() {
   check('F2 real length edit retains next keyboard target',lengthEdit.focus==='edgeFixed0' && lengthEdit.a==='500' && lengthEdit.b==='500',lengthEdit);
   await eval_(`document.querySelector('#gridU').value='100 200';document.querySelector('#placeOX').value='250';document.querySelector('#faceInspectorContent').scrollTop=15;renderFaceInspector()`);
   check('F2 form drafts survive redraw',await eval_(`document.querySelector('#gridU').value==='100 200' && document.querySelector('#placeOX').value==='250'`));
+  const {auditNarrowHeader}=require('../tests/diagnostics/r16_narrow_header.cjs');
   for (const width of [1382,1160,900,680,600]) {
     await send('Emulation.setDeviceMetricsOverride',{width,height:804,deviceScaleFactor:1,mobile:false});
-    check('T4 adopted 56/96 header, reachable tools and history in right actions @'+width,await eval_(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('.workspace-tools-row').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();return h.height===(innerWidth<=560?96:56) && s.height===32 && a.right<=innerWidth+1 && t.left>=0 && t.right<=innerWidth+1 && (innerWidth<=560?t.top>=h.top+44:t.top>=h.top&&t.bottom<=h.bottom) && document.querySelector('.object-workspace-actions').contains(document.querySelector('.workspace-history-tools')) && title.width>0 && vp.top>=h.bottom-1 && vp.height>300})()`));
+    const shell=await eval_(`(()=>{
+      const header=document.querySelector('.object-workspace-topbar'),h=header.getBoundingClientRect(),
+        s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),
+        t=header.querySelector('.workspace-tools-row').getBoundingClientRect(),
+        a=header.querySelector('.object-workspace-actions').getBoundingClientRect(),
+        title=$('workspaceTitle').getBoundingClientRect(),vp=$('faceEditorViewport').getBoundingClientRect();
+      return {frame:h.height===(innerWidth<=560?96:56)&&s.height===32&&h.left>=0&&h.right<=innerWidth+1&&
+        (innerWidth<=560?t.top>=h.top+44:t.top>=h.top&&t.bottom<=h.bottom)&&
+        header.querySelector('.object-workspace-actions').contains(header.querySelector('.workspace-history-tools'))&&
+        title.width>0&&vp.top>=h.bottom-1&&vp.height>300,
+        groupsOnScreen:a.right<=innerWidth+1&&t.left>=0&&t.right<=innerWidth+1};
+    })()`);
+    const access=width>=561&&width<=680?await auditNarrowHeader({evaluate:eval_,send,sleep}):{passed:shell.groupsOnScreen};
+    check('T4 adopted 56/96 header, reachable tools and history in right actions @'+width,shell.frame&&access.passed,{shell,access});
   }
   await clickSelector('#workspaceToggleRight');
   await eval_(`document.querySelector('#edgeLength0').scrollIntoView({block:'center',inline:'nearest'})`);

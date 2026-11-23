@@ -37,7 +37,8 @@
   objectHeader.addEventListener('focusin', ({target}) => {
     // The middle breakpoint scrolls the entire header. Native Tab can leave
     // the focused tool partly outside it when its center is already visible.
-    if (target.closest('.workspace-tools-row') && getComputedStyle(objectHeader).overflowX === 'auto' &&
+    if (target.closest('.workspace-tools-row, .object-workspace-trail, .object-workspace-actions') &&
+        getComputedStyle(objectHeader).overflowX === 'auto' &&
         objectHeader.scrollWidth > objectHeader.clientWidth) {
       target.scrollIntoView({block:'nearest', inline:'nearest', behavior:'instant'});
     }

@@ -76,6 +76,11 @@ body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
 #faceCanvasDock { left: 100%; }
 @media (min-width: 901px) {
   body.canvas-composition.canvas-library-collapsed { --left-w: calc(64px + var(--r123h-dock)); }
+  /* Share the dock's width between the face sidebars as the workspace narrows.
+   * The actual SVG still fits the established 700 mm drawing at 1 px/mm. */
+  #faceWorkspaceLayout {
+    grid-template-columns: min(var(--left-w), 16vw) minmax(0, 1fr) min(var(--right-w), 21vw);
+  }
 }
 @media (max-width: 900px) {
   body:is(.canvas-composition, .v3-mode) #canvasViewport { margin-inline-start: var(--r123h-dock); }
@@ -107,6 +112,13 @@ body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
 #mainCanvasDock #canvasDrawToolbar .tool-button { width: 100%; min-width: 44px; }
 #mainCanvasDock #canvasDrawToolbar .guidance-help { grid-column: 1 / -1; width: 100%; min-width: 0; }
 #mainCanvasDock .selection-copy, #faceCanvasDock .selection-copy { min-width: 0; }
+#mainCanvasDock #canvasModeHint { anchor-name: --r123h-mode-hint; }
+/* The drawing hint now wraps in the control lane. Follow its visible bottom
+ * when placing the existing toast, including after a resize or dock scroll. */
+body.canvas-composition:has(#mainCanvasDock #canvasModeHint:not([hidden])) .toast-region {
+  top: max(calc(var(--topbar-h) + 116px), calc(anchor(--r123h-mode-hint bottom) + 8px));
+  position-try-fallbacks: flip-block;
+}
 #faceCanvasDock #feSelectionSummary {
   /* Keep the established camera-fit top inset below its 30% cap. Long teaching
    * text scrolls inside the same original lesson; it is never discarded. */
@@ -263,13 +275,16 @@ body #fbRoot > #fbButton:not([hidden]) {
     min-height: 56px;
     box-sizing: border-box;
     gap: 8px;
-    padding: 2px 8px;
+    padding: 0 8px;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-padding-inline: 8px;
-    scrollbar-width: thin;
+    scrollbar-width: auto;
   }
+  /* The 46px bordered tool row and its scrollbar share the 56px header. */
+  .object-workspace-topbar::-webkit-scrollbar:horizontal { height: 6px; }
+  .object-workspace-topbar::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
   .object-workspace-topbar > :is(.object-workspace-trail, .workspace-tools-row, .object-workspace-actions) {
     flex: 0 0 auto;
     width: max-content;
@@ -288,6 +303,45 @@ body #fbRoot > #fbButton:not([hidden]) {
 }
 /* R123H_NARROW_WORKSPACE_STRIP_END */
 @media (max-width: 560px) {
+  /* The face fills the phone's width. Its existing controls scroll in the
+   * second header row beside the tools; the drawing and the two scroll areas
+   * have independent pointer targets. Keep feedback in the first row. */
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) {
+    --face-mobile-dock: min(36vw, 156px);
+  }
+  #faceEditorViewport { margin-inline-end: 0; }
+  #faceCanvasDock {
+    position: fixed;
+    inset: 48px 8px auto auto;
+    z-index: 46;
+    width: var(--face-mobile-dock);
+    height: 48px;
+    padding: 0 3px;
+    scroll-padding: 0;
+    border-block: 0;
+  }
+  #faceCanvasDock :is(button, label, select) { scroll-margin-block: 0; }
+  #faceCanvasDock #feSelectionSummary { max-height: none; overflow: visible; }
+  #faceCanvasDock :is(#feSelectionSummary, #faceCoordinateReadout, #faceCanvasHint) { pointer-events: auto; }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) > .object-workspace-topbar {
+    grid-template-columns: minmax(44px, auto) minmax(0, 1fr);
+    padding-inline-end: 56px;
+  }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) .object-workspace-actions {
+    justify-self: stretch;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) .workspace-history-tools { position: static; }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) .workspace-tools-row {
+    padding-inline-end: 0;
+    margin-inline-end: calc(var(--face-mobile-dock) - 44px);
+  }
+  body:has(#objectWorkspace:not([hidden]) #faceWorkspaceLayout:not([hidden])) #fbRoot > #fbButton:not([hidden]) {
+    inset: 4px 8px auto auto;
+    width: 44px;
+    padding-inline: 0;
+  }
   .object-workspace-topbar, .reference-editor .object-workspace-topbar {
     grid-template-rows: 44px 44px;
     padding-block: 4px;

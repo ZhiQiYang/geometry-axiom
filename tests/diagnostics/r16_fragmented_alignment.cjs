@@ -17,6 +17,34 @@ function original(relative, base=BASE) {
   assert.equal(run.status, 0, 'R16_BASE_BLOB_AVAILABLE:' + relative);
   return run.stdout;
 }
+// Three oracle regions changed after #445. For each, pin the exact added
+// bytes and restore the removed bytes from the original Git blob. Every
+// byte between the regions must then match that same accepted driver.
+const driverRegions=[
+  ['  console.log("app rows:"','  /* (c) 專案頂列',
+    'bc089fe0d2f4b1e7dabe0e109d9d7378073ee277aa463d33bfa835623034bb0f'],
+  ['  /* (f) 組合畫布 statusbar','  const successToasts=',
+    'f34676399743361d10bbd7fdd1d301b240b94bc8deb97ccf4d07fa84070eeabb'],
+  ["  check('F2 form drafts survive redraw'","  await clickSelector('#workspaceToggleRight');",
+    '642706e9b494b22cd0e1b5bcfa8f1803014151334ee96251995db43a34fcaabd']
+];
+function projectDriver(current,base){
+  const restored=[];
+  let cursor=0;
+  for(const [start,end,digest] of driverRegions){
+    const left=current.indexOf(start),right=current.indexOf(end,left);
+    const originalLeft=base.indexOf(start),originalRight=base.indexOf(end,originalLeft);
+    assert.ok(left>=cursor&&right>left&&current.lastIndexOf(start)===left&&
+      originalLeft>=0&&originalRight>originalLeft,'R16_DRIVER_REGION_ANCHORS');
+    assert.equal(registry.sha(current.subarray(left,right)),digest,'R16_DRIVER_REGION_BYTES');
+    restored.push(current.subarray(cursor,left),base.subarray(originalLeft,originalRight));
+    cursor=right;
+  }
+  restored.push(current.subarray(cursor));
+  const projected=Buffer.concat(restored);
+  assert.ok(projected.equals(base),'R16_LEGACY_FILE_BYTES_UNCHANGED:geometry-web/cdp_test.js');
+  return projected;
+}
 function selfTest() {
   const current = registry.load(ROOT, {allowCandidates:true});
   const legacy = registry.legacyView(ROOT, {allowCandidates:true});
@@ -82,8 +110,23 @@ function selfTest() {
     // bytes when that driver is present; keep the pre-driver pin otherwise.
     const driverPresent=(current.drivers||[]).some(row=>row.id==='P2052');
     const base=relative==='geometry-web/cdp_test.js'&&driverPresent?DRIVER_BASE:BASE;
-    assert.ok(fs.readFileSync(path.join(ROOT, relative)).equals(original(relative,base)),
-      'R16_LEGACY_FILE_BYTES_UNCHANGED:' + relative);
+    const file=fs.readFileSync(path.join(ROOT,relative)),accepted=original(relative,base);
+    if(relative==='geometry-web/cdp_test.js'&&driverPresent){
+      projectDriver(file,accepted);
+      const headerAudit='tests/diagnostics/r16_narrow_header.cjs';
+      const headerDigest='d4b26166e294b67bed24757f362e0758715a5421abf350e068b94eae1f8bc71e';
+      assert.equal(registry.sha(fs.readFileSync(path.join(ROOT,headerAudit))),headerDigest,'R16_HEADER_AUDIT_BYTES');
+      const journal=require('../helpers/canvas_shards.js').loadPlan(ROOT);
+      assert.equal(journal.sourceHashes[headerAudit],headerDigest,'R16_HEADER_AUDIT_IN_CANVAS_JOURNAL');
+      const space=registry.sourceClosure(ROOT,['geometry-web/space_model_test.js']);
+      assert.equal(space.files[headerAudit],headerDigest,'R16_HEADER_AUDIT_IN_SPACE_TIMBER');
+      const within=Buffer.from(file);
+      within[within.indexOf(driverRegions[0][0])+Buffer.byteLength(driverRegions[0][0])]^=1;
+      assert.throws(()=>projectDriver(within,accepted),/R16_DRIVER_REGION_BYTES/);
+      assert.throws(()=>projectDriver(Buffer.concat([file,Buffer.from('\n')]),accepted),/R16_LEGACY_FILE_BYTES_UNCHANGED/);
+    }else{
+      assert.ok(file.equals(accepted),'R16_LEGACY_FILE_BYTES_UNCHANGED:' + relative);
+    }
   }
   for (const relative of [registry.PLAN, registry.GOLDEN])
     assert.ok(!fs.existsSync(path.join(ROOT, relative)), 'R16_RETIRED_SINGLE_FILE_ABSENT:' + relative);

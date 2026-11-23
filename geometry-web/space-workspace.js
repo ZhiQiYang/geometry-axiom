@@ -766,7 +766,7 @@ window.SpaceModelWorkspace = (() => {
     const list=$("smTimberReviewList");
     if(state.readonly&&!state.editing&&state.input?.mode==='plan'&&count){
       list.replaceChildren();
-      $('smShowTimbers').closest('.sm-display-options').after(list);
+      dialog.querySelector('.sm-stage').append(list);
     }else{
       $('smTimberReview').after(list);
       list.innerHTML='<ul>'+timberObjects.map(o=>{const zs=o.vertices_mm.map(p=>p[2]),lo=Math.min(...zs),hi=Math.max(...zs);return `<li><strong>角材 #${esc(o.root?.id)}</strong><span>世界 z：${esc(lo)}～${esc(hi)} mm${typeof s.top==="number"&&hi>s.top?" · 高於空間牆頂，保留原位置":""}</span></li>`;}).join("")+'</ul>';

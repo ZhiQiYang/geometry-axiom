@@ -22,6 +22,7 @@ const { asyncReplyUiRegression } = require('./async_reply_ui_test.js');
 const { saveReopenGridRegression } = require('./save_reopen_synthetic_test.js');
 const { profileSpaceRegression } = require('./profile_space_test.js');
 const { createRetainedEvaluator } = require('./cdp_evaluation.js');
+const { auditNarrowHeader } = require('../tests/diagnostics/r16_narrow_header.cjs');
 const { FULL_SPACE_GROUPS, createGroupCensus } = require('./space_test_floor.js');
 const { installProjectionCloseProbe, projectionCloseRegression } = require('./projection_close_probe.js');
 function installSourceDumpGate(scope, context) {
@@ -837,10 +838,27 @@ async function fontLayoutRegression() {
   await fontCheck('main canvas');
   await evaluate(`enterFocus('face',1)`); await settle();
   await fontCheck('existing face workspace');
-  for(const width of [1382,1160,900,680,600]){
-    await viewport(width,804);
-    const rows=await evaluate(`(()=>{const h=document.querySelector('.object-workspace-topbar').getBoundingClientRect(),s=document.querySelector('.object-workspace-statusbar').getBoundingClientRect(),t=document.querySelector('#faceWorkspaceTools').getBoundingClientRect(),a=document.querySelector('.object-workspace-actions').getBoundingClientRect(),title=document.querySelector('#workspaceTitle').getBoundingClientRect();return {header:h.height,status:s.height,actionsRight:a.right,toolsRight:t.right,actionsLeft:a.left,toolsTop:t.top,toolsBottom:t.bottom,actionsTop:a.top,actionsBottom:a.bottom,docWidth:document.documentElement.scrollWidth,titleWidth:title.width,width:innerWidth};})()`);
-    check('documented face header rows fit at '+width+'px',rows.header===(width<=560?96:56)&&rows.status===32&&rows.actionsRight<=rows.width&&rows.docWidth<=rows.width+1&&(rows.toolsRight<=rows.actionsLeft+1||rows.toolsTop>=rows.actionsBottom-1||rows.toolsBottom<=rows.actionsTop+1)&&rows.titleWidth>0,rows);
+  for (const width of [1382, 1160, 900, 680, 600]) {
+    await viewport(width, 804);
+    const rows = await evaluate(`(() => {
+      const rect = selector => document.querySelector(selector).getBoundingClientRect();
+      const header = rect('.object-workspace-topbar'), tools = rect('#faceWorkspaceTools');
+      const actions = rect('.object-workspace-actions');
+      return {header:header.height, headerTop:header.top, headerBottom:header.bottom,
+        status:rect('.object-workspace-statusbar').height, titleWidth:rect('#workspaceTitle').width,
+        actionsLeft:actions.left, actionsRight:actions.right, actionsTop:actions.top, actionsBottom:actions.bottom,
+        toolsRight:tools.right, toolsTop:tools.top, toolsBottom:tools.bottom,
+        docWidth:document.documentElement.scrollWidth, width:innerWidth};
+    })()`);
+    const separate = rows.toolsRight <= rows.actionsLeft + 1 || rows.toolsTop >= rows.actionsBottom - 1 ||
+      rows.toolsBottom <= rows.actionsTop + 1;
+    const narrow = width >= 561 && width <= 680;
+    const access = narrow ? await auditNarrowHeader({evaluate, send, sleep:delay}) : {passed:rows.actionsRight <= rows.width};
+    const withinHeader = !narrow || (rows.toolsTop >= rows.headerTop && rows.toolsBottom <= rows.headerBottom &&
+      rows.actionsTop >= rows.headerTop && rows.actionsBottom <= rows.headerBottom);
+    check('documented face header rows fit at ' + width + 'px',
+      rows.header === (width <= 560 ? 96 : 56) && rows.status === 32 && rows.docWidth <= rows.width + 1 &&
+      rows.titleWidth > 0 && separate && withinHeader && access.passed, {rows, access});
   }
   await viewport(1382,804);
   await evaluate(`(async()=>{await leaveFocus();await enterFocus('space',1);})()`); await settle();

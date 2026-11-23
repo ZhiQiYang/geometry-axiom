@@ -88,7 +88,7 @@
 #igHeightDock .ig-density { margin: 12px 0 0; overflow-wrap: anywhere; }
 /* R123H_GRID_DOCK_END */
 
-/* R123H_MODEL_HEIGHT_BEGIN: the stage contains only the actual model canvas.
+/* R123H_MODEL_HEIGHT_BEGIN: the actual model canvas fills the stage's free space.
    The original setup remains its desktop peer and its mobile alternate. */
 #smWorkspace[open] {
   display: grid;
@@ -132,6 +132,12 @@
 #smWorkspace .sm-canvas-wrap > canvas { display: block; width: 100%; height: 100%; }
 #smWorkspace .sm-setup { min-width: 0; }
 /* R123H_MODEL_HEIGHT_END */
+
+#smWorkspace .sm-stage > #smTimberReviewList {
+  flex: 0 0 auto;
+  max-height: min(260px, 40%);
+}
+#smWorkspace .sm-stage > #smTimberReviewList:empty { display: none; }
 
 /* R123H_MODEL_DOCK_BEGIN: navigation is outside the hideable stage and #smMain.
    No lesson is dismissed, no button is duplicated, and every group scrolls. */
