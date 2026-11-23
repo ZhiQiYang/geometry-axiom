@@ -1,0 +1,768 @@
+{
+ "checks": [
+  {
+   "code": "1400_PF4A_FOUR_DIGIT_PRESENT",
+   "pass": true,
+   "origin": "3146",
+   "fourDigit": [
+    "3146@origin:c2 w93",
+    "3247@lattice.u.baseCoordinate:c2 w93"
+   ]
+  },
+  {
+   "code": "1400_PF4A_FOUR_DIGIT_TABLES_READABLE",
+   "pass": true,
+   "tables": 4,
+   "captions": [
+    "鋪排 #1 · 定義修改",
+    "派生宿主 #1 · 原生派生結果變動",
+    "來源主格 #1 · 原生派生結果變動",
+    "主格 #1"
+   ],
+   "overflow": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "headerLines": [
+    "111",
+    "111",
+    "111",
+    "111"
+   ],
+   "broken": []
+  },
+  {
+   "code": "1400_PF4A_FOUR_DIGIT_SINGLE_LINE",
+   "pass": true,
+   "lines": [
+    "3146:1",
+    "3247:1"
+   ]
+  },
+  {
+   "code": "1400_PF4A_FOUR_DIGIT_CANCEL_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "390_PF4A_FOUR_DIGIT_PRESENT",
+   "pass": true,
+   "origin": "3146",
+   "fourDigit": [
+    "3146@origin:c2 w94",
+    "3247@lattice.u.baseCoordinate:c2 w94"
+   ]
+  },
+  {
+   "code": "390_PF4A_FOUR_DIGIT_TABLES_READABLE",
+   "pass": true,
+   "tables": 4,
+   "captions": [
+    "鋪排 #1 · 定義修改",
+    "派生宿主 #1 · 原生派生結果變動",
+    "來源主格 #1 · 原生派生結果變動",
+    "主格 #1"
+   ],
+   "overflow": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "headerLines": [
+    "111",
+    "111",
+    "111",
+    "111"
+   ],
+   "broken": []
+  },
+  {
+   "code": "390_PF4A_FOUR_DIGIT_SINGLE_LINE",
+   "pass": true,
+   "lines": [
+    "3146:1",
+    "3247:1"
+   ]
+  },
+  {
+   "code": "390_PF4A_FOUR_DIGIT_CANCEL_ZERO_WRITE",
+   "pass": true
+  }
+ ],
+ "sizes": {
+  "390": {
+   "browser": "153.0.8010.12",
+   "openedInspector": true,
+   "attempts": [
+    {
+     "origin": "3146",
+     "confirmable": true,
+     "tables": 4,
+     "fourDigit": [
+      "3146",
+      "3247"
+     ]
+    }
+   ],
+   "origin": "3146",
+   "tables": [
+    {
+     "caption": "鋪排 #1 · 定義修改",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 316,
+     "boxWidth": 316,
+     "overflow": false,
+     "rows": 10,
+     "sample": [
+      [
+       "完成面編號",
+       "1",
+       "1"
+      ],
+      [
+       "板縫（mm）",
+       "3",
+       "3"
+      ],
+      [
+       "編號",
+       "1",
+       "1"
+      ],
+      [
+       "面材長邊軸向",
+       "v",
+       "v"
+      ],
+      [
+       "原點（mm）",
+       "0、0",
+       "3146、0"
+      ],
+      [
+       "固定面材 · 編號",
+       "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70",
+       "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70"
+      ],
+      [
+       "固定面材 · 版本",
+       "1",
+       "1"
+      ],
+      [
+       "鋪排方式",
+       "正排",
+       "正排"
+      ],
+      [
+       "支撐門檻來源 · 欄位編號",
+       "1",
+       "1"
+      ],
+      [
+       "支撐門檻來源 · 參數編號",
+       "1",
+       "1"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": [
+      {
+       "path": "origin",
+       "col": 2,
+       "number": "3146",
+       "lines": 1,
+       "cellWidth": 94,
+       "cell": "3146、0"
+      }
+     ]
+    },
+    {
+     "caption": "派生宿主 #1 · 原生派生結果變動",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 316,
+     "boxWidth": 316,
+     "overflow": false,
+     "rows": 3,
+     "sample": [
+      [
+       "鋪排編號",
+       "1",
+       "1"
+      ],
+      [
+       "角材層厚（mm）",
+       "30",
+       "30"
+      ],
+      [
+       "編號",
+       "1",
+       "1"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": []
+    },
+    {
+     "caption": "來源主格 #1 · 原生派生結果變動",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 316,
+     "boxWidth": 316,
+     "overflow": false,
+     "rows": 4,
+     "sample": [
+      [
+       "編號",
+       "1",
+       "1"
+      ],
+      [
+       "宿主編號",
+       "1",
+       "1"
+      ],
+      [
+       "鋪排編號",
+       "1",
+       "1"
+      ],
+      [
+       "主支偏好",
+       "沿 u",
+       "沿 u"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": []
+    },
+    {
+     "caption": "主格 #1",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 316,
+     "boxWidth": 316,
+     "overflow": false,
+     "rows": 17,
+     "sample": [
+      [
+       "編號",
+       "1",
+       "1"
+      ],
+      [
+       "宿主編號",
+       "1",
+       "1"
+      ],
+      [
+       "鋪排編號",
+       "1",
+       "1"
+      ],
+      [
+       "主支偏好",
+       "沿 u",
+       "沿 u"
+      ],
+      [
+       "格線索引空間",
+       "帶符號格線索引 k",
+       "帶符號格線索引 k"
+      ],
+      [
+       "列索引空間",
+       "面材列索引 band",
+       "面材列索引 band"
+      ],
+      [
+       "結構側",
+       "1",
+       "1"
+      ],
+      [
+       "幾何列舉方式",
+       "抽樣",
+       "抽樣"
+      ],
+      [
+       "完整幾何列舉",
+       "否",
+       "否"
+      ],
+      [
+       "鋪排有效值 · 交丁軸",
+       "未設定",
+       "未設定"
+      ],
+      [
+       "鋪排有效值 · 交丁量（mm）",
+       "0",
+       "0"
+      ],
+      [
+       "週期基準 · u 軸 · 基準座標（mm）",
+       "101",
+       "3247"
+      ],
+      [
+       "週期基準 · u 軸 · 節距（mm）",
+       "103",
+       "103"
+      ],
+      [
+       "週期基準 · u 軸 · 基準索引 k",
+       "0",
+       "0"
+      ],
+      [
+       "週期基準 · v 軸 · 基準座標（mm）",
+       "201",
+       "201"
+      ],
+      [
+       "週期基準 · v 軸 · 節距（mm）",
+       "203",
+       "203"
+      ],
+      [
+       "週期基準 · v 軸 · 基準索引 k",
+       "0",
+       "0"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": [
+      {
+       "path": "lattice.u.baseCoordinate",
+       "col": 2,
+       "number": "3247",
+       "lines": 1,
+       "cellWidth": 94,
+       "cell": "3247"
+      }
+     ]
+    }
+   ],
+   "baseRowRect": {
+    "x": 230.5,
+    "y": 775.390625,
+    "left": 73.09375,
+    "top": 752.703125,
+    "right": 387.90625,
+    "bottom": 798.078125,
+    "w": 314.8125,
+    "h": 45.375,
+    "vw": 390,
+    "vh": 844
+   },
+   "shot": {
+    "file": "screens/PF4A4-390-source-edit-4digit.png",
+    "sha256": "3028192249b3962a4f684942ece152239ff2cdd9d47a5e88b79f58e2616c0db5"
+   },
+   "shotCrop": {
+    "file": "screens/PF4A4-390-source-edit-4digit-crop.png",
+    "sha256": "26038aae0d184ee6ec413ecd21046a3d4820f1359630f4148649fb49ac18f3e7"
+   },
+   "errors": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+   ]
+  },
+  "1400": {
+   "browser": "153.0.8010.12",
+   "attempts": [
+    {
+     "origin": "3146",
+     "confirmable": true,
+     "tables": 4,
+     "fourDigit": [
+      "3146",
+      "3247"
+     ]
+    }
+   ],
+   "origin": "3146",
+   "tables": [
+    {
+     "caption": "鋪排 #1 · 定義修改",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 311,
+     "boxWidth": 311,
+     "overflow": false,
+     "rows": 10,
+     "sample": [
+      [
+       "完成面編號",
+       "1",
+       "1"
+      ],
+      [
+       "板縫（mm）",
+       "3",
+       "3"
+      ],
+      [
+       "編號",
+       "1",
+       "1"
+      ],
+      [
+       "面材長邊軸向",
+       "v",
+       "v"
+      ],
+      [
+       "原點（mm）",
+       "0、0",
+       "3146、0"
+      ],
+      [
+       "固定面材 · 編號",
+       "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70",
+       "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70"
+      ],
+      [
+       "固定面材 · 版本",
+       "1",
+       "1"
+      ],
+      [
+       "鋪排方式",
+       "正排",
+       "正排"
+      ],
+      [
+       "支撐門檻來源 · 欄位編號",
+       "1",
+       "1"
+      ],
+      [
+       "支撐門檻來源 · 參數編號",
+       "1",
+       "1"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": [
+      {
+       "path": "origin",
+       "col": 2,
+       "number": "3146",
+       "lines": 1,
+       "cellWidth": 93,
+       "cell": "3146、0"
+      }
+     ]
+    },
+    {
+     "caption": "派生宿主 #1 · 原生派生結果變動",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 311,
+     "boxWidth": 311,
+     "overflow": false,
+     "rows": 3,
+     "sample": [
+      [
+       "鋪排編號",
+       "1",
+       "1"
+      ],
+      [
+       "角材層厚（mm）",
+       "30",
+       "30"
+      ],
+      [
+       "編號",
+       "1",
+       "1"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": []
+    },
+    {
+     "caption": "來源主格 #1 · 原生派生結果變動",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 311,
+     "boxWidth": 311,
+     "overflow": false,
+     "rows": 4,
+     "sample": [
+      [
+       "編號",
+       "1",
+       "1"
+      ],
+      [
+       "宿主編號",
+       "1",
+       "1"
+      ],
+      [
+       "鋪排編號",
+       "1",
+       "1"
+      ],
+      [
+       "主支偏好",
+       "沿 u",
+       "沿 u"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": []
+    },
+    {
+     "caption": "主格 #1",
+     "headers": [
+      "欄位",
+      "確認前",
+      "候選後"
+     ],
+     "headerLines": [
+      1,
+      1,
+      1
+     ],
+     "headerWriting": [
+      "horizontal-tb",
+      "horizontal-tb",
+      "horizontal-tb"
+     ],
+     "tableWidth": 311,
+     "boxWidth": 311,
+     "overflow": false,
+     "rows": 17,
+     "sample": [
+      [
+       "編號",
+       "1",
+       "1"
+      ],
+      [
+       "宿主編號",
+       "1",
+       "1"
+      ],
+      [
+       "鋪排編號",
+       "1",
+       "1"
+      ],
+      [
+       "主支偏好",
+       "沿 u",
+       "沿 u"
+      ],
+      [
+       "格線索引空間",
+       "帶符號格線索引 k",
+       "帶符號格線索引 k"
+      ],
+      [
+       "列索引空間",
+       "面材列索引 band",
+       "面材列索引 band"
+      ],
+      [
+       "結構側",
+       "1",
+       "1"
+      ],
+      [
+       "幾何列舉方式",
+       "抽樣",
+       "抽樣"
+      ],
+      [
+       "完整幾何列舉",
+       "否",
+       "否"
+      ],
+      [
+       "鋪排有效值 · 交丁軸",
+       "未設定",
+       "未設定"
+      ],
+      [
+       "鋪排有效值 · 交丁量（mm）",
+       "0",
+       "0"
+      ],
+      [
+       "週期基準 · u 軸 · 基準座標（mm）",
+       "101",
+       "3247"
+      ],
+      [
+       "週期基準 · u 軸 · 節距（mm）",
+       "103",
+       "103"
+      ],
+      [
+       "週期基準 · u 軸 · 基準索引 k",
+       "0",
+       "0"
+      ],
+      [
+       "週期基準 · v 軸 · 基準座標（mm）",
+       "201",
+       "201"
+      ],
+      [
+       "週期基準 · v 軸 · 節距（mm）",
+       "203",
+       "203"
+      ],
+      [
+       "週期基準 · v 軸 · 基準索引 k",
+       "0",
+       "0"
+      ]
+     ],
+     "brokenNumbers": [],
+     "fourDigit": [
+      {
+       "path": "lattice.u.baseCoordinate",
+       "col": 2,
+       "number": "3247",
+       "lines": 1,
+       "cellWidth": 93,
+       "cell": "3247"
+      }
+     ]
+    }
+   ],
+   "baseRowRect": {
+    "x": 1240.5,
+    "y": 834.46875,
+    "left": 1085.5,
+    "top": 811.78125,
+    "right": 1395.5,
+    "bottom": 857.15625,
+    "w": 310,
+    "h": 45.375,
+    "vw": 1400,
+    "vh": 900
+   },
+   "shot": {
+    "file": "screens/PF4A4-1400-source-edit-4digit.png",
+    "sha256": "a0396b14dd38c61f9d900d65005d7f660b4700ba6d26859b35d1ee15e7a0a4ef"
+   },
+   "shotCrop": {
+    "file": "screens/PF4A4-1400-source-edit-4digit-crop.png",
+    "sha256": "882fedb218d3fb3e01221349ea626ab62c9ee72e1a7141a8c560f8a4ac139140"
+   },
+   "errors": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+   ]
+  }
+ },
+ "input": {
+  "gcanvas": "l4r/pf4a.gcanvas",
+  "sha256": "1d804f95a2d53273787c5c8fa090751f9467d6ec9de17ba28fe0056190af3b6b",
+  "bytes": 2780
+ },
+ "pass": true,
+ "passed": "8/8"
+}

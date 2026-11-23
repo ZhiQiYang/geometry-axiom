@@ -15,12 +15,14 @@
 |---|---|---:|---|
 | D02 鍵入長度欄避開教學卡（21c-1） | **L4** | 16/16 | 1400、390 px 都通過 |
 | D06 PDF `h` 閉合後的接續線段 | **L4** | 11/11 | 通過，有無 PDF 端點的對照點 |
-| D09 表單顯示既有本面覆寫（21c-4） | **L4** | 14/14 | 通過，含 390 px 冷開 |
+| D09 表單顯示既有本面覆寫（21c-4） | **L4** | 14/14 ＋補核 8/8 | 1400 px 畫面上看得到 4。390 px 冷開：DOM 值為 4，但首屏看不到欄位，要在表單內捲動後才完整可見（補核） |
 | R02 PF-4A 預覽與主格表的可讀性 | **L4** | 16/16 | 1400、390 px 都通過，含冷開 |
 | R17 D16a／P1-A 中文診斷 | **L4** | 10/10 | 1400、390 px 都通過 |
-| R11 物件畫布觸控第一片 | **L4**（CDP 觸控） | 30/30 | 1400、390 px 都通過；實體觸控未驗 |
+| R11 物件畫布觸控第一片 | **L4**（CDP 觸控） | 30/30 ＋補核 10/10 | 1400 px 19 項、390 px 11 項；「定位」效果另補核；實體觸控未驗 |
 
 六項合計 97 項自動核對全部通過。這是雲端實機操作，屬 L4 範圍，不是使用者驗收（L5）。
+
+97 項只代表各結果檔 `checks` 裡逐項寫下的判準，不推廣到其他輸入或裝置。#453 終審（[7088347884](https://github.com/ZhiQiYang/geometry-axiom/pull/453#issuecomment-7088347884)）指出三處判準比原文字弱。同一個 main 另補核 26 項（D09 8、R11 定位 10、PF-4A 四位數 8），全部通過，見「終審後補核」一節。
 
 ## 環境與方法
 
@@ -54,6 +56,17 @@ git worktree add --no-checkout <wt> ea16e3f570c22fbc73625e8fadfbfc9bd1968780
 TMPDIR=<tmp> bash evidence/l4-cloud-20261123/scripts/run_all.sh <wt> 18881 <輸出目錄>
 python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
 ```
+
+補核（服務照上面啟動、probe 為 `fresh:true` 之後）：
+
+```sh
+D09_GCANVAS=$PWD/evidence/l4-cloud-20261123/main-ea16e3f5/d09.gcanvas bash evidence/l4-cloud-20261123/scripts/run_one.sh walk_d09_cold390_visible.js 18881 <補核目錄>
+bash evidence/l4-cloud-20261123/scripts/run_one.sh walk_r11_locate.js 18881 <補核目錄>
+PF4A_GCANVAS=$PWD/evidence/l4-cloud-20261123/main-ea16e3f5/pf4a.gcanvas bash evidence/l4-cloud-20261123/scripts/run_one.sh walk_pf4a_4digit.js 18881 <補核目錄>
+python3 -I evidence/l4-cloud-20261123/scripts/verify_recheck.py <補核目錄> evidence/l4-cloud-20261123/main-ea16e3f5
+```
+
+（在 repo 根目錄執行；`*_GCANVAS` 要給絕對路徑，因為 `run_one.sh` 會先 cd 到 `scripts/`；`<補核目錄>` 也給絕對路徑。）
 
 `run_all.sh` 會重啟服務一次並存下 probe（不是 `fresh:true` 就停）。接著用 repo 的 `tests/diagnostics/pdf_snap_close_fixtures.py` 產生 PDF 夾具，再依序跑六支 `walk_*.js`。
 
@@ -97,7 +110,13 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
 5. 不改任何欄位，直接預覽：顯示「核對 0 項版本或定義變更」並列出「保留的覆寫 · gap literal 4」，零寫入（`UNEDITED_PREVIEW_ZERO_CHANGE`）。按「返回修改」，零寫入（`CANCEL_ZERO_WRITE`）。
 6. 關閉，按工具列「復原」。場景回到確認前，表單回到「沿用來源」（`UNDO_RESTORES_SCENE`、`UNDO_FORM_INHERIT`）。
 7. 按「重做」。場景與確認後相同，表單回到 4（`REDO_*`）。
-8. 另存（`d09.gcanvas`）。用新瀏覽器、**390×844** 開新專案 → 開啟專案：場景與確認後逐字相同，表單顯示 4，欄位在視窗內（`COLD_SCENE_EQUAL`、`COLD_390_SHOWS_4`）。
+8. 另存（`d09.gcanvas`）。用新瀏覽器、**390×844** 開新專案 → 開啟專案：場景與確認後逐字相同（`COLD_SCENE_EQUAL`）。表單欄位的 DOM 值為「改成本面數值」4（`COLD_390_SHOWS_4`）。
+   - **更正（2026-11-23，#453 終審阻擋二）**：本句原寫「表單顯示 4，欄位在視窗內」，與原件不符。
+   - `COLD_390_SHOWS_4` 只核了 DOM 值與橫向 `right <= vw`，沒有核縱向。`cold390ValueRect` 是 top 836.69、bottom 880.69，視窗高 844。
+   - 截圖 `D09-4-cold-390-shows-4.png` 看得到「縫寬」標題，看不到 4。
+   - 獨立補核（`recheck-main-ea16e3f5/walk_d09_cold390_visible.result.json`）量到：首屏時欄位與視窗高度重疊約 7 px，但表單捲動區（`.ew-editor`）的下緣在 752，所以欄位在可見區內 **0 px**。那 7 px 被頁尾 `footer.ew-footer` 蓋住，命中測試打到頁尾。
+   - 結論：**冷開後 DOM 值為 4；欄位在首屏看不到，使用者要在表單內往下捲動約 180 px 才完整可見。** 捲動後完整矩形在可見區內，5 點命中測試都打到欄位本身，值仍為 4（截圖 `recheck-main-ea16e3f5/screens/D09R-2-*`、`D09R-3-*`）。
+   - 21c-4 修正本身（表單顯示目前本面值）以 1400 px 的 `D09-2-reopened-shows-4.png` 為畫面證據；390 px 這一子項現在才有可見性證據，前一版不能算視覺驗收。
 
 ### R02 PF-4A：預覽與主格表改為可讀表（`walk_pf4a.result.json`，16/16）
 
@@ -114,6 +133,7 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
 - **改視窗 390×844**：按右欄切換鈕，四張表仍可讀（`GRID_PREVIEW_TABLES_READABLE_390`，`screens/PF4A-2-grid-preview-390.png`）。改回 1400，零寫入（`RESIZE_ZERO_WRITE`）。
 - **取消與確認**：取消，零寫入且沒有主格（`GRID_CANCEL_ZERO_WRITE`）。再預覽 → 確認，記一筆歷史，主格 #1 `main-along u`（`GRID_CONFIRM_ONE_HISTORY`）。
 - **來源主格原生值表**：再開表單，展開「來源主格 #1」。表頭為「欄位／原生值」，可讀（`GRID_RESULT_TABLE_READABLE_1400`）。
+- **範圍更正（#453 終審須改五）**：本走查量到的數字最長 3 位（101／103／111…），判定也跳過 1 位數。所以 16/16 不包含四位數。四位數（如 3247）另做補核，見「終審後補核」。
 - **改鋪排原點 u 0→10**：預覽四張表可讀（`SOURCE_EDIT_TABLES_READABLE_1400`）。主格表的「週期基準 · u 軸 · 基準座標（mm）」是 **101 → 111**（`SOURCE_EDIT_SHOWS_BASIS_BEFORE_AFTER`）→ 取消，零寫入（`SOURCE_EDIT_CANCEL_ZERO_WRITE`）。
 - **冷開**：另存（`pf4a.gcanvas`）。新瀏覽器 390×844 → 開啟專案，場景相同（`COLD_SCENE_EQUAL`）→ 進入面 → 同一表單的「來源主格 #1」表可讀（`COLD_GRID_RESULT_READABLE_390`）。
 
@@ -139,7 +159,9 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
    - sheet 標題「面 1」，項目為開啟／定位／刪除／在右欄查看（`LONG_PRESS_CARD_ITEMS`）。
    - 放開後選單仍在，沒有補發 trusted click，也沒有進入面（`RELEASE_KEEPS_MENU_NO_OPEN`）。
    - sheet 在視窗內（`SHEET_INSIDE_VIEWPORT`），零寫入（`LONG_PRESS_ZERO_WRITE`）。
-   - 用手指點「定位」，執行後選單關閉，零寫入（`TAP_MENU_ITEM_RUNS_CLOSES`）。
+   - 用手指點「定位」，選單關閉，零寫入（`TAP_MENU_ITEM_RUNS_CLOSES`）。
+   - **範圍更正（#453 終審須改五）**：這一項只核了「選單關閉、零寫入」。長按前卡片原本就在畫面中段，看不出「定位」有沒有移動視角。
+   - 「定位」的效果另做補核（`recheck-main-ea16e3f5/walk_r11_locate.result.json`），見「終審後補核」。
 2. **長按空白**（1400 與 390）：
    - 選點條件：命中元素是 `#ocv`，且離卡片與控制項至少 40 px。觀測到的 touchstart 落點不是卡片（`BLANK_POINT_IS_CANVAS`）。
    - 開出「物件畫布」sheet：回到原點／顯示全部／建立物件／格點吸附／顯示背景格點，沒有「刪除」（`LONG_PRESS_BLANK_VIEW_MENU`）。
@@ -153,6 +175,89 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
 6. **雙擊卡片**（1400）：照原雙擊語意進入面 1，不開選單（`DOUBLE_TAP_ENTERS_FACE`）→ 返回。
 
 截圖：`screens/R11-*-1-card-sheet.png`、`-2-blank-sheet.png`、`R11-1400-3-after-pinch-pan.png`。
+
+## 終審後補核（#453，2026-11-23）
+
+#453 終審（[7088347884](https://github.com/ZhiQiYang/geometry-axiom/pull/453#issuecomment-7088347884)）與 API 對抗審查（[7087851922](https://github.com/ZhiQiYang/geometry-axiom/pull/453#issuecomment-7087851922) 其他發現 2、3、4、7）指出的四件事，處理如下。
+
+- 環境與第一輪相同：
+  - 同一個 main `ea16e3f570c22fbc73625e8fadfbfc9bd1968780` 乾淨工作樹，sparse 排除 `evidence/`、`tests/evidence/`；跑完 HEAD 不變，`git status` 0 行。
+  - 非 root 使用者 `claude`，`ulimit -s 16384`，`LANG=C.UTF-8`，`GEOMETRY_FEEDBACK_DIR` 在 `$TMPDIR` 下。
+  - Chrome for Testing 153.0.8010.12，輸入全經 CDP Input。
+  - `runtime_version.py --probe 18881` 跑前跑後都是 version `9cd9b61c…0683`、`fresh:true`，與第一輪同一版本。
+- 補核結果放在 `recheck-main-ea16e3f5/`，**不覆寫** `main-ea16e3f5/` 的任何檔案。
+- 核對方式：`python3 -I scripts/verify_recheck.py recheck-main-ea16e3f5 main-ea16e3f5` 的結果是 `{"ok": 17, "fail": 0}`。它也核對補核讀入的 `d09.gcanvas`、`pf4a.gcanvas` 與第一輪另存的是同一份 bytes。負控：在一張補核截圖尾端多加一個位元組，結果是 `FAIL walk_r11_locate.result.json: screens/R11L-390-2-after-locate.png mismatch`，exit 1；還原後 exit 0。
+
+### 1. D09 390 px 冷開：DOM 保留 vs 使用者看得見（`walk_d09_cold390_visible.result.json`，8/8）
+
+用新瀏覽器、390×844 開啟 `main-ea16e3f5/d09.gcanvas`。接著「檔案 → 工程規格 · 面材與角材」，展開「本面覆寫與恢復沿用」。
+
+| 量測 | 首屏（未捲動） | 經 CDP 滾輪捲動 3 次（每次 60 px）後 |
+|---|---|---|
+| 縫寬 mm 欄位矩形 | top 836.69、bottom 880.69 | top 656.69、bottom 700.69 |
+| 可見區（視窗 ∩ 會裁切的祖先） | top 324.64、bottom 752 | 同左 |
+| 欄位在可見區內的高度 | **0 px**（與視窗高度重疊約 7 px，被頁尾蓋住） | **44 px（完整）** |
+| 5 點命中測試 | 兩點打到 `footer.ew-footer`，三點在視窗外 | 5 點都是 `input#ewField-application-targets-1-overrides-gap-value` |
+| 表單值 | literal 4 | literal 4 |
+
+- 捲動前後場景 SHA-256 與 undo／redo 都不變。
+- 截圖：
+  - `D09R-1-cold-390-first-screen.png`：首屏只看得到「縫寬」標題。
+  - `D09R-2-cold-390-scrolled-field-visible.png`、`D09R-3-cold-390-scrolled-field-crop.png`：捲動後看得到「改成本面數值」與 4。
+- **結論**：390 px 冷開時本面覆寫在 DOM 裡保留為 4；欄位在首屏看不到，使用者往下捲動後才完整可見。D09 的 L4 維持：1400 px 有畫面證據，390 px 捲動後也看得到。
+
+### 2. R11 計數（只更正文字）
+
+`walk_r11_touch.result.json` 原件不動。名稱前綴 `1400_` 的有 **19** 項、`390_` 的有 **11** 項，合計 30。原因是每個寬度共用 11 項，1400 另外多 8 項。需求帳曾寫成「20／10」，已更正。
+
+### 3. R11「定位」的效果（`walk_r11_locate.result.json`，10/10）
+
+1400×900 與 390×844 各開一個新瀏覽器：新專案 → 範例 → 顯示全部 → 雙指平移，把面卡推離物件畫布中心 → 長按面卡 → 手指點 sheet 的「定位」。
+
+| 寬度 | 定位前卡中心偏離 `#ocv` 中心 | 定位後 | 相機 panX／panY |
+|---|---|---|---|
+| 1400 | dx −160.0、dy 0.0 | dx 0.0、dy 0.0 | (31.9, 77.7) → (191.9, −68.3) |
+| 390 | dx −76.5、dy 0.0 | dx 0.0、dy 0.0 | (−37.2, 221.7) → (39.3, 221.7) |
+
+- 選單關閉，場景 SHA-256 與 undo／redo 不變（零寫入）。
+- 1400 px 時，長按會選取卡片，選取摘要因此出現在下方，`#ocv` 的可見高度跟著變小（見 `R11L-1400-2-after-locate.png`），panY 也就跟著變。「置中」是對當下的 `#ocv` 可見區而言。
+- 截圖：`R11L-*-1-off-center.png`、`R11L-*-2-after-locate.png`。
+- 這只是 CDP 觸控，實機未驗。
+
+### 4. PF-4A 可讀表的四位數（`walk_pf4a_4digit.result.json`，8/8）
+
+1400×900 與 390×844 各開一個新瀏覽器，開啟 `main-ea16e3f5/pf4a.gcanvas` → 進入面 → 面設定… → 完成面與鋪排…。把鋪排原點 u 改成 3146 → 預覽。
+
+- 四張表：「鋪排 #1 · 定義修改」「派生宿主 #1」「來源主格 #1」「主格 #1」。判準與 `walk_pf4a.js` 相同：表頭逐字、表頭單行橫排、無橫向溢出、數字 token 不跨行。
+- 四位數 token：「原點」列的 **3146**，以及主格表「週期基準 · u 軸 · 基準座標（mm）」列的 **101 → 3247**。兩個寬度下都是單行，所在欄寬 93／94 px。
+- 取消後零寫入。
+- 截圖：`PF4A4-*-source-edit-4digit*.png`，裁切圖看得到 3247 在同一行。
+- **範圍**：這只涵蓋 PF-4A 可讀表。#449 的 3247 折行出在 R03 骨架預覽表，這次沒有核對，見「未核對範圍」。
+
+### 5. 腳本結束碼（`run_one.sh`、`run_all.sh`）
+
+**本輪 `main-ea16e3f5/` 的既有收據，是用修正前的腳本產生的。** 修正前兩支腳本只有 `set -e`、沒有 `pipefail`：
+
+- `run_one.sh` 以 `node … | tee` 結尾，結束碼是 tee 的。
+- `run_all.sh` 的 `bash run_one.sh … | tail -1 || rc=1` 永遠拿到 tail 的結束碼。
+
+所以 walk 失敗時，外層仍可能回 0。**這一輪各項是否成立，以各 `result.json` 的 `checks` 與 `verify_evidence.py` 為準，不以腳本結束碼為準。** 舊收據的執行歷史不改寫。
+
+修正：兩支都改成 `set -eo pipefail`。`run_all.sh` 在某個 walk 失敗時記 `rc=1`，其餘 walk 照跑，最後以非 0 結束。
+
+先紅後綠用 `pipefail-redgreen/redgreen.sh`：
+
+- 被測的是兩支腳本的原檔 bytes；`serve-wt.sh`、PDF 夾具產生器與 `runtime_version.py` 以樁代替。
+- 子命令是必失敗的 `node`（exit 3）。
+- 原始輸出存在同目錄的 `before.txt`、`after.txt`，以及成功對照 `pass-after.txt`。
+
+| | `run_one.sh` | `run_all.sh` |
+|---|---|---|
+| 修正前（`7bdb0c51…`／`aa588895…`） | exit **0** | exit **0** |
+| 修正後（`16a0407d…`／`eefebc28…`），子命令失敗 | exit **3** | exit **1** |
+| 修正後，子命令成功（對照） | exit 0 | exit 0 |
+
+補核的三支 walk 都用修正後的 `run_one.sh` 執行，結束碼都是 0。這三支新 walk 在任一項失敗時都會以 exit 1 結束；第一輪的六支 walk 沒有改。
 
 ## 發現（只記錄，不修）
 
@@ -168,7 +273,9 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
 - **D02**：主畫布「矩形 R」、各吸附間距。
 - **D06**：圖片底圖、390 px 照描、其他閉合變體（`re`、曲線、`double-h`、`h-then-move`）。
 - **D09**：spec 名稱與材料版本覆寫的顯示、截面覆寫。
+  - 390 px 首屏就看得到欄位的版面：沒有這個結果，見上。條文沒有規定首屏可見，所以只記錄，不判為缺陷。
 - **PF-4A**：交丁、結構側 −N、兩份鋪排、障礙、主支「沿 v／未設定」。
+  - #449 記錄的 3247 折成兩行，發生在 **R03 平釘天花骨架預覽表的「長度」欄**（1400 px、右欄 319 px）。那是另一個元件，不是 `table.pf-readable-table`。#443 PF-4A 沒有改它，這次也沒有核對，仍是 R03 的缺口。補核只涵蓋 PF-4A 可讀表裡的四位數。
 - **R17**：13 mm 牆階正例（11-21 已核）、有下游的整組刪除。
 - **R11**：
   - 實體觸控與手機（iOS／Android），包括真實手指的接觸面積、OS 長按手勢、iOS callout。CDP 觸控不等於實機。
@@ -198,3 +305,6 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_evidence.py <輸出目錄>
   - `runtime-probe.json`、`runtime-probe.after.json`、`worktree-state.txt`。
   - `pdf/`（夾具與 manifest）、`screens/`（25 張 PNG）。
   - `d06.gcanvas`、`d09.gcanvas`、`pf4a.gcanvas`。
+- `recheck-main-ea16e3f5/`（終審後補核）：三份 `walk_*.result.json` 與 `.log`、`runtime-probe*.json`、`worktree-state.txt`、`screens/`（11 張 PNG）。
+- `pipefail-redgreen/`：`redgreen.sh` 與 `before.txt`、`after.txt`、`pass-after.txt`。
+- `scripts/` 另有 `walk_d09_cold390_visible.js`、`walk_r11_locate.js`、`walk_pf4a_4digit.js`、`verify_recheck.py`。

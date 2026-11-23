@@ -1,7 +1,9 @@
 #!/bin/bash
 # usage（非 root，TMPDIR 已設）: run_all.sh <main 工作樹> <port> <輸出目錄>
 # 重啟私人測試服務一次（新程序／新 session），存 runtime probe，再依序跑六項；每項各開新瀏覽器。
-set -e
+# 2026-11-23 修正（#453 審查須改四）：加 pipefail；任一 walk 失敗時 `|| rc=1` 才會生效，其餘 walk 照跑，最後以非 0 結束。
+# 本輪 main-ea16e3f5/ 的既有收據是修正前的版本產生的，見 README「腳本結束碼」一節。
+set -eo pipefail
 here=$(cd "$(dirname "$0")" && pwd)
 wt=$1; port=$2; out=$3
 mkdir -p "$out/screens" "$out/pdf"
