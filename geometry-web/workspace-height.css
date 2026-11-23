@@ -428,4 +428,16 @@ body #fbRoot > #fbButton:not([hidden]) {
     padding-inline: 0;
   }
   body.canvas-composition.canvas-has-inspector .sidebar-right { left: 8px; }
+  /* The ordinary inspector reserves a row below its sheet for canvas zoom.
+     Keep the selected card above that row and its six controls within reach. */
+  body.canvas-composition.canvas-has-inspector:not(.parameter-editing) #mainCanvasDock > .canvas-controls:not(#v3ZoomBar) {
+    position: fixed;
+    inset: auto 8px calc(var(--statusbar-h) + 8px);
+    width: auto;
+    margin: 0;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: minmax(44px, 1fr);
+    overflow-x: auto;
+  }
 }
