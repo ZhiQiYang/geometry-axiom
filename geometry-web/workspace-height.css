@@ -391,16 +391,19 @@ body #fbRoot > #fbButton:not([hidden]) {
 }
 
 @media (max-width: 560px) {
-  /* Share the existing second header row between the project actions and
-     canvas controls. The cards and their gestures keep the full phone width. */
-  body.canvas-composition { --main-mobile-dock: min(36vw, 156px); }
+  /* Put the dock in the first row between the project name and its info
+     button. The second row keeps all its actions in reach at once. */
+  body.canvas-composition {
+    --main-mobile-dock: clamp(64px, calc(100vw - 266px), 156px);
+    --main-dock-end: 145px; /* 97px info inset, 44px button and a 4px gap */
+  }
   body.canvas-composition #canvasViewport { margin-inline-start: 0; }
   body.canvas-composition #mainCanvasDock {
     position: fixed;
-    inset: 48px 8px auto auto;
+    inset: 4px var(--main-dock-end) auto auto;
     z-index: 46;
     width: var(--main-mobile-dock);
-    height: 48px;
+    height: 44px;
     padding: 0 3px;
     scroll-padding: 0;
     border-block: 0;
@@ -412,10 +415,11 @@ body #fbRoot > #fbButton:not([hidden]) {
     pointer-events: auto;
   }
   body.canvas-composition #ocSelectionSummary > .guidance-dismiss { order: -1; }
-  body.canvas-composition .topbar > .top-actions {
-    margin-inline-end: calc(var(--main-mobile-dock) + 4px);
-    overflow-x: auto;
-    scrollbar-width: none;
+  body.canvas-composition .topbar > .top-actions > #projectBar :is(.project-bar-name, .main-project-status) {
+    max-width: calc(100% - 54px - var(--main-dock-end) - var(--main-mobile-dock));
+  }
+  body.canvas-composition #mainCanvasDock :is(#canvasDrawToolbar, .canvas-controls) {
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
   }
   body.canvas-composition #fileMenuPop {
     position: fixed;
