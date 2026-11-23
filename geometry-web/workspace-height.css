@@ -320,4 +320,10 @@ body #fbRoot > #fbButton:not([hidden]) {
   body.canvas-composition.canvas-has-inspector .sidebar-right {
     left: calc(var(--r123h-dock) + 8px);
   }
+  /* The parameter form needs the full bottom row. Using its existing grid
+   * cell ends the canvas and its scrollable control lane above the editor. */
+  body.canvas-composition.parameter-editing.canvas-has-inspector .sidebar-right {
+    position: static;
+    margin: 0 8px 8px;
+  }
 }
