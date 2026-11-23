@@ -1,0 +1,138 @@
+name: PR448 full canvas verification
+
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-full.yml]
+
+permissions:
+  contents: read
+
+env:
+  FULL_SOURCE_SHA: '2d5a6d99ac3c9e9fddddda83ff3f17ba699c74a6'
+  GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+  GEOMETRY_CHROME: /usr/bin/google-chrome
+  GEOMETRY_CHROME_FLAGS: --no-sandbox
+  LANG: C.UTF-8
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  full-canvas:
+    runs-on: ubuntu-latest
+    # The source capture retains its 35-minute subprocess limit. The rest of
+    # this job is checkout, native build, fonts, verification and archiving.
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          ref: ${{ env.FULL_SOURCE_SHA }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Record source and create isolated runtime directories
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual=$(git rev-parse HEAD)
+          test "$actual" = "$FULL_SOURCE_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          E="$RUNNER_TEMP/r448-full"
+          mkdir -p "$E"
+          # Both Node and Python must resolve the same OS temporary root.
+          scratch=$(mktemp -d /tmp/r448-full.XXXXXXXX)
+          echo "TMPDIR=$scratch" >> "$GITHUB_ENV"
+          echo "GEOMETRY_FEEDBACK_DIR=$scratch/feedback" >> "$GITHUB_ENV"
+          echo "E=$E" >> "$GITHUB_ENV"
+          mkdir -p "$scratch/feedback"
+          git cat-file commit HEAD > "$E/check-out-commit.txt"
+          node --version > "$E/node-version.txt"
+          "$GEOMETRY_CHROME" --version > "$E/chrome-version.txt"
+          sha256sum geometry-web/cdp_sections.d/P1231.json geometry-web/canvas_sections/P1231.js tests/diagnostics/r16_canvas_golden.cjs > "$E/input-sha256.txt"
+          cp geometry-web/cdp_sections.d/P1231.json "$E/P1231-section.json"
+      - name: Build exact native executables
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          npm run build 2>&1 | tee "$E/build.log"
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Run the original unsharded full-mode capture
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          test -x "$GEOMETRY_CHROME"
+          test "$(id -u)" -ne 0
+          node -e 'const assert=require("node:assert/strict");const c=require("./geometry-web/cdp_test.js").runConfiguration();assert.equal(c.mode,"full");assert.deepEqual(c.filters,[]);assert.deepEqual(c.modifiers,[]);console.log(JSON.stringify(c));' > "$E/configuration.json"
+          python3 -B -u geometry-web/start_local.py --port 18839 > "$E/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$E/server.log"; exit 1; fi
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json" 2> "$E/probe.stderr"; then break; fi
+            sleep 1
+          done
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json"
+          rc=0
+          node tests/diagnostics/r16_canvas_golden.cjs --capture "$E/capture" > "$E/command.stdout" 2> "$E/command.stderr" || rc=$?
+          echo "$rc" > "$E/command.exit"
+          cat "$E/command.stdout"
+          cat "$E/command.stderr" >&2
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-after.json"
+          if (( rc != 0 )); then
+            if [[ -f "$E/capture/full.stdout.log" ]]; then grep -E ' ✗ |^CDP_RESULT |^P1231_SUITE_RESULT ' "$E/capture/full.stdout.log" | cut -c1-700 | tail -20 || true; fi
+            exit "$rc"
+          fi
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+
+          root = Path(os.environ['E'])
+          captured = root / 'capture'
+          report = json.loads((captured/'capture.json').read_bytes())
+          declared = json.loads((root/'P1231-section.json').read_bytes())
+          assert declared['provenance']['kind'] == 'ci-capture' and declared['cost']['receipt']
+          assert report['schema'] == 'r16-fragmented-full-verification/1' and report['sourceHead'] == os.environ['FULL_SOURCE_SHA']
+          assert report['section'] == declared['id'] == 'P1231' and report['count'] == declared['assertions'] > 0
+          assert report['failedAssertions'] == 0 and report['acceptance'] is False
+          stdout = (captured/'full.stdout.log').read_bytes()
+          stderr = (captured/'full.stderr.log').read_bytes()
+          assert hashlib.sha256(stdout).hexdigest() == report['stdoutSha256']
+          assert hashlib.sha256(stderr).hexdigest() == report['stderrSha256']
+          results = [json.loads(line[len(b'CDP_RESULT '):]) for line in stdout.splitlines() if line.startswith(b'CDP_RESULT ')]
+          assert len(results) == 1
+          observed = results[0]
+          assert observed['scope']['mode'] == 'full' and observed['scope']['filters'] == observed['scope']['modifiers'] == []
+          assert observed['completed'] is True and observed['goldenCompare'] == 'matched' and not observed['skipped']
+          assert observed['failedAssertions'] == observed['unexpectedBrowserExceptions'] == 0
+          assert observed['sections']['P1231'] == report['count'] and observed['passedAssertions'] == report['passedAssertions']
+          assert len(observed['sections']) == report['sectionCount'] == len(set(observed['sectionOrder']))
+          print(json.dumps({k:report[k] for k in ['sourceHead','count','sectionCount','passedAssertions','stdoutSha256']}))
+          PY
+      - name: Verify the three original judge withdrawals separately
+        if: always() && env.E != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tests/diagnostics/r16_canvas_golden.cjs --prove-guards "$E/guards" 2>&1 | tee "$E/guards.log"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['E'])/'guards/report.json').read_bytes())
+          cases = report['cases']
+          assert report['browserExecuted'] is False
+          assert [c['name'] for c in cases] == ['R16_WITHDRAW_LEGACY_BYTE_PIN','R16_WITHDRAW_UNIQUE_OWNER','R16_WITHDRAW_CAPTURE_ZERO_FAILURES']
+          assert all(c['baselineMutantRestoredExit'] == [0,1,0] for c in cases)
+          PY
+      - name: Preserve original full stdout, stderr, receipts and guard logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-unsharded-full-canvas-${{ env.FULL_SOURCE_SHA }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/r448-full/
+          if-no-files-found: error
+          retention-days: 14
