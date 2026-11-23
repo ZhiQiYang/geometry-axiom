@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 37458f4e6847f11d867e3052b69812a4a8b30b7f
+          ref: 30a7f4753eba227b708883ec31c7cbc348ad655b
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
@@ -23,14 +23,14 @@ jobs:
         shell: bash
         env:
           R448_P37_EXPECT: pass
-          R448_GLYPH_EXPECT: full
+          R448_GLYPH_EXPECT: full44
         run: |
           set -euo pipefail
           ulimit -s 16384
           export TMPDIR="$RUNNER_TEMP" GEOMETRY_FEEDBACK_DIR="$RUNNER_TEMP/p37-feedback" PYTHONDONTWRITEBYTECODE=1
           export R448_P37_OUT="$RUNNER_TEMP/p37-out"
           mkdir -p "$R448_P37_OUT" "$GEOMETRY_FEEDBACK_DIR"
-          test "$(git rev-parse HEAD)" = 37458f4e6847f11d867e3052b69812a4a8b30b7f
+          test "$(git rev-parse HEAD)" = 30a7f4753eba227b708883ec31c7cbc348ad655b
           git rev-parse HEAD > "$R448_P37_OUT/source"
           git rev-parse 'HEAD^{tree}' > "$R448_P37_OUT/tree"
           google-chrome --version > "$R448_P37_OUT/chrome-version.txt"
@@ -53,7 +53,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: r448-p37-header-37458f4e6847f11d867e3052b69812a4a8b30b7f
+          name: r448-p37-header-30a7f4753eba227b708883ec31c7cbc348ad655b
           path: ${{ runner.temp }}/p37-out
           if-no-files-found: error
           retention-days: 7
