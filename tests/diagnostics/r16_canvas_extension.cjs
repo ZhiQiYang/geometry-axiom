@@ -94,6 +94,21 @@ function registeredView(current) {
   for (const id of other) { golden.total -= golden.sections[id]; delete golden.sections[id]; }
   return {plan, golden};
 }
+// Check the exact shared tail while both modules are present. Remove only
+// P1231 for R433's original judge; preserve P2052, handoff and every other row.
+function beforeTouch(golden, plan) {
+  const count = golden.sections[SECTION];
+  assert.ok(Number.isSafeInteger(count) && count >= 0, 'R16_R433_HEIGHT_COUNT');
+  assert.deepEqual(plan.shards.map(shard => shard.sections.filter(id => id === SECTION)),
+    [[], [SECTION]], 'R16_R433_HEIGHT_OWNER');
+  assert.deepEqual(plan.shards[1].sections.slice(-4), ['P1161', 'P1162', SECTION, 'P359'], 'R16_R433_EXACT_TAIL');
+  const projectedPlan = clone(plan), projectedGolden = clone(golden);
+  const sections = projectedPlan.shards[1].sections;
+  sections.splice(sections.indexOf(SECTION), 1);
+  delete projectedGolden.sections[SECTION];
+  projectedGolden.total -= count;
+  return {golden: projectedGolden, plan: projectedPlan};
+}
 function fromFullResult(baseRaw, basePlan, currentPlan, result) {
   assert.equal(sha256(baseRaw), REGISTRY_GOLDEN_SHA256, 'R16_TRUSTED_BASE_BYTES');
   projectP205Raw(baseRaw);
@@ -141,4 +156,4 @@ function fromRegisteredFullResult(baseRaw, basePlan, current, result) {
 }
 module.exports = {SECTION, BASE_SHA, BASE_GOLDEN_SHA256, REGISTRY_BASE_SHA,
   REGISTRY_GOLDEN_SHA256, encode, sha256, projectGolden, projectPlan, projectRaw,
-  projectP205Golden, projectP205Raw, registeredView, fromFullResult, fromRegisteredFullResult};
+  projectP205Golden, projectP205Raw, registeredView, beforeTouch, fromFullResult, fromRegisteredFullResult};

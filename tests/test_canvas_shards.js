@@ -32,7 +32,8 @@ const registeredIndependent = [...registered.extensions, ...(registered.drivers 
 const r16Base = {plan:r16Extension.projectPlan(r16View.plan), golden:r16Extension.projectGolden(r16View.golden)};
 // P1162 is checked before the historical projection chain. The CLI and current
 // complete-coverage tests below still use the unprojected plan and golden.
-const touchBase = touchExtension.project(golden, plan);
+const touchInput = r16Extension.beforeTouch(golden, plan);
+const touchBase = touchExtension.project(touchInput.golden, touchInput.plan);
 // R386: the retired aggregate files are judged through the current legacy
 // projection; its golden encoding is byte-identical to the former file.
 const legacy = registry.legacyView(ROOT);

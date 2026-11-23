@@ -8,6 +8,7 @@ const extension=require('./diagnostics/r335_canvas_extension.cjs');
 const r03Extension=require('./diagnostics/r03_framing_canvas_extension.cjs');
 const r03aExtension=require('./diagnostics/r03a_framing_canvas_extension.cjs');
 const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
+const r16Extension=require('./diagnostics/r16_canvas_extension.cjs');
 const touchExtension=require('./diagnostics/r433_canvas_touch_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
 // sections. Strip them first (P420 by its exact count and tail position, P1161
@@ -19,8 +20,9 @@ const train3Inputs=()=>{
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
   // Merge of main (R433 P1162) and R16 (P1231): keep main's exact P1162 projection
   // before R03A's checks, and keep R16's legacy-view input to the historical chain.
-  const touchBase=touchExtension.project(shards.loadGolden(),shards.loadPlan());
-  r03aExtension.projectPlan(touchBase.plan);
+  const touchInput=r16Extension.beforeTouch(shards.loadGolden(),shards.loadPlan());
+  const touchBase=touchExtension.project(touchInput.golden,touchInput.plan);
+  train3.checkPlan(r03aExtension.projectPlan(touchBase.plan));
   r03aExtension.projectGolden(touchBase.golden);
   const legacy=require('../geometry-web/canvas_registry.js').legacyView();
   const r03Plan=r03Extension.projectPlan(legacy.plan),r03Golden=r03Extension.projectGolden(legacy.golden);

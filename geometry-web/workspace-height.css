@@ -247,6 +247,46 @@ body #fbRoot > #fbButton:not([hidden]) {
   border-radius: 8px; opacity: 1;
 }
 /* R123H_FEEDBACK_DOCK_END */
+
+/* R123H_NARROW_WORKSPACE_STRIP_BEGIN:
+ * 561–680px must keep the adopted 56px header (V-88 canvas contract).
+ * The three desktop columns cannot all own fixed width there, so the topbar
+ * becomes one horizontal scroll owner. Nested 33px lanes must not clip a
+ * 74px teaching button; scrollIntoView moves the outer strip instead.
+ */
+@media (min-width: 561px) and (max-width: 680px) {
+  .object-workspace-topbar,
+  .reference-editor .object-workspace-topbar {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    min-height: 56px;
+    box-sizing: border-box;
+    gap: 8px;
+    padding: 2px 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 8px;
+    scrollbar-width: thin;
+  }
+  .object-workspace-topbar > :is(.object-workspace-trail, .workspace-tools-row, .object-workspace-actions) {
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: max-content;
+  }
+  .object-workspace-topbar > .workspace-tools-row,
+  .object-workspace-topbar .face-workspace-tools {
+    overflow: visible;
+    max-width: none;
+  }
+  .object-workspace-topbar .face-workspace-tools {
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: max-content;
+  }
+}
+/* R123H_NARROW_WORKSPACE_STRIP_END */
 @media (max-width: 560px) {
   .object-workspace-topbar, .reference-editor .object-workspace-topbar {
     grid-template-rows: 44px 44px;
