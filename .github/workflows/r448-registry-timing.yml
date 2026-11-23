@@ -1,0 +1,78 @@
+name: PR448 original native registry selector timing
+on:
+  push:
+    branches: [codex/r448-registry-aa5-timing-20261123]
+    paths: [.github/workflows/r448-registry-timing.yml]
+permissions:
+  contents: read
+jobs:
+  original:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        checkout: [3e5e4767feedafc8ec0ecc5e02660b219d25ccb5, c75e1a06e2dd91be4ada43a1f6f0ebf1b96fa59d]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ matrix.checkout }}
+          persist-credentials: false
+          fetch-depth: 2
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/evidence/
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Original child with original 60-second limit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/r448-native-child"
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, os, re, subprocess, sys, time
+          out = Path(os.environ['RUNNER_TEMP'])/'r448-native-child'
+          trace = out.parent/'r448-unpublished-git-event.jsonl'
+          checked = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          started = time.monotonic()
+          env = dict(os.environ, GIT_TRACE2_EVENT=str(trace))
+          with (out/'stdout.log').open('wb') as stdout, (out/'stderr.log').open('wb') as stderr:
+              try:
+                  child = subprocess.run([sys.executable,'-B','tests/diagnostics/native_registry_contract_check.py'],
+                                         stdout=stdout, stderr=stderr, env=env, timeout=60, check=False)
+                  code = child.returncode
+              except subprocess.TimeoutExpired:
+                  code = 124
+          elapsed = time.monotonic()-started
+          events = []
+          for line in trace.read_text(errors='replace').splitlines() if trace.exists() else ():
+              try: row=json.loads(line)
+              except ValueError: continue
+              event=row.get('event')
+              keep = {k:row[k] for k in ('event','time','t_abs','t_rel','code','child_id','sid') if k in row}
+              if event=='cmd_name':
+                  keep['command']=row.get('name')
+              elif event in ('start','child_start'):
+                  args=row.get('argv',[])
+                  keep['verbs']=[str(arg) for arg in args if arg in ('show','fetch','pack-objects','rev-parse','hash-object','remote-https','fetch-pack','index-pack','rev-list','cat-file','check-attr','upload-pack','unpack-objects','git')]
+                  keep['objects']=[arg for arg in args if re.fullmatch(r'[0-9a-f]{40}(:[\w./-]+)?',str(arg))]
+              elif event not in ('child_exit','exit'): continue
+              events.append(keep)
+          result={'checkout':checked,'command':[sys.executable,'-B','tests/diagnostics/native_registry_contract_check.py'],
+                  'timeout':60,'elapsed':elapsed,'exit':code,'gitEvents':len(events)}
+          (out/'receipt.json').write_text(json.dumps(result,indent=2))
+          (out/'git-events.jsonl').write_text('\n'.join(json.dumps(row) for row in events))
+          print(json.dumps(result))
+          print((out/'stderr.log').read_text()[-1300:])
+          sys.exit(code)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: original-native-${{ matrix.checkout }}
+          path: ${{ runner.temp }}/r448-native-child
+          if-no-files-found: error
