@@ -1,0 +1,133 @@
+name: PR448 snapshot pair and P1162 browser diagnostics
+
+on:
+  push:
+    branches: [codex/r448-snapshot-pair-20261123]
+    paths: [.github/workflows/r448-snapshot-pair.yml]
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_SHA: 4252f09ae19ff96ca06627f9624ceadac927fd84
+  GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+  GEOMETRY_CHROME: /usr/bin/google-chrome
+  GEOMETRY_CHROME_FLAGS: --no-sandbox
+  PYTHONDONTWRITEBYTECODE: '1'
+  LANG: C.UTF-8
+
+jobs:
+  partial:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        leg: [snapshot-pair, P1162]
+    timeout-minutes: 35
+    env:
+      LEG: ${{ matrix.leg }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          ref: ${{ env.SOURCE_SHA }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - uses: ./.github/actions/install-cjk-fonts
+        timeout-minutes: 8
+      - name: Execute unchanged target assertions in a partial browser scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          E="$RUNNER_TEMP/r448-$LEG"
+          export E
+          mkdir -p "$E"
+          git cat-file commit HEAD > "$E/source.txt"
+          sha256sum geometry-web/{cdp_test.js,model_snapshot_schedule_test.js,model_snapshot_navigation_test.js,canvas_sections/P1162.js} > "$E/source-sha256.txt"
+          export TMPDIR=$(mktemp -d /tmp/r448-partial.XXXXXXXX)
+          export GEOMETRY_FEEDBACK_DIR="$TMPDIR/feedback"
+          mkdir -p "$GEOMETRY_FEEDBACK_DIR"
+          node --version > "$E/node-version.txt"
+          "$GEOMETRY_CHROME" --version > "$E/chrome-version.txt"
+          npm run build 2>&1 | tee "$E/build.log"
+          python3 -B -u geometry-web/start_local.py --port 18839 > "$E/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$E/server.log"; exit 1; fi
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json" 2> "$E/probe.stderr"; then break; fi
+            sleep 1
+          done
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json"
+          if [[ "$LEG" == snapshot-pair ]]; then
+            export GEOMETRY_MODEL_SNAPSHOT_PAIR_ONLY=1
+            export GEOMETRY_MODEL_SNAPSHOT_SCREENSHOTS="$E/screens"
+            cat > "$E/snapshot-pair.cjs" <<'JS'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const crypto = require('node:crypto');
+          const Module = require('node:module');
+          const assert = require('node:assert/strict');
+          const filename = path.resolve('geometry-web/cdp_test.js');
+          const sha = raw => crypto.createHash('sha256').update(raw).digest('hex');
+          const original = fs.readFileSync(filename, 'utf8');
+          assert.equal(sha(original), '506b0e4af7a11045180d6eaa5cf2945dfb6ab3af7940f8199776efe7fbf418f7');
+          const calls = ['model_snapshot_schedule_test.js', 'model_snapshot_navigation_test.js'].map(name => {
+            const matches = original.split('\n').filter(line => line.includes("if(inSequence(2))await require('./" + name + "')"));
+            assert.equal(matches.length, 1);
+            return matches[0].trimStart().replace('if(inSequence(2))', '');
+          });
+          let source = original;
+          function edit(anchor, replacement) {
+            assert.equal(source.split(anchor).length, 2);
+            source = source.replace(anchor, replacement);
+          }
+          edit('const CANVAS_SHARDS=2;', "SCOPE_FLAGS.push('GEOMETRY_MODEL_SNAPSHOT_PAIR_ONLY');\nconst CANVAS_SHARDS=2;");
+          edit('if(process.env.GEOMETRY_CANVAS_MODULE_ONLY){', 'if(process.env.GEOMETRY_MODEL_SNAPSHOT_PAIR_ONLY){\n' + calls.join('\n') + '\n} else if(process.env.GEOMETRY_CANVAS_MODULE_ONLY){');
+          fs.writeFileSync(path.join(process.env.E, 'execution-driver.js'), source);
+          fs.writeFileSync(path.join(process.env.E, 'execution-adapter.json'), JSON.stringify({sourceSha256:sha(original),diagnosticSha256:sha(source),calls,acceptance:false}));
+          const loadJs = Module._extensions['.js'];
+          Module._extensions['.js'] = function(module, file) {
+            return file === filename ? module._compile(source, file) : loadJs(module,file);
+          };
+          JS
+            driver=(node --require "$E/snapshot-pair.cjs" geometry-web/cdp_test.js)
+          else
+            export GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1162
+            driver=(node geometry-web/cdp_test.js)
+          fi
+          printf '%s\n' "${driver[@]}" > "$E/command.txt"
+          rc=0
+          "${driver[@]}" > "$E/cdp.stdout" 2> "$E/cdp.stderr" || rc=$?
+          echo "$rc" > "$E/driver.exit"
+          grep -E ' ✗ |^CDP_RESULT ' "$E/cdp.stdout" | cut -c1-700 | tail -12 || true
+          tail -4 "$E/cdp.stderr" | cut -c1-450
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-after.json"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          e=Path(os.environ['E'])
+          results=[json.loads(line[11:]) for line in (e/'cdp.stdout').read_bytes().splitlines() if line.startswith(b'CDP_RESULT ')]
+          assert len(results)==1, 'Need exactly one driver result'
+          r=results[0]
+          expected={'P83':16,'P86':20} if os.environ['LEG']=='snapshot-pair' else {'P1162':504}
+          (e/'summary.json').write_text(json.dumps({'source':os.environ['SOURCE_SHA'],'expected':expected,'observed':r,'acceptance':False},ensure_ascii=False,indent=2)+'\n')
+          assert r['scope']['mode']=='partial' and r['scope']['filters']==(['GEOMETRY_MODEL_SNAPSHOT_PAIR_ONLY'] if os.environ['LEG']=='snapshot-pair' else ['GEOMETRY_CANVAS_MODULE_ONLY'])
+          assert int((e/'driver.exit').read_text())==0 and r['completed'] and not r.get('fatal') and r['unexpectedBrowserExceptions']==r['failedAssertions']==0
+          assert not r['skipped'] and r['sections']==expected and r['sectionOrder']==list(expected) and r['passedAssertions']==sum(expected.values()), (r['sections'],r['sectionOrder'])
+          print(r['sections'])
+          PY
+      - name: Save original stdout, stderr, runtime, assertions and scope
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-${{ matrix.leg }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/r448-${{ matrix.leg }}/
+          if-no-files-found: error
+          retention-days: 14
