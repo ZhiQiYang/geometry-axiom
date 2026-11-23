@@ -1,0 +1,196 @@
+name: PR448 R16 Linux browser witness
+
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-witness.yml]
+
+permissions:
+  contents: read
+
+env:
+  T_SHA: '762d2c3d47e05f1487d11a93251899a9f98f31d8'
+  P_SHA: 'b513583cf74532ca3fa95e8b794ce11e38186fdb'
+  GEOMETRY_CHROME: /usr/bin/google-chrome
+  GEOMETRY_CHROME_FLAGS: --no-sandbox
+  PYTHONDONTWRITEBYTECODE: '1'
+  LANG: C.UTF-8
+
+jobs:
+  witness:
+    strategy:
+      fail-fast: false
+      matrix:
+        leg: [T, P, withdrawals-12, withdrawal-narrow]
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.leg == 'withdrawals-12' && 180 || 35 }}
+    env:
+      LEG: ${{ matrix.leg }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+          ref: ${{ matrix.leg == 'T' && env.T_SHA || env.P_SHA }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Check source and reserve snapshot space
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/r448-$LEG"
+          mkdir -p "$E"
+          actual=$(git rev-parse HEAD)
+          expected=$P_SHA
+          if [[ "$LEG" == T ]]; then expected=$T_SHA; fi
+          test "$actual" = "$expected"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          git log -1 --format='%H %T %P' | tee "$E/source.txt"
+          for base in 57bb3dd8101fc2a05750b52edaa0ceab2a081a1a 883e68688f6480a5f1de6e86e6a056cc20339cb9; do
+            if ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              git -c protocol.version=2 fetch --no-tags --filter=blob:none --depth=1 origin "$base"
+            fi
+          done
+          node --version > "$E/node-version.txt"
+          python3 --version > "$E/python-version.txt"
+          "$GEOMETRY_CHROME" --version > "$E/chrome-version.txt"
+          test "$(id -u)" != 0
+          df -h /mnt /tmp > "$E/disk-before.txt"
+          if [[ "$LEG" == withdrawal* ]]; then
+            size=$(git ls-files -z | xargs -0 stat -c %s -- | awk '{s += $1} END {printf "%.0f", s}')
+            # Baseline and one mutant exist at once. Retained Chrome profiles,
+            # app feedback and diagnostic output require additional free space.
+            need=$(( 2 * size + 6 * 1024 * 1024 * 1024 ))
+            pick_volume() {
+              local mount free
+              for mount in /mnt /tmp; do
+                [[ -d "$mount" ]] || continue
+                free=$(df -B1 --output=avail "$mount" | tail -1)
+                if [[ $free -ge $need ]]; then printf '%s\n' "$mount"; return 0; fi
+              done
+              return 1
+            }
+            if ! mount=$(pick_volume); then
+              # Only preinstalled, unused SDKs on this disposable hosted runner.
+              sudo rm -rf -- /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup
+              mount=$(pick_volume)
+            fi
+            scratch="$mount/r448-snapshots-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-$LEG"
+            sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 700 "$scratch"
+            echo "TMPDIR=$scratch" >> "$GITHUB_ENV"
+            printf 'tracked_bytes=%s\nrequired_free=%s\nsnapshots=%s\n' "$size" "$need" "$scratch" > "$E/space.txt"
+          fi
+          echo "E=$E" >> "$GITHUB_ENV"
+      - name: Exercise the complete P1231 module on the exact test or product source
+        if: matrix.leg == 'T' || matrix.leg == 'P'
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          export GEOMETRY_TEST_URL=http://127.0.0.1:18839/
+          export GEOMETRY_FEEDBACK_DIR="$RUNNER_TEMP/r448-feedback"
+          export GEOMETRY_CANVAS_MODULE_ONLY=1 GEOMETRY_CANVAS_MODULE=P1231
+          python3 -B -u geometry-web/start_local.py --port 18839 > "$E/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true' EXIT
+          ready=false
+          for attempt in $(seq 1 180); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$E/server.log"; exit 1; fi
+            if python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-before.json" 2> "$E/probe.stderr"; then ready=true; break; fi
+            sleep 1
+          done
+          test "$ready" = true
+          rc=0
+          node geometry-web/cdp_test.js > "$E/chrome.stdout" 2> "$E/chrome.stderr" || rc=$?
+          echo "$rc" > "$E/chrome.exit"
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$E/runtime-after.json"
+          python3 - <<'PY'
+          import collections, json, os
+          from pathlib import Path
+
+          root = Path(os.environ['E'])
+          leg = os.environ['LEG']
+          lines = (root / 'chrome.stdout').read_text().splitlines()
+          def rows(prefix):
+              return [json.loads(line[len(prefix):]) for line in lines if line.startswith(prefix)]
+          def one(prefix):
+              values = rows(prefix)
+              if len(values) != 1:
+                  raise SystemExit(f'{prefix} expected one complete result, found {len(values)}')
+              return values[0]
+          cdp = one('CDP_RESULT ')
+          suite = one('P1231_SUITE_RESULT ')
+          cases = rows('P1231_MATRIX_CELL ')
+          first = {'main':'teaching-open','face':'teaching-open','full-grid':'first-visit-teaching-open',
+                   'space-plan':'first-entry-no-lesson','space-projection-second-entry':'first-entry-no-lesson',
+                   'three-view':'first-entry-no-lesson','3d':'first-entry-no-lesson'}
+          sizes = [(390,844),(560,844),(561,844),(768,1024),(1400,900)]
+          expected = {(label, state, w, h) for label, entry in first.items()
+                      for state in [entry,'normal-read'] for w,h in sizes}
+          observed = collections.Counter((r['label'],r['state'],r['requested']['width'],r['requested']['height'])
+                                         for r in cases if r['label'] in first)
+          rc = int((root / 'chrome.exit').read_text())
+          summary = {'leg':leg,'exit':rc,'suite':suite,'cdp':cdp,'matrixCells':sum(observed.values()),
+                     'missingCells':sorted(expected - observed.keys()),
+                     'extraCells':sorted(observed.keys() - expected),
+                     'duplicatedCells':[cell for cell,n in observed.items() if n != 1]}
+          (root / 'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2) + '\n')
+          print(json.dumps(summary, ensure_ascii=False))
+          assert suite['case'] == 'P1231' and cdp['completed'] is True and cdp['unexpectedBrowserExceptions'] == 0
+          assert not cdp['skipped'] and cdp['passedAssertions'] > 0
+          assert (not summary['missingCells'] and not summary['extraCells'] and not summary['duplicatedCells']), 'matrix coverage'
+          if leg == 'P':
+              assert rc == 0 and suite['status'] == 'passed' and not suite['failures'] and cdp['failedAssertions'] == 0
+          else:
+              assert rc == 1 and suite['status'] == 'failed' and cdp['failedAssertions'] > 0
+              assert any(f['kind'] == 'assertion' and f['name'] == 'R123H_FACE_HELP_REACH' and
+                         '561' in f['caseName'] for f in suite['failures']), 'expected 561px named red'
+          PY
+      - name: Exercise original named baseline, withdrawn and restored browser cases
+        if: startsWith(matrix.leg, 'withdrawal')
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          binary_dir="$TMPDIR/r448-native"
+          python3 -B -u geometry-web/start_local.py --build-only --binary-dir "$binary_dir" | tee "$E/native-build.log"
+          grep '^LOCAL_RUNTIME ' "$E/native-build.log" | tail -1 | cut -d ' ' -f2- > "$E/local-runtime.json"
+          bridge=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["executables"]["bridge"])' "$E/local-runtime.json")
+          model=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["executables"]["model-base"])' "$E/local-runtime.json")
+          test -x "$bridge" && test -x "$model"
+          sha256sum "$bridge" "$model" > "$E/binary-sha256.txt"
+          script=tests/diagnostics/r16_height_mutations.py
+          if [[ "$LEG" == withdrawal-narrow ]]; then script=tests/diagnostics/r123h_narrow_workspace_mutation.py; fi
+          python3 -B "$script" --preflight > "$E/preflight.json"
+          python3 -B -u "$script" --bridge "$bridge" --model-base "$model" --output-dir "$E/withdrawals" --timeout 900 2>&1 | tee "$E/withdrawals.log"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['E'])
+          preflight = json.loads((root/'preflight.json').read_bytes())
+          receipt = json.loads((root/'withdrawals/receipt.json').read_bytes())
+          count = 12 if os.environ['LEG'] == 'withdrawals-12' else 1
+          expected = [r['id'] for r in preflight['withdrawals']]
+          assert len(set(expected)) == len(expected) == count
+          if count == 1:
+              assert expected == ['R123H_FACE_HELP_NARROW_STRIP_REVERT']
+          assert receipt['sourceHead'] == os.environ['P_SHA'] and receipt['browserExecuted'] is True
+          assert receipt['status'] == 'passed' and receipt['baseline']['green'] is True
+          assert [r['id'] for r in receipt['mutations']] == expected
+          for row in receipt['mutations']:
+              assert row['status'] == 'killed' and row['sourceRestoredExactly'] is True
+              assert row['baselineMutantRestoredExit'] == [0,1,0] and row['restored']['green'] is True
+              print(row['id'], row['baselineMutantRestoredExit'], row['mutant']['assertions'])
+          PY
+      - name: Preserve raw browser logs, origins and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-${{ matrix.leg }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/r448-${{ matrix.leg }}/
+          if-no-files-found: error
+          retention-days: 14
