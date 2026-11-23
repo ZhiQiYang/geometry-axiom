@@ -1,0 +1,170 @@
+name: R448 Verify immutable evidence 4252
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-adopt-4252.yml]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  adopt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 4252f09ae19ff96ca06627f9624ceadac927fd84
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+      - name: Verify original ZIPs and adopt into a local commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          export R448_ADOPT_ROOT="$GITHUB_WORKSPACE" R448_ADOPT_ASSETS="$RUNNER_TEMP/verified-evidence"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python -B - <<'R448_VERIFIER'
+          """Verify two official jobs for 4252 and construct the local evidence commit."""
+          from pathlib import Path, PurePosixPath
+          import hashlib
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+          import zipfile
+
+          parent = "4252f09ae19ff96ca06627f9624ceadac927fd84"
+          repo = Path(os.environ.get("R448_ADOPT_ROOT","D:/geometry-axiom-work/pr448-adopt-4252f09a"))
+          assets = Path(os.environ.get("R448_ADOPT_ASSETS",Path(__file__).with_name("verified-evidence-4252")))
+          env = dict(os.environ, PYTHON=sys.executable, PYTHONUTF8="1")
+          base = "repos/ZhiQiYang/geometry-axiom/actions/"
+          spec = [
+              ("architecture-repo-evidence", 14827275495, 45192854261, "architecture-evidence.yml"),
+              ("architecture-original-evidence", 14826762866, 45192854261, "architecture-evidence.yml"),
+              ("canvas-section-P1231", 14825254381, 45192848043, "canvas-section-measure.yml"),
+          ]
+
+          def sha(raw):
+              return hashlib.sha256(raw).hexdigest()
+
+          def run(*command, folder=repo):
+              return subprocess.check_output(command, cwd=folder, env=env)
+
+          def write_report(name, value):
+              (assets / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          def verify_zip(name, number, run_id, workflow):
+              endpoint = base + "artifacts/" + str(number)
+              api = lambda cmd: run("gh", "api", cmd, folder=assets)
+              info = json.loads(api(endpoint))
+              job = json.loads(api(base + "runs/" + str(run_id) + "/attempts/1"))
+              assert info["id"] == number and info["name"] == name and info["expired"] is False
+              assert info["workflow_run"]["id"] == run_id and info["workflow_run"]["head_sha"] == parent
+              assert (job["id"], job["run_attempt"], job["head_sha"], job["path"], job["status"], job["conclusion"], job["event"]) == (
+                  run_id, 1, parent, ".github/workflows/" + workflow, "completed", "success", "workflow_dispatch")
+              path = assets / (name + "-" + str(number) + ".zip")
+              data = path.read_bytes() if path.exists() else api(endpoint + "/zip")
+              assert sha(data) == info["digest"].removeprefix("sha256:") and len(data) == info["size_in_bytes"]
+              if not path.exists():
+                  path.write_bytes(data)
+              with zipfile.ZipFile(path) as archive:
+                  names = [f.filename for f in archive.infolist() if not f.is_dir()]
+                  assert archive.testzip() is None and len(names) == len(set(names))
+                  assert all(not PurePosixPath(n).is_absolute() and ".." not in PurePosixPath(n).parts and "\\" not in n for n in names)
+                  content = {n:archive.read(n) for n in names}
+              return content, {"name":name, "artifactId":number, "runId":run_id, "sha256":sha(data), "bytes":len(data), "path":str(path)}
+
+          def main():
+              assets.mkdir(exist_ok=True)
+              (bundle,bmeta), (original,ometa), (canvas,cmeta) = [verify_zip(*s) for s in spec]
+              for n in bundle:
+                  assert re.fullmatch(r"[a-f0-9]{64}/[a-f0-9]{64}/[^/]+",n), n
+              folder, = {n.rsplit("/",1)[0] for n in bundle}
+              key, receiptid = folder.split("/")
+              assert set(bundle) == {folder+"/"+n for n in [*original, "bundle.json"]} and len(original) == 9
+              assert all(bundle[folder+"/"+n] == v for n,v in original.items())
+              receipt=json.loads(original["product-architecture-receipt.json"])
+              assert (receipt["sourceHead"], receipt["runId"], receipt["runAttempt"], receipt["complete"]) == (parent, "45192854261", "1", True)
+              assert receiptid == sha(original["product-architecture-receipt.json"])
+              assert len(receipt["commands"]) == 3 and all(v["exitCode"]==0 for v in receipt["commands"])
+              assert set(canvas) == {"manifest.json","stdout.log","stderr.log","runtime.stdout","runtime.stderr"}
+              manifest=json.loads(canvas["manifest.json"])
+              assert (manifest["execution_sha"],manifest["head_sha"],manifest["run_id"],manifest["run_attempt"]) == (parent,parent,"45192848043","1")
+              assert all(sha(canvas[n]) == digest for n,digest in manifest["files"].items())
+              raw=canvas["stdout.log"].decode("utf-8").splitlines()
+              result, = [json.loads(l[len("CDP_RESULT "):]) for l in raw if l.startswith("CDP_RESULT ")]
+              suite, = [json.loads(l[len("P1231_SUITE_RESULT "):]) for l in raw if l.startswith("P1231_SUITE_RESULT ")]
+              assert suite["status"]=="passed" and not suite["failures"] and result["completed"] and not result["failedAssertions"]
+              records=[json.loads(l[len("P1231_MATRIX_CELL "):]) for l in raw if l.startswith("P1231_MATRIX_CELL ")]
+              primary=[r for r in records if r["state"] not in {"setup","inspector"}]
+              cells={(r["label"],r["state"],r["requested"]["width"]) for r in primary}
+              assert len(cells)==len(primary)==70
+              summary={"parent":parent,"artifacts":[bmeta,ometa,cmeta],"archInputKey":key,
+                       "ownedCount":receipt["ownedCount"], "exclusionCount":receipt["exclusionCount"],"edgeCount":receipt["edgeCount"],
+                       "commands":[{k:c[k] for k in ["label","exitCode"]} for c in receipt["commands"]],
+                       "matrixCells":len(cells),"assertions":result["sections"]["P1231"], "milliseconds":result["sectionElapsedMs"]["P1231"],
+                       "failedAssertions":result["failedAssertions"],"unexpectedBrowserExceptions":result["unexpectedBrowserExceptions"]}
+              write_report("verified-raw.json",summary)
+              if sys.argv[1:] == ["--raw"]:
+                  print(json.dumps(summary,ensure_ascii=False))
+                  return
+              assert run("git","rev-parse","HEAD").decode().strip()==parent
+              assert run("git","rev-parse","HEAD^{tree}").decode().strip()==manifest["tree"]
+              assert run("git","diff","--name-only","HEAD","--")==b""
+              assert json.loads((repo/"geometry-web/cdp_sections.d/P1231.json").read_bytes())["cost"] is None
+              winroot = Path(chr(92)*2+"?"+chr(92)+str(repo.resolve())) if os.name=="nt" else repo.resolve()
+              store=winroot/".github/evidence/architecture"
+              for n, data in bundle.items():
+                  target = store/n
+                  assert not target.exists()
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  target.write_bytes(data)
+              arch = json.loads(run(sys.executable,"-B",".github/scripts/evidence_architecture.py","check","--root",str(winroot)))
+              assert arch["ok"] and arch["inputKey"]==key
+              imported = json.loads(run("node","tests/diagnostics/r16_canvas_golden.cjs","--import-cost","--artifact",cmeta["path"],"--artifact-id",str(cmeta["artifactId"])))
+              assert imported["id"]=="P1231" and imported["assertions"]==summary["assertions"] and imported["milliseconds"]==summary["milliseconds"]
+              registry=json.loads(run("node","geometry-web/canvas_registry.js","check"))
+              assert registry["declarations_complete"] and registry["data_contract_verified"]
+              cost_base="geometry-web/canvas-registry/costs/P1231/"+str(cmeta["artifactId"])
+              fragment="geometry-web/cdp_sections.d/P1231.json"
+              source_receipt=(repo/(cost_base+"/receipt.json")).read_bytes()
+              receipt=json.loads(source_receipt)
+              assert receipt["artifact"]["sha256"] == cmeta["sha256"] and sha((repo/(cost_base+"/artifact.zip")).read_bytes()) == cmeta["sha256"]
+              assert json.loads((repo/fragment).read_bytes())["cost"] == {"receipt":cost_base+"/receipt.json","sha256":sha(source_receipt)}
+              names=sorted([".github/evidence/architecture/"+n for n in bundle]+[fragment,cost_base+"/artifact.zip",cost_base+"/receipt.json"])
+              assert len(names)==13
+              run("git","add","-f","--",*names)
+              assert sorted(run("git","diff","--cached","--name-only",parent).decode().splitlines())==names
+              run("git","diff","--cached","--check",parent)
+              tree=run("git","write-tree").decode().strip()
+              git_bytes=lambda n: run("git","cat-file","blob",tree+":"+n)
+              assert all(git_bytes(".github/evidence/architecture/"+n)==v for n,v in bundle.items())
+              assert sha(git_bytes(cost_base+"/artifact.zip"))==cmeta["sha256"]
+              assert all(git_bytes(n)==(repo/n).read_bytes() for n in (fragment,cost_base+"/receipt.json"))
+              commit=run("git","commit-tree",tree,"-p",parent,"-m","ci(R16): adopt official architecture and P1231 measurement for 4252f09a").decode().strip()
+              assert run("git","rev-parse",commit+"^").decode().strip()==parent
+              assert sorted(run("git","diff-tree","--no-commit-id","-r","--name-only",commit).decode().splitlines())==names
+              summary.update({"commit":commit,"tree":tree,"paths":names,"registry":registry,"originalImporter":imported,"architectureCheck":arch})
+              write_report("adopted.json",summary)
+              (assets/"evidence-only.patch").write_bytes(run("git","diff","--binary","--full-index",parent,commit))
+              print(json.dumps(summary,ensure_ascii=False),flush=True)
+
+          if __name__=="__main__":
+              main()
+          R448_VERIFIER
+          evidence_commit=$(jq -r .commit "$R448_ADOPT_ASSETS/adopted.json")
+          git update-ref refs/heads/evidence-only "$evidence_commit"
+          git bundle create "$R448_ADOPT_ASSETS/evidence-only.bundle" refs/heads/evidence-only ^4252f09ae19ff96ca06627f9624ceadac927fd84
+          git bundle verify "$R448_ADOPT_ASSETS/evidence-only.bundle"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-verified-official-evidence-4252
+          path: |
+            ${{ runner.temp }}/verified-evidence/evidence-only.bundle
+            ${{ runner.temp }}/verified-evidence/adopted.json
+          if-no-files-found: error
+          retention-days: 7
