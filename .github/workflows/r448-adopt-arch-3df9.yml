@@ -1,0 +1,116 @@
+name: R448 Verify architecture evidence 3df9
+on:
+  push:
+    branches: [codex/r448-validation-20261123]
+    paths: [.github/workflows/r448-adopt-arch-3df9.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 12fb38146a75288f0852e0914c7f7e8a4231cd1e
+          persist-credentials: false
+      - name: Check official evidence and package only the architecture directory
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python -B - <<'VERIFY_ARCH'
+          """Verify the two Architecture evidence artifacts and produce an evidence-only bundle."""
+          from pathlib import Path
+          import hashlib, io, json, os, re, subprocess, sys, zipfile
+
+          SOURCE = '3df9cf1c11a109788d4711c0da36f3d889517889'
+          PARENT = '12fb38146a75288f0852e0914c7f7e8a4231cd1e'
+          RUN = 45196380492
+          REPO = 'repos/ZhiQiYang/geometry-axiom/actions'
+
+          def cmd(*args):
+              return subprocess.check_output(args)
+
+          def get(relative):
+              return cmd('gh','api',REPO+relative)
+
+          def sha(data):
+              return hashlib.sha256(data).hexdigest()
+
+          def originals():
+              run=json.loads(get(f'/runs/{RUN}/attempts/1'))
+              assert (run['id'],run['head_sha'],run['run_attempt'],run['path'],run['event'],run['status'],run['conclusion']) == (
+                  RUN,SOURCE,1,'.github/workflows/architecture-evidence.yml','workflow_dispatch','completed','success')
+              metas=json.loads(get(f'/runs/{RUN}/artifacts'))['artifacts']
+              assert len(metas)==2
+              archive={};summary={}
+              for m in metas:
+                  name=m['name']
+                  assert name in ('architecture-original-evidence','architecture-repo-evidence') and name not in archive
+                  assert not m['expired'] and m['workflow_run']['id']==RUN and m['workflow_run']['head_sha']==SOURCE
+                  raw=get(f"/artifacts/{m['id']}/zip")
+                  assert len(raw)==m['size_in_bytes'] and m['digest']=='sha256:'+sha(raw)
+                  with zipfile.ZipFile(io.BytesIO(raw)) as z:
+                      names=[f.filename for f in z.infolist() if not f.is_dir()]
+                      assert not z.testzip() and len(names)==len(set(names))
+                      archive[name]={k:z.read(k) for k in names}
+                  summary[name]={k:m[k] for k in ['id','digest','size_in_bytes']}
+              src=archive['architecture-original-evidence'];bundle=archive['architecture-repo-evidence']
+              assert len(src)==9 and len(bundle)==10
+              assert all(re.fullmatch(r'[a-zA-Z0-9._-]+',n) for n in src)
+              assert all(re.fullmatch(r'[0-9a-f]{64}/[0-9a-f]{64}/[a-zA-Z0-9._-]+',n) for n in bundle)
+              prefix,={n.rsplit('/',1)[0] for n in bundle}
+              key,receipt_id=prefix.split('/')
+              assert set(bundle)=={prefix+'/'+n for n in [*src,'bundle.json']}
+              assert all(bundle[prefix+'/'+n]==v for n,v in src.items())
+              receipt=json.loads(src['product-architecture-receipt.json'])
+              assert receipt_id==sha(src['product-architecture-receipt.json'])
+              assert (receipt['sourceHead'],receipt['runId'],receipt['runAttempt'],receipt['complete'])==(SOURCE,str(RUN),'1',True)
+              assert len(receipt['commands'])==3 and all(row['exitCode']==0 for row in receipt['commands'])
+              envelope=json.loads(bundle[prefix+'/bundle.json'])
+              assert envelope['inputKey']==key and envelope['files']=={n:{'bytes':len(v),'sha256':sha(v)} for n,v in src.items()}
+              return bundle,{'parent':PARENT,'source':SOURCE,'runId':RUN,'artifacts':summary,'inputKey':key,'receiptId':receipt_id,
+                             'originalFiles':envelope['files']}
+
+          def main():
+              bundle,report=originals()
+              assert cmd('git','rev-parse','HEAD').decode().strip()==PARENT
+              targets={'.github/evidence/architecture/'+name:data for name,data in bundle.items()}
+              for name,data in targets.items():
+                  path=Path(name)
+                  assert not path.exists()
+                  path.parent.mkdir(parents=True,exist_ok=True)
+                  path.write_bytes(data)
+              check=json.loads(cmd(sys.executable,'-B','.github/scripts/evidence_architecture.py','check','--root','.'))
+              assert check['ok'] and check['inputKey']==report['inputKey']
+              assert any(x['sourceHead']==SOURCE and x['runId']==str(RUN) and x['receiptSha256']==report['receiptId'] for x in check['origins'])
+              cmd('git','add','-f','--',*targets)
+              changed=cmd('git','diff','--cached','--no-renames','--name-status',PARENT).decode().splitlines()
+              assert set(changed)=={'A\t'+n for n in targets} and len(changed)==10
+              tree=cmd('git','write-tree').decode().strip()
+              assert all(cmd('git','cat-file','blob',tree+':'+n)==v for n,v in targets.items())
+              commit=cmd('git','commit-tree',tree,'-p',PARENT,'-m','ci(R16): adopt verified architecture evidence for P79').decode().strip()
+              assert cmd('git','rev-parse',commit+'^').decode().strip()==PARENT
+              cmd('git','update-ref','refs/heads/architecture-only',commit)
+              assets=Path(os.environ['RUNNER_TEMP'])/'r448-architecture'
+              assets.mkdir()
+              bundle_file=assets/'architecture-only.bundle'
+              cmd('git','bundle','create',str(bundle_file),'refs/heads/architecture-only','^'+PARENT)
+              cmd('git','bundle','verify',str(bundle_file))
+              report.update(commit=commit,tree=tree,architectureCheck=check,paths=sorted(targets),bundleSha256=sha(bundle_file.read_bytes()))
+              (assets/'adopted.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf8')
+              print(json.dumps(report,ensure_ascii=False))
+
+          if __name__=='__main__':
+              main()
+          VERIFY_ARCH
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-verified-architecture-3df9
+          path: ${{ runner.temp }}/r448-architecture
+          if-no-files-found: error
+          retention-days: 7
