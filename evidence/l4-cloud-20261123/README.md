@@ -15,7 +15,7 @@
 |---|---|---:|---|
 | D02 鍵入長度欄避開教學卡（21c-1） | **L4** | 16/16 | 1400、390 px 都通過 |
 | D06 PDF `h` 閉合後的接續線段 | **L4** | 11/11 | 通過，有無 PDF 端點的對照點 |
-| D09 表單顯示既有本面覆寫（21c-4） | **L4** | 14/14 ＋補核 8/8 | 1400 px 畫面上看得到 4。390 px 冷開：DOM 值為 4，但首屏看不到欄位，要在表單內捲動後才完整可見（補核） |
+| D09 表單顯示既有本面覆寫（21c-4） | **L4** | 14/14 ＋補核 8/8 ＋未捲動量測 6/6 | 1400 px 畫面上看得到 4。390 px 冷開：DOM 值為 4；使用者要先在表單內捲動找到「本面覆寫與恢復沿用」並展開（約 840 px），展開後欄位仍在可見區外，再捲約 180 px 才完整可見，值仍為 4（補核） |
 | R02 PF-4A 預覽與主格表的可讀性 | **L4** | 16/16 | 1400、390 px 都通過，含冷開 |
 | R17 D16a／P1-A 中文診斷 | **L4** | 10/10 | 1400、390 px 都通過 |
 | R11 物件畫布觸控第一片 | **L4**（CDP 觸控） | 30/30 ＋補核 10/10 | 1400 px 19 項、390 px 11 項；「定位」效果另補核；實體觸控未驗 |
@@ -114,8 +114,9 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_recheck.py <補核目錄> e
    - **更正（2026-11-23，#453 終審阻擋二）**：本句原寫「表單顯示 4，欄位在視窗內」，與原件不符。
    - `COLD_390_SHOWS_4` 只核了 DOM 值與橫向 `right <= vw`，沒有核縱向。`cold390ValueRect` 是 top 836.69、bottom 880.69，視窗高 844。
    - 截圖 `D09-4-cold-390-shows-4.png` 看得到「縫寬」標題，看不到 4。
-   - 獨立補核（`recheck-main-ea16e3f5/walk_d09_cold390_visible.result.json`）量到：首屏時欄位與視窗高度重疊約 7 px，但表單捲動區（`.ew-editor`）的下緣在 752，所以欄位在可見區內 **0 px**。那 7 px 被頁尾 `footer.ew-footer` 蓋住，命中測試打到頁尾。
-   - 結論：**冷開後 DOM 值為 4；欄位在首屏看不到，使用者要在表單內往下捲動約 180 px 才完整可見。** 捲動後完整矩形在可見區內，5 點命中測試都打到欄位本身，值仍為 4（截圖 `recheck-main-ea16e3f5/screens/D09R-2-*`、`D09R-3-*`）。
+   - 獨立補核（`recheck-main-ea16e3f5/walk_d09_cold390_visible.result.json`）量到：**展開「本面覆寫與恢復沿用」之後、再捲動之前**（此時表單捲動區 `.ew-editor` 的 `scrollTop` 已是 840，見下方補核 1），欄位與視窗高度重疊約 7 px，但捲動區的下緣在 752，所以欄位在可見區內 **0 px**。那 7 px 被頁尾 `footer.ew-footer` 蓋住，命中測試打到頁尾。
+   - 冷開後完全不捲動的狀態另量一次（`recheck-noscroll-main-ea16e3f5/`，見補核 1b）：該區段沒有展開，摘要本身也在可見區外。
+   - 結論：**冷開後 DOM 值為 4。使用者要先在表單內捲動找到「本面覆寫與恢復沿用」並展開（約 840 px）；展開後欄位仍在可見區外，再捲約 180 px 才完整可見。** 捲動後完整矩形在可見區內，5 點命中測試都打到欄位本身，值仍為 4（截圖 `recheck-main-ea16e3f5/screens/D09R-2-*`、`D09R-3-*`）。
    - 21c-4 修正本身（表單顯示目前本面值）以 1400 px 的 `D09-2-reopened-shows-4.png` 為畫面證據；390 px 這一子項現在才有可見性證據，前一版不能算視覺驗收。
 
 ### R02 PF-4A：預覽與主格表改為可讀表（`walk_pf4a.result.json`，16/16）
@@ -192,7 +193,16 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_recheck.py <補核目錄> e
 
 用新瀏覽器、390×844 開啟 `main-ea16e3f5/d09.gcanvas`。接著「檔案 → 工程規格 · 面材與角材」，展開「本面覆寫與恢復沿用」。
 
-| 量測 | 首屏（未捲動） | 經 CDP 滾輪捲動 3 次（每次 60 px）後 |
+**更正（2026-11-23，#453 API 對抗審查 [7089413768](https://github.com/ZhiQiYang/geometry-axiom/pull/453#issuecomment-7089413768) 其他發現 1）**：本節前一版把左欄寫成「首屏（未捲動）」，與原件不符。
+
+- 腳本（`scripts/walk_d09_cold390_visible.js:52`）先用 `L.click` 點該區段的摘要。`L.click` 先呼叫 `reveal()`（`scripts/lib.js:89-109`）：摘要中心點不到時，以每步 120 px 的 CDP 滾輪捲動最近的捲動區，直到點得到。
+- 原件 `walk_d09_cold390_visible.result.json` 的 `firstScreen.scroller.scrollTop` 是 **840**（`scrollHeight` 1796、`clientHeight` 427），正好是 7 步。結果檔沒有逐步記錄 `reveal()` 的滾輪，「7 步」是由 840÷120 推得。
+- 所以左欄量的是**展開該區段之後、再捲動之前**，不是冷開後未捲動。右欄的 3 次 60 px 是在 840 之上再捲（`scrollTop` 840→1020）。
+- 截圖 `D09R-1-cold-390-first-screen.png` 的檔名照舊不改，但它實際是「展開該區段後、再捲動前」的畫面，捲動區頂端是「起算點 · mm」，不是表單開頭。
+- `D09R_FIRST_SCREEN_MEASURED` 的 PASS 只代表「量到了」（量測函式有回傳值，`scripts/walk_d09_cold390_visible.js:60`），**不代表欄位可見**；那一刻量到的可見高度是 0。8/8 因此不等於「首屏可見」。
+- 真正冷開後完全不捲動的狀態，另做補核 1b。
+
+| 量測 | 展開該區段後、再捲動前（捲動區 `scrollTop` 840） | 再經 CDP 滾輪捲動 3 次（每次 60 px，`scrollTop` 1020）後 |
 |---|---|---|
 | 縫寬 mm 欄位矩形 | top 836.69、bottom 880.69 | top 656.69、bottom 700.69 |
 | 可見區（視窗 ∩ 會裁切的祖先） | top 324.64、bottom 752 | 同左 |
@@ -202,9 +212,33 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_recheck.py <補核目錄> e
 
 - 捲動前後場景 SHA-256 與 undo／redo 都不變。
 - 截圖：
-  - `D09R-1-cold-390-first-screen.png`：首屏只看得到「縫寬」標題。
-  - `D09R-2-cold-390-scrolled-field-visible.png`、`D09R-3-cold-390-scrolled-field-crop.png`：捲動後看得到「改成本面數值」與 4。
-- **結論**：390 px 冷開時本面覆寫在 DOM 裡保留為 4；欄位在首屏看不到，使用者往下捲動後才完整可見。D09 的 L4 維持：1400 px 有畫面證據，390 px 捲動後也看得到。
+  - `D09R-1-cold-390-first-screen.png`（檔名沿用，內容是**展開該區段後、再捲動前**，`scrollTop` 840）：只看得到「縫寬」標題。
+  - `D09R-2-cold-390-scrolled-field-visible.png`、`D09R-3-cold-390-scrolled-field-crop.png`：再捲約 180 px 後看得到「改成本面數值」與 4。
+- **結論**：390 px 冷開時本面覆寫在 DOM 裡保留為 4。使用者要先捲動找到「本面覆寫與恢復沿用」並展開（約 840 px），展開後欄位仍在可見區外，再捲約 180 px 才完整可見，值仍為 4。D09 的 L4 維持：1400 px 有畫面證據，390 px 捲動後也看得到。
+
+### 1b. D09 390 px 冷開後完全不捲動（`recheck-noscroll-main-ea16e3f5/walk_d09_cold390_noscroll.result.json`，6/6）
+
+補於 API 對抗審查 7089413768 之後。新腳本 `scripts/walk_d09_cold390_noscroll.js`，不覆寫上面任何結果檔或截圖。
+
+- 環境：同一個 main `ea16e3f5` 的新乾淨工作樹（sparse 排除 `evidence/`、`tests/evidence/`，跑完 HEAD 不變、`git status` 0 行，`worktree-state.txt`），以 `scripts/serve-wt.sh` 起服務。`runtime_version.py --probe 18881` 跑前跑後都是 version `9cd9b61c…0683`、`fresh:true`，與前兩輪同一版本。Chrome for Testing 153.0.8010.12。
+- 操作：新瀏覽器 390×844 → 新專案 → 開啟 `main-ea16e3f5/d09.gcanvas` →「檔案 → 工程規格 · 面材與角材」。**不點摘要、不送滾輪**，直接量。
+- 為了證明沒捲動，腳本把 `L.wheel` 包一層計數；`reveal()` 內部也經過它。整段流程的滾輪次數記在結果檔 `wheels`。
+- checks 只核前提：工作區讀取完成、找得到 `.ew-editor`、**滾輪 0 次**、`.ew-editor` 的 `scrollTop` 0 且 `window.scrollY` 0、DOM 值 literal 4、前後場景 SHA-256 與 undo／redo 不變。這 6 項的 PASS 不代表欄位可見。
+- 觀測值（結果檔 `observation`，不當通過條件）：
+
+| 量測 | 冷開後完全不捲動（`scrollTop` 0） |
+|---|---|
+| 「本面覆寫與恢復沿用」是否展開 | 否（`overrideSectionOpen: false`） |
+| 摘要列矩形 | top 1460.69、bottom 1504.69（視窗高 844，捲動區可見下緣 752） |
+| 摘要列在可見區內的高度 | **0 px**；5 點命中都在視窗外 |
+| 摘要列在捲動內容中的位置 | 距內容頂端 1136 px；捲動區可見高 427 px |
+| 讓摘要列底端進入可見區的最少捲動量 | **約 753 px** |
+| 縫寬欄位 | 在未展開的區段內，可見高度 0 px |
+
+- 前一輪 `reveal()` 為了讓摘要中心點得到，捲到 840（120 的倍數中第一個夠的），與這裡的最少 753 px 一致。
+- 截圖 `recheck-noscroll-main-ea16e3f5/screens/D09N-1-cold-390-unscrolled.png`：表單從「選做法，再核對要套用的面」開始，可見區最下方是「套用目標 · 已選 1 個放置面」，看不到「本面覆寫與恢復沿用」。
+- 未展開時欄位的矩形數值（結果檔 `field.rect`）是 Chrome 對收合內容算出的版面位置，沒有畫出來，這裡不引用。
+- 核對：截圖原始位元組的 SHA-256 與結果檔相符；讀入的 `d09.gcanvas` 與 `main-ea16e3f5/d09.gcanvas` 雜湊、大小相同；兩份 probe 都 `fresh:true`、version 相同。`verify_recheck.py` 只核原三份補核，沒有為這份擴充；核對指令與輸出貼在 #453 回報留言。
 
 ### 2. R11 計數（只更正文字）
 
@@ -268,12 +302,21 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_recheck.py <補核目錄> e
 - 鍵入長度欄本身已經不會被蓋住（本次 D02 通過）。
 - 這是教學卡與畫布的版面取捨，條文沒有規定。這裡只記錄，不判定為缺陷。
 
+**23-2　D06 吸到 PDF 端點時，游標標籤寫「格點」。**（#453 API 對抗審查 [7089413768](https://github.com/ZhiQiYang/geometry-axiom/pull/453#issuecomment-7089413768) 其他發現 5）
+
+- 原件：`main-ea16e3f5/walk_d06.result.json` 第 37 行（`D06_SNAP_TO_ENDPOINT_AFTER_H` 那一項）與第 170 行（頂層同名欄位），`cursorLabel` 都是「格點外環E」。那一刻草稿起點吸到的是 PDF 端點 (400, 1800)。
+- 原因（main `ea16e3f5` 讀碼）：
+  - `geometry-web/app.js:4561-4566`：外環（`redraw`）工具在草稿還沒有點時（`fe.draft.pts.length` 為 0），吸附標記一律用 `grid`。
+  - `geometry-web/cursor-v2.js:125`：`SNAP_ZH` 把 `grid` 顯示成「格點」。
+- 對照點（`D06_CONTROL_NOT_SNAPPED_TO_400`）被吸到 (500, 1500)，足以說明 (400, 1800) 來自 PDF 端點，不是格點。**D06 的判定不變（11/11、L4）。**
+- 這是產品現象：使用者看到的標籤與實際吸附對象不一致。這次只記錄，不改產品碼。
+
 ## 未核對範圍
 
 - **D02**：主畫布「矩形 R」、各吸附間距。
 - **D06**：圖片底圖、390 px 照描、其他閉合變體（`re`、曲線、`double-h`、`h-then-move`）。
 - **D09**：spec 名稱與材料版本覆寫的顯示、截面覆寫。
-  - 390 px 首屏就看得到欄位的版面：沒有這個結果，見上。條文沒有規定首屏可見，所以只記錄，不判為缺陷。
+  - 390 px 首屏就看得到欄位的版面：沒有這個結果。冷開後未捲動時該區段未展開、摘要在可見區外（補核 1b）。條文沒有規定首屏可見，所以只記錄，不判為缺陷。
 - **PF-4A**：交丁、結構側 −N、兩份鋪排、障礙、主支「沿 v／未設定」。
   - #449 記錄的 3247 折成兩行，發生在 **R03 平釘天花骨架預覽表的「長度」欄**（1400 px、右欄 319 px）。那是另一個元件，不是 `table.pf-readable-table`。#443 PF-4A 沒有改它，這次也沒有核對，仍是 R03 的缺口。補核只涵蓋 PF-4A 可讀表裡的四位數。
 - **R17**：13 mm 牆階正例（11-21 已核）、有下游的整組刪除。
@@ -306,5 +349,6 @@ python3 -I evidence/l4-cloud-20261123/scripts/verify_recheck.py <補核目錄> e
   - `pdf/`（夾具與 manifest）、`screens/`（25 張 PNG）。
   - `d06.gcanvas`、`d09.gcanvas`、`pf4a.gcanvas`。
 - `recheck-main-ea16e3f5/`（終審後補核）：三份 `walk_*.result.json` 與 `.log`、`runtime-probe*.json`、`worktree-state.txt`、`screens/`（11 張 PNG）。
+- `recheck-noscroll-main-ea16e3f5/`（API 對抗審查 7089413768 後補量）：`walk_d09_cold390_noscroll.result.json` 與 `.log`、`runtime-probe*.json`、`worktree-state.txt`、`screens/D09N-1-cold-390-unscrolled.png`。
 - `pipefail-redgreen/`：`redgreen.sh` 與 `before.txt`、`after.txt`、`pass-after.txt`。
-- `scripts/` 另有 `walk_d09_cold390_visible.js`、`walk_r11_locate.js`、`walk_pf4a_4digit.js`、`verify_recheck.py`。
+- `scripts/` 另有 `walk_d09_cold390_visible.js`、`walk_r11_locate.js`、`walk_pf4a_4digit.js`、`verify_recheck.py`、`walk_d09_cold390_noscroll.js`。
