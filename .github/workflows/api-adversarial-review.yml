@@ -216,6 +216,10 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           # 移除 GitHub 相關 token，其餘 runner 環境照常繼承（模型沒有 shell，讀檔限工作目錄內）。
           unset GH_TOKEN GITHUB_TOKEN ACTIONS_RUNTIME_TOKEN ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+          # 留言步驟靠這兩個標記分辨「CLI 沒啟動」與「CLI 已啟動（可能已呼叫 API）但沒有結果」。
+          # 啟動標記在 CLI 啟動前寫入；結束碼只有 CLI 正常返回才寫得出來，step 逾時或被中斷時不存在。
+          rm -f "$RUNNER_TEMP/review-result.json" "$RUNNER_TEMP/review-cli-exit"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "$RUNNER_TEMP/review-cli-started"
           status=0
           # shellcheck disable=SC2086
           HOME="$home" DISABLE_AUTOUPDATER=1 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
@@ -225,6 +229,7 @@ jobs:
             --max-turns "$REVIEW_MAX_TURNS" --max-budget-usd "$MAX_BUDGET_USD" \
             --output-format json \
             < "$RUNNER_TEMP/review-prompt.md" > "$RUNNER_TEMP/review-result.json" || status=$?
+          echo "$status" > "$RUNNER_TEMP/review-cli-exit"
           echo "claude exit status: $status"
           jq '{is_error, subtype, terminal_reason, num_turns, total_cost_usd, permission_denials: (.permission_denials | length)}' \
             "$RUNNER_TEMP/review-result.json" || true
@@ -241,41 +246,85 @@ jobs:
           set -euo pipefail
           current="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .head.sha)"
           rc=0
-          python3 - "$RUNNER_TEMP/review-result.json" "$current" > "$RUNNER_TEMP/review-comment.md" <<'PY' || rc=$?
+          python3 - "$RUNNER_TEMP" "$current" > "$RUNNER_TEMP/review-comment.md" <<'PY' || rc=$?
           import json, os, re, sys
-          path, current = sys.argv[1], sys.argv[2]
+          tmp, current = sys.argv[1], sys.argv[2]
           env = os.environ
+          # 三件事分開記錄：CLI 是否啟動、結束碼、是否有可解析的結果。
+          started = os.path.exists(os.path.join(tmp, "review-cli-started"))
           try:
-              res = json.load(open(path, encoding="utf-8"))
-          except Exception:
-              res = {}
-          text = (res.get("result") or "").strip() if isinstance(res.get("result"), str) else ""
-          ok = bool(text) and res.get("is_error") is False
+              exit_code = open(os.path.join(tmp, "review-cli-exit"), encoding="utf-8").read().strip() or None
+          except OSError:
+              exit_code = None
+          result_path = os.path.join(tmp, "review-result.json")
+          res, parse_note = None, ""
+          try:
+              raw = open(result_path, encoding="utf-8").read()
+          except OSError:
+              parse_note = "輸出檔不存在"
+          else:
+              if not raw.strip():
+                  parse_note = "輸出檔是空的"
+              else:
+                  try:
+                      res = json.loads(raw)
+                  except ValueError:
+                      parse_note = f"輸出檔無法解析為 JSON（{len(raw.encode('utf-8'))} bytes，可能只寫了一半）"
+                  else:
+                      if not isinstance(res, dict):
+                          res, parse_note = None, "輸出檔不是 JSON 物件"
+          parsed = res is not None
+          res = res or {}
+          text = res.get("result").strip() if isinstance(res.get("result"), str) else ""
+          # 成功必須同時滿足：CLI 已啟動、結束碼 0、結果可解析、is_error 為 false、有審查內文。
+          ok = started and exit_code == "0" and parsed and res.get("is_error") is False and bool(text)
           # 看起來像憑證的字串一律拒貼。
           if re.search(r"sk-ant-[A-Za-z0-9_-]{8,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}", text):
               print("::error::審查輸出含疑似憑證字串，拒絕貼出", file=sys.stderr)
               sys.exit(3)
-          # 不讓模型輸出 @ 到任何人。
-          text = re.sub(r"(?<![\w`])@(?=[A-Za-z0-9])", "@​", text)
+          # 不讓模型輸出 @ 到任何人：@ 後面接英數字一律插入零寬空白（U+200B），不看前一個字元，
+          # 因為 Python 的 \w 含中日韓文字，「中文字＋@帳號」若用前字排除會漏掉。
+          text = re.sub(r"@(?=[A-Za-z0-9])", "@\u200b", text)
+          cost = res.get("total_cost_usd") if parsed else None
+          if not started:
+              cost_text = "無（CLI 未啟動）"
+          elif isinstance(cost, (int, float)) and not isinstance(cost, bool):
+              cost_text = f"US${cost}（CLI 自報）"
+          else:
+              cost_text = "未知（CLI 已啟動，可能已產生費用）"
+          if exit_code is not None:
+              exit_text = exit_code
+          else:
+              exit_text = "未記錄（審查 step 可能逾時或被中斷）" if started else "無（CLI 未啟動）"
+          status_line = (f"- CLI 啟動：{'是' if started else '否'}；結束碼：{exit_text}；"
+                         f"可解析結果：{'是' if parsed else '否（' + parse_note + '）'}")
           lines = [f"【API 對抗審查】PR #{env['PR_NUMBER']} head {env['SHORT_SHA']}", ""]
           if current != env["HEAD_SHA"]:
               lines += [f"> ⚠️ 審查期間 PR head 已變為 `{current[:7]}`；本審查只對 `{env['HEAD_SHA']}`。", ""]
           if ok:
               lines.append(text[:60000] + ("\n\n…（輸出過長，已截斷）" if len(text) > 60000 else ""))
-          elif not res:
-              lines.append("### 結論\n審查**沒有執行**：模型啟動前的步驟失敗（例如工具清單預檢、資料收集或 CLI 安裝），"
-                           "沒有呼叫 API。失敗的 step 與原因請看下方 run 連結。")
+          elif not started:
+              lines.append("### 結論\n審查**沒有執行**：帶金鑰的審查 step 沒有啟動 CLI"
+                           "（模型啟動前的步驟失敗或被略過，例如工具清單預檢、資料收集或 CLI 安裝），"
+                           "所以本次沒有用金鑰呼叫 API。失敗的 step 與原因請看下方 run 連結。")
+              lines.append("\n" + status_line)
+          elif not parsed:
+              lines.append("### 結論\n審查**未完成**：CLI 已啟動，但沒有產生可解析的結果，以下沒有可用的審查結果。"
+                           "CLI 啟動後可能已呼叫 API，**花費未知、可能已產生費用**；實際用量請到 Anthropic Console 核對。")
+              lines.append("\n" + status_line)
           else:
               lines.append("### 結論\n審查**未完成**，以下沒有可用的審查結果。")
-              lines.append(f"\n- subtype：`{res.get('subtype')}`；terminal_reason：`{res.get('terminal_reason')}`；is_error：`{res.get('is_error')}`")
-          cost = res.get("total_cost_usd")
+              lines.append("\n" + status_line)
+              lines.append(f"- subtype：`{res.get('subtype')}`；terminal_reason：`{res.get('terminal_reason')}`；is_error：`{res.get('is_error')}`")
+              if cost_text.startswith("未知"):
+                  lines.append("- CLI 沒有回報花費：**花費未知、可能已產生費用**；實際用量請到 Anthropic Console 核對。")
           lines += [
               "",
               "---",
               "這是**唯讀審查**：審查過程只讀檔與搜尋，**未執行任何測試、build 或 PR 內的程式**；"
               "需要執行才能確認的事項見上方「未驗項」。",
               f"模型 `{env['REVIEW_MODEL']}`（effort {env['REVIEW_EFFORT']}）／Claude Code {env['CLAUDE_CODE_VERSION']}／"
-              f"輪數 {res.get('num_turns') if res.get('num_turns') is not None else '未知'}／花費 US${cost if cost is not None else '未知'}／"
+              f"輪數 {res.get('num_turns') if res.get('num_turns') is not None else '未知'}／花費 {cost_text}／"
               f"[run]({env['RUN_URL']})／head `{env['HEAD_SHA']}`",
           ]
           print("\n".join(lines))
