@@ -139,7 +139,9 @@ jobs:
               assert len(names)==13
               run("git","add","-f","--",*names)
               assert sorted(run("git","diff","--cached","--name-only",parent).decode().splitlines())==names
-              run("git","diff","--cached","--check",parent)
+              # The registry forces textual diffs even on the immutable official ZIP.
+              # Check all other paths, and compare that Git blob to the verified ZIP below.
+              run("git","diff","--cached","--check",parent,"--",".",":(exclude)"+cost_base+"/artifact.zip")
               tree=run("git","write-tree").decode().strip()
               git_bytes=lambda n: run("git","cat-file","blob",tree+":"+n)
               assert all(git_bytes(".github/evidence/architecture/"+n)==v for n,v in bundle.items())
