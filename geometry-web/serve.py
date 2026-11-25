@@ -50,6 +50,8 @@ POST_MAX_BYTES = {
     "/assembly/preview": 1024 * 1024,
     "/section-profile/preview": 1024 * 1024,
     "/panel-fill/preview": 1024 * 1024,
+    "/panel-fill/builder/suggest": 1024 * 1024,
+    "/panel-fill/builder/select": 1024 * 1024,
     "/section-profile/hosts": 16 * 1024 * 1024,
     "/assembly/generate-preview": 1024 * 1024,
     "/engineering/preview": 1024 * 1024,
@@ -208,7 +210,7 @@ def ask_bridge(cmd: str) -> bytes:
         return err_json("指令不得含換行或 NUL")
     if cmd.split(" ", 1)[0] == "identity-epoch":
         return err_json("配號區段只由宿主設定。")
-    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "view-read ", "view-pick ", "boundary-pair-read ", "boundary-pair-preview ", "framing-template-read ", "framing-template-preview "):
+    for prefix in ("loadfile ", "load-prepare ", "engineering-preview ", "engineering-validate ", "assembly-preview ", "assembly-generation-preview ", "section-profile-preview ", "panel-fill-preview ", "source-inspect-file ", "definition-import-read ", "definition-import-preview ", "timber-edit-read ", "timber-edit-preview ", "view-read ", "view-pick ", "boundary-pair-read ", "boundary-pair-preview ", "framing-template-read ", "framing-template-preview ", "pf6-suggest ", "pf6-select "):
         if cmd.startswith(prefix):
             cmd = prefix + to_bridge_path(cmd[len(prefix):])
             break
@@ -733,6 +735,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except ModelError as exc:
                 self._send(canonical_bytes(exc.as_dict()))
             return
+        if self.path in {"/panel-fill/builder/suggest", "/panel-fill/builder/select"}:
+            from panel_fill_builder_transport import request, receipt_request
+            try:
+                mode = self.path.rsplit('/', 1)[-1]
+                receipt = receipt_request(self.headers, body, mode, version=RUNTIME.version,
+                                          session=current_native_context().session, max_receipts=MAX_RECEIPTS)
+                self._send(recorded_api(receipt, execute=lambda: request(body, ask_bridge, mode=mode)))
+            except (ValueError, UnicodeError, RecursionError, TypeError):
+                self._send(err_json('建議角材的版本、工作階段、請求識別或 ACK 不完整；未執行原生操作。'))
+            except OSError:
+                self._send(err_json('無法建立建議角材暫存檔，專案未變更。'))
+            return
         if self.path in {"/framing-template/read", "/framing-template/preview"}:
             from framing_template_transport import request
             try:
@@ -872,8 +886,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     raise ValueError("bad request")
                 raw_command = data.get("cmd")
                 if (isinstance(raw_command, str) and raw_command.split() and
-                        raw_command.split()[0] in {"view-read", "view-pick"}):
-                    self._send(err_json("視圖只接受 /view/read 或 /view/pick 的 JSON，不接受客戶端檔案路徑。"))
+                        raw_command.split()[0] in {"view-read", "view-pick", "pf6-suggest", "pf6-select"}):
+                    self._send(err_json("視圖或角材建議只接受其受控 JSON 端點，不接受客戶端檔案路徑。"))
                     return
                 if "receipt" in data:
                     self._send(recorded_api(data))
@@ -892,6 +906,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if len(cmd.encode("utf-8")) > BRIDGE_MAX_CMD:
                 self._send(err_json("指令超過單行上限"))
                 return
+            if cmd.split(' ', 1)[0] in {'pf6-confirm', 'pf6-cancel'}:
+                from panel_fill_builder_transport import terminal_request
+                try:
+                    terminal_request(data, version=RUNTIME.version, client_version=client_version,
+                                     session=current_native_context().session, max_receipts=MAX_RECEIPTS)
+                except (ValueError, TypeError):
+                    self._send(err_json('角材確認／取消需目前版本、精確候選及原工作階段的回執識別。'))
+                    return
             self._send(recorded_api(data))
         elif self.path in {"/upload", "/upload/prepare", "/upload/confirm", "/upload/cancel"}:
             # Release upload_lock before sending a response to a slow client.

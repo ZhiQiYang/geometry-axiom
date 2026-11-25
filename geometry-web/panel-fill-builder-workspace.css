@@ -1,0 +1,19 @@
+.pf6-workspace{overflow-wrap:anywhere;padding-bottom:1rem}
+.pf6-workspace button,.pf6-workspace input,.pf6-workspace select{min-height:44px}
+.pf6-workspace .pf6-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:.55rem}
+.pf6-workspace .pf6-cards article{min-width:0;padding:.6rem;border:1px solid var(--border,#aeb4ba);border-radius:.3rem}
+.pf6-workspace .pf6-cards h4,.pf6-workspace .pf6-cards p{margin:.35rem 0}
+.pf6-workspace .pf6-pick{display:flex;flex-direction:row;align-items:center;min-height:44px;gap:.55rem}
+.pf6-workspace .pf6-pick input{flex:none;width:24px;height:24px;min-height:24px;margin:0}
+.pf6-workspace .pf6-selection-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem;margin:.5rem 0}
+.pf6-workspace .pf6-support{padding-left:1.25rem;line-height:1.5}
+.pf6-workspace .pf6-support li{padding:.35rem 0}
+.pf6-workspace [data-supported=false]{color:#c21f30}
+.pf6-workspace .pf6-plan{width:100%;height:auto;max-height:22rem;min-height:9rem;background:var(--bg2,#f5f6f7)}
+.pf6-workspace .pf6-plan rect{fill:#dba05e;fill-opacity:.6;stroke:#80521c;stroke-width:1;vector-effect:non-scaling-stroke}
+.pf6-workspace .pf6-impact table{table-layout:fixed}
+.pf6-workspace .pf6-impact th,.pf6-workspace .pf6-impact td{white-space:normal;overflow-wrap:anywhere;max-width:100%}
+.pf6-workspace .pf6-results table{width:100%;table-layout:fixed;overflow-wrap:anywhere}
+.pf6-workspace .pf-actions{position:static;grid-template-columns:minmax(0,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}
+.pf6-workspace .pf-actions button:last-child{grid-column:auto}
+.pf6-workspace [data-pf6-action=confirm]:not(:disabled){background:#245f42;color:white}

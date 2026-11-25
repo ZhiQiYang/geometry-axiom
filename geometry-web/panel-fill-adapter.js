@@ -1,7 +1,10 @@
 /* UI-1 transport. Native definitions and exact derived records are authoritative. */
 "use strict";
 (function (root) {
-  const ACTIONS = Object.freeze(['read','edit-definitions','read-layout','read-support','create-from-fill-grid']);
+  const ACTIONS = Object.freeze(['read','edit-definitions','read-layout','read-support','create-from-fill-grid','suggest-timbers']);
+  // UI-1, PF-4A and PF-6 each advertise one complete ordered contract.
+  // A truncated middle, reordered list or unknown action is never a version.
+  const supportedActions = value => Array.isArray(value) && [4,5,6].includes(value.length) && value.every((action,index)=>action===ACTIONS[index]);
   const clone = value => JSON.parse(JSON.stringify(value));
   const canonical = value => JSON.stringify(value, (_, v) => v && typeof v === 'object' && !Array.isArray(v)
     ? Object.keys(v).sort().reduce((out,key)=>(out[key]=v[key],out),{}) : v);
@@ -101,9 +104,7 @@
   }
   function contract(reply, preview=false) {
     const c=reply?.uiContract;
-    if (!c || c.schema!=='panel-fill-workspace/1' || !Array.isArray(c.supportedActions) ||
-        c.supportedActions.some(a=>!ACTIONS.includes(a)) || new Set(c.supportedActions).size!==c.supportedActions.length ||
-        !c.supportedActions.includes('read') || !/^\d+$/.test(c.revision) ||
+    if (!c || c.schema!=='panel-fill-workspace/1' || !supportedActions(c.supportedActions) || !/^\d+$/.test(c.revision) ||
         !Number.isSafeInteger(reply.revision) || c.revision!==String(reply.revision) ||
         typeof c.completeForScope!=='boolean' || !Array.isArray(c.errors) ||
         !c.scope || !['finishSurfaceIds','fillIds'].every(k=>Array.isArray(c.scope[k]) &&
@@ -330,7 +331,7 @@
     }
     close(){if(['confirming','unknown'].includes(this.phase))return false;++this.generation;this.retired=true;this.discardCandidate();return true;}
   }
-  const api={ACTIONS,Session,contract,definition,canonical,clone,owner,isCurrent,requestScope,sameDefinition};
+  const api={ACTIONS,Session,contract,definition,canonical,clone,owner,isCurrent,requestScope,sameDefinition,validateState};
   root.PanelFillAdapter=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

@@ -26,17 +26,26 @@ const ReferenceWorkspace = (() => {
   let contextConflict = false, externalEpoch = 0;
   let editorLease = "unchecked", editorLeaseSession = null;
   let nativeRevision = null, nativeSession = null, nativePending = 0;
+  let nativeDefinitionRevision = null;
   const scenarioContext = () => window.GeometryNativeContext?.scenario || null;
   let scenarioBootstrap = "blocked", scenarioInitializationAttempted = false, scenarioInitializationPermit = null;
   let scenarioFreeze = null, lastScenarioRelease = null;
   const E = P.Features.Evidence, preparedReferences = new WeakMap(), preparedFeatures = new WeakMap(), caseCommitKey = Object.freeze({});
   function observeNativeRevision(result) {
     const session = connection.session || "";
-    if (session !== nativeSession) {nativeSession = session; nativeRevision = null;}
-    if (Number.isSafeInteger(result?.revision)) nativeRevision = Math.max(nativeRevision ?? 0, result.revision);
+    if (session !== nativeSession) {nativeSession = session; nativeRevision = null; nativeDefinitionRevision = null;}
+    const value = result?.revision;
+    const text = Number.isSafeInteger(value) && value >= 0 ? String(value) :
+      typeof value === 'string' && /^(0|[1-9]\d{0,19})$/.test(value) && BigInt(value) <= 18446744073709551615n ? value : null;
+    if (text !== null && (nativeDefinitionRevision === null || BigInt(text) > BigInt(nativeDefinitionRevision)))
+      nativeDefinitionRevision = text;
+    // Preserve the existing numeric consumer contract. PF6 uses the exact text
+    // field; older numeric consumers fail closed outside their safe range.
+    if (nativeDefinitionRevision !== null)
+      nativeRevision = BigInt(nativeDefinitionRevision) <= BigInt(Number.MAX_SAFE_INTEGER) ? Number(nativeDefinitionRevision) : null;
   }
   function beginNativeOperation(command) {
-    if (!/^(boundary-pair|framing-template)-confirm /.test(command))
+    if (!/^(boundary-pair|framing-template|pf6)-confirm /.test(command))
       if (!/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(command)) return null;
     nativePending++;
     let ended = false;
@@ -46,6 +55,7 @@ const ReferenceWorkspace = (() => {
     const p = getProjectState(), operation = getModelOperationState();
     return {projectScope:p.id,contextToken:p.contextToken,revision:p.revision,
       nativeRevision:nativeSession === (connection.session || "") ? nativeRevision : null,
+      nativeDefinitionRevision:nativeSession === (connection.session || "") ? nativeDefinitionRevision : null,
       session:connection.session || "",undo:operation.undo,redo:operation.redo,
       blocked:operation.blocked || nativePending > 0 || connection.phase !== "ready"};
   }
@@ -85,28 +95,55 @@ const ReferenceWorkspace = (() => {
     assemblyConfirmation={context:context(),frame:history.frame};schedulePresentation();return assemblyConfirmation;
   }
   function assemblyConfirmationCurrent(stamp){return context()===stamp.context && history.frame===stamp.frame;}
-  function beginTimberPreview(){
+  function beginTimberPreview(kind='timber'){
     assertEditable();
+    if(!['timber','pf6'].includes(kind))throw new Error('未知的角材候選種類。');
     if(busy||oc.busy||history.group)throw new Error('請先完成目前操作，再預覽角材變更。');
-    timberPreview={context:context(),frame:history.frame,session:connection.session,revision:revision(context()),token:null};
+    timberPreview={context:context(),frame:history.frame,session:connection.session,revision:revision(context()),token:null,kind,
+      nativeDefinitionRevision:getEvidenceState().nativeDefinitionRevision,presentationRevision:null};
     return timberPreview;
   }
   function assertTimberPreview(owner,token=null){
     assertConfirmationIdle();assertEditorLease();
     if(!owner||timberPreview!==owner||!assemblyConfirmationCurrent(owner)||owner.session!==connection.session||
        owner.revision!==revision(context())||roomTransaction||sceneTransaction||preparingSceneLoad||pendingLoad||busy||oc.busy||history.group||
-       token!==null&&owner.token!==featureTokenKey(token))throw new Error('角材候選或工作世代已失效，請重新預覽。');
+       owner.kind==='pf6'&&owner.nativeDefinitionRevision!==null&&owner.nativeDefinitionRevision!==getEvidenceState().nativeDefinitionRevision||
+       token!==null&&(timberTokenKey(token,owner.kind)===null||owner.token!==timberTokenKey(token,owner.kind)))throw new Error('角材候選或工作世代已失效，請重新預覽。');
   }
+  function timberTokenKey(token){return featureTokenKey(token);}
   function bindTimberPreview(owner,token){
-    assertTimberPreview(owner);const key=featureTokenKey(token);if(key===null)throw new Error('角材候選識別不完整。');owner.token=key;
+    assertTimberPreview(owner);const key=timberTokenKey(token,owner.kind);if(key===null)throw new Error('角材候選識別不完整。');owner.token=key;
+    if(owner.kind==='pf6'&&owner.nativeDefinitionRevision===null)owner.nativeDefinitionRevision=getEvidenceState().nativeDefinitionRevision;
   }
-  function assertTimberPreviewToken(token){assertTimberPreview(timberPreview,token);}
+  function clearTimberPreviewToken(owner){
+    // The confirm request may already own this lease. Retiring a view must not
+    // throw from a connection event or clear another owner's current preview.
+    if(!owner||timberPreview!==owner)return false;
+    owner.token=null;return true;
+  }
+  function assertTimberPreviewKind(kind){
+    if(!timberPreview||timberPreview.kind!==kind)throw new Error('角材候選種類與操作不符。');
+    assertTimberPreview(timberPreview);
+  }
+  function assertTimberPreviewToken(token,kind='timber'){assertTimberPreviewKind(kind);assertTimberPreview(timberPreview,token);}
   function beginTimberConfirmation(token,command='timber-edit-confirm '+featureTokenKey(token)){
-    assertTimberPreviewToken(token);
+    const kind=command.startsWith('pf6-confirm ')?'pf6':'timber';
+    assertTimberPreviewToken(token,kind);
     assemblyConfirmation={...timberPreview,timberCommand:command};
     timberPreview=null;schedulePresentation();return assemblyConfirmation;
   }
   function finishTimberPreview(owner){if(owner&&timberPreview===owner){timberPreview=null;schedulePresentation();}}
+  function isTimberPresentationCommand(command){return timberPreview?.kind==='pf6'&&/^line canvas-pos\s/.test(command);}
+  function assertTimberPresentation(command){
+    if(!isTimberPresentationCommand(command))throw new Error('只有目前候選的純畫布位置可在預覽中調整。');
+    assertTimberPreviewKind('pf6');
+  }
+  function refreshTimberPreviewPresentation(owner){
+    if(!owner||owner.kind!=='pf6'||timberPreview!==owner||!assemblyConfirmationCurrent(owner)||owner.session!==connection.session||
+       owner.nativeDefinitionRevision===null||owner.nativeDefinitionRevision!==getEvidenceState().nativeDefinitionRevision||
+       owner.presentationRevision!==revision(context()))return false;
+    owner.revision=owner.presentationRevision;owner.presentationRevision=null;return true;
+  }
   function featureTokenKey(token){
     // Native preview emits a uint32 number; the confirm command carries its
     // decimal text. Both representations must name the same prepared lease.
@@ -248,7 +285,7 @@ const ReferenceWorkspace = (() => {
     if(scenarioContext())return;
     if(recoveryWriting){recoveryAgain=true;return;}
     if(busy || oc.busy || history.group || pendingLoad || preparingSceneLoad || assemblyConfirmation || sceneTransaction){scheduleRecovery();return;}
-    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || (window.PanelFillWorkspace?.pending || window.FramingWorkspace?.pending) || window.WorkspaceShell?.saveState().blocked){
+    if(fe.draft?.pts?.length || fe.ulCalib?.pts?.length || (window.PanelFillWorkspace?.pending || window.PanelFillBuilderWorkspace?.pending || window.FramingWorkspace?.pending) || window.WorkspaceShell?.saveState().blocked){
       recoveryMessage("draft","本次外環、校準或工作區草稿尚未套用；恢復資料只保留上次完成的工作內容。");return;
     }
     recoveryWriting=true;
@@ -426,7 +463,7 @@ const ReferenceWorkspace = (() => {
     const short = busy ? busyShort : contextConflict || editorLease==="readonly" || editorLease==="unavailable" ? "唯讀" : fe.draft?.pts?.length || fe.ulCalib?.pts?.length ? "有草稿" : c.downloaded ? "已下載" : c.dirty || !c.saved ? "未保存" : "已保存";
     document.querySelectorAll("[data-project-name]").forEach(el => { const name = c.name + ".gcanvas"; if (el.textContent !== name) { el.textContent = name; el.title = name; } });
     document.querySelectorAll("[data-project-status]").forEach(el => { if (el.textContent !== state) el.textContent = state; el.dataset.statusShort = short; el.title = state; el.setAttribute("aria-label", state); });
-    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!(window.PanelFillWorkspace?.pending || window.FramingWorkspace?.pending) || !!window.WorkspaceShell?.saveState().blocked; });
+    document.querySelectorAll('[data-project-action="save"]').forEach(el => { el.disabled = busy || getProjectInfo().editingBlocked || !!(window.PanelFillWorkspace?.pending || window.PanelFillBuilderWorkspace?.pending || window.FramingWorkspace?.pending) || !!window.WorkspaceShell?.saveState().blocked; });
     const p = oc.edit && active(oc.edit.bid), source = p && c.sources.get(p.sourceId);
     const summary = document.getElementById("faceReferenceSummary");
     if (summary) {
@@ -525,10 +562,13 @@ const ReferenceWorkspace = (() => {
     // their scene notification; existing import and other native observers
     // retain their refresh contract.
     if(result.ok && !result.preview && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm )/.test(cmd) && !/^line (history-|preview|cancel-preview)/.test(cmd) && (!/^timber-edit-confirm /.test(cmd) || result.history_changed !== false) && !(cmd.startsWith("panel-fill-confirm ") && result.history_changed === false))notifySceneChange();
-    if(result.ok && !result.preview && /^(boundary-pair|framing-template)-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
+    if(result.ok && !result.preview && /^(boundary-pair|framing-template|pf6)-confirm /.test(cmd) && result.history_changed !== false)notifySceneChange();
     if (result.ok && /^(engineering-confirm|assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm) /.test(cmd) && result.history_changed !== false) dirty();
-    if (result.ok && /^(boundary-pair|framing-template)-confirm /.test(cmd) && result.history_changed !== false) dirty();
+    if (result.ok && /^(boundary-pair|framing-template|pf6)-confirm /.test(cmd) && result.history_changed !== false) dirty();
     if (previousProjections !== context().faceProjections && context().faceProjectionsDirty) dirty();
+    if(result.ok&&!result.preview&&isTimberPresentationCommand(cmd)&&timberPreview.nativeDefinitionRevision!==null&&
+       timberPreview.nativeDefinitionRevision===getEvidenceState().nativeDefinitionRevision)
+      timberPreview.presentationRevision=revision(context());
     sync();
   }
   function getSpaceModels() { return JSON.parse(JSON.stringify(context().models)); }
@@ -1450,6 +1490,7 @@ const ReferenceWorkspace = (() => {
     if(window.RoomOutlineWorkspace?.hasWork)throw new Error("房間輪廓候選尚未確認。請確認或取消候選，再保存專案。");
     if(window.ParameterUI?.pending)throw new Error("參數草稿尚未套用。請先確認或捨棄草稿，再保存專案。");
     if(window.PanelFillWorkspace?.pending)throw new Error("完成面與鋪排草稿尚未確認。請先確認或取消，再保存專案。");
+    if(window.PanelFillBuilderWorkspace?.pending)throw new Error("角材建議尚未結束。請先確認或取消，再保存專案。");
     if(window.FramingWorkspace?.pending)throw new Error("平釘天花骨架草稿尚未確認。請先保存配方、確認或取消生成，再保存專案。");
     if(window.SectionProfileWorkspace?.hasWork)throw new Error("斷面修改尚未套用。請先確認或取消，再保存專案。");
     assertEditable(transactionOwner);
@@ -1915,6 +1956,7 @@ const ReferenceWorkspace = (() => {
   async function openProject(readBytes,name="匯入專案",onOpened=null,options={}) {
     assertWritableLease(); assertRoomDraftIdle();
     if(window.PanelFillWorkspace?.pending)throw new Error("請先確認或取消完成面與鋪排草稿，再開啟專案。");
+    if(window.PanelFillBuilderWorkspace?.pending)throw new Error("請先確認或取消角材建議，再開啟專案。");
     if(window.FramingWorkspace?.pending)throw new Error("請先確認或取消平釘天花骨架草稿，再開啟專案。");
     if (busy || oc.busy || history.group || pendingLoad) throw new Error("請先完成目前的操作再開啟專案。");
     const stamp={context:context(),frame:history.frame,revision:revision(context())};
@@ -2213,6 +2255,7 @@ const ReferenceWorkspace = (() => {
   }
   function mayLeave() {
     if (window.PanelFillWorkspace?.pending) {toast("請先確認或取消完成面與鋪排草稿，再切換專案。"); return false;}
+    if (window.PanelFillBuilderWorkspace?.pending) {toast("請先確認或取消角材建議，再切換專案。"); return false;}
     if (window.FramingWorkspace?.pending) {toast("請先確認或取消平釘天花骨架草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasWork) {toast("請先完成、取消或恢復目前房間草稿，再切換專案。"); return false;}
     if (window.RoomCollectionWorkspace?.hasUnacceptedCandidates && !window.confirm("未接受的房間候選只留在本分頁，離開後無法恢復。要離開嗎？")) return false;
@@ -2280,7 +2323,8 @@ const ReferenceWorkspace = (() => {
     readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,
     assertAssemblyIdle,beginAssemblyConfirmation,assemblyConfirmationCurrent,finishAssemblyConfirmation,
-    beginTimberPreview,assertTimberPreview,bindTimberPreview,assertTimberPreviewToken,beginTimberConfirmation,finishTimberPreview,
+    beginTimberPreview,assertTimberPreview,bindTimberPreview,clearTimberPreviewToken,assertTimberPreviewKind,assertTimberPreviewToken,beginTimberConfirmation,finishTimberPreview,
+    isTimberPresentationCommand,assertTimberPresentation,refreshTimberPreviewPresentation,
     readGridDrafts,setGridDraft,repinGridDraft,
     prepareFeatureConfirmation,beginFeatureConfirmation,cancelFeatureConfirmation,hasFeatureConfirmation:token=>featureConfirmations.has(featureTokenKey(token)),
     prepareEvidenceConfirmation,beginEvidenceConfirmation,cancelEvidenceConfirmation,hasEvidenceConfirmation:token=>evidenceConfirmations.has(featureTokenKey(token)),

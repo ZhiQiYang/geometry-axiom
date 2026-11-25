@@ -514,6 +514,7 @@ let dragging = null;        /* 參考線拖曳 {guide, view} */
 /* ---- 通訊 ---- */
 const connection = { phase: "loading", known: false, error: "", recovering: false };
 const pendingApiResults = new Map(), acknowledgedApiResults = new Set();
+const pendingApiSessions = new Map();
 const pendingAssemblyConfirmations = new Map();
 let apiRecoveryNeedsAbort = false;
 const pageRuntimeVersion = document.querySelector('meta[name="geometry-runtime-version"]')?.content || '';
@@ -523,15 +524,53 @@ function checkApiSession(response) {
     throw new Error("服務已重新啟動；目前來源仍保留，請重新開啟已保存的專案。");
   if (session) connection.session = session;
 }
-async function readApiReceipt(requestId) {
+async function readApiReceipt(requestId, originSession = connection.session) {
   const response = await fetch("/api", { method: "POST", headers: { "Content-Type": "application/json", "X-Geometry-Version": pageRuntimeVersion },
-    body: JSON.stringify({ receipt: requestId, session: connection.session }), signal: AbortSignal.timeout(35000) });
-  checkApiSession(response);
+    body: JSON.stringify({ receipt: requestId, session: originSession }), signal: AbortSignal.timeout(35000) });
+  if (originSession && response.headers.get('X-Geometry-Session') !== originSession)
+    throw new Error('原操作的服務工作階段已變更，不能以新服務回覆替代原回執。');
+  if (originSession === connection.session) checkApiSession(response);
   if (!response.ok) throw new Error("仍無法讀取操作結果。");
   const receipt = await response.json();
   if (!receipt.ok || typeof receipt.result?.ok !== "boolean") throw new Error(receipt.error || "操作結果尚未確認。");
   if (!receipt.result.ok && /橋接器.*(中斷|結束|逾時|超時)/.test(receipt.result.error || "")) throw new Error(receipt.result.error);
   return receipt.result;
+}
+async function panelFillBuilderPost(path, body, originSession = connection.session) {
+  const mode = path === '/panel-fill/builder/suggest' ? 'suggest' : path === '/panel-fill/builder/select' ? 'select' : null;
+  if (!mode || !originSession || originSession !== connection.session || connection.phase !== 'ready')
+    throw new Error('請在原服務連線完成後取得角材建議。');
+  ReferenceWorkspace.assertTimberPreviewKind('pf6');
+  const requestId = crypto.randomUUID(), command = 'pf6-' + mode + ' ' + requestId;
+  const ack = [...acknowledgedApiResults];
+  let result;
+  try {
+    const response = await fetch(path, {method:'POST', headers:{'Content-Type':'application/json',
+      'X-Geometry-Version':pageRuntimeVersion,'X-Geometry-Session':originSession,
+      'X-Geometry-Request-Id':requestId,'X-Geometry-Ack':JSON.stringify(ack)},
+      body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
+    if (response.headers.get('X-Geometry-Stale') === '1') return {...await response.json(),stale:true};
+    if (response.headers.get('X-Geometry-Session') !== originSession)
+      throw new Error('建議角材的服務工作階段已變更。');
+    checkApiSession(response);
+    if (!response.ok) throw new Error('建議角材服務回應失敗（HTTP '+response.status+'）。');
+    result = await response.json();
+    if (!result || typeof result.ok !== 'boolean') throw new Error('建議角材回覆不完整。');
+    if (!result.ok && /橋接器.*(中斷|結束|逾時|超時)|服務.*未啟動/.test(result.error || '')) throw new Error(result.error);
+  } catch (error) {
+    pendingApiResults.set(requestId,command);pendingApiSessions.set(requestId,originSession);
+    try { result = await readApiReceipt(requestId,originSession); }
+    catch (_) {
+      connectionFailed('建議角材結果尚未確認；重新連線只核對原回執。');
+      throw Object.assign(new Error('建議角材結果尚未確認，請重新連線核對；不會重送。'),
+        {transport:true,command,requestId,session:originSession,cause:error});
+    }
+  }
+  pendingApiResults.delete(requestId);pendingApiSessions.delete(requestId);
+  for (const id of ack) acknowledgedApiResults.delete(id);
+  acknowledgedApiResults.add(requestId);
+  if (originSession === connection.session) ReferenceWorkspace.observeNativeRevision(result.preview || result);
+  return result;
 }
 async function recoverApiResults() {
   const recoveringRoom = !!window.RoomCollectionWorkspace?.busy;
@@ -540,9 +579,10 @@ async function recoverApiResults() {
     !stamp || ReferenceWorkspace.assemblyConfirmationCurrent(stamp));
   if (currentResults()) apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
   for (const [requestId, cmd] of pendingApiResults) {
-    const result = await readApiReceipt(requestId);
+    const originSession = pendingApiSessions.get(requestId) || connection.session;
+    const result = await readApiReceipt(requestId,originSession);
     const stamp = pendingAssemblyConfirmations.get(requestId);
-    const current = !stamp || ReferenceWorkspace.assemblyConfirmationCurrent(stamp);
+    const current = originSession === connection.session && (!stamp || ReferenceWorkspace.assemblyConfirmationCurrent(stamp));
     if (current) ReferenceWorkspace.observe(cmd, result);
     // A not-delivered command did not reach the core's automatic rollback path.
     // Keep the pre-recovery group state even if metadata handled it as a failure.
@@ -550,7 +590,7 @@ async function recoverApiResults() {
       if (result.ok && /^line history-(end|abort)$/.test(cmd)) apiRecoveryNeedsAbort = false;
       else apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
     }
-    pendingApiResults.delete(requestId); acknowledgedApiResults.add(requestId);
+    pendingApiResults.delete(requestId); pendingApiSessions.delete(requestId); acknowledgedApiResults.add(requestId);
     if (stamp) { ReferenceWorkspace.finishAssemblyConfirmation(stamp); pendingAssemblyConfirmations.delete(requestId); }
     if (current && cmd.startsWith('timber-edit-confirm ')) {
       if (result.ok && result.history_changed !== false) window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
@@ -566,6 +606,11 @@ async function recoverApiResults() {
       if (cmd.startsWith('framing-template-confirm ') && result.ok && result.history_changed !== false)
         window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
       await window.FramingWorkspace?.settleRecovered(cmd,result);
+    }
+    if (/^pf6-(suggest|select|confirm|cancel) /.test(cmd)) {
+      if (current && cmd.startsWith('pf6-confirm ') && result.ok && result.history_changed !== false)
+        window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
+      await window.PanelFillBuilderWorkspace?.settleRecovered(cmd,result,originSession);
     }
     if (current && cmd.startsWith("panel-fill-confirm ")) {
       window.PanelFillWorkspace?.reconcileReceipt(result,cmd);
@@ -654,6 +699,7 @@ function showConnectionState() {
 function connectionFailed(message) {
   connection.phase = "error"; connection.error = message;
   window.PanelFillWorkspace?.invalidate("連線已中斷；舊預覽失效。若正在確認，保留原回執，禁止重送。");
+  window.PanelFillBuilderWorkspace?.invalidate("連線已中斷；候選不可確認，只核對原操作回執。");
   window.FramingWorkspace?.invalidate("連線已中斷；舊預覽失效，確認或取消僅核對原回執，禁止重送。");
   showConnectionState();
 }
@@ -726,7 +772,9 @@ document.addEventListener("keydown", e => {
 }, true);
 async function apiRequest(cmd, roomLease = null) {
   const rollback = cmd === "line history-abort";
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(cmd)) {
+  const originSession = connection.session;
+  const presentation = ReferenceWorkspace.isTimberPresentationCommand?.(cmd) === true;
+  if (!presentation && /^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm )/.test(cmd)) {
     try {
       window.BoundaryPairWorkspace?.assertWorldMutation();
       // Idle UI preflight must not move synchronous confirmation ownership to
@@ -737,19 +785,22 @@ async function apiRequest(cmd, roomLease = null) {
     }
     catch (error) { return {ok:false,error:error.message}; }
   }
-  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm )/.test(cmd)) {
-    try { if (/^(boundary-pair|framing-template)-confirm /.test(cmd)) ReferenceWorkspace.assertTimberPreviewToken(cmd.split(' ')[1]);
+  if (/^(line |drag |reset$|default$|undo$|redo$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm |pf6-confirm )/.test(cmd)) {
+    try { if (presentation) ReferenceWorkspace.assertTimberPresentation(cmd);
+      else if (cmd.startsWith('pf6-confirm ')) ReferenceWorkspace.assertTimberPreviewToken(cmd.split(' ')[1],'pf6');
+      else if (/^(boundary-pair|framing-template)-confirm /.test(cmd)) ReferenceWorkspace.assertTimberPreviewToken(cmd.split(' ')[1]);
       else if (cmd.startsWith('timber-edit-confirm ')) ReferenceWorkspace.assertTimberPreviewToken(cmd.slice(20));
       else if (roomLease) RoomCollectionWorkspace.assertTransaction(roomLease); else { ReferenceWorkspace.assertAssemblyIdle(); if (!rollback) ReferenceWorkspace.assertEditable?.(); } }
     catch (error) { return {ok:false,error:error.message}; }
   }
-  if (rollback && pendingApiResults.size) return { ok: false, transport: true, error: "操作結果尚未確認，重新連線後再回復。" };
+  if (rollback && pendingApiResults.size) return { ok: false, transport: true, sent: false, error: "操作結果尚未確認，重新連線後再回復。" };
   const recoveredRoomCancel = roomLease && cmd === "line cancel-preview" && connection.phase === "loading" && pendingApiResults.size === 0;
   const recoveredPairCancel = connection.phase === 'loading' && window.BoundaryPairWorkspace?.isRecoveryCancel(cmd);
   const recoveredFramingCancel = connection.phase === 'loading' && window.FramingWorkspace?.isRecoveryCancel(cmd);
-  if (!rollback && !recoveredRoomCancel && !recoveredPairCancel && !recoveredFramingCancel && (connection.phase === "error" || (connection.phase === "loading" &&
+  const recoveredPf6Cancel = connection.phase === 'loading' && window.PanelFillBuilderWorkspace?.isRecoveryCancel(cmd);
+  if (!rollback && !recoveredRoomCancel && !recoveredPairCancel && !recoveredFramingCancel && !recoveredPf6Cancel && (connection.phase === "error" || (connection.phase === "loading" &&
       !/^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd))))
-    return { ok: false, transport: true, error: connection.error || "場景尚未讀取完成" };
+    return { ok: false, transport: true, sent: false, error: connection.error || "場景尚未讀取完成" };
   const localHistory = ReferenceWorkspace.tryLocalHistory?.(cmd);
   if (localHistory) return localHistory;
   const releaseNativeOperation = ReferenceWorkspace.beginNativeOperation?.(cmd);
@@ -758,7 +809,7 @@ async function apiRequest(cmd, roomLease = null) {
   try {
   return roomNativeResult = await (async () => {
   const t0 = performance.now();
-  const requestId = connection.session && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel |boundary-pair-confirm |boundary-pair-cancel |framing-template-confirm |framing-template-cancel )/.test(cmd) ? crypto.randomUUID() : null;
+  const requestId = originSession && /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |timber-edit-cancel |boundary-pair-confirm |boundary-pair-cancel |framing-template-confirm |framing-template-cancel |pf6-confirm |pf6-cancel )/.test(cmd) ? crypto.randomUUID() : null;
   const ack = [...acknowledgedApiResults];
   let confirmation = null;
   const featureToken=cmd.match(/^line confirm (\S+)$/)?.[1];
@@ -773,9 +824,9 @@ async function apiRequest(cmd, roomLease = null) {
     try{confirmation=ReferenceWorkspace.beginEvidenceConfirmation(evidenceToken);}catch(error){return {ok:false,error:error.message};}
     if(confirmation)pendingAssemblyConfirmations.set(requestId,confirmation);
   }
-  if (/^(assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm|boundary-pair-confirm|framing-template-confirm) /.test(cmd)) {
+  if (/^(assembly-confirm|section-profile-confirm|panel-fill-confirm|definition-import-confirm|timber-edit-confirm|boundary-pair-confirm|framing-template-confirm|pf6-confirm) /.test(cmd)) {
     if (!requestId) return {ok:false,error:"請先確認服務連線，再確認組構變更。"};
-    try { confirmation = /^(boundary-pair|framing-template)-confirm /.test(cmd) ? ReferenceWorkspace.beginTimberConfirmation(cmd.split(' ')[1],cmd) :
+    try { confirmation = /^(boundary-pair|framing-template|pf6)-confirm /.test(cmd) ? ReferenceWorkspace.beginTimberConfirmation(cmd.split(' ')[1],cmd) :
       cmd.startsWith('timber-edit-confirm ') ? ReferenceWorkspace.beginTimberConfirmation(cmd.slice(20)) : ReferenceWorkspace.beginAssemblyConfirmation(); }
     catch (error) { return {ok:false,error:error.message}; }
     // Keep this lease through an unknown response, including workspace closure.
@@ -786,7 +837,7 @@ async function apiRequest(cmd, roomLease = null) {
   try {
     const r = await fetch("/api", {
       method: "POST", headers: { "Content-Type": "application/json", "X-Geometry-Version": pageRuntimeVersion },
-      body: JSON.stringify({ cmd, ...(requestId ? {requestId,session:connection.session,ack} : {}) }), signal: AbortSignal.timeout(15000)
+      body: JSON.stringify({ cmd, ...(requestId ? {requestId,session:originSession,ack} : {}) }), signal: AbortSignal.timeout(15000)
     });
     if (r.headers.get('X-Geometry-Stale') === '1') {
       // This rejection did not reach the core. Keep saving available and do
@@ -797,6 +848,8 @@ async function apiRequest(cmd, roomLease = null) {
       }
       return { ...(await r.json()), stale: true };
     }
+    if (/^pf6-(confirm|cancel) /.test(cmd) && r.headers.get('X-Geometry-Session') !== originSession)
+      throw new Error('角材確認／取消的回覆缺少原服務工作階段；僅能核對原請求回執。');
     checkApiSession(r);
     if (!r.ok) throw new Error(r.status === 403
       ? "此網址未獲服務允許（403）。請使用啟動服務時顯示的本機網址。"
@@ -809,7 +862,8 @@ async function apiRequest(cmd, roomLease = null) {
     let recovered = false;
     if (requestId) {
       pendingApiResults.set(requestId, cmd);
-      try { res = await readApiReceipt(requestId); recovered = true; }
+      pendingApiSessions.set(requestId, originSession);
+      try { res = await readApiReceipt(requestId,originSession); recovered = true; }
       catch (_) { /* Keep editing paused until the exact result is available. */ }
     }
     if (!recovered) {
@@ -819,15 +873,16 @@ async function apiRequest(cmd, roomLease = null) {
         : (e.name === "TimeoutError" ? "服務未在 15 秒內回應，請稍後重試。"
           : e.name === "TypeError" ? "無法連上服務，請確認服務正在執行後重試。" : e.message);
       connectionFailed(message);
-      return { ok: false, transport: true, error: message };
+      return { ok: false, transport: true, sent: true, error: message, command:cmd, requestId, session:originSession };
     }
   }
-  if (requestId) { pendingApiResults.delete(requestId); for (const id of ack) acknowledgedApiResults.delete(id); acknowledgedApiResults.add(requestId); }
-  const current = !confirmation || ReferenceWorkspace.assemblyConfirmationCurrent(confirmation);
+  if (requestId) { pendingApiResults.delete(requestId); pendingApiSessions.delete(requestId); for (const id of ack) acknowledgedApiResults.delete(id); acknowledgedApiResults.add(requestId); }
+  const bootstrapRead = !originSession && /^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd);
+  const current = (bootstrapRead || originSession === connection.session) && (!confirmation || ReferenceWorkspace.assemblyConfirmationCurrent(confirmation));
   if (current) ReferenceWorkspace.observe(cmd, res);
   if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
-      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm )/.test(cmd) &&
+      /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm |pf6-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
     window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
   window.fbRecord?.("api", { cmd: String(cmd).slice(0, 500), ok: res.ok !== false, error: res.error,
@@ -2040,6 +2095,7 @@ function markSceneItem() {
 function resetSceneFocus() {
   window.TimberEdit?.invalidate();
   window.PanelFillWorkspace?.retireContext();
+  window.PanelFillBuilderWorkspace?.retireContext();
   window.FramingWorkspace?.retireContext();
   ++oc.navigationSequence;
   hoverPickScheduler.cancel();

@@ -264,6 +264,7 @@ window.PanelFillWorkspace = (() => {
     const fills=state.panelFills.filter(f=>ids.has(f.definition.finishSurfaceId)).map(f=>f.derived?f:{...f,derived:{error:'原生結果未完整提供'}}),fillIds=new Set(fills.map(f=>f.definition.id));
     return `<section class="pf-results" aria-label="原生完成面結果"><h3>${s.candidate?'候選結果（尚未套用）':'正式來源結果'}</h3>
       ${s.candidate?impact(s.candidate):''}
+      ${builderSupported(s)?fills.map(f=>`<button type="button" data-pf-action="suggest-timbers" data-pf-fill-id="${f.definition.id}"${builderAvailable(s)?'':' disabled'}>鋪排 #${f.definition.id}：建議角材</button>`).join(''):''}
       ${finishes.map(f=>`<details><summary>${esc(f.name)} · 完成面 #${f.id} · ${f.derived?.error?'錯誤':'原生框架與障礙'}</summary>${table(['欄位','精確原生值'],[['frame',f.frame],['結構側',f.structureSide],['明選障礙',f.obstacles],['region',f.derived?.region],['障礙判定',f.derived?.obstacles],...(f.derived?.error?[['錯誤',f.derived.error]]:[])])}</details>`).join('')}
       ${fills.map(f=>{const d=f.derived;return `<article data-pf-fill-result="${f.definition.id}"><h4>鋪排 #${f.definition.id}</h4>${d?.error?'<p role="alert">原生錯誤：'+esc(d.error)+'</p>':`${picture(f)}<p>片數 ${esc(d.tileCount)} · 裁片數 ${esc(d.fragmentCount)} · 整片 ${esc(d.wholeCount)} · 厚 ${esc(d.thickness)} mm</p>${table(['裁片完整 key','面積 mm²'],list(d.tiles).flatMap(t=>list(t.fragments).map(p=>[p.key,p.area])))}<h5>有效板縫／支撐</h5><p>X 來源：參數 ${esc(f.definition.threshold.parameterId)}／欄位 ${esc(f.definition.threshold.fieldId)}</p>${table(['seam','區間','左側實寬 mm','右側實寬 mm','有效 X mm','判定'],list(d.support).map(p=>[p.seam,p.range,p.left,p.right,d.threshold?d.threshold.num+'/'+d.threshold.den:'未提供',p.supported?'支撐足夠':'支撐不足（可保存）']))}<details><summary>完整板縫鍵、非板縫與障礙分層</summary>${table(['類型','精確原生值'],[['有效板縫',d.effectiveSeams],['非板縫（不是支撐不足）',d.nonSeams],['非板縫原因',d.nonSeamReason],['障礙分層',d.obstacles]])}</details>`}<details><summary>定義來源（與有效值分開）</summary><pre>${esc(JSON.stringify(f.definition,null,2))}</pre></details></article>`;}).join('')}
       ${state.derivedPlacements.filter(h=>fillIds.has(h.definition.fillId)).map(h=>`<details><summary>宿主 #${h.definition.id} · ${h.derived?.error?'錯誤':'原生 h／框架／完整邊鍵'}</summary>${table(['欄位','精確原生值'],[['h 來源',h.definition.h],['h 有效值',h.derived?.h],['frame',h.derived?.frame],['components／完整邊鍵',h.derived?.components],...(h.derived?.error?[['錯誤',h.derived.error]]:[])])}</details>`).join('')}
@@ -274,19 +275,25 @@ window.PanelFillWorkspace = (() => {
   function display() {
     if(!active)return;const pane=document.querySelector('#faceInspectorContent [data-fi-pane="prop"]');if(pane)render(pane,active.boundaryId,true);
   }
+  const builderSupported=s=>s.contract?.supportedActions.includes('suggest-timbers')===true;
+  function builderAvailable(s) {
+    if(!builderSupported(s)||s.retired||s.dirty||s.candidate||!s.snapshotFresh||!['editing','committed'].includes(s.phase))return false;
+    try{return operations(s).length===0;}catch(_){return false;}
+  }
   function render(pane,bid,force=false) {
+    if(window.PanelFillBuilderWorkspace?.activeFor(bid))return window.PanelFillBuilderWorkspace.render(pane,bid,force);
     const s=active;if(!s||s.boundaryId!==Number(bid))return false;
     if(pane.id==='faceInspectorContent')pane=pane.querySelector('[data-fi-pane="prop"]')||pane;
     const previous=pane.querySelector('[data-pf-workspace]');if(!force&&previous===s.renderedRegion)return true;
     const focused=previous?.contains(document.activeElement)?document.activeElement:null;
-    const focusField=focused?.dataset.pfField,focusAction=focused?.dataset.pfAction,focusObstacle=focused?.dataset.pfObstacle;
+    const focusField=focused?.dataset.pfField,focusAction=focused?.dataset.pfAction,focusFill=focused?.dataset.pfFillId,focusObstacle=focused?.dataset.pfObstacle;
     const focusTitle=focused?.id==='pfTitle',selection=focused?.tagName==='INPUT'?[focused.selectionStart,focused.selectionEnd]:null;
     const first=!previous;
     pane.innerHTML=`<section class="pf-workspace" data-pf-workspace="${s.boundaryId}" aria-labelledby="pfTitle"><div class="pf-heading"><h2 id="pfTitle" tabindex="-1">完成面與鋪排</h2><button type="button" data-pf-action="close"${['confirming','unknown'].includes(s.phase)?' disabled':''}>返回面設定</button></div>
       <label>面內工作<select data-face-product-mode${s.dirty||['loading','previewing','confirmable','confirming','unknown'].includes(s.phase)?' disabled':''}><option value="finish">完成面與鋪排</option><option value="framing">平釘天花骨架（矩形第一片）</option><option value="framing-fixed">平釘天花骨架（政策 A 固定治具）</option></select></label>
       <p class="pf-status" data-pf-status="${s.phase}" role="status" aria-live="polite">${esc(s.reason)}</p>
       ${s.draft?form(s):''}
-      <details class="pf-source-preparation"><summary>來源與本片能力</summary><p>材料與尺寸參數須先在既有工程規格獨立確認。取消本次鋪排不會撤回先前已正式確認的來源。</p><button type="button" data-pf-action="sources"${['confirming','unknown'].includes(s.phase)?' disabled':''}>前往既有工程規格準備來源</button><p>本片：完成面、鋪排、板縫支撐與派生宿主（PF1–3＋PF-H）${s.contract?.supportedActions.includes('create-from-fill-grid')?'，以及既有宿主的跟隨鋪排主格（PF-4A）':''}。PF-6 角材建議、PF-4 獨立網格快照、PF-5 空間流程尚未提供，沒有可執行動作。整體 complete:false。</p><p>服務支援：${esc(s.contract?.supportedActions.join('、')??'尚未取得相容契約')}；範圍完整：${s.contract?String(s.contract.completeForScope):'未知'}。</p></details>
+      <details class="pf-source-preparation"><summary>來源與本片能力</summary><p>材料與尺寸參數須先在既有工程規格獨立確認。取消本次鋪排不會撤回先前已正式確認的來源。</p><button type="button" data-pf-action="sources"${['confirming','unknown'].includes(s.phase)?' disabled':''}>前往既有工程規格準備來源</button><p>本片：完成面、鋪排、板縫支撐與派生宿主（PF1–3＋PF-H）${s.contract?.supportedActions.includes('create-from-fill-grid')?'，以及既有宿主的跟隨鋪排主格（PF-4A）':''}。${builderSupported(s)?'正式鋪排可進入「建議角材」明選、預覽與確認（PF-6）。':''}PF-4B 獨立網格快照與 PF-5 空間流程尚未提供。整體 complete:false。</p><p>服務支援：${esc(s.contract?.supportedActions.join('、')??'尚未取得相容契約')}；範圍完整：${s.contract?String(s.contract.completeForScope):'未知'}。</p></details>
       ${s.draft?results(s):''}
       ${(s.candidate?.violations?.length||s.candidate?.uiContract.errors.length)?`<section class="pf-diagnostics" role="alert"><h3>原生診斷</h3><pre>${esc(JSON.stringify({violations:s.candidate?.violations,errors:s.candidate?.uiContract.errors},null,2))}</pre></section>`:''}
       <div class="pf-actions"><button type="button" data-pf-action="preview"${!s.draft||s.retired||['loading','previewing','confirming','unknown'].includes(s.phase)?' disabled':''}>預覽</button><button type="button" data-pf-action="confirm"${s.phase!=='confirmable'||s.retired?' disabled':''}>確認一次變更</button><button type="button" data-pf-action="cancel"${['confirming','unknown'].includes(s.phase)?' disabled':''}>取消／返回</button></div></section>`;
@@ -294,7 +301,7 @@ window.PanelFillWorkspace = (() => {
     s.renderedRegion=region;
     region.querySelector('[data-face-product-mode]').addEventListener('change',event=>{const mode=event.target.value;if(['framing','framing-fixed'].includes(mode)&&active===s&&close())window.FramingWorkspace?.open(s.boundaryId,s.trigger,mode==='framing-fixed'?2:1);});
     region.addEventListener('input',event=>update(s,event));region.addEventListener('change',event=>update(s,event));
-    region.addEventListener('click',event=>{const button=event.target.closest('[data-pf-action]');if(button&&!button.disabled){event.preventDefault();act(s,button.dataset.pfAction);}});
+    region.addEventListener('click',event=>{const button=event.target.closest('[data-pf-action]');if(button&&!button.disabled){event.preventDefault();act(s,button.dataset.pfAction,button);}});
     region.addEventListener('keydown',event=>{
       if(event.isComposing||event.keyCode===229)return;
       if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();}
@@ -304,11 +311,11 @@ window.PanelFillWorkspace = (() => {
     // Preserve the logical control across its temporary busy/disabled rendering.
     // The title keeps keyboard ownership inside this inspector while that control
     // cannot take focus; a later response restores the original enabled control.
-    let target={field:focusField,action:focusAction,obstacle:focusObstacle},focus;
+    let target={field:focusField,action:focusAction,fill:focusFill,obstacle:focusObstacle},focus;
     if(focusTitle&&s.deferredFocus)target=s.deferredFocus;
     else if(focused)s.deferredFocus=null;
     if(target.field)focus=[...region.querySelectorAll('[data-pf-field]')].find(e=>e.dataset.pfField===target.field);
-    else if(target.action)focus=region.querySelector(`[data-pf-action="${target.action}"]`);
+    else if(target.action)focus=region.querySelector(`[data-pf-action="${target.action}"]${target.fill?'[data-pf-fill-id="'+target.fill+'"]':''}`);
     else if(target.obstacle)focus=[...region.querySelectorAll('[data-pf-obstacle]')].find(e=>e.dataset.pfObstacle===target.obstacle);
     else if(first||focusTitle)focus=region.querySelector('#pfTitle');
     if(focus&&(focus.disabled||focus.closest('fieldset[disabled]'))){
@@ -343,10 +350,16 @@ window.PanelFillWorkspace = (() => {
       if(output){let value;try{value=sourceValue(s.draft[sourceKey],sourceKey==='h');}catch(_){value={kind:s.draft[sourceKey].kind,input:s.draft[sourceKey].value};}output.textContent='定義來源：'+JSON.stringify(value);}
     }
   }
-  async function act(s,action) {
+  async function act(s,action,button) {
     if(active!==s)return;
     try {
       if(action==='close'||action==='cancel'){close();return;}
+      if(action==='suggest-timbers'){
+        if(!builderAvailable(s))throw Error('目前服務未提供角材建議，或完成面／鋪排仍有待確認的編輯。');
+        const fillId=Number(button?.dataset.pfFillId),fill=s.snapshot.panelFills.find(row=>row.definition.id===fillId);
+        if(!Number.isInteger(fillId)||!fill||!finishRecords(s).some(row=>row.id===fill.definition.finishSurfaceId))throw Error('請從本面已正式確認的鋪排進入角材建議。');
+        window.PanelFillBuilderWorkspace.open(s,fillId,button);return;
+      }
       if(action==='sources'){if(close())await window.EngineeringWorkspace.open();return;}
       if(action==='propose-threshold'){
         if(s.retired||!A.isCurrent(s.owner)||s.selection.fill!==null)return;
@@ -400,10 +413,18 @@ window.PanelFillWorkspace = (() => {
     catch(error){if(active===s){s.phase='invalid';s.reason=error.message;display();}return false;}
   }
   function close() {
+    if(window.PanelFillBuilderWorkspace?.close()===false)return false;
     const s=active;if(!s)return true;if(!s.close()){s.reason='原確認回執尚未取得，禁止放棄或重送。';display();return false;}
     active=null;if(typeof renderFaceInspector==='function')renderFaceInspector();
     const entry=document.querySelector(`[data-face-settings="${s.boundaryId}"]`);
     (entry||(s.trigger?.isConnected?s.trigger:null))?.focus({preventScroll:true});ReferenceWorkspace.present?.();return true;
+  }
+  async function resumeBuilder(boundaryId,fillId,trigger) {
+    if(!await open(boundaryId,trigger))return false;
+    const s=active,fill=s?.snapshot.panelFills.find(r=>r.definition.id===fillId);
+    if(!s||s.boundaryId!==Number(boundaryId)||!fill)return false;
+    const finish=finishRecords(s).find(r=>r.id===fill.definition.finishSurfaceId);if(!finish)return false;
+    selectFinish(s,String(finish.id));selectFill(s,String(fillId));display();return true;
   }
   function invalidate(reason) {if(active)active.invalidate(reason);}
   function retireContext() {
@@ -416,7 +437,7 @@ window.PanelFillWorkspace = (() => {
     if(active)invalidate('定義來源已變更；舊候選已失效，請重新開啟。');
   });
   window.addEventListener('space-models-changed',()=>{if(active&&!['confirming','unknown'].includes(active.phase)&&!A.isCurrent(active.owner))invalidate('專案或歷史身分已變更，請重新開啟。');});
-  return {open,render,close,invalidate,retireContext,activeFor:bid=>!!active&&active.boundaryId===Number(bid),
+  return {open,render,close,resumeBuilder,invalidate,retireContext,activeFor:bid=>!!active&&active.boundaryId===Number(bid),
     async reconcileReceipt(result,command){
       const candidates=[...(active?[active]:[]),...retiredSessions];
       for(const session of candidates)if(await session.reconcileReceipt(result,command)){retiredSessions.delete(session);ReferenceWorkspace.present?.();return true;}

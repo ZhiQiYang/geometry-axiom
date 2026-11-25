@@ -149,18 +149,19 @@ static void pf_ui_scope(const World *before,const World *after)
         printf("%s%u",first?"":",",g->id);first=false;}
     fputs("]}",stdout);
 }
-static void json_panel_fill_ui_contract(const World *before,const World *after,uint64_t revision,bool valid,FsDiagnosticKind failure_kind,const char *error)
+static bool json_panel_fill_ui_contract(const World *before,const World *after,uint64_t revision,bool valid,FsDiagnosticKind failure_kind,const char *error)
 {
     FsDiagnosticKind saved_kind=g_fs_diagnostic;
     char saved[sizeof g_engineering_error];snprintf(saved,sizeof saved,"%s",g_engineering_error);
     g_pf_ui_exact=true;g_pf_ui_error_count=0;
-    fputs(",\"uiContract\":{\"schema\":\"panel-fill-workspace/1\",\"supportedActions\":[\"read\",\"edit-definitions\",\"read-layout\",\"read-support\",\"create-from-fill-grid\"],\"scope\":",stdout);
+    fputs(",\"uiContract\":{\"schema\":\"panel-fill-workspace/1\",\"supportedActions\":[\"read\",\"edit-definitions\",\"read-layout\",\"read-support\",\"create-from-fill-grid\",\"suggest-timbers\"],\"scope\":",stdout);
     pf_ui_scope(before,after);printf(",\"revision\":\"%llu\"",(unsigned long long)revision);
     g_pf_ui_stage=after?"before":"state";
     fputs(after?",\"before\":":",\"state\":",stdout);json_panel_fill_state(before);
     if(after){g_pf_ui_stage="after";fputs(",\"after\":",stdout);json_panel_fill_state(after);}
     if(!valid)pf_ui_error("transaction",0,failure_kind==FS_DIAGNOSTIC_CAPACITY?"CAPACITY":"PANEL_FILL_INVALID",error);
-    printf(",\"completeForScope\":%s,\"errors\":[",valid&&!g_pf_ui_error_count?"true":"false");
+    bool complete=valid&&!g_pf_ui_error_count;
+    printf(",\"completeForScope\":%s,\"errors\":[",complete?"true":"false");
     for(size_t i=0;i<g_pf_ui_error_count;++i){const PfUiError *e=&g_pf_ui_errors[i];
         size_t n=strcspn(e->message,": ");char clause[24];snprintf(clause,sizeof clause,"%.*s",(int)(n<sizeof clause-1?n:sizeof clause-1),e->message);
         if(i)putchar(',');fputs("{\"recordType\":",stdout);js_string(e->record_type);fputs(",\"id\":",stdout);
@@ -171,6 +172,7 @@ static void json_panel_fill_ui_contract(const World *before,const World *after,u
     }
     fputs("]}",stdout);g_pf_ui_exact=false;g_pf_ui_stage=NULL;g_pf_ui_error_count=0;
     snprintf(g_engineering_error,sizeof g_engineering_error,"%s",saved);g_fs_diagnostic=saved_kind;
+    return complete;
 }
 static void json_panel_fill_changes(const World *before,const World *after)
 {
