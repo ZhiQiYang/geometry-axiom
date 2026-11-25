@@ -921,7 +921,7 @@ jobs:
               "usage_missing": "回應沒有 usage，無法估算花費，為守住上限而停止",
               "unexpected_service_tier": "回應的 service tier 不在價格表內，無法估算花費而停止",
               "incomplete": "回應未完成且沒有可用報告",
-              "incomplete_coverage": "模型被退回多次後仍沒有讀完必讀檔（main 版 AGENTS.md）",
+              "completed_partial": "模型被退回兩次後仍沒有讀完必讀檔（main 版 AGENTS.md），採用其報告但不推送",
               "interrupted": "模型迴圈被中斷（收到 SIGTERM／SIGINT）",
               "missing_api_key": "沒有 OPENAI_API_KEY（repo secret 未設定？）",
               "empty_prompt": "提示詞是空的",

@@ -19,7 +19,10 @@
 必讀與預附（固定步驟，不靠模型自己決定）：
   --attach PATH        全文（至多 PREFILL_MAX_CHARS 字元）直接放進第一則訊息。
   --require-read PATH  開頭段落放進第一則訊息；模型交最終報告時若還有行沒讀到（預附段落＋read_file 實際回傳的行），
-                       迴圈退回一則訊息要求讀完（至多 MAX_COVERAGE_GATES 次，之後以 incomplete_coverage 結束）。
+                       迴圈退回一則訊息要求讀完（至多 MAX_COVERAGE_GATES 次；最後一次說明「讀不完就照判能判的、寫明缺什麼」，
+                       之後採用報告並以 completed_partial 結束，不整份作廢）。
+  --require-read-list  必讀檔清單檔。
+  prepare-review       子命令（固定步驟）：把 base...HEAD 的差異拆成摘要表＋分段 patch，並訂出必讀範圍。
   review 模式另有一次守門：報告含「無法判定」時，要求逐項寫明缺哪個檔、為什麼讀不到，再重新輸出。
   --list-tools：不連網、不需金鑰，印出本模式實際提供給模型的工具名稱（workflow 用來預檢）。
 
@@ -34,7 +37,7 @@
   usage_missing             回應沒有 usage，無法估算花費，為守住上限而停止
   unexpected_service_tier   回應的 service tier 不在價格表範圍，無法可靠估算
   incomplete                回應狀態 incomplete 且沒有可用報告
-  incomplete_coverage       必讀檔退回 MAX_COVERAGE_GATES 次後仍未讀完
+  completed_partial         必讀範圍退回 MAX_COVERAGE_GATES 次後仍未讀完：採用模型最後的報告，標為部分審查（is_error=false）
   interrupted               收到 SIGTERM／SIGINT（例如 step 逾時或取消）
 """
 import argparse
@@ -79,7 +82,14 @@ READ_CHUNK_CHARS = 28_000       # read_file 單次回傳的字元上限：只回
 READ_LINE_MAX = 4_000           # read_file 單行超過此長度時截斷該行（照實標明）
 READ_LIMIT_BYTES = 400_000      # search 每檔最多讀的 bytes（×5）
 PREFILL_MAX_CHARS = 60_000      # --require-read／--attach 預先放進第一則訊息的字元上限（每檔）
-MAX_COVERAGE_GATES = 3          # 必讀檔沒讀完就交報告時，最多退回幾次
+PREFILL_TOTAL_CHARS = 150_000   # 第一則訊息預附資料的總字元上限；超過的必讀檔只列出，不預附
+MAX_COVERAGE_GATES = 2          # 必讀檔沒讀完就交報告時，最多退回幾次；之後接受報告並標為部分審查
+
+# ---- prepare-review：固定步驟把差異拆成「摘要表＋分段 patch」，訂出做得到的必讀範圍
+SEG_LINES = 1500                # 每段 patch 的行數上限
+CORE_REQUIRED_MAX_LINES = 20000 # 非證據類差異納入必讀的行數上限（超過的段落列為選讀並在計畫中寫明）
+EVIDENCE_SAMPLE_FILES = 8       # 證據類文字檔抽樣幾個（依路徑 sha256 排序取前幾個，可重現）
+EVIDENCE_SAMPLE_LINES = 300     # 每個抽樣檔放進必讀段的差異行數（開頭）
 WRITE_LIMIT_BYTES = 5_000_000   # write_file 單次最多寫的 bytes
 SEARCH_MAX_MATCHES = 400
 SEARCH_MAX_FILES = 5000
@@ -401,6 +411,128 @@ def estimate_cost(model, usage, service_tier):
                   "long_context": long_ctx, "service_tier": service_tier}
 
 
+# ---------------------------------------------------------------- prepare-review（固定步驟，不連網、不帶金鑰）
+def is_evidence(path):
+    """證據類：任一目錄層名稱含 evidence（例如 .github/evidence/、tests/r16-evidence/）。"""
+    return any("evidence" in part.lower() for part in path.split("/")[:-1])
+
+
+def prepare_review(repo, base, out):
+    """以 base...HEAD 產生：review-plan.md（每檔變更摘要表與必讀範圍）、diff-parts/*.patch（分段）、
+    review-required.txt（必讀檔清單，相對於工作目錄）。二進位檔只列路徑、大小與 sha256，不進 patch。"""
+    import hashlib
+    G = ["git", "-C", repo, "-c", "core.hooksPath=/dev/null", "-c", "diff.external=", "-c", "core.pager=cat",
+         "-c", "core.quotepath=off"]
+
+    def git(*args):
+        return subprocess.run(G + list(args), capture_output=True, check=True).stdout
+
+    rng = f"{base}...HEAD"
+    mb = git("merge-base", base, "HEAD").decode().strip()
+    status = {}
+    toks = git("diff", "--name-status", "-z", "--no-renames", rng).split(b"\0")
+    for i in range(0, len(toks) - 1, 2):
+        status[toks[i + 1].decode("utf-8", "surrogateescape")] = toks[i].decode()
+    files = []
+    for ent in git("diff", "--numstat", "-z", "--no-renames", rng).split(b"\0"):
+        if not ent:
+            continue
+        add, dele, path = ent.decode("utf-8", "surrogateescape").split("\t", 2)
+        st = status.get(path, "?")
+        f = {"path": path, "status": st, "binary": add == "-", "evidence": is_evidence(path),
+             "added": None if add == "-" else int(add), "deleted": None if dele == "-" else int(dele)}
+        if f["binary"]:
+            rev = mb if st == "D" else "HEAD"
+            blob = git("cat-file", "blob", f"{rev}:{path}")
+            f.update(side="base" if st == "D" else "head", size=len(blob), sha256=hashlib.sha256(blob).hexdigest())
+        else:
+            f["patch"] = git("diff", "--no-ext-diff", "--no-textconv", rng, "--", path).decode("utf-8", "replace")
+        files.append(f)
+
+    parts_dir = os.path.join(out, "diff-parts")
+    os.makedirs(parts_dir, exist_ok=True)
+    segments = []   # {"name", "path", "kind", "files": [(path, first, last)], "lines"}
+
+    def pack(kind, chunks):
+        cur, n = [], 0
+        cover = []
+
+        def flush():
+            nonlocal cur, n, cover
+            if not cur:
+                return
+            name = f"{kind}-{len([x for x in segments if x['kind'] == kind]) + 1:03d}"
+            rel = f"diff-parts/{name}.patch"
+            with open(os.path.join(out, rel), "w", encoding="utf-8") as fh:
+                fh.write("".join(cur))
+            segments.append({"name": name, "path": rel, "kind": kind, "files": cover, "lines": n})
+            cur, n, cover = [], 0, []
+        for path, lines in chunks:
+            i = 0
+            while i < len(lines):
+                room = SEG_LINES - n
+                if room <= 0:
+                    flush(); room = SEG_LINES
+                take = lines[i:i + room]
+                cur.extend(take); n += len(take)
+                cover.append((path, i + 1, i + len(take)))
+                i += len(take)
+        flush()
+
+    text_files = [f for f in files if not f["binary"]]
+    core = [f for f in text_files if not f["evidence"]]
+    ev = [f for f in text_files if f["evidence"]]
+    sample = sorted(ev, key=lambda f: hashlib.sha256(f["path"].encode("utf-8", "surrogateescape")).hexdigest())[:EVIDENCE_SAMPLE_FILES]
+    sample_set = {f["path"] for f in sample}
+    pack("core", [(f["path"], f["patch"].splitlines(keepends=True)) for f in core])
+    pack("sample", [(f["path"], f["patch"].splitlines(keepends=True)[:EVIDENCE_SAMPLE_LINES]) for f in sample])
+    pack("evidence", [(f["path"], f["patch"].splitlines(keepends=True)) for f in ev])
+
+    required, core_lines, optional = ["review-data/review-plan.md"], 0, []
+    for sg in segments:
+        if sg["kind"] == "core" and core_lines + sg["lines"] <= CORE_REQUIRED_MAX_LINES:
+            required.append(f"review-data/{sg['path']}"); core_lines += sg["lines"]; sg["required"] = True
+        elif sg["kind"] == "sample":
+            required.append(f"review-data/{sg['path']}"); sg["required"] = True
+        else:
+            optional.append(sg); sg["required"] = False
+    seg_of = {}
+    for sg in segments:
+        for path, a, b in sg["files"]:
+            seg_of.setdefault(path, []).append(f"{sg['name']}（{a}–{b}）")
+
+    L = [f"# 審查計畫（固定步驟產生；base `{base}`，merge-base `{mb}`）", "",
+         f"- 變更檔案 {len(files)} 個：非證據類文字檔 {len(core)}、證據類文字檔 {len(ev)}、二進位檔 {sum(f['binary'] for f in files)}。",
+         f"- 分段：每段至多 {SEG_LINES} 行，放在 `review-data/diff-parts/`。`review-data/diff.patch` 是同一份差異的原檔，不必再讀。",
+         "- **必讀範圍**（交報告前必須讀完；workflow 會核對）：本檔全文；全部 `core-*` 段（非證據類檔的完整差異"
+         + (f"，上限 {CORE_REQUIRED_MAX_LINES} 行，超過的 core 段改列選讀" if any(s["kind"] == "core" and not s["required"] for s in segments) else "")
+         + f"）；全部 `sample-*` 段（證據類檔依路徑 sha256 排序抽 {len(sample)} 個，每個取差異開頭 {EVIDENCE_SAMPLE_LINES} 行）。",
+         "- **選讀**：`evidence-*` 段（證據類檔的完整差異）與上限外的 core 段。審查者可以自行加讀，並在報告寫明。",
+         "- 報告要寫明實際讀了哪些段、哪些沒讀；沒讀的段落若影響某個判定項目，該項判「無法判定」並寫明缺哪一段。", "",
+         "## 每個檔的變更摘要", "", "| # | 路徑 | 狀態 | +行 | −行 | 類別 | 所在段（段內行號） |", "|---|---|---|---|---|---|---|"]
+    for i, f in enumerate(files, 1):
+        kind = "二進位" if f["binary"] else ("證據" + ("（抽樣）" if f["path"] in sample_set else "") if f["evidence"] else "程式／文件")
+        where = "—（二進位，不進 patch）" if f["binary"] else "、".join(seg_of.get(f["path"], ["（無內容差異）"]))
+        L.append(f"| {i} | `{f['path']}` | {f['status']} | {f['added'] if f['added'] is not None else '-'} | "
+                 f"{f['deleted'] if f['deleted'] is not None else '-'} | {kind} | {where} |")
+    L += ["", "## 二進位檔（只列大小與 sha256）", ""]
+    bins = [f for f in files if f["binary"]]
+    L += [f"- `{f['path']}`（{f['status']}；{f['side']} 端 {f['size']} bytes；sha256 `{f['sha256']}`）" for f in bins] or ["- 無"]
+    L += ["", "## 分段清單", "", "| 段 | 必讀 | 行數 | 涵蓋 |", "|---|---|---|---|"]
+    for sg in segments:
+        cov = "、".join(f"`{p}` {a}–{b}" for p, a, b in sg["files"][:6]) + (f" …等 {len(sg['files'])} 檔" if len(sg["files"]) > 6 else "")
+        L.append(f"| `review-data/{sg['path']}` | {'是' if sg['required'] else '選讀'} | {sg['lines']} | {cov} |")
+    with open(os.path.join(out, "review-plan.md"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(L) + "\n")
+    with open(os.path.join(out, "review-required.txt"), "w", encoding="utf-8") as fh:
+        fh.write("\n".join(required) + "\n")
+    summary = {"files": len(files), "core_files": len(core), "evidence_files": len(ev), "binary_files": len(bins),
+               "segments": len(segments), "required": required, "optional": [f"review-data/{s['path']}" for s in optional],
+               "required_lines": sum(s["lines"] for s in segments if s["required"])}
+    print(json.dumps(summary, ensure_ascii=False))
+    return 0
+
+
 # ---------------------------------------------------------------- 主迴圈
 class Agent:
     def __init__(self, a, prompt, client, tools):
@@ -420,16 +552,20 @@ class Agent:
 
     def prefill(self):
         """固定步驟（非模型）把 --attach 全文與 --require-read 開頭段落直接放進第一則訊息。"""
-        blocks = []
+        blocks, budget, listed = [], PREFILL_TOTAL_CHARS, []
         for kind, paths in (("attach", self.a.attach), ("require", self.a.require_read)):
             for shown in paths:
                 real = resolve_inside(self.tools.read_roots, shown)
                 total = self.tools.line_count(real)
                 size = os.path.getsize(real)
-                rows, last, _ = self.tools.read_lines(real, 1, 10 ** 9, PREFILL_MAX_CHARS)
-                self.tools.mark_read(real, 1, last)
                 if kind == "require":
                     self.required.append((shown, real))
+                if budget < 2000:
+                    listed.append(f"- `{shown}`（共 {total} 行、{size} bytes；未預附，請用 read_file 從 offset=1 起讀完）")
+                    continue
+                rows, last, _ = self.tools.read_lines(real, 1, 10 ** 9, min(PREFILL_MAX_CHARS, budget))
+                budget -= sum(len(x) + 1 for x in rows)
+                self.tools.mark_read(real, 1, last)
                 text = "\n".join(rows)
                 fence = "`" * max(4, max((len(m) for m in re.findall(r"`+", text)), default=0) + 1)
                 if last >= total:
@@ -438,6 +574,8 @@ class Agent:
                     head = (f"### `{shown}`（共 {total} 行、{size} bytes；下面只附第 1–{last} 行。"
                             f"其餘第 {last + 1}–{total} 行請用 read_file 從 offset={last + 1} 起依序讀完）")
                 blocks.append(f"{head}\n\n{fence}text\n{text}\n{fence}")
+        if listed:
+            blocks.append("### 未預附的必讀檔（預附總量已達上限）\n\n" + "\n".join(listed))
         if not blocks:
             return ""
         req = "、".join(f"`{s}`" for s, _ in self.required)
@@ -461,16 +599,21 @@ class Agent:
         if missing:
             n = sum(1 for g in self.gates if g["kind"] == "coverage")
             if n >= MAX_COVERAGE_GATES:
-                return "STOP"
+                return "PARTIAL"
             parts = []
-            for shown, miss, total in missing:
-                spans = "、".join(f"{a}–{b}" for a, b in miss[:8]) + ("…" if len(miss) > 8 else "")
-                parts.append(f"`{shown}`（共 {total} 行）尚未讀到第 {spans} 行；請從 offset={miss[0][0]} 起用 read_file 依序讀完")
+            for shown, miss, total in missing[:12]:
+                spans = "、".join(f"{a}–{b}" for a, b in miss[:6]) + ("…" if len(miss) > 6 else "")
+                parts.append(f"`{shown}`（共 {total} 行）未讀第 {spans} 行，從 offset={miss[0][0]} 起")
+            more = f"；另有 {len(missing) - 12} 個必讀檔未讀完（見審查計畫）" if len(missing) > 12 else ""
             self.gates.append({"kind": "coverage", "turn": len(self.turns),
                                "missing": {s: [list(x) for x in m] for s, m, _ in missing}})
-            log(f"守門：必讀檔未讀完就交報告，退回（第 {n + 1} 次）")
-            return ("【workflow 檢查】你還沒讀完必讀檔就交出報告，這份報告不採用。" + "；".join(parts)
-                    + "。每次 read_file 的回傳會寫明下一段的 offset。全部讀完後，再依提示詞規定的格式重新輸出**完整**報告。")
+            log(f"守門：必讀檔未讀完就交報告，退回（第 {n + 1} 次，共 {len(missing)} 檔未讀完）")
+            last = n + 1 >= MAX_COVERAGE_GATES
+            return ("【workflow 檢查】你還沒讀完必讀範圍就交出報告。" + "；".join(parts) + more + "。"
+                    + ("請用 read_file 把這些讀完，再依規定格式重新輸出**完整**報告。" if not last else
+                       "這是最後一次提醒：請盡量讀完；若預算、輪數或時間不夠，就直接輸出**完整**報告——能判的項目照判，"
+                       "受未讀段落影響的項目判「無法判定」並寫明缺哪一段，並在報告列出實際讀了哪些段、哪些沒讀。"
+                       "下一份報告會被採用，並標示為部分審查。"))
         if (self.a.mode == "review" and "無法判定" in text
                 and not any(g["kind"] == "undecidable" for g in self.gates)):
             self.gates.append({"kind": "undecidable", "turn": len(self.turns)})
@@ -631,10 +774,9 @@ class Agent:
                     self.error = {"kind": "incomplete", "message": f"回應狀態 {getattr(resp, 'status', None)}（{detail}），沒有可用報告"}
                     return "incomplete", text
                 back = self.gate(text)
-                if back == "STOP":
-                    self.error = {"kind": "coverage", "message": f"退回 {MAX_COVERAGE_GATES} 次後仍未讀完必讀檔",
-                                  "coverage": self.coverage_report()}
-                    return "incomplete_coverage", text
+                if back == "PARTIAL":
+                    self.error = {"kind": "coverage", "message": f"退回 {MAX_COVERAGE_GATES} 次後仍未讀完必讀檔；採用這份報告，標為部分審查"}
+                    return "completed_partial", text
                 if back:
                     self.items.append({"role": "user", "content": back})
                     continue
@@ -659,6 +801,7 @@ def parse_args(argv):
     ap.add_argument("--attach", action="append", default=[], help="全文（至多 PREFILL_MAX_CHARS）放進第一則訊息的檔案")
     ap.add_argument("--require-read", action="append", default=[],
                     help="必讀檔：開頭段落放進第一則訊息，交報告前必須讀完每一行，否則退回")
+    ap.add_argument("--require-read-list", help="必讀檔清單（每行一個路徑，相對於工作目錄）")
     ap.add_argument("--reasoning-context", default="all_turns", choices=("all_turns", "auto", "current_turn", "none"),
                     help="Responses API 的 reasoning.context；none＝不送此欄位")
     ap.add_argument("--list-tools", action="store_true")
@@ -675,11 +818,24 @@ def parse_args(argv):
         ap.error("workdir 不存在")
     if a.reasoning_context == "none":
         a.reasoning_context = None
+    if a.require_read_list:
+        with open(a.require_read_list, encoding="utf-8") as fh:
+            a.require_read += [ln.strip() for ln in fh if ln.strip()]
     return a
 
 
 def main(argv=None):
-    a = parse_args(sys.argv[1:] if argv is None else argv)
+    argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["prepare-review"]:
+        ap = argparse.ArgumentParser(prog="openai_agent.py prepare-review")
+        ap.add_argument("--repo", required=True)
+        ap.add_argument("--base", required=True)
+        ap.add_argument("--out", required=True)
+        pa = ap.parse_args(argv[1:])
+        if not re.fullmatch(r"[0-9a-f]{40}", pa.base):
+            ap.error("base 必須是 40 位 SHA")
+        return prepare_review(pa.repo, pa.base, pa.out)
+    a = parse_args(argv)
     t0 = time.monotonic()
     a.deadline = t0 + a.time_limit_sec
     a.wrapup_seconds = min(a.wrapup_seconds, a.time_limit_sec // 4)
@@ -718,7 +874,7 @@ def main(argv=None):
             del key
             agent = Agent(a, prompt, client, tools)
             reason, text = agent.run()
-            result.update(end_reason=reason, result=text, is_error=(reason != "completed"), error=agent.error,
+            result.update(end_reason=reason, result=text, is_error=(reason not in ("completed", "completed_partial")), error=agent.error,
                           coverage=agent.coverage_report(), gates=agent.gates)
     except Interrupted as e:
         result.update(end_reason="interrupted", error={"kind": "signal", "message": f"收到 {e}，中斷"})
@@ -734,7 +890,7 @@ def main(argv=None):
         result["elapsed_sec"] = round(time.monotonic() - t0, 1)
         sys.stdout.write(json.dumps(result, ensure_ascii=False, indent=1) + "\n")
         sys.stdout.flush()
-    return 0 if result["end_reason"] == "completed" else 1
+    return 0 if result["end_reason"] in ("completed", "completed_partial") else 1
 
 
 if __name__ == "__main__":
