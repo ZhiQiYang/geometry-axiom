@@ -41,6 +41,9 @@ class BinaryFreshnessTests(unittest.TestCase):
 
     def fake_compile(self, binary, source):
         binary.path.write_bytes(b'public fixture\r\nnever execute')
+        # 成功的模擬連結每次都給產物新的時間戳，兩次快寫也可在粗粒度檔案系統上區分。
+        stamp = 1_700_000_000 + 2 * self.compile.call_count
+        os.utime(binary.path, (stamp, stamp))
         return 0, '', False
 
     def build(self):
@@ -208,8 +211,16 @@ class BinaryFreshnessTests(unittest.TestCase):
 
     def test_compile_and_launch_failure_leave_no_fresh_credentials(self):
         self.build()
-        self.compile.return_value = (1, 'controlled failure', False)
         self.compile.side_effect = None
+        self.compile.return_value = (0, '', False)
+        unchanged = binaries.build_one(self.b, force=True)
+        self.assertEqual(unchanged.status, 'compile-failed')
+        self.assertIn('exe 的 mtime 沒有更新', unchanged.detail)
+        self.assertEqual(self.smoke.call_count, 1)
+        self.assertFalse(self.b.sidecar.exists())
+        self.assertFalse(binaries._pending_path(self.b).exists())
+
+        self.compile.return_value = (1, 'controlled failure', False)
         self.assertEqual(binaries.build_one(self.b, force=True).status, 'compile-failed')
         self.assertFalse(self.b.sidecar.exists())
         self.compile.side_effect = self.fake_compile
