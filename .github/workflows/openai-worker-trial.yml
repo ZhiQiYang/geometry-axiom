@@ -1,0 +1,994 @@
+name: OpenAI worker (trial)
+
+# 用 repo secret OPENAI_API_KEY（ChatGPT 訂閱附的 OpenAI API 點數）讓模型照「擁有者的一則 issue 留言」做事，
+# 成果推到新分支 openaiworker/<run_id>。本 workflow 不開 PR（PR 由本機 Claude 以使用者身分開）。
+# 架構與安全防線沿用 api-worker.yml；差別只在模型那一段：不用 Claude Code CLI，也**不用 Codex**
+# （這筆點數不涵蓋經 API 金鑰使用 Codex），改由 .github/scripts/openai_agent.py 以官方 openai Python SDK
+# 直接呼叫 Responses API（function calling），自己跑工具迴圈。
+# 安全設計、殘餘風險與限制見 .github/prompts/openai-worker.md 與建立本檔的 PR 說明。
+#
+# 只能由擁有者本人、從 main 手動觸發：
+#   gh workflow run openai-worker.yml --repo ZhiQiYang/geometry-axiom --ref main \
+#     -f task_issue=<issue 號> -f task_comment_id=<留言 id> [-f base_ref=main] [-f max_budget_usd=10] [-f model=gpt-6.2-astra]
+#
+# 四個 job，權限各自最小：
+#   prepare（issues/contents 讀）：驗輸入、驗留言作者是擁有者、記內文 SHA-256、把 base 解析成完整 SHA。不含模型。
+#   work（contents 讀）：模型迴圈以獨立 unix 使用者 apiworker 執行；金鑰只在模型那一 step。手上沒有任何 GitHub token。
+#   push（contents 寫）：不含模型、不帶金鑰；固定檢查全過才把成果推到新分支。token 只在推送那一 step。
+#   report（issues 寫）：不含模型、不帶金鑰；在 task_issue 貼一則【OpenAI worker】留言，最後刪除本 run 的成果 artifact。
+
+on:
+  push:
+    branches:
+      - tmp/openai-trial-20261126
+    paths:
+      - .github/workflows/openai-worker-trial.yml
+
+# workflow 層級不給任何權限；只在各 job 上給最小權限。
+permissions: {}
+
+concurrency:
+  group: openai-worker-comment-7172060997
+  cancel-in-progress: false
+
+env:
+  WORKER_BRANCH: openaiworker/${{ github.run_id }}
+
+jobs:
+  prepare:
+    name: Validate task comment and base
+    # 只准 repo 擁有者本人、從 main 上的這份 workflow 觸發（與審查版相同）。
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/tmp/openai-trial-20261126' &&
+      github.actor == github.repository_owner &&
+      github.triggering_actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      task_issue: ${{ steps.task.outputs.task_issue }}
+      reject_reason: ${{ steps.task.outputs.reject_reason }}
+      comment_id: ${{ steps.task.outputs.comment_id }}
+      comment_url: ${{ steps.task.outputs.comment_url }}
+      comment_sha256: ${{ steps.task.outputs.comment_sha256 }}
+      comment_updated_at: ${{ steps.task.outputs.comment_updated_at }}
+      refs_summary: ${{ steps.task.outputs.refs_summary }}
+      base_ref: ${{ steps.task.outputs.base_ref }}
+      base_sha: ${{ steps.task.outputs.base_sha }}
+      model: ${{ steps.task.outputs.model }}
+      max_budget_usd: ${{ steps.task.outputs.max_budget_usd }}
+    steps:
+      - name: Validate inputs, comment author and base (no API key, no model)
+        id: task
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TASK_ISSUE: 455
+          TASK_COMMENT_ID: 7172060997
+          BASE_REF: main
+          MAX_BUDGET_USD: 10
+          MODEL: gpt-6.2-astra
+          OWNER_LOGIN: ${{ github.repository_owner }}
+          OWNER_ID: ${{ github.repository_owner_id }}
+        run: |
+          set -euo pipefail
+          task="$RUNNER_TEMP/task"
+          rm -rf "$task"; mkdir -p "$task/refs"
+          python3 - "$task" <<'PY'
+          import hashlib, json, os, re, subprocess, sys
+          task = sys.argv[1]
+          env = os.environ
+          repo = env["GITHUB_REPOSITORY"]
+          out_path = env["GITHUB_OUTPUT"]
+          MODELS = {"gpt-6.2-astra", "gpt-6.2-sol"}
+
+          def output(key, value):
+              value = str(value)
+              if "\n" in value or "\r" in value:
+                  raise SystemExit("::error::output 不得含換行")
+              with open(out_path, "a", encoding="utf-8") as f:
+                  f.write(f"{key}={value}\n")
+
+          def reject(reason):
+              # 拒絕原因寫進 output，report job 照實貼出；不含非擁有者留言的內文。
+              output("reject_reason", reason)
+              print(f"::error::{reason}", file=sys.stderr)
+              sys.exit(1)
+
+          def gh_json(path):
+              p = subprocess.run(["gh", "api", path], capture_output=True, text=True)
+              if p.returncode != 0:
+                  return None, (p.stderr.strip().splitlines() or ["gh api 失敗"])[-1][:200]
+              try:
+                  return json.loads(p.stdout), ""
+              except ValueError:
+                  return None, "回應不是 JSON"
+
+          def is_owner(user):
+              user = user or {}
+              return (str(user.get("id")) == env["OWNER_ID"]
+                      and str(user.get("login", "")).lower() == env["OWNER_LOGIN"].lower()
+                      and user.get("type") == "User")
+
+          issue = env["TASK_ISSUE"]
+          if not re.fullmatch(r"[1-9][0-9]{0,6}", issue):
+              print("::error::task_issue 必須是正整數", file=sys.stderr); sys.exit(1)
+          output("task_issue", issue)
+
+          cid = env["TASK_COMMENT_ID"]
+          if not re.fullmatch(r"[1-9][0-9]{0,12}", cid):
+              reject("task_comment_id 必須是正整數")
+          budget = env["MAX_BUDGET_USD"]
+          if not re.fullmatch(r"[0-9]{1,2}(\.[0-9]{1,2})?", budget) or not (0 < float(budget) <= 30):
+              reject("max_budget_usd 必須是 0 到 30 之間的數字")
+          model = env["MODEL"]
+          if model not in MODELS:
+              reject("model 不在白名單內")
+          base_ref = env["BASE_REF"]
+          if (not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}", base_ref) or ".." in base_ref
+                  or "//" in base_ref or base_ref.endswith(("/", ".lock", "."))):
+              reject("base_ref 必須是本 repo 的分支名")
+
+          c, err = gh_json(f"repos/{repo}/issues/comments/{cid}")
+          if c is None:
+              reject(f"取不到任務留言 {cid}（{err}）")
+          if not str(c.get("issue_url", "")).endswith(f"/repos/{repo}/issues/{issue}"):
+              reject(f"任務留言 {cid} 不屬於 #{issue}")
+          if not is_owner(c.get("user")):
+              login = (c.get("user") or {}).get("login", "未知")
+              reject(f"任務留言 {cid} 的作者 {login} 不是 repo 擁有者，拒絕執行（未讀取內文）")
+          body = c.get("body")
+          if not isinstance(body, str) or not body.strip():
+              reject(f"任務留言 {cid} 沒有內文")
+          raw = body.encode("utf-8")
+          digest = hashlib.sha256(raw).hexdigest()
+          with open(os.path.join(task, "task-comment.md"), "wb") as f:
+              f.write(raw)
+          print(f"task comment {cid} by owner, {len(raw)} bytes, sha256 {digest}")
+
+          # 任務留言引用的其他留言：只認「issuecomment-<id>」連結錨點與「ref-comment: <id>」行；
+          # 由本固定步驟取回並標明作者，非擁有者的一律不取內文。最多 20 則。
+          ids = []
+          for m in re.finditer(r"issuecomment-([1-9][0-9]{0,12})\b|ref-comment\s*[:：]\s*([1-9][0-9]{0,12})\b", body):
+              rid = m.group(1) or m.group(2)
+              if rid != cid and rid not in ids:
+                  ids.append(rid)
+          summary = []
+          for rid in ids[:20]:
+              r, err = gh_json(f"repos/{repo}/issues/comments/{rid}")
+              if r is None:
+                  summary.append(f"{rid}:取不到")
+                  continue
+              login = (r.get("user") or {}).get("login", "未知")
+              if not is_owner(r.get("user")):
+                  summary.append(f"{rid}:略過（作者 {login} 非擁有者，未取內文）")
+                  continue
+              rb = (r.get("body") or "").encode("utf-8")
+              rd = hashlib.sha256(rb).hexdigest()
+              with open(os.path.join(task, "refs", f"{rid}.md"), "wb") as f:
+                  f.write(f"<!-- 引用留言 {rid}｜作者 {login}（已驗證為 repo 擁有者）｜{r.get('html_url', '')}｜內文 SHA-256 {rd} -->\n".encode("utf-8"))
+                  f.write(rb)
+              summary.append(f"{rid}:已取（擁有者，sha256 {rd[:12]}）")
+          if len(ids) > 20:
+              summary.append(f"另有 {len(ids) - 20} 則超過上限未取")
+
+          b, err = gh_json(f"repos/{repo}/branches/{base_ref}")
+          sha = ((b or {}).get("commit") or {}).get("sha", "")
+          if not re.fullmatch(r"[0-9a-f]{40}", sha or ""):
+              reject(f"base_ref {base_ref} 不是本 repo 的分支（{err or '無 commit SHA'}）")
+
+          meta = {"task_issue": int(issue), "comment_id": int(cid), "comment_url": c.get("html_url"),
+                  "comment_author": c["user"]["login"], "comment_updated_at": c.get("updated_at"),
+                  "comment_sha256": digest, "comment_bytes": len(raw), "refs": summary,
+                  "base_ref": base_ref, "base_sha": sha, "model": model, "max_budget_usd": budget}
+          with open(os.path.join(task, "meta.json"), "w", encoding="utf-8") as f:
+              json.dump(meta, f, ensure_ascii=False, indent=2)
+          for k in ("comment_url", "comment_updated_at", "comment_sha256", "base_ref", "base_sha", "model", "max_budget_usd"):
+              output(k, meta[k] or "")
+          output("comment_id", cid)
+          output("refs_summary", "；".join(summary) if summary else "無")
+          print(json.dumps(meta, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Hand the task to the work job
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: openai-worker-task
+          path: ${{ runner.temp }}/task/
+          if-no-files-found: error
+          retention-days: 1
+
+  work:
+    name: Model works on a local branch
+    needs: prepare
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/tmp/openai-trial-20261126' &&
+      github.actor == github.repository_owner &&
+      github.triggering_actor == github.repository_owner &&
+      needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    permissions:
+      contents: read
+    env:
+      # 官方 openai Python SDK 的釘選版本；依賴全部釘版並驗 sha256（見「Install pinned openai SDK」）。
+      OPENAI_SDK_VERSION: "3.56.0"
+      # 系統 Python（root 擁有）。不寫死小版號：安裝 step 依實際版本挑對應的 wheel 雜湊，不在清單內就失敗。
+      PYTHON_BIN: /usr/bin/python3
+      WORKER_EFFORT: high
+      WORKER_MAX_TURNS: "300"
+      # 模型迴圈自己的總時限（秒）：比模型 step 的 150 分鐘短，留時間讓它收尾並寫出結果 JSON。
+      WORKER_TIME_LIMIT_SEC: "8400"
+      BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
+      # 模型專用的 unix 使用者與固定路徑（root 擁有，模型改不到）。
+      WORKER_USER: apiworker
+      WORKER_HOME: /home/apiworker
+      WORKER_OPT: /opt/apiworker
+    steps:
+      - name: Receive the validated task
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: openai-worker-task
+          path: ${{ runner.temp }}/task
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+
+      - name: Prepare the integration-test environment (fonts, toolchain, Chrome)
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          # 與 integration-tests.yml 相同的執行條件：ulimit -s 16384（啟動模型時設定）、Node 24、
+          # npm run build 用的 C 編譯工具、/usr/bin/google-chrome（--no-sandbox，以非 root 的 apiworker 執行）。
+          # 字型直接走 apt，不用 actions/cache：模型所在的 job 不讀寫任何跨 run 的快取。
+          # python3-venv：模型迴圈裝在 root 擁有的 venv（系統 Python $PYTHON_BIN；版本對應的雜湊見下一 step）。
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends fonts-noto-cjk python3-venv
+          # 不用 grep -q：在 pipefail 下提早關管線會讓 fc-list 收到 SIGPIPE 而誤判失敗。
+          fc-list : family | grep -i 'Noto.*CJK' > /dev/null
+          for t in gcc cc make python3 node npm git jq; do command -v "$t" > /dev/null || { echo "::error::缺少 $t" >&2; exit 1; }; done
+          test -x /usr/bin/google-chrome
+          test -x "$PYTHON_BIN"
+          gcc --version | sed -n 1p; node --version; "$PYTHON_BIN" --version; /usr/bin/google-chrome --version
+
+      - name: Install pinned openai SDK into a root-owned venv (hash-verified, no API key in this step)
+        run: |
+          set -euo pipefail
+          cd /
+          # 依賴全部釘版、驗 sha256（--require-hashes、--no-deps、只收 wheel）。清單是 openai==${OPENAI_SDK_VERSION} 的完整依賴：
+          # 12 個純 Python wheel（各版本共用），加上 2 個含編譯擴充的 wheel（jiter、pydantic-core），後者依 CPython 小版號各有一組雜湊。
+          # 系統 Python 不在下表（CPython 3.12／3.13／3.14、x86_64）時明確失敗，不猜、不放寬（例如不改用無雜湊安裝）。
+          py="$PYTHON_BIN"
+          test -x "$py" || { echo "::error::找不到 $py" >&2; exit 1; }
+          pyid="$("$py" -I -c 'import platform, sys; print(f"{sys.implementation.name}-{sys.version_info[0]}.{sys.version_info[1]}-{platform.machine()}")')"
+          echo "runner Python：$pyid（$("$py" -I -c 'import sys; print(sys.version.split()[0])')）"
+          case "$pyid" in
+            cpython-3.12-x86_64)
+              jiter_sha=0956b5f58b804221dfb929c120e6d4032138fed20c1cc0ef683a2d1326255e46
+              pcore_sha=470bbc2495367f60d3ca849a8039e4c164701d10637e7743f4427d92651bdb6d ;;
+            cpython-3.13-x86_64)
+              jiter_sha=3b27d6bec319dc17cdced13e495f90ce066676ca296fc56f2dd2128f6a7599ed
+              pcore_sha=cbfde3ad127786f1dea1a6cd89a5eb824a16203f24743ad2b4e07506f43bc844 ;;
+            cpython-3.14-x86_64)
+              jiter_sha=def1f12b5cef4f53c30ec89d1644c6c5500b343f1ec5e9ac8010dad8c0a41d7b
+              pcore_sha=88b543705849d0c59343f97c38296dbf59eb7b3c9565bd4fe1ed638ba38da5ed ;;
+            *)
+              echo "::error::runner 的 Python（$pyid）不在釘選清單（CPython 3.12／3.13／3.14、x86_64）；要先在 workflow 補上該版本 jiter==0.19.0 與 pydantic-core==2.50.5 wheel 的 sha256，才能安裝" >&2
+              exit 1 ;;
+          esac
+          req="$RUNNER_TEMP/openai-requirements.txt"
+          cat > "$req" <<'REQ'
+          annotated-types==0.8.0 --hash=sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0
+          anyio==4.16.0 --hash=sha256:c66ae634e0b8228396b801741beb3294326d4b6102f7bba4041c0dfb58c29026
+          h11==0.16.0 --hash=sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86
+          httpcore2==2.16.2 --hash=sha256:16051ae2a42f776007543f32de9349a317b23d2cbb4e1456b4bac0e88b87419a
+          httpx2==2.16.2 --hash=sha256:f05c13aade4c45dbf1c9060647a1058f0acad62398fad96e741269edb33d46f5
+          idna==3.20 --hash=sha256:ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c
+          openai==3.56.0 --hash=sha256:24043ea80048ed1cd6c263c4fc4192406d05c418e87e89310eecbf55a9021c32
+          pydantic==2.14.4 --hash=sha256:653a2ad9f6d8858529c77c72717d0ea991d6c6837fe683246b2f4b2bbfc3fadc
+          sniffio==1.3.1 --hash=sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2
+          truststore==0.10.5 --hash=sha256:9aaaedaefaf06d8b206278cf8b5012bc897f485a874503501e12d776df78951c
+          typing-extensions==4.16.0 --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8
+          typing-inspection==0.4.5 --hash=sha256:bc210535442b39e1bf2805e0c7a17dfd6a4ace760c84c7f7d16245d23a6b1c39
+          REQ
+          sed -i 's/^ *//' "$req"
+          printf 'jiter==0.19.0 --hash=sha256:%s\npydantic-core==2.50.5 --hash=sha256:%s\n' "$jiter_sha" "$pcore_sha" >> "$req"
+          grep -qx "openai==${OPENAI_SDK_VERSION} --hash=sha256:[0-9a-f]\{64\}" "$req"
+          test "$(grep -c -- '--hash=sha256:[0-9a-f]\{64\}$' "$req")" = 14
+          venv="$WORKER_OPT/venv"
+          sudo mkdir -p "$WORKER_OPT"
+          sudo rm -rf "$venv"
+          sudo "$py" -m venv "$venv"
+          sudo env -i PATH=/usr/bin:/bin HOME=/root PIP_DISABLE_PIP_VERSION_CHECK=1 "$venv/bin/pip" install -q \
+            --no-deps --require-hashes --only-binary :all: --no-cache-dir -r "$req"
+          sudo env -i PATH=/usr/bin:/bin "$venv/bin/pip" check
+          sudo chown -R root:root "$venv"
+          sudo chmod -R go-w "$venv"
+          vid="$("$venv/bin/python" -I -c 'import platform, sys; print(f"{sys.implementation.name}-{sys.version_info[0]}.{sys.version_info[1]}-{platform.machine()}")')"
+          test "$vid" = "$pyid" || { echo "::error::venv 的 Python（$vid）與挑選雜湊時的版本（$pyid）不符" >&2; exit 1; }
+          got="$("$venv/bin/python" -I -c 'import openai; print(openai.__version__)')"
+          test "$got" = "$OPENAI_SDK_VERSION" || { echo "::error::openai SDK 版本不符：$got" >&2; exit 1; }
+          echo "openai SDK $got"
+
+      - name: Create the isolated worker user, its clone and launcher (no API key)
+        run: |
+          set -euo pipefail
+          runner_user="$(id -un)"
+          test "$(id -u)" != 0
+          # 以下會把 runner 家目錄（含工作區）改成 apiworker 不可進入，sudo -u 前一律先離開工作區。
+          cd /
+          # 模型專用使用者：沒有附加群組（不在 docker／sudo／adm）、沒有 sudo 規則。
+          if ! id "$WORKER_USER" > /dev/null 2>&1; then
+            sudo useradd --create-home --user-group --shell /bin/bash "$WORKER_USER"
+          fi
+          sudo chmod 700 "$WORKER_HOME"
+          # runner 自己的家目錄（含工作區、_temp、runner 設定）對 apiworker 不可讀。
+          chmod 700 "$HOME"
+          # runner 程式若裝在家目錄外，把它的憑證檔改成只有擁有者能讀。
+          for pid in $(pgrep -f 'Runner\.(Worker|Listener)' || true); do
+            exe="$(readlink "/proc/$pid/exe" 2>/dev/null || true)"
+            [ -n "$exe" ] || continue
+            root="$(dirname "$(dirname "$exe")")"
+            while IFS= read -r -d '' f; do sudo chmod go-rwx "$f"; done \
+              < <(sudo find "$root" -maxdepth 3 \( -name '.credentials*' -o -name '.runner' \) -print0 2>/dev/null)
+          done
+
+          node_dir="$(dirname "$(command -v node)")"
+          printf '%s\n' "$node_dir" | sudo tee "$WORKER_OPT/node-dir" > /dev/null
+          printf '%s\n' "$WORKER_BRANCH" | sudo tee "$WORKER_OPT/branch" > /dev/null
+          printf '%s\n' "$BASE_SHA" | sudo tee "$WORKER_OPT/base-sha" > /dev/null
+
+          # 啟動器：root 擁有、模型改不到；runner 只能經 sudo 以 apiworker 身分執行它（固定四種模式）。
+          sudo tee "$WORKER_OPT/apiworker-run" > /dev/null <<'LAUNCHER'
+          #!/bin/bash
+          # 由 .github/workflows/openai-worker.yml 安裝；以 apiworker 身分執行。模式：preflight／run／bundle／kill。
+          set -euo pipefail
+          umask 022
+          opt=/opt/apiworker
+          work="$HOME/work"
+          py="$opt/venv/bin/python"
+          agent="$opt/openai_agent.py"
+          key="${OPENAI_API_KEY-}"
+          unset OPENAI_API_KEY
+          node_dir="$(cat "$opt/node-dir")"
+          branch="$(cat "$opt/branch")"
+          base="$(cat "$opt/base-sha")"
+          flags=(--mode worker --workdir "$work" --read-root "$opt/trusted")
+          # 允許清單式環境：除下列變數外一律不帶（沒有任何 GITHUB_*／ACTIONS_*／RUNNER_*、OPENAI_BASE_URL 與 token）。
+          base_env=(PATH="$node_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+                    HOME="$HOME" USER=apiworker LOGNAME=apiworker LANG=C.UTF-8 LC_ALL=C.UTF-8 TMPDIR="$HOME/tmp"
+                    GEOMETRY_CHROME=/usr/bin/google-chrome GEOMETRY_CHROME_FLAGS=--no-sandbox
+                    PYTHONDONTWRITEBYTECODE=1)
+          mkdir -p "$HOME/tmp"
+          cd "$work"
+          ulimit -s 16384
+          mode="${1:-}"
+          case "$mode" in
+            preflight)
+              # 不連網、不帶金鑰：只印出模型迴圈實際提供的工具清單與 SDK 版本。
+              [[ "${2:-}" =~ ^gpt-[a-z0-9.-]{1,40}$ ]] || exit 64
+              exec env -i "${base_env[@]}" "$py" -I "$agent" "${flags[@]}" --model "$2" --list-tools ;;
+            run)
+              [[ "${2:-}" =~ ^gpt-[a-z0-9.-]{1,40}$ && "${3:-}" =~ ^(low|medium|high|xhigh|max)$ \
+                 && "${4:-}" =~ ^[1-9][0-9]{0,3}$ && "${5:-}" =~ ^[0-9]{1,2}(\.[0-9]{1,2})?$ \
+                 && "${6:-}" =~ ^[1-9][0-9]{1,4}$ ]] || exit 64
+              [ -n "$key" ] || exit 65
+              exec env -i "${base_env[@]}" OPENAI_API_KEY="$key" \
+                "$py" -I "$agent" "${flags[@]}" --model "$2" --effort "$3" --max-turns "$4" --max-budget-usd "$5" \
+                --time-limit-sec "$6" ;;
+            bundle)
+              # 模型改得到 .git/config，所以 git 也只以 apiworker 身分跑；輸出的 bundle 由 push job 重新驗證。
+              G=(env -i "${base_env[@]}" GIT_CONFIG_NOSYSTEM=1 git -c core.hooksPath=/dev/null -c core.fsmonitor=false)
+              "${G[@]}" rev-parse --verify -q "refs/heads/$branch^{commit}" > /dev/null || { echo "no-branch" >&2; exit 3; }
+              n="$("${G[@]}" rev-list --count "$base..refs/heads/$branch")"
+              echo "commits=$n uncommitted=$("${G[@]}" status --porcelain=v1 | wc -l)" >&2
+              [ "$n" -gt 0 ] || exit 4
+              exec "${G[@]}" bundle create - "refs/heads/$branch" "^$base" ;;
+            kill)
+              kill -9 -1 2>/dev/null || true ;;
+            *) exit 64 ;;
+          esac
+          LAUNCHER
+          sudo chown root:root "$WORKER_OPT" "$WORKER_OPT/apiworker-run" "$WORKER_OPT/node-dir" "$WORKER_OPT/branch" "$WORKER_OPT/base-sha"
+          sudo chmod 755 "$WORKER_OPT" "$WORKER_OPT/apiworker-run"
+          sudo chmod 644 "$WORKER_OPT/node-dir" "$WORKER_OPT/branch" "$WORKER_OPT/base-sha"
+          bash -n "$WORKER_OPT/apiworker-run"
+          # runner 只能以 apiworker 身分跑這支啟動器；金鑰只經 env_keep 傳過去。apiworker 自己沒有任何 sudo 規則。
+          rule="$RUNNER_TEMP/zz-apiworker"
+          {
+            printf 'Defaults!%s env_keep += "OPENAI_API_KEY"\n' "$WORKER_OPT/apiworker-run"
+            printf '%s ALL=(%s) NOPASSWD: %s\n' "$runner_user" "$WORKER_USER" "$WORKER_OPT/apiworker-run"
+          } > "$rule"
+          sudo visudo -cf "$rule"
+          sudo install -o root -g root -m 0440 "$rule" /etc/sudoers.d/zz-apiworker
+
+          # 下面 sudo -u 的重導向刻意由 runner 寫檔（檔案歸 runner，apiworker 碰不到）。
+          # 簽出 base 的固定 SHA：以 apiworker 身分從公開遠端 clone，遠端網址不帶任何憑證。
+          remote="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          # shellcheck disable=SC2024
+          sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" bash -c '
+            set -euo pipefail
+            rm -rf "$HOME/work"
+            git clone -q --filter=blob:none --no-checkout "$1" "$HOME/work"
+            cd "$HOME/work"
+            git switch -q -c "$2" "$3"
+            git config user.name "OpenAI worker"
+            git config user.email "openai-worker@users.noreply.github.com"
+            git rev-parse HEAD
+          ' _ "$remote" "$WORKER_BRANCH" "$BASE_SHA" > "$RUNNER_TEMP/worker-head"
+          test "$(cat "$RUNNER_TEMP/worker-head")" = "$BASE_SHA"
+          # 主 repo 的提示詞與模型迴圈程式一律取觸發本 run 的 main commit（github.sha）。
+          # shellcheck disable=SC2024
+          sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
+            git -C "$WORKER_HOME/work" show "$GITHUB_SHA:.github/prompts/openai-worker.md" > "$RUNNER_TEMP/openai-worker-prompt.md"
+          test -s "$RUNNER_TEMP/openai-worker-prompt.md"
+          sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
+            git -C "$WORKER_HOME/work" show "$GITHUB_SHA:.github/scripts/openai_agent.py" | sudo tee "$WORKER_OPT/openai_agent.py" > /dev/null
+          sudo chown root:root "$WORKER_OPT/openai_agent.py"
+          sudo chmod 644 "$WORKER_OPT/openai_agent.py"
+          "$PYTHON_BIN" -I -c 'import ast, sys; ast.parse(open(sys.argv[1], encoding="utf-8").read())' "$WORKER_OPT/openai_agent.py"
+          # 工作規則（AGENTS.md／CLAUDE.md）也一律取 main（github.sha）版，放在 root 擁有、模型改不到的位置；
+          # base 分支工作樹裡的同名檔只是資料（base_ref 可能是未經審查的分支）。
+          sudo mkdir -p "$WORKER_OPT/trusted"
+          for f in AGENTS.md CLAUDE.md; do
+            if sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
+                 git -C "$WORKER_HOME/work" cat-file -e "$GITHUB_SHA:$f" 2> /dev/null; then
+              sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
+                git -C "$WORKER_HOME/work" show "$GITHUB_SHA:$f" | sudo tee "$WORKER_OPT/trusted/$f" > /dev/null
+            fi
+          done
+          sudo test -s "$WORKER_OPT/trusted/AGENTS.md"
+          sudo chown -R root:root "$WORKER_OPT/trusted"
+          sudo chmod 755 "$WORKER_OPT/trusted"
+          sudo chmod 644 "$WORKER_OPT"/trusted/*
+
+      - name: Verify the worker is isolated and the git remote has no credentials
+        run: |
+          set -euo pipefail
+          cd /
+          as_worker() { sudo -u "$WORKER_USER" -H env -i PATH=/usr/bin:/bin HOME="$WORKER_HOME" "$@"; }
+          fail() { echo "::error::$1" >&2; exit 1; }
+          test "$(as_worker id -G | wc -w)" = 1 || fail "apiworker 不得有附加群組"
+          ! as_worker sudo -n true 2> /dev/null || fail "apiworker 不得有 sudo"
+          ! as_worker test -r "$HOME" -o -x "$HOME" || fail "apiworker 讀得到 runner 家目錄"
+          if [ -S /var/run/docker.sock ]; then ! as_worker test -w /var/run/docker.sock || fail "apiworker 寫得到 docker socket"; fi
+          url="$(as_worker git -C "$WORKER_HOME/work" remote get-url origin)"
+          [ "$url" = "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git" ] || fail "遠端網址不符：$url"
+          ! as_worker git -C "$WORKER_HOME/work" config --get-regexp '^(http\..*extraheader|credential\..*|url\..*)$' || fail "git 設定帶有憑證相關項"
+          # 雲端主機的中繼資料端點對 apiworker 一律拒絕（Azure IMDS 與 wireserver）。
+          sudo iptables -I OUTPUT -m owner --uid-owner "$WORKER_USER" -d 169.254.0.0/16 -j REJECT
+          sudo iptables -I OUTPUT -m owner --uid-owner "$WORKER_USER" -d 168.63.129.16/32 -j REJECT
+          ! as_worker curl -sS -m 5 -o /dev/null http://169.254.169.254/ 2> /dev/null || fail "apiworker 仍連得到 IMDS"
+          sudo -n -l -U "$WORKER_USER" || true
+          echo "isolation ok"
+
+      - name: Build prompt from the trusted main copy and the validated task
+        env:
+          TASK_ISSUE: ${{ needs.prepare.outputs.task_issue }}
+          BASE_REF: ${{ needs.prepare.outputs.base_ref }}
+        run: |
+          set -euo pipefail
+          task="$RUNNER_TEMP/task"
+          python3 - "$task" "$RUNNER_TEMP/openai-worker-prompt.md" > "$RUNNER_TEMP/worker-prompt.md" <<'PY'
+          import hashlib, json, os, sys
+          task, prompt = sys.argv[1], sys.argv[2]
+          meta = json.load(open(os.path.join(task, "meta.json"), encoding="utf-8"))
+          body = open(os.path.join(task, "task-comment.md"), "rb").read()
+          if hashlib.sha256(body).hexdigest() != meta["comment_sha256"]:
+              sys.exit("::error::任務留言內文與 prepare 記錄的 SHA-256 不符")
+          if meta["base_sha"] != os.environ["BASE_SHA"]:
+              sys.exit("::error::base SHA 不符")
+          out = [open(prompt, encoding="utf-8").read().rstrip("\n"), "",
+                 "## 本次執行參數（由 workflow 產生）", "",
+                 f"- 工作目錄（git 工作樹）：{os.environ['WORKER_HOME']}/work",
+                 f"- 起始分支：{meta['base_ref']}；base SHA：{meta['base_sha']}",
+                 f"- 你的本地分支：{os.environ['WORKER_BRANCH']}（已簽出；只在這個分支上 commit）",
+                 f"- 任務留言：#{meta['task_issue']} 的留言 {meta['comment_id']}（{meta['comment_url']}）",
+                 f"- 任務留言作者：{meta['comment_author']}（已由 workflow 驗證為 repo 擁有者）",
+                 f"- 任務留言內文 SHA-256：{meta['comment_sha256']}（{meta['comment_bytes']} bytes）",
+                 f"- 工作規則（main {os.environ['GITHUB_SHA']} 版，唯讀）：/opt/apiworker/trusted/AGENTS.md"
+                 + ("、/opt/apiworker/trusted/CLAUDE.md" if os.path.exists("/opt/apiworker/trusted/CLAUDE.md") else ""),
+                 f"- 引用留言處理結果：{'；'.join(meta['refs']) if meta['refs'] else '無'}",
+                 f"- 模型：{meta['model']}（reasoning effort {os.environ['WORKER_EFFORT']}）；"
+                 f"最大輪數 {os.environ['WORKER_MAX_TURNS']}；花費上限（估算）US${meta['max_budget_usd']}；"
+                 f"總時限 {int(os.environ['WORKER_TIME_LIMIT_SEC']) // 60} 分鐘",
+                 "", "## 任務留言原文（擁有者）", "", "````text", body.decode("utf-8"), "````"]
+          # actions/upload-artifact 不上傳空目錄：沒有引用留言時 refs/ 在這裡不存在，當成空清單。
+          refs_dir = os.path.join(task, "refs")
+          refs = sorted(os.listdir(refs_dir)) if os.path.isdir(refs_dir) else []
+          if len(refs) != sum(1 for r in meta["refs"] if "已取" in r):
+              sys.exit("::error::引用留言檔數與 prepare 記錄不符")
+          for name in refs:
+              out += ["", f"## 任務留言引用的留言 {name[:-3]}（擁有者）", "", "````text",
+                      open(os.path.join(task, "refs", name), encoding="utf-8").read(), "````"]
+          print("\n".join(out))
+          PY
+          wc -c "$RUNNER_TEMP/worker-prompt.md"
+
+      - name: Preflight the tool list without the API key
+        env:
+          MODEL: ${{ needs.prepare.outputs.model }}
+        run: |
+          set -euo pipefail
+          cd /
+          # 不帶金鑰、不連網：以 apiworker 身分經同一支啟動器取得模型迴圈實際提供的工具清單。
+          out="$(sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" preflight "$MODEL")"
+          echo "$out"
+          echo "$out" | jq -e '.mode == "worker" and .tools == ["read_file","run_shell","write_file"]' > /dev/null \
+            || { echo "::error::模型迴圈的工具清單不是恰好 read_file/run_shell/write_file，中止" >&2; exit 1; }
+          sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+
+      - name: Run the worker (the only step that receives the API key)
+        id: model
+        timeout-minutes: 150
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MODEL: ${{ needs.prepare.outputs.model }}
+          MAX_BUDGET_USD: ${{ needs.prepare.outputs.max_budget_usd }}
+        run: |
+          set -euo pipefail
+          cd /
+          out="$RUNNER_TEMP/worker-out"
+          mkdir -p "$out"
+          # 三件事分開記錄：啟動標記在模型迴圈啟動前寫入；結束碼只有它正常返回才寫得出來（逾時或中斷時不存在）。
+          # 檔名沿用 api-worker.yml（cli-started／cli-exit／result.json），讓後段檢查與留言邏輯一致。
+          rm -f "$out/result.json" "$out/cli-exit"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "$out/cli-started"
+          status=0
+          # 提示詞由 runner 讀入、結果由 runner 寫出（重導向刻意不經 sudo，apiworker 碰不到這兩個檔）。
+          # shellcheck disable=SC2024
+          # 模型以 apiworker 身分執行：讀不到 runner 的家目錄與行程環境；啟動器以允許清單重建環境，不帶任何 GitHub token。
+          # 每輪 usage 與估算花費印在 stderr（本 step 的 log），即使結果 JSON 沒寫出來也查得到。
+          sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" run "$MODEL" "$WORKER_EFFORT" "$WORKER_MAX_TURNS" "$MAX_BUDGET_USD" \
+            "$WORKER_TIME_LIMIT_SEC" < "$RUNNER_TEMP/worker-prompt.md" > "$out/result.json" || status=$?
+          echo "$status" > "$out/cli-exit"
+          echo "agent exit status: $status"
+          jq '{is_error, end_reason, started, num_turns, api_calls, total_cost_usd, cost_is_estimate, error}' \
+            "$out/result.json" || true
+
+      - name: Stop every leftover worker process (no API key)
+        if: always()
+        run: cd / && { sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true; }
+
+      - name: Package the local branch as a git bundle (no API key; git runs as the worker user)
+        if: always()
+        run: |
+          set -uo pipefail
+          cd /
+          out="$RUNNER_TEMP/worker-out"
+          mkdir -p "$out"
+          rc=0
+          # bundle 由 runner 寫檔（重導向刻意不經 sudo）。
+          # shellcheck disable=SC2024
+          sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" bundle > "$out/worker.bundle" 2> "$out/bundle-log.txt" || rc=$?
+          sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+          case "$rc" in
+            0) echo ok > "$out/bundle-status" ;;
+            3) echo no-branch > "$out/bundle-status"; rm -f "$out/worker.bundle" ;;
+            4) echo no-commits > "$out/bundle-status"; rm -f "$out/worker.bundle" ;;
+            *) echo "error-$rc" > "$out/bundle-status"; rm -f "$out/worker.bundle" ;;
+          esac
+          cat "$out/bundle-status" "$out/bundle-log.txt"
+          ls -la "$out"
+
+      - name: Hand the result to the push and report jobs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: openai-worker-output
+          path: ${{ runner.temp }}/worker-out/
+          if-no-files-found: ignore
+          retention-days: 1
+
+  push:
+    name: Check and push to a new branch
+    needs: [prepare, work]
+    if: >-
+      always() &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/tmp/openai-trial-20261126' &&
+      github.actor == github.repository_owner &&
+      github.triggering_actor == github.repository_owner &&
+      needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # 只有這個 job 有 contents: write，而 token 只在最後的推送 step 出現。
+    permissions:
+      contents: write
+    outputs:
+      ok: ${{ steps.check.outputs.ok }}
+      head_sha: ${{ steps.check.outputs.head_sha }}
+      commits: ${{ steps.check.outputs.commits }}
+      files: ${{ steps.check.outputs.files }}
+      reasons: ${{ steps.check.outputs.reasons }}
+      pushed: ${{ steps.push.outputs.pushed }}
+    env:
+      BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
+      WORKER_MAX_BUNDLE_BYTES: "104857600"
+    steps:
+      - name: Receive the worker result
+        id: fetch
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: openai-worker-output
+          path: ${{ runner.temp }}/worker-out
+
+      - name: Refusal checks (no token, no API key, no model)
+        id: check
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/worker-out"
+          repo="$RUNNER_TEMP/check-repo"
+          remote="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          rm -rf "$repo"
+          mkdir -p "$out"
+          G=(git -C "$repo" -c core.hooksPath=/dev/null -c core.fsmonitor=false -c diff.external= -c core.pager=cat)
+          # 公開 repo，以不帶憑證的方式取 base（只取 commit 與 tree，blob 需要時再取）。
+          git init -q "$repo"
+          "${G[@]}" remote add origin "$remote"
+          "${G[@]}" fetch -q --no-tags --filter=blob:none origin "$BASE_SHA"
+          "${G[@]}" cat-file -e "$BASE_SHA^{commit}"
+          python3 - "$out" "$repo" <<'PY'
+          import json, os, re, subprocess, sys
+          out, repo = sys.argv[1], sys.argv[2]
+          env = os.environ
+          base, branch = env["BASE_SHA"], env["WORKER_BRANCH"]
+          ref = f"refs/heads/{branch}"
+          G = ["git", "-C", repo, "-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false",
+               "-c", "diff.external=", "-c", "core.pager=cat"]
+          reasons = []
+          SECRET = re.compile(rb"sk-ant-[A-Za-z0-9_-]{8,}|sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}"
+                              rb"|-----BEGIN [A-Z ]*PRIVATE KEY-----|AKIA[0-9A-Z]{16}"
+                              rb"|eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}|xox[abprs]-[A-Za-z0-9-]{10,}")
+
+          def git(*args, check=True, **kw):
+              p = subprocess.run(G + list(args), capture_output=True, **kw)
+              if check and p.returncode != 0:
+                  raise SystemExit(f"::error::git {' '.join(args)} 失敗：{p.stderr.decode('utf-8', 'replace')[-300:]}")
+              return p
+
+          def read(name):
+              try:
+                  return open(os.path.join(out, name), "rb").read()
+              except OSError:
+                  return None
+
+          def output(key, value):
+              with open(env["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+                  f.write(f"{key}={value}\n")
+
+          # 1. 模型迴圈必須正常結束（end_reason=completed）並有可解析的最終報告；否則不推（成果無報告可對照）。
+          started = read("cli-started") is not None
+          exit_code = (read("cli-exit") or b"").strip().decode("ascii", "replace") or None
+          raw = read("result.json")
+          res = None
+          try:
+              res = json.loads(raw) if raw and raw.strip() else None
+          except ValueError:
+              res = None
+          if not isinstance(res, dict):
+              res = None
+          text = res.get("result") if res and isinstance(res.get("result"), str) else ""
+          if not (started and exit_code == "0" and res is not None and res.get("is_error") is False
+                  and res.get("end_reason") == "completed" and text.strip()):
+              end = res.get("end_reason") if res else None
+              reasons.append(f"模型迴圈未正常結束或沒有可解析的最終報告（啟動：{'是' if started else '否'}；"
+                             f"結束碼：{exit_code or '未記錄'}；結束原因：{end or '未記錄'}）")
+          # 2. 報告含疑似憑證字串。
+          if SECRET.search(text.encode("utf-8")) or (raw and SECRET.search(raw)):
+              reasons.append("模型報告含疑似憑證字串")
+
+          status = (read("bundle-status") or b"").strip().decode("ascii", "replace")
+          bundle = os.path.join(out, "worker.bundle")
+          head, commits, files = "", 0, 0
+          if status == "no-commits":
+              reasons.append("相對 base 沒有任何 commit")
+          elif status == "no-branch":
+              reasons.append(f"本地分支 {branch} 不存在（模型刪除或改名了分支）")
+          elif status != "ok" or not os.path.isfile(bundle):
+              reasons.append(f"沒有可推送的成果（bundle 狀態：{status or '無'}）")
+          elif os.path.getsize(bundle) > int(env["WORKER_MAX_BUNDLE_BYTES"]):
+              reasons.append(f"bundle 過大（{os.path.getsize(bundle)} bytes）")
+          else:
+              heads = git("bundle", "list-heads", bundle).stdout.decode().split("\n")
+              heads = [h.split(" ", 1) for h in heads if h.strip()]
+              if len(heads) != 1 or heads[0][1] != ref:
+                  reasons.append(f"bundle 的 ref 不是恰好一個 {ref}")
+              else:
+                  v = git("bundle", "verify", bundle, check=False)
+                  if v.returncode != 0:
+                      reasons.append("git bundle verify 失敗")
+                  else:
+                      git("fetch", "-q", "--no-tags", bundle, f"{ref}:refs/openaiworker/head")
+                      head = git("rev-parse", "refs/openaiworker/head^{commit}").stdout.decode().strip()
+                      if git("merge-base", "--is-ancestor", base, head, check=False).returncode != 0:
+                          reasons.append("成果不是 base 的後代")
+                      else:
+                          commits = int(git("rev-list", "--count", f"{base}..{head}").stdout)
+                          if commits == 0:
+                              reasons.append("相對 base 沒有任何 commit")
+                          # 3. 路徑：淨差異與每個 commit（合併取第一親）碰到的檔案都算。
+                          paths = set(git("diff", "--no-ext-diff", "--name-only", "-z", "--no-renames", base, head)
+                                      .stdout.decode("utf-8", "surrogateescape").split("\0"))
+                          files = len([p for p in paths if p])
+                          for c in git("rev-list", f"{base}..{head}").stdout.decode().split():
+                              paths |= set(git("diff-tree", "-r", "--no-commit-id", "--name-only", "-z", "--no-renames",
+                                               f"{c}^1", c).stdout.decode("utf-8", "surrogateescape").split("\0"))
+                          paths.discard("")
+                          if any(p == "公理層.md" or p.endswith("/公理層.md") for p in paths):
+                              reasons.append("改到 公理層.md（SSOT，不得由 worker 改動）")
+                          bad = sorted(p for p in paths if p.startswith((".github/workflows/", ".github/prompts/", ".github/actions/", ".github/scripts/")))
+                          if bad:
+                              reasons.append("改到 .github/workflows／prompts／actions／scripts：" + "、".join(bad[:10]))
+                          # 4. 每個新物件（commit 訊息、tree、blob 原始 bytes）掃疑似憑證。
+                          objs = git("rev-list", "--objects", "--missing=allow-promisor", head, f"^{base}").stdout.decode().split("\n")
+                          ids = "\n".join(o.split(" ", 1)[0] for o in objs if o.strip()) + "\n"
+                          batch = subprocess.run(G + ["cat-file", "--batch"], input=ids.encode(), capture_output=True, check=True).stdout
+                          hits, i = [], 0
+                          while i < len(batch):
+                              nl = batch.index(b"\n", i)
+                              hdr = batch[i:nl].split()
+                              if len(hdr) == 2 and hdr[1] == b"missing":
+                                  i = nl + 1; continue
+                              size = int(hdr[2]); data = batch[nl + 1: nl + 1 + size]; i = nl + 2 + size
+                              if SECRET.search(data):
+                                  hits.append(f"{hdr[1].decode()} {hdr[0].decode()[:12]}")
+                          if hits:
+                              reasons.append("差異（commit 或檔案內容）含疑似憑證字串：" + "、".join(hits[:10]))
+                          # 5. 目標分支已存在。
+                          ls = subprocess.run(["git", "ls-remote", "--heads", "origin", ref], cwd=repo, capture_output=True)
+                          if ls.returncode != 0:
+                              reasons.append("無法確認目標分支是否已存在（ls-remote 失敗）")
+                          elif ls.stdout.strip():
+                              reasons.append(f"目標分支 {branch} 已存在")
+          ok = not reasons
+          output("ok", "true" if ok else "false")
+          output("head_sha", head)
+          output("commits", commits)
+          output("files", files)
+          output("reasons", json.dumps(reasons, ensure_ascii=False))
+          print(json.dumps({"ok": ok, "head": head, "commits": commits, "files": files, "reasons": reasons}, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Push the checked head to the new branch (the only step with the write token)
+        id: push
+        if: steps.check.outputs.ok == 'true'
+        env:
+          TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ steps.check.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          repo="$RUNNER_TEMP/check-repo"
+          [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
+          case "$WORKER_BRANCH" in openaiworker/[0-9]*) ;; *) echo "::error::分支名不符" >&2; exit 1 ;; esac
+          auth="$(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
+          echo "::add-mask::$auth"
+          # 憑證只經環境變數給這一次 git 呼叫；只推新分支，不推 main、不 force。
+          GIT_CONFIG_COUNT=2 \
+          GIT_CONFIG_KEY_0="http.$GITHUB_SERVER_URL/.extraheader" GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth" \
+          GIT_CONFIG_KEY_1=core.hooksPath GIT_CONFIG_VALUE_1=/dev/null \
+            git -C "$repo" push --no-verify origin "$HEAD_SHA:refs/heads/$WORKER_BRANCH"
+          got="$(git -C "$repo" ls-remote origin "refs/heads/$WORKER_BRANCH" | cut -f1)"
+          test "$got" = "$HEAD_SHA"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "pushed $HEAD_SHA to $WORKER_BRANCH"
+
+  report:
+    name: Post the result on the task issue
+    needs: [prepare, work, push]
+    if: >-
+      always() &&
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/tmp/openai-trial-20261126' &&
+      github.actor == github.repository_owner &&
+      github.triggering_actor == github.repository_owner &&
+      needs.prepare.outputs.task_issue != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      issues: write
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Receive the worker result
+        id: fetch
+        if: needs.prepare.result == 'success'
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: openai-worker-output
+          path: ${{ runner.temp }}/worker-out
+
+      - name: Post one 【OpenAI worker】 comment (no API key, no model)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TASK_ISSUE: ${{ needs.prepare.outputs.task_issue }}
+          PREP_RESULT: ${{ needs.prepare.result }}
+          PREP_REJECT: ${{ needs.prepare.outputs.reject_reason }}
+          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7172060997' }}
+          COMMENT_URL: ${{ needs.prepare.outputs.comment_url }}
+          COMMENT_SHA256: ${{ needs.prepare.outputs.comment_sha256 }}
+          COMMENT_UPDATED_AT: ${{ needs.prepare.outputs.comment_updated_at }}
+          REFS_SUMMARY: ${{ needs.prepare.outputs.refs_summary }}
+          BASE_REF: ${{ needs.prepare.outputs.base_ref }}
+          BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
+          MODEL: ${{ needs.prepare.outputs.model || 'gpt-6.2-astra' }}
+          WORK_RESULT: ${{ needs.work.result }}
+          PUSH_RESULT: ${{ needs.push.result }}
+          CHECK_OK: ${{ needs.push.outputs.ok }}
+          PUSHED: ${{ needs.push.outputs.pushed }}
+          HEAD_SHA: ${{ needs.push.outputs.head_sha }}
+          COMMITS: ${{ needs.push.outputs.commits }}
+          FILES: ${{ needs.push.outputs.files }}
+          REASONS: ${{ needs.push.outputs.reasons }}
+          OPENAI_SDK_VERSION: "3.56.0"
+          WORKER_EFFORT: high
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$TASK_ISSUE" =~ ^[1-9][0-9]{0,6}$ ]]
+          rc=0
+          python3 - "$RUNNER_TEMP/worker-out" > "$RUNNER_TEMP/worker-comment.md" <<'PY' || rc=$?
+          import json, os, re, sys
+          out = sys.argv[1]
+          env = os.environ
+          SECRET = re.compile(r"sk-ant-[A-Za-z0-9_-]{8,}|sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}"
+                              r"|-----BEGIN [A-Z ]*PRIVATE KEY-----|AKIA[0-9A-Z]{16}"
+                              r"|eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}|xox[abprs]-[A-Za-z0-9-]{10,}")
+
+          def read(name):
+              try:
+                  return open(os.path.join(out, name), encoding="utf-8", errors="replace").read()
+              except OSError:
+                  return None
+
+          def unmention(s):
+              # 不讓任何內容 @ 到人：@ 後接英數字一律插零寬空白（U+200B）。
+              return re.sub(r"@(?=[A-Za-z0-9])", "@​", s)
+
+          started = read("cli-started") is not None
+          exit_code = (read("cli-exit") or "").strip() or None
+          raw = read("result.json")
+          res, parse_note = None, ""
+          if raw is None:
+              parse_note = "輸出檔不存在"
+          elif not raw.strip():
+              parse_note = "輸出檔是空的"
+          else:
+              try:
+                  res = json.loads(raw)
+              except ValueError:
+                  parse_note = f"輸出檔無法解析為 JSON（{len(raw.encode('utf-8'))} bytes，可能只寫了一半）"
+              else:
+                  if not isinstance(res, dict):
+                      res, parse_note = None, "輸出檔不是 JSON 物件"
+          parsed = res is not None
+          res = res or {}
+          text = res.get("result").strip() if isinstance(res.get("result"), str) else ""
+          cost = res.get("total_cost_usd") if parsed else None
+          api_started = res.get("started") if parsed else None
+          if not started:
+              cost_text = "無（模型迴圈未啟動）"
+          elif parsed and api_started is False:
+              cost_text = "US$0（沒有送出任何 API 請求）"
+          elif isinstance(cost, (int, float)) and not isinstance(cost, bool):
+              cost_text = (f"約 US${cost:.4f}（**估算**：依每輪 usage 與文件價格表計，偏高、非帳單金額；"
+                           "實際以 OpenAI 用量頁為準）")
+          else:
+              cost_text = "未知（模型迴圈已啟動，可能已產生費用；請到 OpenAI 用量頁核對）"
+          if exit_code is not None:
+              exit_text = exit_code
+          else:
+              exit_text = "未記錄（模型 step 可能逾時或被中斷）" if started else "無（模型迴圈未啟動）"
+          END_REASONS = {
+              "completed": "模型正常結束並輸出最終報告",
+              "budget_exceeded": "估算花費達上限，已停止並要求模型輸出最終報告",
+              "max_turns": "達到最大輪數，已停止並要求模型輸出最終報告",
+              "time_limit": "達到總時限，已停止（時間夠時要求模型輸出最終報告）",
+              "credit_balance_exhausted": "**OpenAI API 點數已用完**（HTTP 429，錯誤碼 credit_balance_exhausted）；本月贈額用盡，之後的請求都會失敗，直到下個帳單週期或另行加值",
+              "quota_or_spend_limit": "OpenAI 回報額度或花費上限（HTTP 429）",
+              "api_error": "OpenAI API 錯誤（不可重試或重試後仍失敗）",
+              "usage_missing": "回應沒有 usage，無法估算花費，為守住上限而停止",
+              "unexpected_service_tier": "回應的 service tier 不在價格表內，無法估算花費而停止",
+              "incomplete": "回應未完成且沒有可用報告",
+              "interrupted": "模型迴圈被中斷（收到 SIGTERM／SIGINT）",
+              "missing_api_key": "沒有 OPENAI_API_KEY（repo secret 未設定？）",
+              "empty_prompt": "提示詞是空的",
+              "agent_error": "模型迴圈程式錯誤",
+          }
+          end_reason = res.get("end_reason") if parsed else None
+          if end_reason:
+              end_text = f"`{end_reason}`：{END_REASONS.get(end_reason, '未知')}"
+          elif not started:
+              end_text = "無（模型迴圈未啟動）"
+          else:
+              end_text = "未記錄（模型 step 可能逾時或被中斷，結果 JSON 沒有寫出）"
+          err = res.get("error") if isinstance(res.get("error"), dict) else None
+          err_text = ""
+          if err:
+              bits = [f"{k} `{err.get(k)}`" for k in ("status", "code", "type", "request_id") if err.get(k) is not None]
+              msg = str(err.get("message") or "")[:300].replace("\n", " ")
+              err_text = "；".join(bits) + (f"；訊息：{msg}" if msg else "")
+          turns = res.get("num_turns") if res.get("num_turns") is not None else "未知"
+          try:
+              reasons = json.loads(env.get("REASONS") or "[]")
+          except ValueError:
+              reasons = ["推送前檢查的結果無法解析"]
+          pushed = env.get("PUSHED") == "true"
+          branch = env["WORKER_BRANCH"]
+          cid = unmention(env.get("COMMENT_ID", ""))
+
+          lines = [f"【OpenAI worker】任務留言 {cid}（#{env['TASK_ISSUE']}）", ""]
+          if env.get("PREP_RESULT") != "success":
+              lines += ["### 結論",
+                        f"任務**被拒絕，沒有執行**：{env.get('PREP_REJECT') or '輸入或留言驗證失敗（原因見 run）'}。",
+                        "模型沒有啟動，沒有用金鑰呼叫 API，沒有推送任何分支。"]
+          else:
+              if pushed:
+                  lines += ["### 結論",
+                            f"已推送到新分支 `{branch}`，head `{env.get('HEAD_SHA')}`"
+                            f"（相對 base {env.get('COMMITS')} 個 commit、淨差異 {env.get('FILES')} 個檔案）。",
+                            "本 workflow 不開 PR；要開 PR 由本機 Claude 以使用者身分開（用 GITHUB_TOKEN 開的 PR 不會觸發 CI）。"]
+              else:
+                  lines += ["### 結論", "**沒有推送**。"]
+                  if end_reason == "credit_balance_exhausted":
+                      lines.append("結束原因：**OpenAI API 點數已用完**（HTTP 429 `credit_balance_exhausted`）。")
+                  if reasons:
+                      lines.append("拒絕原因（固定檢查，不含模型）：")
+                      lines += [f"- {r}" for r in reasons]
+                  else:
+                      lines.append(f"推送前檢查或推送沒有完成（push job：{env.get('PUSH_RESULT')}；檢查結果：{env.get('CHECK_OK') or '無'}），原因見 run。")
+              lines += ["", "### 執行紀錄",
+                        f"- 任務留言：{env.get('COMMENT_URL')}（內文 SHA-256 `{env.get('COMMENT_SHA256')}`；讀取時 updated_at {env.get('COMMENT_UPDATED_AT')}）",
+                        f"- 引用留言：{env.get('REFS_SUMMARY') or '無'}",
+                        f"- base：`{env.get('BASE_REF')}` `{env.get('BASE_SHA')}`",
+                        f"- 分支：`{branch}`；head：`{env.get('HEAD_SHA') or '無'}`；推送：{'是' if pushed else '否'}",
+                        f"- 模型迴圈啟動：{'是' if started else '否'}；結束碼：{exit_text}；"
+                        f"可解析結果：{'是' if parsed else '否（' + (parse_note or '無') + '）'}；"
+                        f"is_error `{res.get('is_error')}`；work job：{env.get('WORK_RESULT')}",
+                        f"- 結束原因：{end_text}"]
+              if err_text:
+                  lines.append(f"- API 錯誤：{unmention(err_text)}")
+              if parsed:
+                  lines.append(f"- API 請求數：{res.get('api_calls', '未知')}；累計 usage：`{json.dumps(res.get('usage'), ensure_ascii=False)}`")
+              lines += ["", "### 模型最終報告"]
+              if not text:
+                  lines.append("（沒有可用的最終報告）")
+              elif SECRET.search(text):
+                  lines.append("（報告含疑似憑證字串，**不貼出**）")
+              else:
+                  lines.append(unmention(text[:55000]) + ("\n\n…（輸出過長，已截斷）" if len(text) > 55000 else ""))
+          lines += ["", "---",
+                    "為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。",
+                    f"模型 `{env.get('MODEL')}`（reasoning effort {env['WORKER_EFFORT']}；OpenAI Responses API，"
+                    f"openai Python SDK {env['OPENAI_SDK_VERSION']}，未使用 Codex）／"
+                    f"輪數 {turns}／花費 {cost_text}／[run]({env['RUN_URL']})"]
+          body = "\n".join(lines)
+          if SECRET.search(body):
+              print("::error::留言內容含疑似憑證字串，拒絕貼出", file=sys.stderr)
+              sys.exit(3)
+          print(body)
+          sys.exit(0 if pushed else 2)
+          PY
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 2 ]; then
+            echo "::error::留言內容產生失敗或被安全檢查擋下（rc=$rc），不留言" >&2; exit 1
+          fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$TASK_ISSUE/comments" -F "body=@$RUNNER_TEMP/worker-comment.md" --jq .html_url
+          exit $rc
+
+      - name: Delete this run's worker artifacts (they may hold refused content)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for id in $(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+                        --jq '.artifacts[] | select(.name == "openai-worker-output" or .name == "openai-worker-task") | .id'); do
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/actions/artifacts/$id"
+            echo "deleted artifact $id"
+          done
