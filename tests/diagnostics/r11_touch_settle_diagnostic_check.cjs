@@ -197,9 +197,9 @@ async function regression(source) {
     const r = await harness(source,{fixture:true,fixtureRecheck:true});
     assert.equal(r.error?.p1162Assertion,true,'R433_FIXTURE_RECHECK_REJECTS_RESTART');
     const failure = r.active.firstFailure;
-    assert.equal(failure.assertion,'FIXTURE_SETTLED');
-    assert.equal(failure.detail.phase,'post-wait-recheck');
-    assert.deepEqual(failure.detail.state.native.falseConditions,['recoveryIdle']);
+    assert.equal(failure?.assertion,'FIXTURE_SETTLED');
+    assert.equal(failure.detail?.phase,'post-wait-recheck');
+    assert.deepEqual(failure.detail?.state?.native?.falseConditions,['recoveryIdle']);
     assert.deepEqual(r.handoffs,[]);
     assert.deepEqual(r.waits.map(w=>w.timeout),[15000]);
   });

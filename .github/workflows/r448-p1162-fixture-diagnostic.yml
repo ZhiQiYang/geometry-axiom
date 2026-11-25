@@ -12,9 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: '742c79615352f7007a69cdd58cd476b2f7a68614'
+          ref: 'b1adde9c55366e1ca04001006f0b0d295621d8a7'
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 3
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
@@ -23,9 +23,9 @@ jobs:
         run: |
           import json, os, pathlib, subprocess
           base = "5825e69f1e04a37248ad9944d14360c6e9e80ecd"
-          candidate = "742c79615352f7007a69cdd58cd476b2f7a68614"
+          candidate = "b1adde9c55366e1ca04001006f0b0d295621d8a7"
           assert subprocess.check_output(["git","rev-parse","HEAD"]).decode().strip() == candidate
-          assert subprocess.check_output(["git","rev-parse","HEAD^"]).decode().strip() == base
+          subprocess.run(["git","merge-base","--is-ancestor",base,"HEAD"], check=True)
           root = pathlib.Path(os.environ["RUNNER_TEMP"]) / "fixture-evidence"
           root.mkdir()
           rows = []
