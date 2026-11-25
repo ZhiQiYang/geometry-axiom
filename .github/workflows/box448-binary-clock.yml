@@ -1,0 +1,40 @@
+name: Box 原生建置夾具時鐘鑑別
+on:
+  push:
+    branches: [codex/box448-binary-clock-witness-20261126]
+    paths:
+      - '.github/workflows/box448-binary-clock.yml'
+      - '.github/scripts/box448_binary_clock.py'
+permissions:
+  contents: read
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 讀取鑑別工具
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: witness
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/scripts/box448_binary_clock.py
+      - name: 簽出受測候選及其精確父版本
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 37800a5f11865024bf98e487019131ab460f0918
+          fetch-depth: 2
+          path: source
+          persist-credentials: false
+      - name: 相同粗時鐘先紅後綠、拒收假成功、守門撤回、全套 36 例
+        working-directory: source
+        run: python3 -B ../witness/.github/scripts/box448_binary_clock.py
+      - name: 保存原始測試輸出與收據
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: box448-binary-clock
+          path: ${{ runner.temp }}/box448-binary-clock/
+          if-no-files-found: error
+          retention-days: 30
