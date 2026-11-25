@@ -143,6 +143,7 @@ R443_ADDED_COSTS = {
     'node:engineering_override_display': 120000,
     'node:face_length_overlay': 120000,
 }
+R2054_ADDED_SUITES = frozenset({'node:r03_preview_length'})
 
 
 class BrowserPathScopeWiring(unittest.TestCase):
@@ -919,9 +920,17 @@ class NativeShardCoverage(unittest.TestCase):
         self.assertEqual(R443_ADDED_COSTS,
                          {name: added.get(name) for name in R443_ADDED_SUITES},
                          'R443_REGISTERED_NEW_SUITES_HAVE_INDEPENDENT_COSTS')
+        r2054_rows = [row for row in rows if row['name'] in R2054_ADDED_SUITES]
+        self.assertEqual(len(R2054_ADDED_SUITES), len(r2054_rows),
+                         'R2054_NEW_SUITE_REGISTERED_ONCE')
+        self.assertEqual({'node:r03_preview_length': 'new/node__r03_preview_length'},
+                         {row['name']: row['order'] for row in r2054_rows},
+                         'R2054_NEW_SUITE_EXACT_ORDER')
+        self.assertEqual(R2054_ADDED_SUITES, set(added) & R2054_ADDED_SUITES,
+                         'R2054_NEW_SUITE_INDEPENDENT_COST')
         self.assertEqual(
             R396_ADDED_SUITES,
-            set(added) - PF6_ADDED_SUITES - R443_ADDED_SUITES
+            set(added) - PF6_ADDED_SUITES - R443_ADDED_SUITES - R2054_ADDED_SUITES
             - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES
             - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
             'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')

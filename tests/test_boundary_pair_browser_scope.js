@@ -10,6 +10,7 @@ const r03aExtension=require('./diagnostics/r03a_framing_canvas_extension.cjs');
 const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
 const r16Extension=require('./diagnostics/r16_canvas_extension.cjs');
 const touchExtension=require('./diagnostics/r433_canvas_touch_extension.cjs');
+const lengthExtension=require('./diagnostics/r03_preview_length_canvas_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
 // sections. Strip them first (P420 by its exact count and tail position, P1161
 // by #396's own oracle) so the R335 checks below judge the same 96-section input.
@@ -20,7 +21,8 @@ const train3Inputs=()=>{
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
   // Merge of main (R433 P1162) and R16 (P1231): keep main's exact P1162 projection
   // before R03A's checks, and keep R16's legacy-view input to the historical chain.
-  const touchInput=r16Extension.beforeTouch(shards.loadGolden(),shards.loadPlan());
+  const lengthInput=lengthExtension.project(shards.loadGolden(),shards.loadPlan());
+  const touchInput=r16Extension.beforeTouch(lengthInput.golden,lengthInput.plan);
   const touchBase=touchExtension.project(touchInput.golden,touchInput.plan);
   train3.checkPlan(r03aExtension.projectPlan(touchBase.plan));
   r03aExtension.projectGolden(touchBase.golden);

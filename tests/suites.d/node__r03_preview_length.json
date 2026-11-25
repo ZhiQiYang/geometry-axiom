@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r03_preview_length.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r03_preview_length.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r03_preview_length.js"
+  ],
+  "name": "node:r03_preview_length",
+  "order": "new/node__r03_preview_length",
+  "schema": "geometry-native-suite/1"
+}
