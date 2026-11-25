@@ -1,0 +1,134 @@
+########## APIWORKER_SCAN_ERROR_CHECK_REMOVED（情境 scan-fails）
+$ diff -u head-r2.yml APIWORKER_SCAN_ERROR_CHECK_REMOVED.yml
+--- head-r2.yml
++++ APIWORKER_SCAN_ERROR_CHECK_REMOVED.yml
+@@ -439,7 +439,7 @@
+             # shellcheck disable=SC2024
+             sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \
+               \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err" || rc=$?
+-            if [ "$rc" -ne 0 ]; then
++            if false; then  # MUTANT
+               if [ ! -s "$err" ] || grep -q -v -E ': No such file or directory$' "$err"; then
+                 echo "::error::全機掃描未完成（find 結束碼 $rc），不啟動模型" >&2
+                 sed -n 1,20p "$err" >&2
+diff exit=1
+$ REPLAY_WF=APIWORKER_SCAN_ERROR_CHECK_REMOVED.yml python3 replay.py scan-fails
+replay exit=0
+scan-fails: jobs={'prepare': 'success', 'work': 'failure', 'push': 'success', 'report': 'failure'} pushed=None remote_branch=None sentinel=None reject=None reasons=["CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）", "相對 base 沒有任何 commit"]
+  | world-writable entries before: 0
+  | world-writable entries after: 0
+  結束碼：0
+  | ::error::apiworker 寫得進 /opt
+  | no apiworker process left
+  結束碼：0
+（故障注入：/usr/local/sbin/find＝fail）
+--- 遠端分支 apiworker/7001：不存在；main：4797535784266361f6f2831d9608b0ad8431a890
+--- 假 API 收到 0 個請求；金鑰前 8 字：[]
+**沒有推送**。
+- 分支：`apiworker/7001`；head：`無`；推送：否
+
+########## APIWORKER_PGREP_RC_CHECK_REMOVED（情境 pgrep-error）
+$ diff -u head-r2.yml APIWORKER_PGREP_RC_CHECK_REMOVED.yml
+--- head-r2.yml
++++ APIWORKER_PGREP_RC_CHECK_REMOVED.yml
+@@ -558,7 +558,7 @@
+               case "$rc" in
+                 1) return 0 ;;
+                 0) sleep 1 ;;
+-                *) echo "::error::pgrep 結束碼 $rc，無法確認 apiworker 行程已清除" >&2; return 2 ;;
++                *) return 0 ;;  # MUTANT
+               esac
+             done
+             pgrep -a -u "$WORKER_USER" || true
+@@ -625,7 +625,7 @@
+               case "$rc" in
+                 1) return 0 ;;
+                 0) sleep 1 ;;
+-                *) echo "::error::pgrep 結束碼 $rc，無法確認 apiworker 行程已清除" >&2; return 2 ;;
++                *) return 0 ;;  # MUTANT
+               esac
+             done
+             pgrep -a -u "$WORKER_USER" || true
+@@ -656,7 +656,7 @@
+               case "$rc" in
+                 1) return 0 ;;
+                 0) sleep 1 ;;
+-                *) echo "::error::pgrep 結束碼 $rc，無法確認 apiworker 行程已清除" >&2; return 2 ;;
++                *) return 0 ;;  # MUTANT
+               esac
+             done
+             pgrep -a -u "$WORKER_USER" || true
+diff exit=1
+$ REPLAY_WF=APIWORKER_PGREP_RC_CHECK_REMOVED.yml python3 replay.py pgrep-error
+replay exit=0
+pgrep-error: jobs={'prepare': 'success', 'work': 'success', 'push': 'success', 'report': 'success'} pushed=confirmed remote_branch=85c39ec6a54e48919b1d0e69b3e99c3aa01cafb0 sentinel=None reject=None reasons=[]
+  | world-writable entries before: 12
+  | world-writable entries after: 0
+  結束碼：0
+  | pgrep: cannot allocate memory
+  | no apiworker process left
+  結束碼：0
+（故障注入：Stop step 期間 /usr/sbin/pgrep 一律結束碼 3）
+  | push rc=0 outcome=created ls-remote rc=0 state=confirmed remote=85c39ec6a54e48919b1d0e69b3e99c3aa01cafb0 expected=85c39ec6a54e48919b1d0e69b3e99c3aa01cafb0
+--- 遠端分支 apiworker/7001：85c39ec6a54e48919b1d0e69b3e99c3aa01cafb0；main：8385c2d130e1d99d5ab30ed5aec16f7d541fc3be
+--- 假 API 收到 2 個請求；金鑰前 8 字：['fake-stu']
+- 分支：`apiworker/7001`；head：`85c39ec6a54e48919b1d0e69b3e99c3aa01cafb0`；推送：是
+
+########## APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED（情境 push-then-moved）
+$ diff -u head-r2.yml APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED.yml
+--- head-r2.yml
++++ APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED.yml
+@@ -1050,7 +1050,7 @@
+           except ValueError:
+               reasons = ["推送前檢查的結果無法解析"]
+           state = env.get("PUSH_STATE") or ""
+-          outcome = env.get("PUSH_OUTCOME") or ""
++          outcome = {"confirmed": "created", "absent": "rejected", "exists_other": "rejected"}.get(state, "")  # MUTANT
+           remote = env.get("REMOTE_SHA") or ""
+           remote_text = {"confirmed": f"指向成果 `{env.get('HEAD_SHA')}`", "absent": "不存在",
+                          "exists_other": f"指向 `{remote}`", "unconfirmed": "讀不到"}.get(state, "未記錄")
+diff exit=1
+$ REPLAY_WF=APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED.yml python3 replay.py push-then-moved
+replay exit=0
+push-then-moved: jobs={'prepare': 'success', 'work': 'success', 'push': 'failure', 'report': 'failure'} pushed=exists_other remote_branch=421492214e36b2e03c1ca902eb0b9d55da7626fa sentinel=None reject=None reasons=[]
+  | world-writable entries before: 7
+  | world-writable entries after: 0
+  結束碼：0
+  | no apiworker process left
+  結束碼：0
+  | push rc=0 outcome=created ls-remote rc=0 state=exists_other remote=421492214e36b2e03c1ca902eb0b9d55da7626fa expected=5437ac3df4f28ce72e09123da2dbeac401e0cf90
+--- 遠端 post-receive 收到的更新：0000000000000000000000000000000000000000 5437ac3df4f28ce72e09123da2dbeac401e0cf90 refs/heads/apiworker/7001
+--- 遠端分支 apiworker/7001：421492214e36b2e03c1ca902eb0b9d55da7626fa；main：421492214e36b2e03c1ca902eb0b9d55da7626fa
+--- 假 API 收到 2 個請求；金鑰前 8 字：['fake-stu']
+**沒有推送**：伺服器拒絕建立 `apiworker/7001`（以「ref 必須不存在」為條件，push 結束碼 0），既有分支沒有被本次更動；事後查到的遠端狀態：指向 `421492214e36b2e03c1ca902eb0b9d55da7626fa`。
+- 分支：`apiworker/7001`；head：`5437ac3df4f28ce72e09123da2dbeac401e0cf90`；推送：否
+
+########## APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED（情境 push-then-deleted）
+$ diff -u head-r2.yml APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED.yml
+--- head-r2.yml
++++ APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED.yml
+@@ -1050,7 +1050,7 @@
+           except ValueError:
+               reasons = ["推送前檢查的結果無法解析"]
+           state = env.get("PUSH_STATE") or ""
+-          outcome = env.get("PUSH_OUTCOME") or ""
++          outcome = {"confirmed": "created", "absent": "rejected", "exists_other": "rejected"}.get(state, "")  # MUTANT
+           remote = env.get("REMOTE_SHA") or ""
+           remote_text = {"confirmed": f"指向成果 `{env.get('HEAD_SHA')}`", "absent": "不存在",
+                          "exists_other": f"指向 `{remote}`", "unconfirmed": "讀不到"}.get(state, "未記錄")
+diff exit=1
+$ REPLAY_WF=APIWORKER_PUSH_OUTCOME_SPLIT_REMOVED.yml python3 replay.py push-then-deleted
+replay exit=0
+push-then-deleted: jobs={'prepare': 'success', 'work': 'success', 'push': 'failure', 'report': 'failure'} pushed=absent remote_branch=None sentinel=None reject=None reasons=[]
+  | world-writable entries before: 7
+  | world-writable entries after: 0
+  結束碼：0
+  | no apiworker process left
+  結束碼：0
+  | push rc=0 outcome=created ls-remote rc=0 state=absent remote=none expected=b48e6347a55eb79a76e872b3c332e01dd23deb90
+--- 遠端 post-receive 收到的更新：0000000000000000000000000000000000000000 b48e6347a55eb79a76e872b3c332e01dd23deb90 refs/heads/apiworker/7001
+--- 遠端分支 apiworker/7001：不存在；main：2256d544c2a5acb8ad01e84af51cf660d1c84a4a
+--- 假 API 收到 2 個請求；金鑰前 8 字：['fake-stu']
+**沒有推送**：伺服器拒絕建立 `apiworker/7001`（以「ref 必須不存在」為條件，push 結束碼 0），既有分支沒有被本次更動；事後查到的遠端狀態：不存在。
+- 分支：`apiworker/7001`；head：`b48e6347a55eb79a76e872b3c332e01dd23deb90`；推送：否
+

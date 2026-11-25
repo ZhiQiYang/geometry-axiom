@@ -1,0 +1,162 @@
+{
+  "scan-fails": {
+    "results": {
+      "prepare": "success",
+      "work": "failure",
+      "push": "success",
+      "report": "failure"
+    },
+    "remote_branch": null,
+    "posted": [
+      {
+        "method": "POST",
+        "path": "repos/ZhiQiYang/geometry-axiom/issues/7/comments",
+        "body": "【API worker】任務留言 900001（#7）\n\n### 結論\n**沒有推送**。\n拒絕原因（固定檢查，不含模型）：\n- CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）\n- 相對 base 沒有任何 commit\n\n### 執行紀錄\n- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `7eac0b1f7dfb33455413f48b0df1949784e54bd9446a5f1ca59c8a109e8ae426`；讀取時 updated_at 2026-11-25T00:00:00Z）\n- 引用留言：無\n- base：`main` `81d810124caf26a6011b16c88ca2bb8f6e0d8963`\n- 分支：`apiworker/7001`；head：`無`；推送：否\n- CLI 啟動：否；結束碼：無（CLI 未啟動）；可解析結果：否（輸出檔不存在）；subtype `None`；is_error `None`；work job：failure\n\n### 模型最終報告\n（沒有可用的最終報告）\n\n---\n為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。\n模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 未知／花費 無（CLI 未啟動）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7001)\n"
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001",
+        "body": null
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002",
+        "body": null
+      }
+    ],
+    "reasons": "[\"CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）\", \"相對 base 沒有任何 commit\"]",
+    "reject": null,
+    "pushed": null,
+    "pre_branch": false,
+    "main": "81d810124caf26a6011b16c88ca2bb8f6e0d8963",
+    "sentinel": null
+  },
+  "scan-vanished-file": {
+    "results": {
+      "prepare": "success",
+      "work": "success",
+      "push": "success",
+      "report": "success"
+    },
+    "remote_branch": "1fafb7d75662c78a01b05da57a831139802cba32",
+    "posted": [
+      {
+        "method": "POST",
+        "path": "repos/ZhiQiYang/geometry-axiom/issues/7/comments",
+        "body": "【API worker】任務留言 900001（#7）\n\n### 結論\n已推送到新分支 `apiworker/7002`，head `1fafb7d75662c78a01b05da57a831139802cba32`（相對 base 1 個 commit、淨差異 1 個檔案）。\n本 workflow 不開 PR；要開 PR 由本機 Claude 以使用者身分開（用 GITHUB_TOKEN 開的 PR 不會觸發 CI）。\n\n### 執行紀錄\n- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `a34eb619be35c1577391844403adf6980f8e8becbb99f457b80f5ca1c04daa3d`；讀取時 updated_at 2026-11-25T00:00:00Z）\n- 引用留言：無\n- base：`main` `81d810124caf26a6011b16c88ca2bb8f6e0d8963`\n- 分支：`apiworker/7002`；head：`1fafb7d75662c78a01b05da57a831139802cba32`；推送：是\n- CLI 啟動：是；結束碼：0；可解析結果：是；subtype `success`；is_error `False`；work job：success\n\n### 模型最終報告\n### 做了什麼\n- 照任務修改。\n\n---\n為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。\n模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 2／花費 US$0.0016（CLI 自報）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7002)\n"
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001",
+        "body": null
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002",
+        "body": null
+      }
+    ],
+    "reasons": "[]",
+    "reject": null,
+    "pushed": "confirmed",
+    "pre_branch": false,
+    "main": "81d810124caf26a6011b16c88ca2bb8f6e0d8963",
+    "sentinel": null
+  },
+  "pgrep-error": {
+    "results": {
+      "prepare": "success",
+      "work": "success",
+      "push": "success",
+      "report": "success"
+    },
+    "remote_branch": "e45df0222c6e2a368d0481d96b384ea71da46c2c",
+    "posted": [
+      {
+        "method": "POST",
+        "path": "repos/ZhiQiYang/geometry-axiom/issues/7/comments",
+        "body": "【API worker】任務留言 900001（#7）\n\n### 結論\n已推送到新分支 `apiworker/7004`，head `e45df0222c6e2a368d0481d96b384ea71da46c2c`（相對 base 1 個 commit、淨差異 1 個檔案）。\n本 workflow 不開 PR；要開 PR 由本機 Claude 以使用者身分開（用 GITHUB_TOKEN 開的 PR 不會觸發 CI）。\n\n### 執行紀錄\n- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `26b9710500043fd563199602559ee91203c6a3dc6ecddd5bd3503e84a9202b33`；讀取時 updated_at 2026-11-25T00:00:00Z）\n- 引用留言：無\n- base：`main` `81d810124caf26a6011b16c88ca2bb8f6e0d8963`\n- 分支：`apiworker/7004`；head：`e45df0222c6e2a368d0481d96b384ea71da46c2c`；推送：是\n- CLI 啟動：是；結束碼：0；可解析結果：是；subtype `success`；is_error `False`；work job：success\n\n### 模型最終報告\n### 做了什麼\n- 照任務修改。\n\n---\n為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。\n模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 2／花費 US$0.0016（CLI 自報）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7004)\n"
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001",
+        "body": null
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002",
+        "body": null
+      }
+    ],
+    "reasons": "[]",
+    "reject": null,
+    "pushed": "confirmed",
+    "pre_branch": false,
+    "main": "81d810124caf26a6011b16c88ca2bb8f6e0d8963",
+    "sentinel": null
+  },
+  "push-then-moved": {
+    "results": {
+      "prepare": "success",
+      "work": "success",
+      "push": "failure",
+      "report": "failure"
+    },
+    "remote_branch": "81d810124caf26a6011b16c88ca2bb8f6e0d8963",
+    "posted": [
+      {
+        "method": "POST",
+        "path": "repos/ZhiQiYang/geometry-axiom/issues/7/comments",
+        "body": "【API worker】任務留言 900001（#7）\n\n### 結論\n**沒有推送**：目標分支 `apiworker/7006` 在檢查之後被別人建立（遠端 `81d810124caf26a6011b16c88ca2bb8f6e0d8963`），推送以「ref 必須不存在」為條件被拒，既有分支沒有被更動。\n\n### 執行紀錄\n- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `847c7a0d3823c2102b56d32f3f4f322713fdd6e1f392e977274920d16d2c69c6`；讀取時 updated_at 2026-11-25T00:00:00Z）\n- 引用留言：無\n- base：`main` `81d810124caf26a6011b16c88ca2bb8f6e0d8963`\n- 分支：`apiworker/7006`；head：`345f0d5e5b4683a58bc5c7df228a21e46a2d9f4a`；推送：否\n- CLI 啟動：是；結束碼：0；可解析結果：是；subtype `success`；is_error `False`；work job：success\n\n### 模型最終報告\n### 做了什麼\n- 照任務修改。\n\n---\n為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。\n模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 2／花費 US$0.0016（CLI 自報）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7006)\n"
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001",
+        "body": null
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002",
+        "body": null
+      }
+    ],
+    "reasons": "[]",
+    "reject": null,
+    "pushed": "exists_other",
+    "pre_branch": false,
+    "main": "81d810124caf26a6011b16c88ca2bb8f6e0d8963",
+    "sentinel": null
+  },
+  "push-then-deleted": {
+    "results": {
+      "prepare": "success",
+      "work": "success",
+      "push": "failure",
+      "report": "failure"
+    },
+    "remote_branch": null,
+    "posted": [
+      {
+        "method": "POST",
+        "path": "repos/ZhiQiYang/geometry-axiom/issues/7/comments",
+        "body": "【API worker】任務留言 900001（#7）\n\n### 結論\n**沒有推送**：推送失敗（結束碼 0），之後確認遠端沒有 `apiworker/7008`。\n\n### 執行紀錄\n- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `5fc003ca36a73117ae844f1df12bce68762aaa6b90ffc05036c11bba65cee620`；讀取時 updated_at 2026-11-25T00:00:00Z）\n- 引用留言：無\n- base：`main` `81d810124caf26a6011b16c88ca2bb8f6e0d8963`\n- 分支：`apiworker/7008`；head：`ce7e2ff20fb665c0555f5c95e7ad3c4071c88742`；推送：否\n- CLI 啟動：是；結束碼：0；可解析結果：是；subtype `success`；is_error `False`；work job：success\n\n### 模型最終報告\n### 做了什麼\n- 照任務修改。\n\n---\n為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。\n模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 2／花費 US$0.0016（CLI 自報）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7008)\n"
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001",
+        "body": null
+      },
+      {
+        "method": "DELETE",
+        "path": "repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002",
+        "body": null
+      }
+    ],
+    "reasons": "[]",
+    "reject": null,
+    "pushed": "absent",
+    "pre_branch": false,
+    "main": "81d810124caf26a6011b16c88ca2bb8f6e0d8963",
+    "sentinel": null
+  }
+}
