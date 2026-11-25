@@ -25,7 +25,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: api-worker-comment-${{ '7169908850' }}
+  group: api-worker-comment-${{ '7169926376' }}
   cancel-in-progress: false
 
 env:
@@ -63,10 +63,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TASK_ISSUE: ${{ '455' }}
-          TASK_COMMENT_ID: ${{ '7169908850' }}
+          TASK_COMMENT_ID: ${{ '7169926376' }}
           BASE_REF: ${{ 'main' }}
           MAX_BUDGET_USD: ${{ '12' }}
-          MODEL: ${{ 'claude-fable-5-2' }}
+          MODEL: ${{ 'claude-opus-5-5' }}
           OWNER_LOGIN: ${{ github.repository_owner }}
           OWNER_ID: ${{ github.repository_owner_id }}
         run: |
@@ -762,14 +762,14 @@ jobs:
           TASK_ISSUE: ${{ needs.prepare.outputs.task_issue }}
           PREP_RESULT: ${{ needs.prepare.result }}
           PREP_REJECT: ${{ needs.prepare.outputs.reject_reason }}
-          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7169908850' }}
+          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7169926376' }}
           COMMENT_URL: ${{ needs.prepare.outputs.comment_url }}
           COMMENT_SHA256: ${{ needs.prepare.outputs.comment_sha256 }}
           COMMENT_UPDATED_AT: ${{ needs.prepare.outputs.comment_updated_at }}
           REFS_SUMMARY: ${{ needs.prepare.outputs.refs_summary }}
           BASE_REF: ${{ needs.prepare.outputs.base_ref }}
           BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
-          MODEL: ${{ needs.prepare.outputs.model || 'claude-fable-5-2' }}
+          MODEL: ${{ needs.prepare.outputs.model || 'claude-opus-5-5' }}
           WORK_RESULT: ${{ needs.work.result }}
           PUSH_RESULT: ${{ needs.push.result }}
           CHECK_OK: ${{ needs.push.outputs.ok }}
