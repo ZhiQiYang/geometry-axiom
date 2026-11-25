@@ -3,6 +3,8 @@
 任務：issue #455 留言 7169923545（T6）。範圍是診斷，**不修產品、不改測試**。
 基底：main `b3c4b981bb96b118c1c05b7a1bd98062d710c8b2`（乾淨工作樹 `git worktree add --detach`，跑完 `git status --short` 0 行）。
 
+**T19 證據界線**（#455 留言 7175170874）：腳本修正後未重跑，既有收據由修正前的腳本產生。本次只測啟停邏輯、以既有檔案核對數據，沒有重走 T6 的 bridge／瀏覽器診斷。下文的 PID、截圖、`PASS` 和結束碼都是 T6 紀錄，不是 T19 的執行結果。
+
 ## 結論（先看這裡）
 
 #449 列的六個症狀**不是同一個根因**。共有三個根因，另有兩項跟派生宿主無關，是一般畫面本來就沒有的呈現功能：
@@ -24,10 +26,10 @@
 
 ## 1. UI 重現（只經 UI）
 
-- 服務：`scripts/serve-wt.sh /tmp/wt 18891 $TMPDIR/fb`（沿用 `evidence/l4-cloud-20261122r03a/scripts/serve-wt.sh`：非 root、`ulimit -s 16384`、`LANG=C.UTF-8`、Node v24.22.3、回報目錄在 `$TMPDIR`）；`start_local.py --build-only` 建出 core／bridge／model-base 後 `start_local.py --port 18891`。
+- T6 當時的服務：`scripts/serve-wt.sh /tmp/wt 18891 $TMPDIR/fb`（沿用 `evidence/l4-cloud-20261122r03a/scripts/serve-wt.sh`：非 root、`ulimit -s 16384`、`LANG=C.UTF-8`、Node v24.22.3、回報目錄在 `$TMPDIR`）；`start_local.py --build-only` 建出 core／bridge／model-base 後 `start_local.py --port 18891`。
 - `runtime_version.py --probe 18891`：`version b4814c2e…1f5c`、`fresh:true`、root `/tmp/wt`、pid 3238、session `69c337ca…`（`ui-run/runtime-probe.json`）。
 - 瀏覽器：Google Chrome 158.0.8127.36（`/usr/bin/google-chrome`，headless、`--no-sandbox`），playwright-core 驅動，視窗 1400×900，新 profile。
-- 腳本 `scripts/walk_repro.js`（由 #449 的 `walk_r03a.js` 第一階段刪減而成；`lib.js` 只改預設 port、`ui.js` 原樣複製）。輸入只有滑鼠與鍵盤；`page.evaluate` 只讀畫面、送唯讀查詢、讀前端變數。
+- 腳本 `scripts/walk_repro.js`（由 #449 的 `walk_r03a.js` 第一階段刪減而成；`lib.js` 只改預設 port、`ui.js` 原樣複製）。幾何操作走 UI。量測透過 `page.evaluate` 讀畫面、送唯讀查詢、讀前端變數；但 `lib.js` 的 `noPickers()` 另用 `Object.defineProperty` 把頁面的 `showSaveFilePicker`、`showOpenFilePicker` 設為 `undefined`。另存走下載、對照組開檔走檔案輸入（Playwright `filechooser.setFiles`），不代表測過瀏覽器預設或 OS 原生選檔器。
 - 和 #449 腳本的差異：基底版面左側多了工具列，原本的拖曳起點 (400,250) 落在工具列上，改為 (700,300)。另外只走主路徑，不走取消、可讀性與拒絕例。
 
 操作路徑：檔案 → 新專案 → 工具列「矩形面」拖出 → 右欄「外環邊 · 尺寸確認」打 3740／3301 → 放置原點 0／0／2500、u +x、v +y → 雙擊面卡進面 → 屬性 → 面設定… → 完成面／骨架… → 面內工作切「平釘天花骨架（政策 A 固定治具）」（`modePath finish → framing → framing-fixed`）→「準備板材來源」在工程規格建 915×1830×6 面材 → 「獨立建立 8 mm 門檻 X」→ 保存 v2 配方（915／1830／2／27／33／367、左上、板長沿 v）→ 明選框架「放置面 1」、板材、X、勾 RC →「預覽整組骨架」→「確認骨架（一筆歷史）」→ 關閉 → 一般畫面（物件畫布、選宿主「承載面 2」、清單雙擊宿主、面 1「進入面內工作區」、三視圖點角材 3）→ 檔案 → 另存新檔…（`ui-run/r03-fixed.gcanvas`）→ 檔案 → 匯出場景檔…（`ui-run/r03-fixed.export.scene`）。
@@ -47,7 +49,15 @@ STEP 9-save {"gcanvas":[12182,"a10f6fa81c3dc5dfe8923c0542f74f62465f824bdbe1b0ead
 SUMMARY 5 / 5 ALL PASS
 ```
 
-結束碼 0。匯出的 `.scene` 與確認後的 `dump` 逐 byte 相同（SHA-256 同為 `44268b23…7597`，也存為 `ui-run/r03-fixed.dump.scene`）。
+結束碼 0。上方 `SAVE_EXPORT_ZERO_WRITE` 是舊日誌的檢查名，**只斷言確認後與另存、匯出後的 `sceneSha` 相等**；修正版改名 `SAVE_EXPORT_SCENE_HASH_UNCHANGED`，沿用同一個場景斷言。兩個時間點之間還包含一般畫面走查與唯讀查詢。
+
+| 比對對象 | 既有收據支持的結果 |
+|---|---|
+| 場景內容 | 確認後 dump、匯出的 `.scene`、另存 `.gcanvas` 內的 `world.scene` 逐 byte 相同，SHA-256 `44268b23…7597`。`.gcanvas` 是另一個檔案，整包 SHA-256 是 `a10f6fa8…f461`。 |
+| 身分帳、修訂與歷史深度 | `ui-run/walk_repro.result.json` 的 `checks.SAVE_EXPORT_ZERO_WRITE.detail` 是 `ui.js` 的 `diff`；`identitySha`、`revision`、`undo`／`redo` 深度和 `dirty` 的讀值未列差異。深度相同不代表末筆內容相同。 |
+| 末筆復原歷史 | 同一個 `detail` **有** `lastUndoSha`：`b4e16f78…a47c5` → `e60a6f80…0eb9d`。這是末筆 `undo` 序列化字串前 4000 個字元的雜湊，不是整個歷史堆疊的雜湊。 |
+
+差異可能來自另存時更新了歷史項目所引用的專案狀態：`reference-workspace.js` 的 `saveProjectFile()` 在下載路徑會設 `downloaded` 與 `provenance.lastDownloadAt`。這是程式碼線索，**不是已查證的原因**：收據未保留末筆序列化前後原文，另存與匯出之間也沒有檢查點，無法判定是哪個欄位或哪一步造成差異。因此不能稱為「零寫入」。
 
 UI 上讀到的錯誤值（`ui-run/walk_repro.result.json` 的 `view`，截圖在 `ui-run/screens/`）：
 
@@ -77,16 +87,17 @@ UI 上讀到的錯誤值（`ui-run/walk_repro.result.json` 的 `view`，截圖�
 - `minimal-derived-host.scene`（19 行、1792 B、SHA-256 `c1bcbbc2031ea7e7af2641e47f667aa8aecff1bbf4a79e0848d5459aac6b69e2`）：由 `scripts/make_minimal.py` 從 UI 匯出的場景**只刪行**得到（刪角材 2–53 與其 place、R18 註解、記號用 spec／guide），不新增也不改寫任何一行。保留角材 1（邊界材，`place 1 on 2 at-face key-hex… between …`）。
 - `scripts/diag_derived_host.py`：每個場景各起一支新的 bridge 子行程，`loadfile` 後只送 `dump`、`objects`、`surfaces`、`references`、`panel-fill-read`、`dump`，並要求前後 dump 逐字相同；用與 app.js／parameters.js 相同的運算式重算 UI 值；程式位置以原文片段搜尋得出（找不到就標 MISSING）；`--ui-result` 時與真 Chromium 讀到的值逐項比對。
 
-命令（在 repo 根目錄執行；bridge 是 `start_local.py --build-only` 建出的那支）：
+複查命令（在 repo 根目錄執行，`BRIDGE` 指向 `start_local.py --build-only` 建出的 bridge，`WT` 指向對應原始碼的工作樹）。輸出放到新目錄，避免覆寫 T6 收據。T19 新增 `--t6-cases`；舊收據的 `ok` 沒有這項檢查。
 
 ```sh
+out=$(mktemp -d)
 python3 -I evidence/diag-derived-host-20261126/scripts/make_minimal.py \
-  evidence/diag-derived-host-20261126/ui-run/r03-fixed.export.scene evidence/diag-derived-host-20261126/minimal-derived-host.scene
-python3 -I evidence/diag-derived-host-20261126/scripts/diag_derived_host.py --bridge <bridge> --repo /tmp/wt \
+  evidence/diag-derived-host-20261126/ui-run/r03-fixed.export.scene "$out/minimal-derived-host.scene"
+python3 -I evidence/diag-derived-host-20261126/scripts/diag_derived_host.py --bridge "$BRIDGE" --repo "$WT" --t6-cases \
   --ui-result evidence/diag-derived-host-20261126/ui-run/walk_repro.result.json \
   --ui-scene evidence/diag-derived-host-20261126/ui-run/r03-fixed.export.scene \
   evidence/diag-derived-host-20261126/ui-run/r03-fixed.export.scene \
-  evidence/diag-derived-host-20261126/minimal-derived-host.scene demo-two-timbers.scene > evidence/diag-derived-host-20261126/diag-output.json
+  "$out/minimal-derived-host.scene" demo-two-timbers.scene > "$out/diag-output.json"
 ```
 
 `make_minimal.py` 輸出：`ui-run/r03-fixed.export.scene: 192 lines -> minimal-derived-host.scene: 19 lines`。
@@ -147,8 +158,26 @@ demo-two-timbers.scene（對照）  readOnly true
 3. **B（S3、S6）**：這不是一行修得好的 bug。前端需要知道「面 1 的鋪排 1 產生了派生宿主 2」：`surfaces`（或 `objects`）帶出派生宿主的 `derivedFillId` 與來源 boundary id；面 1 面內至少要能列出／切換到派生宿主上的角材與主格，或提供以 placement id 開的唯讀派生宿主工作區。不可以把角材搬回 placement 1、不可以把 placement 2 改成普通 rect、不可以讓 `feSurf` 把兩個 id 當同一個（D4／R41 的 typed 宿主語意要保留）。這需要畫面設計，適合放在 A2。
 4. **D（S4、S7）**：不屬於派生宿主修正。若需求要求「物件畫布看得到角材」，那是新的呈現功能；三視圖說明可以直接用 `references.timbers[].geometry` 的 length／A／B。建議在需求帳把這兩項和派生宿主缺口分開記，以免修了 A 之後仍被當成同一缺口未修。
 
+## T19：如何安全啟停診斷服務
+
+舊啟動腳本在建置前依命令列片段停服務，可能誤停同帳號的其他工作；沒有證據可判定 T6 當時是否誤停。修正版不用名稱或埠號找行程，也不沿用已占用的埠。啟停範例（從 repo 根目錄、非 root、Node 24、支援 pidfd 的 Linux 執行）：
+
+```sh
+run=$(mktemp -d "${TMPDIR:?}/t6.XXXXXX")
+launcher=evidence/diag-derived-host-20261126/scripts/serve-wt.sh
+"$launcher" "$WT" 18891 "$run/fb"         # fb 必須還不存在；--probe 成功且 PID 相符才可開始 UI 走查
+# 走查結束後，用原來的三個參數明確停止
+"$launcher" --stop "$WT" 18891 "$run/fb"
+```
+
+`scripts/owned_server.py` 從自己啟動的子行程取得 PID 和 `/proc` 啟動時間，記在私有的 `fb/server-pid.json`；`start_local.py` 會以同一 PID 換成 `serve.py`。停止時核對該次目錄、開機識別、工作樹、PID 的啟動時間與完整命令列，訊號只送給核對過的 pidfd。紀錄不在、PID 不在或身分不符都報錯，不改找別支行程。重跑請用新的回報目錄。
+
 ## 未驗項
 
+- **T19 啟停／走查**：啟停的隔離測試用暫存子行程模擬 `exec`，未啟動真實 T6 服務。未以新版腳本重建 bridge、重走三個場景或 Chrome UI，也未驗目前 main 或 CI。瀏覽器預設開／存檔路徑與末筆歷史改變的原因未驗。
+- **三組場景的守門**：舊 `diag-output.json` 的總 `ok` 包含載入與前後 dump 相等，但 UI 比對只針對完整匯出場景。舊 `ok` 本身不保證最小場景仍有 1 支或對照組仍有 5 支。新版上述命令以 `--t6-cases` 要求完整／最小的派生宿主都是 2，各承載 53／1 支角材與 1 個網格；一般宿主是 1，承載 5 支、0 個網格、沒有派生宿主。任一不符則 `t6CasesMatch` 和總 `ok` 都為 false。本次僅拿舊數據核對這項判定，不是新的 bridge 查詢。
+- **產物來源（審查 F，無法判定）**：T19 重算了庫內 `.gcanvas` 整包及場景 bytes；整包吻合走查收據，內含 `world.scene` 也與 `manifest.json` 的 `sceneHash` 相符。內容相符不證明歷史產物未被手改。9 張 JPEG 和封裝都在庫內，但沒有當次逐圖雜湊或另一份獨立原件；本次未解碼逐圖核畫面、未在 App 冷開封裝，也沒有第二份 bridge／UI 動態輸出佐證來源。
+- **審查流程備註**：審查提到 PR #459 說明中有交付審查工作的文字；那不是走查證據或額外授權，本次未變更 PR 說明，也未獨立核實原 T6 的外部工作分工。
 - 復原／重做後、新程序＋新 profile 冷開後的一般畫面，本次沒有在 UI 重走。原生端的「冷開」只用全新 bridge 載入同一份場景（`diag_derived_host.py`）；#449 已記錄三次結果相同。
 - 派生宿主 h 為參數來源、負座標、多分量、孔、空集合的派生宿主，都沒有場景，未實測。
 - R02 PF-4A 的 UI 路徑（主格在面內看不到）只以同一根因推論，未走 UI。
@@ -160,7 +189,7 @@ demo-two-timbers.scene（對照）  readOnly true
 ## 檔案
 
 - `scripts/walk_repro.js`、`scripts/walk_control.js`：UI 重現與對照（Playwright API；本次以 `playwright-core` 加一個 `require('playwright')` 轉接殼執行，`NODE_PATH` 指到暫存目錄，未放進 repo）。
-- `scripts/lib.js`（改自 #449，只改預設 port）、`scripts/ui.js`（原樣）、`scripts/serve-wt.sh`（原樣）。
+- `scripts/lib.js`（改自 #449）、`scripts/ui.js`（原樣）、`scripts/serve-wt.sh` 與 `scripts/owned_server.py`（T19 啟停入口與行程核對）、`scripts/test_serve_wt.py`（啟停隔離測試）。
 - `scripts/make_minimal.py`、`scripts/diag_derived_host.py`：最小場景產生器與只讀診斷。
 - `minimal-derived-host.scene`：最小場景。`diag-output.json`：診斷完整輸出。
 - `ui-run/`：`runtime-probe.json`、`walk_repro.log`、`walk_repro.result.json`、`r03-fixed.gcanvas`（另存，12182 B，SHA-256 `a10f6fa8…f461`）、`r03-fixed.export.scene`（匯出，10323 B，SHA-256 `44268b23…7597`）、`r03-fixed.dump.scene`（確認後 dump，與匯出檔逐 byte 相同）、`screens/`。
