@@ -277,10 +277,14 @@ jobs:
           status=0
           # 允許清單式環境（env -i）：模型迴圈行程裡沒有任何 GITHUB_*／ACTIONS_* 與 token，只有這一把 API 金鑰。
           # 模型沒有 shell；read_file／search 只限工作目錄（main、pr、review-data）之內。
+          # 差異檔案清單與統計全文、diff.patch 開頭段落由模型迴圈的固定步驟直接放進第一則訊息；
+          # diff.patch 沒讀完每一行就交報告會被退回（--require-read），報告有「無法判定」時要求寫明缺什麼。
           env -i PATH=/usr/bin:/bin HOME="$RUNNER_TEMP" LANG=C.UTF-8 LC_ALL=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
             OPENAI_API_KEY="$OPENAI_API_KEY" \
             "$RUNNER_TEMP/openai-venv/bin/python" -I "$GITHUB_WORKSPACE/main/.github/scripts/openai_agent.py" \
             --mode review --workdir "$GITHUB_WORKSPACE" --model "$REVIEW_MODEL" --effort "$REVIEW_EFFORT" \
+            --attach review-data/diff-name-status.txt --attach review-data/diff-stat.txt \
+            --require-read review-data/diff.patch \
             --max-turns "$REVIEW_MAX_TURNS" --max-budget-usd "$MAX_BUDGET_USD" --time-limit-sec "$REVIEW_TIME_LIMIT_SEC" \
             < "$RUNNER_TEMP/review-prompt.md" > "$RUNNER_TEMP/review-result.json" || status=$?
           echo "$status" > "$RUNNER_TEMP/review-cli-exit"
@@ -374,6 +378,8 @@ jobs:
           else:
               if end_reason == "credit_balance_exhausted":
                   lines.append("### 結論\n審查**未完成**：**OpenAI API 點數已用完**（HTTP 429，錯誤碼 credit_balance_exhausted），以下沒有可用的審查結果。")
+              elif end_reason == "incomplete_coverage":
+                  lines.append("### 結論\n審查**未完成**：模型被退回多次後仍沒有讀完 `diff.patch`，以下沒有可用的審查結果。")
               else:
                   lines.append("### 結論\n審查**未完成**，以下沒有可用的審查結果。")
               lines.append("\n" + status_line)
