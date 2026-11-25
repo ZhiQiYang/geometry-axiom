@@ -1,0 +1,79 @@
+name: P1162 夾具恢復同步反證
+on:
+  push:
+    branches: [codex/r448-p1162-fixture-20261125]
+    paths: ['.github/workflows/r448-p1162-fixture-diagnostic.yml']
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: '742c79615352f7007a69cdd58cd476b2f7a68614'
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: 執行原診斷、八項突變、夾具撤回與探針
+        shell: python
+        run: |
+          import json, os, pathlib, subprocess
+          base = "5825e69f1e04a37248ad9944d14360c6e9e80ecd"
+          candidate = "742c79615352f7007a69cdd58cd476b2f7a68614"
+          assert subprocess.check_output(["git","rev-parse","HEAD"]).decode().strip() == candidate
+          assert subprocess.check_output(["git","rev-parse","HEAD^"]).decode().strip() == base
+          root = pathlib.Path(os.environ["RUNNER_TEMP"]) / "fixture-evidence"
+          root.mkdir()
+          rows = []
+          diag = ["node","tests/diagnostics/r11_touch_settle_diagnostic_check.cjs"]
+          def run(label, args, expected, checks_json=True):
+              done = subprocess.run(args, capture_output=True)
+              (root / (label + ".stdout")).write_bytes(done.stdout)
+              (root / (label + ".stderr")).write_bytes(done.stderr)
+              row = {"case":label, "command":args,"exit":done.returncode,"expected":expected}
+              if checks_json and done.stdout:
+                  try:
+                      result = json.loads(done.stdout)
+                      row["failures"] = [r for r in result.get("results",[]) if not r["pass"]]
+                      if "rows" in result:
+                          row["mutants"] = [(x["id"],[x[k]["exit"] for k in ["baseline","withdrawn","restored"]]) for x in result["rows"]]
+                  except ValueError:
+                      row["jsonError"] = True
+              print(json.dumps(row, ensure_ascii=False),flush=True)
+              rows.append(row)
+          module = "geometry-web/canvas_sections/P1162.js"
+          old = root / "old-p1162.js"
+          old.write_bytes(subprocess.check_output(["git","show",base + ":" + module]))
+          src = pathlib.Path(module).read_bytes()
+          before = b"await settled('FIXTURE_SETTLED', true);"
+          assert src.count(before) == 1
+          mutant = root / "withdraw-fixture.js"
+          mutant.write_bytes(src.replace(before,b"await settled('FIXTURE_SETTLED');"))
+          run("old",diag + ["--source",str(old)],1)
+          run("baseline",diag,0)
+          run("withdraw",diag + ["--source",str(mutant)],1)
+          run("restore",diag,0)
+          run("mutations",diag + ["--mutations"],0)
+          run("probe",["node","--test","tests/diagnostics/r433_touch_probe_test.cjs"],0,False)
+          (root / "results.json").write_text(json.dumps({"base":base,"candidate":candidate,"rows":rows},indent=2,ensure_ascii=False))
+          assert all(x["exit"]==x["expected"] and not x.get("jsonError") for x in rows), "unexpected exit or format"
+          for label in ["old","withdraw"]:
+              row = next(x for x in rows if x["case"]==label)
+              failures = {item["id"]:item for item in row["failures"]}
+              assert set(failures)=={"R433_FIXTURE_WAITS_FOR_RECOVERY","R433_FIXTURE_RECOVERY_RESTART_REMAINS_RED"}
+              assert failures["R433_FIXTURE_WAITS_FOR_RECOVERY"]["error"].startswith("R433_FIXTURE_DRAINS_BEFORE_HANDOFF")
+              assert failures["R433_FIXTURE_RECOVERY_RESTART_REMAINS_RED"]["error"].startswith("R433_FIXTURE_RECHECK_REJECTS_RESTART")
+          mutants = next(x for x in rows if x["case"]=="mutations")["mutants"]
+          assert len(mutants)==8 and all(codes==[0,1,0] for _,codes in mutants)
+      - name: 保存原始輸出與退出碼
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixture-diagnostic-raw
+          path: ${{ runner.temp }}/fixture-evidence/
+          if-no-files-found: error
+          retention-days: 14
