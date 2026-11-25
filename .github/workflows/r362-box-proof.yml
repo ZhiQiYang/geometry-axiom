@@ -1,0 +1,42 @@
+name: R362 原生夾具直譯器辨別試驗
+on:
+  push:
+    branches: [codex/r448-box-r362-python-20261126]
+    paths: [.github/r362-box-proof.py, .github/workflows/r362-box-proof.yml]
+permissions:
+  contents: read
+jobs:
+  reproduce:
+    name: 同版原生執行檔與十二個具名案例
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: helper
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/r362-box-proof.py
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: product
+          persist-credentials: false
+          ref: a2620da6b3ae79df19905285ea80f3df5396a37e
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: 物化原證據並執行三組對照
+        working-directory: product
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          python3 -B .github/scripts/evidence_records.py materialize --root .
+          python3 -B ../helper/.github/r362-box-proof.py
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r362-three-environments
+          path: ${{ runner.temp }}/r362-path-evidence
+          if-no-files-found: error
+          retention-days: 14
