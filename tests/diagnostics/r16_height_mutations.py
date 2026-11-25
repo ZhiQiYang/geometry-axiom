@@ -126,6 +126,15 @@ def definitions(root: Path):
         "/* Original icon-sized .tool-button width applies to the full guidance label. */",
         "R123H_CONTROLS",
         "Restore the 29px guidance button at 390px; its overflowing text intercepts the pan tool's unchanged right-hand hit point.")
+    # This rule predates block markers. Match its indented body up to its own
+    # closing brace, leaving any subsequent top-level rules intact.
+    phone_rules = re.findall(r"^@media \(max-width: 360px\) \{\n(?:[ \t]+[^\n]*\n)*\}\n",
+                            texts[css], flags=re.MULTILINE)
+    if len(phone_rules) != 1:
+        raise ValueError("Expected the complete, unique 360px main canvas dock media rule")
+    add("R123H_WITHDRAW_320_LESSON_CLIP", css, phone_rules[0], "",
+        "R123H_320_LESSON_CLIP",
+        "Restore the dock before the narrow lesson rule; verify the visible touch target, glyphs and real input at 320x844.")
     return result
 
 
@@ -144,7 +153,9 @@ def manifest_for(root: Path, mutations):
             "geometry-web/workspace-height.css", "geometry-web/workspace-height-dialogs.css",
             "tests/diagnostics/r16_height_mutations.py", "tests/diagnostics/r16_control_probe.cjs",
             "tests/diagnostics/r16_statusbar_probe.cjs", "tests/diagnostics/r16_face_guidance_probe.cjs"
-        ] + (["geometry-web/canvas_sections/P1231.js", "geometry-web/cdp_sections.d/P1231.json"]
+        ] + (["geometry-web/canvas_sections/P1231.js", "geometry-web/cdp_sections.d/P1231.json",
+              "tests/diagnostics/r16_phone_lesson_probe.cjs", "tests/diagnostics/r123h_length_paint_probe.cjs",
+              "tests/diagnostics/r123h_matrix_probe.cjs"]
              if fragmented else ["geometry-web/workspace_height_test.js"]),
         "mutations": mutations,
         "registryFormat": "fragmented" if fragmented else "single-file"
