@@ -1,0 +1,82 @@
+name: R448 合流與正典驗收
+on:
+  push:
+    branches: ['codex/r448-merge-witness-20261125']
+    paths: ['.github/workflows/r448-merge-proof-20261125.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: 需求帳逐列與正典三項原驗證
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE: '5825e69f1e04a37248ad9944d14360c6e9e80ecd'
+      TREE: '0e03e0ca49b673496098e05d8482e0b03b56ed99'
+      OLD_PR: '9921e889cbd56fc3d1fefd13894ee16f3ccff083'
+      MAIN: 'c432983b64e270c97e17f7f7b5771a3d8fde2ae9'
+      ANCESTOR: 'ea16e3f570c22fbc73625e8fadfbfc9bd1968780'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 5825e69f1e04a37248ad9944d14360c6e9e80ecd
+          fetch-depth: 2
+          persist-credentials: false
+      - name: 核對合流父節點、需求帳與 CRLF
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/r448-merge"
+          git fetch --no-tags --depth=1 --filter=blob:none origin "$ANCESTOR"
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          test "$(git rev-parse HEAD^{tree})" = "$TREE"
+          test "$(git show -s --format=%P HEAD)" = "$OLD_PR $MAIN"
+          python3 - <<'PY'
+          from pathlib import Path
+          import os, subprocess, hashlib, json, difflib
+          env = os.environ
+          versions = {}
+          for name in ('ANCESTOR','OLD_PR','MAIN','SOURCE'):
+              sha = env[name]
+              versions[name] = subprocess.check_output(['git','show',sha+':需求帳.md'])
+          assert versions['ANCESTOR'] == versions['OLD_PR']
+          assert versions['SOURCE'] == versions['MAIN'] == Path('需求帳.md').read_bytes()
+          ledger = versions['SOURCE']
+          assert ledger.count(b'\r\n') == ledger.count(b'\n') == 298
+          assert b'\r' not in ledger.replace(b'\r\n',b'')
+          rows = {k:v.decode('utf8').splitlines() for k,v in versions.items()}
+          def changes(key):
+              return [(tag, i, j, rows[key][k:l]) for tag, i, j, k, l in difflib.SequenceMatcher(None, rows['ANCESTOR'], rows[key], autojunk=False).get_opcodes() if tag != 'equal']
+          assert changes('SOURCE') == changes('MAIN') and not changes('OLD_PR')
+          rec = dict(sha=env['SOURCE'],tree=env['TREE'],parents=[env['OLD_PR'],env['MAIN']],ledgerBytes=len(ledger),CRLF=298,ledgerSHA256=hashlib.sha256(ledger).hexdigest(),changes=changes('SOURCE'))
+          Path(env['RUNNER_TEMP'],'r448-merge','merge.json').write_text(json.dumps(rec,ensure_ascii=False,indent=2)+'\n')
+          print(rec['sha'], rec['tree'], rec['parents'], rec['ledgerSHA256'], len(changes('SOURCE')), 'changed blocks', '298 CRLF')
+          PY
+      - name: 重建正典、核對並執行原測試
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/r448-merge"
+          sha256sum 'geometry-guide/公理層-閱讀器.html' > "$out/before.sha256"
+          set +e
+          python3 -B geometry-guide/sync_axiom_reader.py > "$out/rebuild.log" 2>&1
+          rebuild=$?
+          python3 -B geometry-guide/sync_axiom_reader.py --check > "$out/check.log" 2>&1
+          check=$?
+          python3 -B tests/test_axiom_reader.py > "$out/test.log" 2>&1
+          tests=$?
+          git diff --binary --exit-code > "$out/rebuild.patch"
+          diff=$?
+          set -e
+          sha256sum 'geometry-guide/公理層-閱讀器.html' > "$out/after.sha256"
+          cat "$out/rebuild.log" "$out/check.log"
+          tail -12 "$out/test.log"
+          cat "$out/before.sha256" "$out/after.sha256"
+          printf '%s\n' "rebuild=$rebuild" "check=$check" "tests=$tests" "diff=$diff" | tee "$out/status.txt"
+          test "$rebuild:$check:$tests:$diff" = '0:0:0:0'
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: reader-merge-5825e69f
+          path: ${{ runner.temp }}/r448-merge/
+          if-no-files-found: error
+          retention-days: 14
