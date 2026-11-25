@@ -380,6 +380,20 @@ jobs:
           sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
             git -C "$WORKER_HOME/work" show "$GITHUB_SHA:.github/prompts/api-worker.md" > "$RUNNER_TEMP/api-worker-prompt.md"
           test -s "$RUNNER_TEMP/api-worker-prompt.md"
+          # 工作規則（AGENTS.md／CLAUDE.md）也一律取 main（github.sha）版，放在 root 擁有、模型改不到的位置；
+          # base 分支工作樹裡的同名檔只是資料（base_ref 可能是未經審查的分支）。
+          sudo mkdir -p "$WORKER_OPT/trusted"
+          for f in AGENTS.md CLAUDE.md; do
+            if sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
+                 git -C "$WORKER_HOME/work" cat-file -e "$GITHUB_SHA:$f" 2> /dev/null; then
+              sudo -u "$WORKER_USER" -H env -i PATH="$PATH" HOME="$WORKER_HOME" \
+                git -C "$WORKER_HOME/work" show "$GITHUB_SHA:$f" | sudo tee "$WORKER_OPT/trusted/$f" > /dev/null
+            fi
+          done
+          sudo test -s "$WORKER_OPT/trusted/AGENTS.md"
+          sudo chown -R root:root "$WORKER_OPT/trusted"
+          sudo chmod 755 "$WORKER_OPT/trusted"
+          sudo chmod 644 "$WORKER_OPT"/trusted/*
 
       - name: Verify the worker is isolated and the git remote has no credentials
         run: |
@@ -425,9 +439,12 @@ jobs:
                  f"- 任務留言：#{meta['task_issue']} 的留言 {meta['comment_id']}（{meta['comment_url']}）",
                  f"- 任務留言作者：{meta['comment_author']}（已由 workflow 驗證為 repo 擁有者）",
                  f"- 任務留言內文 SHA-256：{meta['comment_sha256']}（{meta['comment_bytes']} bytes）",
+                 f"- 工作規則（main {os.environ['GITHUB_SHA']} 版，唯讀）：/opt/apiworker/trusted/AGENTS.md"
+                 + ("、/opt/apiworker/trusted/CLAUDE.md" if os.path.exists("/opt/apiworker/trusted/CLAUDE.md") else ""),
                  f"- 引用留言處理結果：{'；'.join(meta['refs']) if meta['refs'] else '無'}",
                  "", "## 任務留言原文（擁有者）", "", "````text", body.decode("utf-8"), "````"]
-          refs = sorted(os.listdir(os.path.join(task, "refs")))
+          refs_dir = os.path.join(task, "refs")
+          refs = sorted(os.listdir(refs_dir)) if os.path.isdir(refs_dir) else []
           for name in refs:
               out += ["", f"## 任務留言引用的留言 {name[:-3]}（擁有者）", "", "````text",
                       open(os.path.join(task, "refs", name), encoding="utf-8").read(), "````"]
@@ -654,9 +671,9 @@ jobs:
                           paths.discard("")
                           if any(p == "公理層.md" or p.endswith("/公理層.md") for p in paths):
                               reasons.append("改到 公理層.md（SSOT，不得由 worker 改動）")
-                          bad = sorted(p for p in paths if p.startswith((".github/workflows/", ".github/prompts/", ".github/actions/")))
+                          bad = sorted(p for p in paths if p.startswith((".github/workflows/", ".github/prompts/", ".github/actions/", ".github/scripts/")))
                           if bad:
-                              reasons.append("改到 .github/workflows／prompts／actions：" + "、".join(bad[:10]))
+                              reasons.append("改到 .github/workflows／prompts／actions／scripts：" + "、".join(bad[:10]))
                           # 4. 每個新物件（commit 訊息、tree、blob 原始 bytes）掃疑似憑證。
                           objs = git("rev-list", "--objects", "--missing=allow-promisor", head, f"^{base}").stdout.decode().split("\n")
                           ids = "\n".join(o.split(" ", 1)[0] for o in objs if o.strip()) + "\n"
