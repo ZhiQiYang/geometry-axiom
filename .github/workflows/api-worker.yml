@@ -467,7 +467,11 @@ jobs:
                  + ("、/opt/apiworker/trusted/CLAUDE.md" if os.path.exists("/opt/apiworker/trusted/CLAUDE.md") else ""),
                  f"- 引用留言處理結果：{'；'.join(meta['refs']) if meta['refs'] else '無'}",
                  "", "## 任務留言原文（擁有者）", "", "````text", body.decode("utf-8"), "````"]
-          refs = sorted(os.listdir(os.path.join(task, "refs")))
+          # actions/upload-artifact 不上傳空目錄：沒有引用留言時 refs/ 在這裡不存在，當成空清單。
+          refs_dir = os.path.join(task, "refs")
+          refs = sorted(os.listdir(refs_dir)) if os.path.isdir(refs_dir) else []
+          if len(refs) != sum(1 for r in meta["refs"] if "已取" in r):
+              sys.exit("::error::引用留言檔數與 prepare 記錄不符")
           for name in refs:
               out += ["", f"## 任務留言引用的留言 {name[:-3]}（擁有者）", "", "````text",
                       open(os.path.join(task, "refs", name), encoding="utf-8").read(), "````"]

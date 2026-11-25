@@ -25,7 +25,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: api-worker-comment-${{ '7169924880' }}
+  group: api-worker-comment-${{ '7169923545' }}
   cancel-in-progress: false
 
 env:
@@ -63,9 +63,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TASK_ISSUE: ${{ '455' }}
-          TASK_COMMENT_ID: ${{ '7169924880' }}
+          TASK_COMMENT_ID: ${{ '7169923545' }}
           BASE_REF: ${{ 'main' }}
-          MAX_BUDGET_USD: ${{ '5' }}
+          MAX_BUDGET_USD: ${{ '15' }}
           MODEL: ${{ 'claude-opus-5-5' }}
           OWNER_LOGIN: ${{ github.repository_owner }}
           OWNER_ID: ${{ github.repository_owner_id }}
@@ -443,8 +443,11 @@ jobs:
                  + ("、/opt/apiworker/trusted/CLAUDE.md" if os.path.exists("/opt/apiworker/trusted/CLAUDE.md") else ""),
                  f"- 引用留言處理結果：{'；'.join(meta['refs']) if meta['refs'] else '無'}",
                  "", "## 任務留言原文（擁有者）", "", "````text", body.decode("utf-8"), "````"]
+          # actions/upload-artifact 不上傳空目錄：沒有引用留言時 refs/ 在這裡不存在，當成空清單。
           refs_dir = os.path.join(task, "refs")
           refs = sorted(os.listdir(refs_dir)) if os.path.isdir(refs_dir) else []
+          if len(refs) != sum(1 for r in meta["refs"] if "已取" in r):
+              sys.exit("::error::引用留言檔數與 prepare 記錄不符")
           for name in refs:
               out += ["", f"## 任務留言引用的留言 {name[:-3]}（擁有者）", "", "````text",
                       open(os.path.join(task, "refs", name), encoding="utf-8").read(), "````"]
@@ -759,7 +762,7 @@ jobs:
           TASK_ISSUE: ${{ needs.prepare.outputs.task_issue }}
           PREP_RESULT: ${{ needs.prepare.result }}
           PREP_REJECT: ${{ needs.prepare.outputs.reject_reason }}
-          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7169924880' }}
+          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7169923545' }}
           COMMENT_URL: ${{ needs.prepare.outputs.comment_url }}
           COMMENT_SHA256: ${{ needs.prepare.outputs.comment_sha256 }}
           COMMENT_UPDATED_AT: ${{ needs.prepare.outputs.comment_updated_at }}
