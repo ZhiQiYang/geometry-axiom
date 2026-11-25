@@ -1,0 +1,73 @@
+name: R362 三組歷史原件讀回
+on:
+  push:
+    branches: [codex/r448-box-r362-python-20261126]
+    paths: [.github/workflows/r362-box-readback.yml]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  audit:
+    name: 獨立驗證既有收據及十二個案例
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 下載已執行的原件並對照原生套件收據
+        shell: python
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          import hashlib, io, json, os, re, subprocess, zipfile
+          repo = os.environ['GITHUB_REPOSITORY']
+          prefix = 'repos/' + repo + '/actions/'
+          artifact = json.loads(subprocess.check_output(['gh','api',prefix + 'artifacts/15050402414']))
+          def require(condition, message):
+              if not condition:
+                  raise SystemExit(message)
+          require(artifact['workflow_run']['id'] == 45672104896, 'archive run differs')
+          require(artifact['workflow_run']['head_sha'] == 'b4bc56109da0857114fc274dda8730e8f85e36bf', 'diagnostic helper SHA differs')
+          raw = subprocess.check_output(['gh','api',prefix + 'artifacts/15050402414/zip'])
+          digest = hashlib.sha256(raw).hexdigest()
+          require('sha256:' + digest == artifact['digest'], 'GitHub digest mismatch')
+          require(digest == '3b391f164405f8b54ff771a10db316faa1740b8da674fec7b83c1407eb7032d2', 'unexpected archive')
+          archive = zipfile.ZipFile(io.BytesIO(raw))
+          require(archive.testzip() is None, 'bad CRC')
+          get = lambda name: json.loads(archive.read(name))
+          runtime = get('runtime.json')
+          require(runtime['head'] == 'a2620da6b3ae79df19905285ea80f3df5396a37e' and runtime['tree'] == '63cfef296f77525907288b60d47a5e362118bd2a', 'wrong sources')
+          experiment = get('result.json')
+          phases = ('alias','python3-only','explicit')
+          require([r['phase'] for r in experiment] == list(phases), 'incomplete sequence')
+          source = experiment[0]['hashes']
+          require(all(r['hashes'] == source for r in experiment), 'sources or binaries changed')
+          require(experiment[0]['pythonOnPath'] and experiment[0]['PYTHON'] is None, 'baseline alias')
+          require(experiment[1]['pythonOnPath'] is None and experiment[1]['PYTHON'] is None, 'negative environment')
+          require(experiment[2]['pythonOnPath'] is None and experiment[2]['PYTHON'] == runtime['python'], 'restore environment')
+          names_per_suite = {}
+          for phase, exit_expected in zip(phases,[0,1,0]):
+              report = get(phase + '/report.json')
+              require(report['commit_sha']==runtime['head'] and report['exit_code']==exit_expected,'wrong checkout or exit')
+              require(report['registry_errors']==[] and report['expected_problems']==[] and len(report['rows'])==2,'registry/count failed')
+              for row in report['rows']:
+                  suite = row['name']
+                  count = {'node:model_update_faces_app':7,'node:model_update_faces_review':5}[suite]
+                  text = archive.read(phase + '/' + suite.replace(':','_') + '.log').decode()
+                  # Spec reporter repeats each red assertion below its summary. Only the first block names executions.
+                  executions = text.partition('ℹ tests ')[0]
+                  cases = re.findall(r'^([✔✖]) (.+?) \([\d.]+ms\)\s*$', executions, re.M)
+                  require(len(cases)==count and len({n for _,n in cases})==count, 'case count/set disagrees')
+                  if phase=='alias':
+                      names_per_suite[suite]=[n for _,n in cases]
+                  require(names_per_suite[suite] == [n for _,n in cases],'case set changed')
+                  passed = sum(mark=='✔' for mark,_ in cases)
+                  expected_passed = count if exit_expected==0 else (1 if count==7 else 0)
+                  require((passed,row['passed'],row['failed'],row['skipped']) == (expected_passed,expected_passed,count-expected_passed,0), 'case verdict')
+                  require(row['process_exit_code']==exit_expected and row['ran'] and not row['crashed'],'child rc')
+                  if exit_expected == 1:
+                      require(text.count('AssertionError [ERR_ASSERTION]: spawnSync python ENOENT') == count-expected_passed,'wrong failing cause')
+                      require(all((m=='✔') == n.startswith('R362_LIBRARY_FACES') for m,n in cases), 'unexpected case failed')
+                  print(phase,suite,row['passed'],row['failed'],row['process_exit_code'],flush=True)
+                  for mark,name in cases:
+                      print('  '+mark+' '+name,flush=True)
+          print(json.dumps({'artifact':artifact['id'],'sha256':digest,'runtime':runtime,'hashes':source},ensure_ascii=False))
+          
