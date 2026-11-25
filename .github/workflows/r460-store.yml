@@ -1,0 +1,44 @@
+name: Registry 收據雲端採入驗證
+on:
+  push:
+    branches: [codex/r460-store-20261126]
+    paths: [.github/workflows/r460-store.yml, .github/scripts/r460_store.py]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  adopt:
+    name: 核對原件並建立收據專用提交
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ME_SOURCE: 88aceb4a3ce276b2600b60df1f14dc23d825fbe0
+      ADOPT_TARGET: 88aceb4a3ce276b2600b60df1f14dc23d825fbe0
+      ME_RUN_ID: '45686743973'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          path: witness
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/scripts/r460_store.py
+      - name: 從 GitHub 讀取指定 run 的不可變原件
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B witness/.github/scripts/r460_store.py --download
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 88aceb4a3ce276b2600b60df1f14dc23d825fbe0
+          path: product
+          persist-credentials: false
+      - name: 在獨立步驟執行原採入器及兩項新鮮度檢查
+        working-directory: product
+        run: env -u GH_TOKEN -u GITHUB_TOKEN python3 -B ../witness/.github/scripts/r460_store.py
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r460-store-candidate-88aceb4a3ce276b2600b60df1f14dc23d825fbe0
+          path: ${{ runner.temp }}/r460-store-receipt/
+          if-no-files-found: error
+          retention-days: 14
