@@ -1,0 +1,291 @@
+{
+ "checks": [
+  {
+   "code": "1400_LESSON_OPEN_IN_REDRAW",
+   "pass": true,
+   "tool": "redraw"
+  },
+  {
+   "code": "1400_TYPED_VALUE_VISIBLE",
+   "pass": true,
+   "value": "12",
+   "visible": true,
+   "inside": true
+  },
+  {
+   "code": "1400_TYPED_CLEAR_OF_BLOCKERS",
+   "pass": true,
+   "overlaps": [],
+   "blockers": [
+    "faceCanvasHint",
+    "face-canvas-controls",
+    "faceCoordinateReadout",
+    "cx-cur"
+   ],
+   "lessonOpen": true
+  },
+  {
+   "code": "1400_BOTTOM_RIGHT_CLEAR",
+   "pass": true,
+   "overlaps": [],
+   "inside": true
+  },
+  {
+   "code": "1400_TYPED_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "1400_ARROW_APPLIES_12",
+   "pass": true,
+   "n": 3,
+   "d": [
+    0,
+    12
+   ],
+   "lenBuf": "",
+   "hidden": true
+  },
+  {
+   "code": "1400_ESC_CLEARS_TYPED_ONLY",
+   "pass": true,
+   "lenBuf": "",
+   "hidden": true,
+   "n": 3,
+   "lesson": true
+  },
+  {
+   "code": "1400_ALL_ZERO_WRITE",
+   "pass": true,
+   "sceneSha": "173d90f449a01ec1a910803ce285a95bd0424525adc515573c04b425e0fc2ee5",
+   "lines": 3,
+   "undo": 2,
+   "redo": 0,
+   "revision": "27"
+  },
+  {
+   "code": "390_LESSON_OPEN_IN_REDRAW",
+   "pass": true,
+   "tool": "redraw"
+  },
+  {
+   "code": "390_TYPED_VALUE_VISIBLE",
+   "pass": true,
+   "value": "12",
+   "visible": true,
+   "inside": true
+  },
+  {
+   "code": "390_TYPED_CLEAR_OF_BLOCKERS",
+   "pass": true,
+   "overlaps": [],
+   "blockers": [
+    "faceCanvasHint",
+    "face-canvas-controls",
+    "cx-cur"
+   ],
+   "lessonOpen": true
+  },
+  {
+   "code": "390_BOTTOM_RIGHT_CLEAR",
+   "pass": true,
+   "overlaps": [],
+   "inside": true
+  },
+  {
+   "code": "390_TYPED_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "390_ARROW_APPLIES_12",
+   "pass": true,
+   "n": 3,
+   "d": [
+    0,
+    12
+   ],
+   "lenBuf": "",
+   "hidden": true
+  },
+  {
+   "code": "390_ESC_CLEARS_TYPED_ONLY",
+   "pass": true,
+   "lenBuf": "",
+   "hidden": true,
+   "n": 3,
+   "lesson": true
+  },
+  {
+   "code": "390_ALL_ZERO_WRITE",
+   "pass": true,
+   "sceneSha": "adeb233caaeaec3d6d8c6fa17f26ed2573632a026e1c3c37b97c7543eef80e88",
+   "lines": 3,
+   "undo": 2,
+   "redo": 0,
+   "revision": "29"
+  }
+ ],
+ "sizes": {
+  "390": {
+   "browser": "153.0.8010.12",
+   "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "9cd9b61c5866b3d25401714377287023a81716cf3a168665fb8db48f58f0a683",
+    "fresh": true,
+    "root": "/tmp/l4w/wt",
+    "pid": 8784,
+    "session": "b67875bd6aa44ea9961717ce9405e88d"
+   },
+   "originalSecondPointHit": "#faceCanvasHint 內",
+   "draftPoints": 2,
+   "typed": {
+    "value": "12",
+    "visible": true,
+    "input": {
+     "left": 279.1875,
+     "top": 364.8125,
+     "right": 363.1875,
+     "bottom": 408.8125
+    },
+    "inside": true,
+    "lessonOpen": true,
+    "overlaps": [],
+    "blockers": [
+     "faceCanvasHint",
+     "face-canvas-controls",
+     "cx-cur"
+    ]
+   },
+   "typedShot": {
+    "file": "screens/D02-390-1-typed-12.png",
+    "sha256": "7efe2b60901121b2a814f4d6cdad0b2343fa179d72af43dd9cd794c6dccb10cb"
+   },
+   "typedCrop": {
+    "file": "screens/D02-390-1-typed-12-crop.png",
+    "sha256": "86e0c6442cdbb34fdc022e6dcfc1e0a594e0d52134f28234014a9922980972d2"
+   },
+   "bottomRight": {
+    "value": "12",
+    "visible": true,
+    "input": {
+     "left": 245.75,
+     "top": 646,
+     "right": 329.75,
+     "bottom": 690
+    },
+    "inside": true,
+    "lessonOpen": true,
+    "overlaps": [],
+    "blockers": [
+     "faceCanvasHint",
+     "face-canvas-controls",
+     "cx-cur"
+    ]
+   },
+   "bottomRightShot": {
+    "file": "screens/D02-390-2-cursor-bottom-right.png",
+    "sha256": "e538aed120aea019bbb58cd50d8ac6830c85cda07bfed9d042538e6622337020"
+   },
+   "afterArrow": {
+    "n": 3,
+    "d": [
+     0,
+     12
+    ],
+    "lenBuf": "",
+    "hidden": true
+   },
+   "afterEsc": {
+    "lenBuf": "",
+    "hidden": true,
+    "n": 3,
+    "lesson": true
+   },
+   "errors": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+   ]
+  },
+  "1400": {
+   "browser": "153.0.8010.12",
+   "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "9cd9b61c5866b3d25401714377287023a81716cf3a168665fb8db48f58f0a683",
+    "fresh": true,
+    "root": "/tmp/l4w/wt",
+    "pid": 8784,
+    "session": "b67875bd6aa44ea9961717ce9405e88d"
+   },
+   "originalSecondPointHit": "#faceCanvasHint 內",
+   "draftPoints": 2,
+   "typed": {
+    "value": "12",
+    "visible": true,
+    "input": {
+     "left": 774.5,
+     "top": 550.5,
+     "right": 858.5,
+     "bottom": 573.890625
+    },
+    "inside": true,
+    "lessonOpen": true,
+    "overlaps": [],
+    "blockers": [
+     "faceCanvasHint",
+     "face-canvas-controls",
+     "faceCoordinateReadout",
+     "cx-cur"
+    ]
+   },
+   "typedShot": {
+    "file": "screens/D02-1400-1-typed-12.png",
+    "sha256": "de6463bf0d650ee0b190adf08cf88c1558b84c0cfa68de3a1c3becb248841961"
+   },
+   "typedCrop": {
+    "file": "screens/D02-1400-1-typed-12-crop.png",
+    "sha256": "001aada96fb20ccb489c377e79d13b99a6580d6c877dfa07a1fca0e1096eebcc"
+   },
+   "bottomRight": {
+    "value": "12",
+    "visible": true,
+    "input": {
+     "left": 774.5,
+     "top": 826.5,
+     "right": 858.5,
+     "bottom": 849.890625
+    },
+    "inside": true,
+    "lessonOpen": true,
+    "overlaps": [],
+    "blockers": [
+     "faceCanvasHint",
+     "face-canvas-controls",
+     "faceCoordinateReadout",
+     "cx-cur"
+    ]
+   },
+   "bottomRightShot": {
+    "file": "screens/D02-1400-2-cursor-bottom-right.png",
+    "sha256": "88c9c187a19ac79df17dc0e653232d63dcd4cadd46b688f1ccda7bfed2f52243"
+   },
+   "afterArrow": {
+    "n": 3,
+    "d": [
+     0,
+     12
+    ],
+    "lenBuf": "",
+    "hidden": true
+   },
+   "afterEsc": {
+    "lenBuf": "",
+    "hidden": true,
+    "n": 3,
+    "lesson": true
+   },
+   "errors": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+   ]
+  }
+ },
+ "pass": true,
+ "passed": "16/16"
+}

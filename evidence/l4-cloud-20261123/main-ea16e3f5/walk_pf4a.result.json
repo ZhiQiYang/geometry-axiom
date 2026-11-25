@@ -1,0 +1,1651 @@
+{
+ "checks": [
+  {
+   "code": "PREP_FILL_HOST_CONFIRMABLE",
+   "pass": true
+  },
+  {
+   "code": "PREP_DEFINITION_TABLES_READABLE_1400",
+   "pass": true,
+   "tables": 3,
+   "captions": [
+    "完成面 #1 · 新增",
+    "鋪排 #1 · 新增",
+    "派生宿主 #1 · 新增"
+   ],
+   "headers": [
+    "欄位",
+    "確認前",
+    "候選後"
+   ],
+   "headerLines": [
+    "111",
+    "111",
+    "111"
+   ],
+   "overflow": [
+    false,
+    false,
+    false
+   ],
+   "broken": []
+  },
+  {
+   "code": "PREP_FILL_AND_HOST_FORMAL",
+   "pass": true,
+   "revision": 34,
+   "fills": 1,
+   "hosts": 1,
+   "grids": []
+  },
+  {
+   "code": "GRID_PREVIEW_CONFIRMABLE",
+   "pass": true
+  },
+  {
+   "code": "GRID_PREVIEW_TABLES_READABLE_1400",
+   "pass": true,
+   "tables": 4,
+   "captions": [
+    "鋪排 #1 · 原生派生結果變動",
+    "派生宿主 #1 · 原生派生結果變動",
+    "來源主格 #1 · 新增",
+    "主格 #1"
+   ],
+   "headers": [
+    "欄位",
+    "確認前",
+    "候選後"
+   ],
+   "headerLines": [
+    "111",
+    "111",
+    "111",
+    "111"
+   ],
+   "overflow": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "broken": []
+  },
+  {
+   "code": "GRID_PREVIEW_LABELS",
+   "pass": true,
+   "caption": "主格 #1",
+   "mainAlong": [
+    "主支偏好",
+    "不存在",
+    "沿 u"
+   ],
+   "paths": [
+    "id",
+    "surface",
+    "fillId",
+    "mainAlong",
+    "indexSpace",
+    "bandIndexSpace",
+    "fillSide",
+    "geometryMode",
+    "geometryExact",
+    "evaluatedFill.staggerAxis",
+    "evaluatedFill.staggerDelta",
+    "lattice.u.baseCoordinate",
+    "lattice.u.pitch",
+    "lattice.u.baseIndex",
+    "lattice.v.baseCoordinate",
+    "lattice.v.pitch",
+    "lattice.v.baseIndex"
+   ]
+  },
+  {
+   "code": "GRID_PREVIEW_TABLES_READABLE_390",
+   "pass": true,
+   "tables": 4,
+   "captions": [
+    "鋪排 #1 · 原生派生結果變動",
+    "派生宿主 #1 · 原生派生結果變動",
+    "來源主格 #1 · 新增",
+    "主格 #1"
+   ],
+   "headers": [
+    "欄位",
+    "確認前",
+    "候選後"
+   ],
+   "headerLines": [
+    "111",
+    "111",
+    "111",
+    "111"
+   ],
+   "overflow": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "broken": []
+  },
+  {
+   "code": "RESIZE_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "GRID_CANCEL_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "GRID_CONFIRM_ONE_HISTORY",
+   "pass": true,
+   "undo": [
+    5,
+    6
+   ],
+   "grids": [
+    {
+     "id": 1,
+     "definition": {
+      "id": 1,
+      "hostId": 1,
+      "fillId": 1,
+      "mainAlong": "u"
+     }
+    }
+   ]
+  },
+  {
+   "code": "GRID_RESULT_TABLE_READABLE_1400",
+   "pass": true,
+   "tables": 1,
+   "captions": [
+    "主格定義與有效值"
+   ],
+   "headers": [
+    "欄位",
+    "原生值"
+   ],
+   "headerLines": [
+    "11"
+   ],
+   "overflow": [
+    false
+   ],
+   "broken": []
+  },
+  {
+   "code": "SOURCE_EDIT_TABLES_READABLE_1400",
+   "pass": true,
+   "tables": 4,
+   "captions": [
+    "鋪排 #1 · 定義修改",
+    "派生宿主 #1 · 原生派生結果變動",
+    "來源主格 #1 · 原生派生結果變動",
+    "主格 #1"
+   ],
+   "headers": [
+    "欄位",
+    "確認前",
+    "候選後"
+   ],
+   "headerLines": [
+    "111",
+    "111",
+    "111",
+    "111"
+   ],
+   "overflow": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "broken": []
+  },
+  {
+   "code": "SOURCE_EDIT_SHOWS_BASIS_BEFORE_AFTER",
+   "pass": true,
+   "row": [
+    "週期基準 · u 軸 · 基準座標（mm）",
+    "101",
+    "111"
+   ]
+  },
+  {
+   "code": "SOURCE_EDIT_CANCEL_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "COLD_SCENE_EQUAL",
+   "pass": true,
+   "cold": "0d8681a64a5761ebe63d9d7de48378b44d95d8fb7b59d151a81e3bcad63ece4b",
+   "saved": "0d8681a64a5761ebe63d9d7de48378b44d95d8fb7b59d151a81e3bcad63ece4b"
+  },
+  {
+   "code": "COLD_GRID_RESULT_READABLE_390",
+   "pass": true,
+   "tables": 1,
+   "captions": [
+    "主格定義與有效值"
+   ],
+   "headers": [
+    "欄位",
+    "原生值"
+   ],
+   "headerLines": [
+    "11"
+   ],
+   "overflow": [
+    false
+   ],
+   "broken": []
+  }
+ ],
+ "tables": {
+  "prepPreview": [
+   {
+    "caption": "完成面 #1 · 新增",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 9,
+    "paths": [
+     "id",
+     "name",
+     "boundaryId",
+     "frame.origin",
+     "frame.U",
+     "frame.V",
+     "frame.N",
+     "structureSide",
+     "obstacles"
+    ],
+    "sample": [
+     [
+      "編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "名稱",
+      "不存在",
+      "L4 完成面"
+     ],
+     [
+      "邊界編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "框架 · 原點（mm）",
+      "不存在",
+      "0、0、0"
+     ],
+     [
+      "框架 · U 軸向",
+      "不存在",
+      "+X"
+     ],
+     [
+      "框架 · V 軸向",
+      "不存在",
+      "+Y"
+     ],
+     [
+      "框架 · N 軸向",
+      "不存在",
+      "+Z"
+     ],
+     [
+      "結構側",
+      "不存在",
+      "1"
+     ],
+     [
+      "明選障礙",
+      "不存在",
+      "無項目"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "鋪排 #1 · 新增",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 10,
+    "paths": [
+     "finishSurfaceId",
+     "gap",
+     "id",
+     "lengthAlong",
+     "origin",
+     "panel.id",
+     "panel.version",
+     "pattern",
+     "threshold.fieldId",
+     "threshold.parameterId"
+    ],
+    "sample": [
+     [
+      "完成面編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "板縫（mm）",
+      "不存在",
+      "3"
+     ],
+     [
+      "編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "面材長邊軸向",
+      "不存在",
+      "v"
+     ],
+     [
+      "原點（mm）",
+      "不存在",
+      "0、0"
+     ],
+     [
+      "固定面材 · 編號",
+      "不存在",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70"
+     ],
+     [
+      "固定面材 · 版本",
+      "不存在",
+      "1"
+     ],
+     [
+      "鋪排方式",
+      "不存在",
+      "正排"
+     ],
+     [
+      "支撐門檻來源 · 欄位編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "支撐門檻來源 · 參數編號",
+      "不存在",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "派生宿主 #1 · 新增",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 3,
+    "paths": [
+     "fillId",
+     "h",
+     "id"
+    ],
+    "sample": [
+     [
+      "鋪排編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "角材層厚（mm）",
+      "不存在",
+      "30"
+     ],
+     [
+      "編號",
+      "不存在",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   }
+  ],
+  "gridPreview1400": [
+   {
+    "caption": "鋪排 #1 · 原生派生結果變動",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 10,
+    "paths": [
+     "finishSurfaceId",
+     "gap",
+     "id",
+     "lengthAlong",
+     "origin",
+     "panel.id",
+     "panel.version",
+     "pattern",
+     "threshold.fieldId",
+     "threshold.parameterId"
+    ],
+    "sample": [
+     [
+      "完成面編號",
+      "1",
+      "1"
+     ],
+     [
+      "板縫（mm）",
+      "3",
+      "3"
+     ],
+     [
+      "編號",
+      "1",
+      "1"
+     ],
+     [
+      "面材長邊軸向",
+      "v",
+      "v"
+     ],
+     [
+      "原點（mm）",
+      "0、0",
+      "0、0"
+     ],
+     [
+      "固定面材 · 編號",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70"
+     ],
+     [
+      "固定面材 · 版本",
+      "1",
+      "1"
+     ],
+     [
+      "鋪排方式",
+      "正排",
+      "正排"
+     ],
+     [
+      "支撐門檻來源 · 欄位編號",
+      "1",
+      "1"
+     ],
+     [
+      "支撐門檻來源 · 參數編號",
+      "1",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "派生宿主 #1 · 原生派生結果變動",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 3,
+    "paths": [
+     "fillId",
+     "h",
+     "id"
+    ],
+    "sample": [
+     [
+      "鋪排編號",
+      "1",
+      "1"
+     ],
+     [
+      "角材層厚（mm）",
+      "30",
+      "30"
+     ],
+     [
+      "編號",
+      "1",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "來源主格 #1 · 新增",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 4,
+    "paths": [
+     "id",
+     "hostId",
+     "fillId",
+     "mainAlong"
+    ],
+    "sample": [
+     [
+      "編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "宿主編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "鋪排編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "主支偏好",
+      "不存在",
+      "沿 u"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "主格 #1",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 17,
+    "paths": [
+     "id",
+     "surface",
+     "fillId",
+     "mainAlong",
+     "indexSpace",
+     "bandIndexSpace",
+     "fillSide",
+     "geometryMode",
+     "geometryExact",
+     "evaluatedFill.staggerAxis",
+     "evaluatedFill.staggerDelta",
+     "lattice.u.baseCoordinate",
+     "lattice.u.pitch",
+     "lattice.u.baseIndex",
+     "lattice.v.baseCoordinate",
+     "lattice.v.pitch",
+     "lattice.v.baseIndex"
+    ],
+    "sample": [
+     [
+      "編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "宿主編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "鋪排編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "主支偏好",
+      "不存在",
+      "沿 u"
+     ],
+     [
+      "格線索引空間",
+      "不存在",
+      "帶符號格線索引 k"
+     ],
+     [
+      "列索引空間",
+      "不存在",
+      "面材列索引 band"
+     ],
+     [
+      "結構側",
+      "不存在",
+      "1"
+     ],
+     [
+      "幾何列舉方式",
+      "不存在",
+      "抽樣"
+     ],
+     [
+      "完整幾何列舉",
+      "不存在",
+      "否"
+     ],
+     [
+      "鋪排有效值 · 交丁軸",
+      "不存在",
+      "未設定"
+     ],
+     [
+      "鋪排有效值 · 交丁量（mm）",
+      "不存在",
+      "0"
+     ],
+     [
+      "週期基準 · u 軸 · 基準座標（mm）",
+      "不存在",
+      "101"
+     ],
+     [
+      "週期基準 · u 軸 · 節距（mm）",
+      "不存在",
+      "103"
+     ],
+     [
+      "週期基準 · u 軸 · 基準索引 k",
+      "不存在",
+      "0"
+     ],
+     [
+      "週期基準 · v 軸 · 基準座標（mm）",
+      "不存在",
+      "201"
+     ],
+     [
+      "週期基準 · v 軸 · 節距（mm）",
+      "不存在",
+      "203"
+     ],
+     [
+      "週期基準 · v 軸 · 基準索引 k",
+      "不存在",
+      "0"
+     ]
+    ],
+    "brokenNumbers": []
+   }
+  ],
+  "gridPreview390": [
+   {
+    "caption": "鋪排 #1 · 原生派生結果變動",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 316,
+    "boxWidth": 316,
+    "overflow": false,
+    "rows": 10,
+    "paths": [
+     "finishSurfaceId",
+     "gap",
+     "id",
+     "lengthAlong",
+     "origin",
+     "panel.id",
+     "panel.version",
+     "pattern",
+     "threshold.fieldId",
+     "threshold.parameterId"
+    ],
+    "sample": [
+     [
+      "完成面編號",
+      "1",
+      "1"
+     ],
+     [
+      "板縫（mm）",
+      "3",
+      "3"
+     ],
+     [
+      "編號",
+      "1",
+      "1"
+     ],
+     [
+      "面材長邊軸向",
+      "v",
+      "v"
+     ],
+     [
+      "原點（mm）",
+      "0、0",
+      "0、0"
+     ],
+     [
+      "固定面材 · 編號",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70"
+     ],
+     [
+      "固定面材 · 版本",
+      "1",
+      "1"
+     ],
+     [
+      "鋪排方式",
+      "正排",
+      "正排"
+     ],
+     [
+      "支撐門檻來源 · 欄位編號",
+      "1",
+      "1"
+     ],
+     [
+      "支撐門檻來源 · 參數編號",
+      "1",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "派生宿主 #1 · 原生派生結果變動",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 316,
+    "boxWidth": 316,
+    "overflow": false,
+    "rows": 3,
+    "paths": [
+     "fillId",
+     "h",
+     "id"
+    ],
+    "sample": [
+     [
+      "鋪排編號",
+      "1",
+      "1"
+     ],
+     [
+      "角材層厚（mm）",
+      "30",
+      "30"
+     ],
+     [
+      "編號",
+      "1",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "來源主格 #1 · 新增",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 316,
+    "boxWidth": 316,
+    "overflow": false,
+    "rows": 4,
+    "paths": [
+     "id",
+     "hostId",
+     "fillId",
+     "mainAlong"
+    ],
+    "sample": [
+     [
+      "編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "宿主編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "鋪排編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "主支偏好",
+      "不存在",
+      "沿 u"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "主格 #1",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 316,
+    "boxWidth": 316,
+    "overflow": false,
+    "rows": 17,
+    "paths": [
+     "id",
+     "surface",
+     "fillId",
+     "mainAlong",
+     "indexSpace",
+     "bandIndexSpace",
+     "fillSide",
+     "geometryMode",
+     "geometryExact",
+     "evaluatedFill.staggerAxis",
+     "evaluatedFill.staggerDelta",
+     "lattice.u.baseCoordinate",
+     "lattice.u.pitch",
+     "lattice.u.baseIndex",
+     "lattice.v.baseCoordinate",
+     "lattice.v.pitch",
+     "lattice.v.baseIndex"
+    ],
+    "sample": [
+     [
+      "編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "宿主編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "鋪排編號",
+      "不存在",
+      "1"
+     ],
+     [
+      "主支偏好",
+      "不存在",
+      "沿 u"
+     ],
+     [
+      "格線索引空間",
+      "不存在",
+      "帶符號格線索引 k"
+     ],
+     [
+      "列索引空間",
+      "不存在",
+      "面材列索引 band"
+     ],
+     [
+      "結構側",
+      "不存在",
+      "1"
+     ],
+     [
+      "幾何列舉方式",
+      "不存在",
+      "抽樣"
+     ],
+     [
+      "完整幾何列舉",
+      "不存在",
+      "否"
+     ],
+     [
+      "鋪排有效值 · 交丁軸",
+      "不存在",
+      "未設定"
+     ],
+     [
+      "鋪排有效值 · 交丁量（mm）",
+      "不存在",
+      "0"
+     ],
+     [
+      "週期基準 · u 軸 · 基準座標（mm）",
+      "不存在",
+      "101"
+     ],
+     [
+      "週期基準 · u 軸 · 節距（mm）",
+      "不存在",
+      "103"
+     ],
+     [
+      "週期基準 · u 軸 · 基準索引 k",
+      "不存在",
+      "0"
+     ],
+     [
+      "週期基準 · v 軸 · 基準座標（mm）",
+      "不存在",
+      "201"
+     ],
+     [
+      "週期基準 · v 軸 · 節距（mm）",
+      "不存在",
+      "203"
+     ],
+     [
+      "週期基準 · v 軸 · 基準索引 k",
+      "不存在",
+      "0"
+     ]
+    ],
+    "brokenNumbers": []
+   }
+  ],
+  "gridResult": [
+   {
+    "caption": "主格定義與有效值",
+    "headers": [
+     "欄位",
+     "原生值"
+    ],
+    "headerLines": [
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 15,
+    "paths": [
+     "definition.id",
+     "definition.hostId",
+     "definition.fillId",
+     "definition.mainAlong",
+     "derived.indexSpace",
+     "derived.bandIndexSpace",
+     "derived.side",
+     "derived.staggerAxis",
+     "derived.staggerDelta",
+     "derived.axes.u.baseCoordinate",
+     "derived.axes.u.pitch",
+     "derived.axes.u.baseIndex",
+     "derived.axes.v.baseCoordinate",
+     "derived.axes.v.pitch",
+     "derived.axes.v.baseIndex"
+    ],
+    "sample": [
+     [
+      "定義來源 · 編號",
+      "1"
+     ],
+     [
+      "定義來源 · 宿主編號",
+      "1"
+     ],
+     [
+      "定義來源 · 鋪排編號",
+      "1"
+     ],
+     [
+      "定義來源 · 主支偏好",
+      "沿 u"
+     ],
+     [
+      "原生有效值 · 格線索引空間",
+      "帶符號格線索引 k"
+     ],
+     [
+      "原生有效值 · 列索引空間",
+      "面材列索引 band"
+     ],
+     [
+      "原生有效值 · 結構側",
+      "1"
+     ],
+     [
+      "原生有效值 · 交丁軸",
+      "未設定"
+     ],
+     [
+      "原生有效值 · 交丁量（mm）",
+      "0"
+     ],
+     [
+      "原生有效值 · 各軸 · u 軸 · 基準座標（mm）",
+      "101"
+     ],
+     [
+      "原生有效值 · 各軸 · u 軸 · 節距（mm）",
+      "103"
+     ],
+     [
+      "原生有效值 · 各軸 · u 軸 · 基準索引 k",
+      "0"
+     ],
+     [
+      "原生有效值 · 各軸 · v 軸 · 基準座標（mm）",
+      "201"
+     ],
+     [
+      "原生有效值 · 各軸 · v 軸 · 節距（mm）",
+      "203"
+     ],
+     [
+      "原生有效值 · 各軸 · v 軸 · 基準索引 k",
+      "0"
+     ]
+    ],
+    "brokenNumbers": []
+   }
+  ],
+  "sourceEdit": [
+   {
+    "caption": "鋪排 #1 · 定義修改",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 10,
+    "paths": [
+     "finishSurfaceId",
+     "gap",
+     "id",
+     "lengthAlong",
+     "origin",
+     "panel.id",
+     "panel.version",
+     "pattern",
+     "threshold.fieldId",
+     "threshold.parameterId"
+    ],
+    "sample": [
+     [
+      "完成面編號",
+      "1",
+      "1"
+     ],
+     [
+      "板縫（mm）",
+      "3",
+      "3"
+     ],
+     [
+      "編號",
+      "1",
+      "1"
+     ],
+     [
+      "面材長邊軸向",
+      "v",
+      "v"
+     ],
+     [
+      "原點（mm）",
+      "0、0",
+      "10、0"
+     ],
+     [
+      "固定面材 · 編號",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70",
+      "material-2be4bd35-3d48-4160-8d1e-3212fd8a9f70"
+     ],
+     [
+      "固定面材 · 版本",
+      "1",
+      "1"
+     ],
+     [
+      "鋪排方式",
+      "正排",
+      "正排"
+     ],
+     [
+      "支撐門檻來源 · 欄位編號",
+      "1",
+      "1"
+     ],
+     [
+      "支撐門檻來源 · 參數編號",
+      "1",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "派生宿主 #1 · 原生派生結果變動",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 3,
+    "paths": [
+     "fillId",
+     "h",
+     "id"
+    ],
+    "sample": [
+     [
+      "鋪排編號",
+      "1",
+      "1"
+     ],
+     [
+      "角材層厚（mm）",
+      "30",
+      "30"
+     ],
+     [
+      "編號",
+      "1",
+      "1"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "來源主格 #1 · 原生派生結果變動",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 4,
+    "paths": [
+     "id",
+     "hostId",
+     "fillId",
+     "mainAlong"
+    ],
+    "sample": [
+     [
+      "編號",
+      "1",
+      "1"
+     ],
+     [
+      "宿主編號",
+      "1",
+      "1"
+     ],
+     [
+      "鋪排編號",
+      "1",
+      "1"
+     ],
+     [
+      "主支偏好",
+      "沿 u",
+      "沿 u"
+     ]
+    ],
+    "brokenNumbers": []
+   },
+   {
+    "caption": "主格 #1",
+    "headers": [
+     "欄位",
+     "確認前",
+     "候選後"
+    ],
+    "headerLines": [
+     1,
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 311,
+    "boxWidth": 311,
+    "overflow": false,
+    "rows": 17,
+    "paths": [
+     "id",
+     "surface",
+     "fillId",
+     "mainAlong",
+     "indexSpace",
+     "bandIndexSpace",
+     "fillSide",
+     "geometryMode",
+     "geometryExact",
+     "evaluatedFill.staggerAxis",
+     "evaluatedFill.staggerDelta",
+     "lattice.u.baseCoordinate",
+     "lattice.u.pitch",
+     "lattice.u.baseIndex",
+     "lattice.v.baseCoordinate",
+     "lattice.v.pitch",
+     "lattice.v.baseIndex"
+    ],
+    "sample": [
+     [
+      "編號",
+      "1",
+      "1"
+     ],
+     [
+      "宿主編號",
+      "1",
+      "1"
+     ],
+     [
+      "鋪排編號",
+      "1",
+      "1"
+     ],
+     [
+      "主支偏好",
+      "沿 u",
+      "沿 u"
+     ],
+     [
+      "格線索引空間",
+      "帶符號格線索引 k",
+      "帶符號格線索引 k"
+     ],
+     [
+      "列索引空間",
+      "面材列索引 band",
+      "面材列索引 band"
+     ],
+     [
+      "結構側",
+      "1",
+      "1"
+     ],
+     [
+      "幾何列舉方式",
+      "抽樣",
+      "抽樣"
+     ],
+     [
+      "完整幾何列舉",
+      "否",
+      "否"
+     ],
+     [
+      "鋪排有效值 · 交丁軸",
+      "未設定",
+      "未設定"
+     ],
+     [
+      "鋪排有效值 · 交丁量（mm）",
+      "0",
+      "0"
+     ],
+     [
+      "週期基準 · u 軸 · 基準座標（mm）",
+      "101",
+      "111"
+     ],
+     [
+      "週期基準 · u 軸 · 節距（mm）",
+      "103",
+      "103"
+     ],
+     [
+      "週期基準 · u 軸 · 基準索引 k",
+      "0",
+      "0"
+     ],
+     [
+      "週期基準 · v 軸 · 基準座標（mm）",
+      "201",
+      "201"
+     ],
+     [
+      "週期基準 · v 軸 · 節距（mm）",
+      "203",
+      "203"
+     ],
+     [
+      "週期基準 · v 軸 · 基準索引 k",
+      "0",
+      "0"
+     ]
+    ],
+    "brokenNumbers": []
+   }
+  ],
+  "coldResult390": [
+   {
+    "caption": "主格定義與有效值",
+    "headers": [
+     "欄位",
+     "原生值"
+    ],
+    "headerLines": [
+     1,
+     1
+    ],
+    "headerWriting": [
+     "horizontal-tb",
+     "horizontal-tb"
+    ],
+    "tableWidth": 316,
+    "boxWidth": 316,
+    "overflow": false,
+    "rows": 15,
+    "paths": [
+     "definition.id",
+     "definition.hostId",
+     "definition.fillId",
+     "definition.mainAlong",
+     "derived.indexSpace",
+     "derived.bandIndexSpace",
+     "derived.side",
+     "derived.staggerAxis",
+     "derived.staggerDelta",
+     "derived.axes.u.baseCoordinate",
+     "derived.axes.u.pitch",
+     "derived.axes.u.baseIndex",
+     "derived.axes.v.baseCoordinate",
+     "derived.axes.v.pitch",
+     "derived.axes.v.baseIndex"
+    ],
+    "sample": [
+     [
+      "定義來源 · 編號",
+      "1"
+     ],
+     [
+      "定義來源 · 宿主編號",
+      "1"
+     ],
+     [
+      "定義來源 · 鋪排編號",
+      "1"
+     ],
+     [
+      "定義來源 · 主支偏好",
+      "沿 u"
+     ],
+     [
+      "原生有效值 · 格線索引空間",
+      "帶符號格線索引 k"
+     ],
+     [
+      "原生有效值 · 列索引空間",
+      "面材列索引 band"
+     ],
+     [
+      "原生有效值 · 結構側",
+      "1"
+     ],
+     [
+      "原生有效值 · 交丁軸",
+      "未設定"
+     ],
+     [
+      "原生有效值 · 交丁量（mm）",
+      "0"
+     ],
+     [
+      "原生有效值 · 各軸 · u 軸 · 基準座標（mm）",
+      "101"
+     ],
+     [
+      "原生有效值 · 各軸 · u 軸 · 節距（mm）",
+      "103"
+     ],
+     [
+      "原生有效值 · 各軸 · u 軸 · 基準索引 k",
+      "0"
+     ],
+     [
+      "原生有效值 · 各軸 · v 軸 · 基準座標（mm）",
+      "201"
+     ],
+     [
+      "原生有效值 · 各軸 · v 軸 · 節距（mm）",
+      "203"
+     ],
+     [
+      "原生有效值 · 各軸 · v 軸 · 基準索引 k",
+      "0"
+     ]
+    ],
+    "brokenNumbers": []
+   }
+  ]
+ },
+ "browser": "153.0.8010.12",
+ "boundary": [
+  "boundary 1 outline 172,194 572,194 572,494 172,494"
+ ],
+ "shotGrid1400": {
+  "file": "screens/PF4A-1-grid-preview-1400.png",
+  "sha256": "9e24d4f1d24eb0fd0f3c8487405fd480258c8122f8695f06187832ab9404103a"
+ },
+ "opened390Inspector": true,
+ "shotGrid390": {
+  "file": "screens/PF4A-2-grid-preview-390.png",
+  "sha256": "63fe9c7ca40976104beb717de9ff696c531a537831af9efa71b4e27fd586a9e1"
+ },
+ "after1400InspectorVisible": true,
+ "shotResult": {
+  "file": "screens/PF4A-3-grid-result-1400.png",
+  "sha256": "baee40ecc1bcb540dfd3763652f2eac279eb01c58914da1c68fb5a57bec1ca0f"
+ },
+ "sourceEditBaseRow": [
+  "週期基準 · u 軸 · 基準座標（mm）",
+  "101",
+  "111"
+ ],
+ "shotEdit": {
+  "file": "screens/PF4A-4-source-edit-preview-1400.png",
+  "sha256": "60a2aaa6affd27f27557997056c41d783d8af9875a26a14062c67a6fc699fdb2"
+ },
+ "saved": {
+  "suggested": "未命名專案.gcanvas",
+  "sha256": "1d804f95a2d53273787c5c8fa090751f9467d6ec9de17ba28fe0056190af3b6b",
+  "bytes": 2780
+ },
+ "errorsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "shotCold": {
+  "file": "screens/PF4A-5-cold-grid-result-390.png",
+  "sha256": "9aae82eb310f7a30f482c0459f186cf8b55b2258254a5e516aadc4f3a8a6057d"
+ },
+ "errorsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "pass": true,
+ "passed": "16/16"
+}

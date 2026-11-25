@@ -1,0 +1,11 @@
+PASS 1400_D16A_DIALOG {"violations":["角材 1 · D16a\n預期：兩個真實端面須法向相反、位於同一平面，且有正長度接觸。\n實際：timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕"]}
+PASS 1400_EXPECTED_ZH {"line":"角材 1 · D16a\n預期：兩個真實端面須法向相反、位於同一平面，且有正長度接觸。\n實際：timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕"}
+PASS 1400_CONFIRM_DISABLED {"confirmDisabled":true,"present":true}
+PASS 1400_EXPECTED_NOT_CLIPPED {"left":285,"right":1115,"top":668.203125,"bottom":750.59375,"sw":827,"cw":827}
+PASS 1400_PREVIEW_CANCEL_ZERO_WRITE {"before":{"sceneSha":"5e3c38ddb0efbfd5c6459f6cf18a8625d046f4a045655fb22ee27a21d9ec1b15","lines":4,"undo":2,"redo":0,"revision":"39"},"after":{"sceneSha":"5e3c38ddb0efbfd5c6459f6cf18a8625d046f4a045655fb22ee27a21d9ec1b15","lines":4,"undo":2,"redo":0,"revision":"39"}}
+PASS 390_D16A_DIALOG {"violations":["角材 1 · D16a\n預期：兩個真實端面須法向相反、位於同一平面，且有正長度接觸。\n實際：timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕"]}
+PASS 390_EXPECTED_ZH {"line":"角材 1 · D16a\n預期：兩個真實端面須法向相反、位於同一平面，且有正長度接觸。\n實際：timber 1 [0,1000] 與 timber 2 [0,1000] 沒有恰一組相向端點同座標且寬向正長度接觸（寬向交集 0 mm）；P1-A：不互頂即整筆拒絕"}
+PASS 390_CONFIRM_DISABLED {"confirmDisabled":true,"present":true}
+PASS 390_EXPECTED_NOT_CLIPPED {"left":41,"right":349,"top":553.25,"bottom":698.03125,"sw":305,"cw":305}
+PASS 390_PREVIEW_CANCEL_ZERO_WRITE {"before":{"sceneSha":"5e3c38ddb0efbfd5c6459f6cf18a8625d046f4a045655fb22ee27a21d9ec1b15","lines":4,"undo":2,"redo":0,"revision":"41"},"after":{"sceneSha":"5e3c38ddb0efbfd5c6459f6cf18a8625d046f4a045655fb22ee27a21d9ec1b15","lines":4,"undo":2,"redo":0,"revision":"41"}}
+R17 10/10
