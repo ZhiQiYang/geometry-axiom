@@ -12,78 +12,73 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       PYTHONDONTWRITEBYTECODE: '1'
-      TARGET: '742c79615352f7007a69cdd58cd476b2f7a68614'
-      COST_ARTIFACT: ''
+      TARGET: '5d336bd65841bf249b39c61be83921ff715d0920'
+      COST_ARTIFACT: '14986010926'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: '742c79615352f7007a69cdd58cd476b2f7a68614'
+          ref: '5d336bd65841bf249b39c61be83921ff715d0920'
           fetch-depth: 3
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
-      - name: stage from immutable input
+      - name: import from immutable input
         shell: python
         run: |
-          import hashlib, json, os, shutil, subprocess, sys
+          import hashlib, json, os, subprocess, shutil
           from pathlib import Path
           
-          root = Path.cwd()
           out = Path(os.environ["RUNNER_TEMP"]) / "r448-result"
           out.mkdir()
           row_path = Path("geometry-web/cdp_sections.d/P1162.json")
-          source = Path("geometry-web/canvas_sections/P1162.js")
-          manifest = Path("geometry-core/domain-decoupling/product-architecture.json")
-          exclusion = Path("geometry-core/domain-decoupling/product-architecture.d/exclusions/geometry-web/canvas_sections/P1162.js.json")
-          original = "5825e69f1e04a37248ad9944d14360c6e9e80ecd"
+          artifact_id = os.environ["COST_ARTIFACT"]
+          receipt_dir = Path("geometry-web/canvas-registry/costs/P1162") / artifact_id
+          assert artifact_id.isdigit() and not receipt_dir.exists()
           def git(*args):
               return subprocess.check_output(("git", *args))
-          def normalized_sha(raw):
-              return hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
-          def save(path, data):
-              (out / path).parent.mkdir(parents=True, exist_ok=True)
-              (out / path).write_bytes(data)
-          assert git("rev-parse", "HEAD").decode().strip() == os.environ["TARGET"]
-          assert git("rev-parse", "HEAD^").decode().strip() == original
-          prior = git("show", f"{original}:{row_path}")
-          assert row_path.read_bytes() == prior
-          old = json.loads(prior)
-          assert old["assertions"] == 504 and old["unit"] == 2 and old["order"] == {"after": [], "before": []}
-          assert old["balance"] is None and old["provenance"]["kind"] == "ci-capture" and old["cost"]["receipt"].endswith("/14743902860/receipt.json")
-          old_source = git("show", f"{original}:{source}")
-          assert normalized_sha(old_source) == "a8e6edfaad33251b56838fbb449a0f1a3d0e4acdecbf27bce26e37f2639a5c60"
-          updated_sha = normalized_sha(source.read_bytes())
-          assert updated_sha != normalized_sha(old_source)
-          sys.path.insert(0, str(root / "tests"))
-          import architecture_contract as architecture
-          logical = architecture.load_manifest(manifest)
-          records = [r for r in logical["exclusions"] if r["path"] == source.as_posix()]
-          assert len(records) == 1 and records[0]["hashMode"] == "lf" and records[0]["sha256"] == normalized_sha(old_source)
-          assert json.loads(exclusion.read_bytes())["entry"] == records[0]
-          records[0]["sha256"] = updated_sha
-          generated = architecture.fragment_manifest_files(logical)
-          differences = {}
-          for rel, data in generated.items():
-              dst = manifest.parent / rel
-              if dst.read_bytes() != data:
-                  differences[dst.as_posix()] = data
-          assert set(differences) == {exclusion.as_posix()}, sorted(differences)
-          exclusion.write_bytes(differences[exclusion.as_posix()])
-          save(exclusion, exclusion.read_bytes())
-          subprocess.run([sys.executable, "-B", "tests/architecture_contract.py", "--root", ".", "--manifest", str(manifest)], check=True)
-          row_path.rename(out.parent / "P1162-before.json")
-          subprocess.run(["node", "geometry-web/canvas_registry.js", "stage-module", "--id", "P1162"], check=True)
-          new = json.loads(row_path.read_bytes())
-          assert new["assertions"] == 0 and new["provenance"] == {"kind":"candidate"} and new["cost"] is None
-          assert {k:v for k,v in new.items() if k not in {"assertions","provenance","cost"}} == {k:v for k,v in old.items() if k not in {"assertions","provenance","cost"}}
-          save(row_path, row_path.read_bytes())
-          assert set(git("diff", "--name-only").decode().splitlines()) == {row_path.as_posix(), exclusion.as_posix()}
-          print(json.dumps({"source":os.environ["TARGET"], "old_lf_sha256":normalized_sha(old_source),"new_lf_sha256":updated_sha, "assertions_before_capture":old["assertions"], "placeholder_is_accepted":False}, sort_keys=True))
+          assert git("rev-parse","HEAD").decode().strip() == os.environ["TARGET"]
+          staged = json.loads(row_path.read_bytes())
+          assert staged["assertions"] == 0 and staged["cost"] is None and staged["provenance"] == {"kind":"candidate"}
+          metadata = json.loads(subprocess.check_output(["gh","api","repos/ZhiQiYang/geometry-axiom/actions/artifacts/"+artifact_id]))
+          assert metadata["workflow_run"]["head_sha"] == os.environ["TARGET"]
+          archive = out.parent / "P1162-official.zip"
+          with archive.open("wb") as stream:
+              subprocess.run(["gh","api","repos/ZhiQiYang/geometry-axiom/actions/artifacts/"+artifact_id+"/zip"], stdout=stream,check=True)
+          assert archive.stat().st_size == metadata["size_in_bytes"] and "sha256:"+hashlib.sha256(archive.read_bytes()).hexdigest() == metadata["digest"]
+          import zipfile
+          with zipfile.ZipFile(archive) as bundle:
+              logs = [p for p in bundle.namelist() if p.rsplit("/",1)[-1]=="stdout.log"]
+              assert len(logs) == 1
+              stdout = bundle.read(logs[0]).decode().splitlines()
+              checkpoints = [json.loads(line.split(" ",1)[1]) for line in stdout if line.startswith("P1162_CASE_RESULT ")]
+              aggregate = [json.loads(line.split(" ",1)[1]) for line in stdout if line.startswith("P1162_RESULT ")]
+              assert len(aggregate)==1 and aggregate[0]["completed"] and not aggregate[0]["failed"], aggregate
+              expected = aggregate[0]["expectedCases"]
+              assert len(checkpoints)==len(set(expected))==len(expected)==16
+              assert [r["id"] for r in checkpoints] == expected == aggregate[0]["passed"]
+              assert all(r["status"]=="pass" and r["assertions"]["failed"]==0 for r in checkpoints)
+              print(json.dumps({"cases":[[r["id"],r["assertions"]["passed"]] for r in checkpoints],"total":len(checkpoints)},sort_keys=True))
+          subprocess.run(["node","geometry-web/canvas_registry.js","import-cost","--id","P1162","--artifact-id",artifact_id,"--artifact",str(archive)], check=True)
+          current = json.loads(row_path.read_bytes())
+          old = json.loads(git("show", "5825e69f1e04a37248ad9944d14360c6e9e80ecd:"+row_path.as_posix()))
+          assert current["assertions"] == old["assertions"] == 504, current
+          assert current["provenance"]["headSha"] == os.environ["TARGET"] and current["provenance"]["executionSha"] == os.environ["TARGET"]
+          assert current["provenance"]["runId"] == str(metadata["workflow_run"]["id"])
+          assert {k:v for k,v in current.items() if k not in {"cost","provenance"}} == {k:v for k,v in old.items() if k not in {"cost","provenance"}}
+          golden = subprocess.check_output(["node","geometry-web/canvas_registry.js","golden"])
+          assert hashlib.sha256(golden).hexdigest() == "86defdd03d1ec8ce94b8d24c2da7086094b72e81c61098ec79bdd5481c7f19e3", hashlib.sha256(golden).hexdigest()
+          gate = json.loads(subprocess.check_output(["node","geometry-web/canvas_registry.js","check"]))
+          assert gate["declarations_complete"] and gate["data_contract_verified"] and gate["goldenSha256"]=="86defdd03d1ec8ce94b8d24c2da7086094b72e81c61098ec79bdd5481c7f19e3"
+          print(json.dumps({"coverage":gate,"P1162":current,"artifact":metadata["digest"]},sort_keys=True))
+          assert git("diff", "--name-only").decode().splitlines() == [row_path.as_posix()]
+          for path in (row_path, receipt_dir / "receipt.json", receipt_dir / "artifact.zip"):
+              (out / path).parent.mkdir(parents=True,exist_ok=True)
+              shutil.copyfile(path, out / path)
       - name: Save generated bytes
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: r448-p1162-stage
+          name: r448-p1162-import
           path: ${{ runner.temp }}/r448-result/
           if-no-files-found: error
           retention-days: 14
