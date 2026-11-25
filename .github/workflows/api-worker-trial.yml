@@ -25,7 +25,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: api-worker-comment-${{ '7169906729' }}
+  group: api-worker-comment-${{ '7169907432' }}
   cancel-in-progress: false
 
 env:
@@ -63,9 +63,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TASK_ISSUE: ${{ '455' }}
-          TASK_COMMENT_ID: ${{ '7169906729' }}
+          TASK_COMMENT_ID: ${{ '7169907432' }}
           BASE_REF: ${{ 'main' }}
-          MAX_BUDGET_USD: ${{ '10' }}
+          MAX_BUDGET_USD: ${{ '12' }}
           MODEL: ${{ 'claude-fable-5-2' }}
           OWNER_LOGIN: ${{ github.repository_owner }}
           OWNER_ID: ${{ github.repository_owner_id }}
@@ -762,7 +762,7 @@ jobs:
           TASK_ISSUE: ${{ needs.prepare.outputs.task_issue }}
           PREP_RESULT: ${{ needs.prepare.result }}
           PREP_REJECT: ${{ needs.prepare.outputs.reject_reason }}
-          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7169906729' }}
+          COMMENT_ID: ${{ needs.prepare.outputs.comment_id || '7169907432' }}
           COMMENT_URL: ${{ needs.prepare.outputs.comment_url }}
           COMMENT_SHA256: ${{ needs.prepare.outputs.comment_sha256 }}
           COMMENT_UPDATED_AT: ${{ needs.prepare.outputs.comment_updated_at }}
