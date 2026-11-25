@@ -78,7 +78,10 @@ async function phoneLessonRegression({call,key,click,send,settle}) {
     return 0;
   }
   async function pressEnter() {
-    await key('Enter','Enter',13);await settle();
+    const enter={key:'Enter',code:'Enter',windowsVirtualKeyCode:13};
+    await send('Input.dispatchKeyEvent',{...enter,type:'keyDown',text:'\r',unmodifiedText:'\r'});
+    await send('Input.dispatchKeyEvent',{...enter,type:'keyUp'});
+    await settle();
   }
   const horizontal=row=>row.pageWidth===row.width&&row.pageLeft===0&&row.dockLeft===0&&
     row.dock.length>0&&row.dock.every(c=>c.within)&&row.header.length>0&&row.header.every(c=>c.within&&c.hit);
