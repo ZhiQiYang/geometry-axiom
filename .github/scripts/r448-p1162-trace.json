@@ -1,0 +1,34 @@
+[
+  [
+    "  const early = window.__p1162Early;",
+    "  const early = window.__p1162Early;\n  const trace = window.__p1162RequestTrace = {rows:[],caseId:null,seq:0};\n  trace.mark = (kind, data) => trace.rows.push({at:performance.now(),timeOrigin:performance.timeOrigin,caseId:trace.caseId,kind,...data});"
+  ],
+  [
+    "    const row = {command, settled:false}; p.requests.push(row); p.pending++;",
+    "    const row = {command, settled:false}; p.requests.push(row); p.pending++;\n    const traceId = ++trace.seq;\n    trace.mark('fetch-start',{traceId,command,pending:p.pending,stack:command==='dump'?new Error().stack:null});"
+  ],
+  [
+    "    } finally { row.settled = true; p.pending--; }",
+    "    } finally { row.settled = true; p.pending--; trace.mark('fetch-settled',{traceId,command,pending:p.pending,ok:row.ok}); }"
+  ],
+  [
+    "    await read(`(()=>{CanvasContextMenu.hide();FaceContextMenu.hide();window.ParameterUI?.discard();",
+    "    await read(`(()=>{const trace=window.__p1162RequestTrace;trace.caseId=${JSON.stringify(active.id)};trace.mark('fixture-start',{});CanvasContextMenu.hide();FaceContextMenu.hide();window.ParameterUI?.discard();"
+  ],
+  [
+    "    const response = await read(`apiRequest(${JSON.stringify(command)})`);",
+    "    const callingTest = command === 'dump' ? new Error().stack : null;\n    const response = await read(`(window.__p1162RequestTrace.mark('test-query',{command:${JSON.stringify(command)},callingTest:${JSON.stringify(callingTest)}}),apiRequest(${JSON.stringify(command)}))`);"
+  ],
+  [
+    "    if (!p.enabled) return;\n    const card",
+    "    if (!p.enabled) return;\n    const trace=window.__p1162RequestTrace;\n    if(trace?.caseId==='TWO_FINGERS' && /^(pointer|touch)/.test(event.type))\n      trace.mark('gesture',{type:event.type,trusted:event.isTrusted,timestamp:event.timeStamp,pointerId:event.pointerId,touches:event.touches?.length});\n    const card"
+  ],
+  [
+    "          return {value,state:value?undefined:${stateExpression('observedNative')}};})()`",
+    "          if(window.__p1162RequestTrace?.caseId==='TWO_FINGERS')window.__p1162RequestTrace.mark('native-recheck',{name:${JSON.stringify(name)},value,conditions:observedNative.conditions});\n          return {value,state:value?undefined:${stateExpression('observedNative')}};})()`"
+  ],
+  [
+    "    check('NO_NEW_BROWSER_EXCEPTION', exceptionCount() === initialExceptions);\n  } finally {",
+    "    check('NO_NEW_BROWSER_EXCEPTION', exceptionCount() === initialExceptions);\n  } finally {\n    const trace = await read('window.__p1162RequestTrace?.rows || []');\n    for(const row of trace) console.log('P1162_REQUEST_ORIGIN '+JSON.stringify(row));"
+  ]
+]

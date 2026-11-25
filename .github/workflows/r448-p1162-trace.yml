@@ -1,0 +1,97 @@
+name: P1162 讀取來源診斷
+on:
+  push:
+    branches: [codex/r448-p1162-trace-20261125]
+permissions:
+  contents: read
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GEOMETRY_TEST_URL: http://127.0.0.1:18839/
+      GEOMETRY_FEEDBACK_DIR: /tmp/geometry-section-measure-feedback
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      GEOMETRY_CANVAS_MODULE_ONLY: '1'
+      GEOMETRY_CANVAS_MODULE: P1162
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_SHA: 5825e69f1e04a37248ad9944d14360c6e9e80ecd
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: 使用原 PR 提交，核對來源
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/trace"
+          cp .github/scripts/r448-p1162-trace.json "$RUNNER_TEMP/trace/probe.json"
+          test "$(git rev-parse HEAD^)" = "$SOURCE_SHA"
+          git checkout --detach "$SOURCE_SHA"
+          test "$(git rev-parse HEAD^{tree})" = 0e03e0ca49b673496098e05d8482e0b03b56ed99
+          git show -s --format='%H %T %P' HEAD > "$RUNNER_TEMP/trace/source.txt"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: 依原程序建置
+        run: npm run build
+      - name: 安裝原測試中文字型
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: 暫加唯讀測試探針
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=geometry-web/canvas_sections/P1162.js
+          test "$(git hash-object "$p")" = 4f59a0c394e66145fd3fa89ada010d3d42aa4a69
+          python3 -B - "$p" "$RUNNER_TEMP/trace/probe.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          path = Path(sys.argv[1])
+          source = path.read_bytes()
+          for before, after in json.loads(Path(sys.argv[2]).read_bytes()):
+              old, new = before.encode(), after.encode()
+              if source.count(old) != 1:
+                  raise ValueError("Probe anchor count differs")
+              source = source.replace(old, new)
+          path.write_bytes(source)
+          PY
+          git diff -- "$p" > "$RUNNER_TEMP/trace/probe.diff"
+          test "$(git diff --name-only)" = "$p"
+          node --check "$p"
+          google-chrome --version > "$RUNNER_TEMP/trace/browser.txt"
+      - name: 原 P1162 完整模組單次實跑
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          out="$RUNNER_TEMP/trace"
+          python3 -u geometry-web/start_local.py --port 18839 > "$out/server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$server" 2>/dev/null; then cat "$out/server.log"; exit 1; fi
+            if python3 geometry-web/runtime_version.py --probe 18839 > /dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          python3 -B geometry-web/runtime_version.py --probe 18839 > "$out/runtime.json"
+          python3 -Bc 'import json,sys; assert json.load(open(sys.argv[1]))["fresh"] is True' "$out/runtime.json"
+          set +e
+          node geometry-web/cdp_test.js > "$out/stdout.log" 2> "$out/stderr.log"
+          code=$?
+          set -e
+          echo "$code" > "$out/exit-code.txt"
+          sed -n 's/^P1162_REQUEST_ORIGIN //p' "$out/stdout.log" > "$out/trace.jsonl"
+          rg '^(P1162_CASE_RESULT|CDP_RESULT)' "$out/stdout.log" | cut -c1-420
+          test -s "$out/trace.jsonl"
+          exit "$code"
+      - name: 保存來源與原始紀錄
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: p1162-trace-5825e69f
+          path: ${{ runner.temp }}/trace/
+          if-no-files-found: error
+          retention-days: 14
