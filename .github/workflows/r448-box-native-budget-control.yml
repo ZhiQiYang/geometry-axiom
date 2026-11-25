@@ -1,0 +1,69 @@
+name: '#448 兩個 native 單例 CPU 配額對照'
+on:
+  push:
+    branches: [codex/r448-box-native-budget-control-20261126]
+    paths: ['.github/workflows/r448-box-native-budget-control.yml', '.github/diagnostics/r448_box_native_budget.py']
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: a2620da6b3ae79df19905285ea80f3df5396a37e
+          path: tested
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: helper
+          sparse-checkout: .github/diagnostics
+          persist-credentials: false
+      - name: 核對目標、編譯同一個原生 bridge
+        working-directory: tested
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'a2620da6b3ae79df19905285ea80f3df5396a37e'
+          test "$(git rev-parse HEAD^{tree})" = '63cfef296f77525907288b60d47a5e362118bd2a'
+          mkdir -p "$RUNNER_TEMP/native-control"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/native-control/checkout.txt"
+          git status --porcelain=v1 --untracked-files=all > "$RUNNER_TEMP/native-control/status-before.txt"
+          test ! -s "$RUNNER_TEMP/native-control/status-before.txt"
+          if ! command -v strace; then sudo apt-get update -qq && sudo apt-get install -y strace; fi
+          ulimit -s 16384
+          python3 -B tests/binaries.py build bridge | tee "$RUNNER_TEMP/native-control/build.log"
+          python3 -B tests/binaries.py status bridge | tee "$RUNNER_TEMP/native-control/status-bridge.log"
+          sha256sum /tmp/geometry-tests/bridge > "$RUNNER_TEMP/native-control/bridge.sha256"
+          cp /tmp/geometry-tests/bridge.fingerprint.json "$RUNNER_TEMP/native-control/bridge.fingerprint.json"
+          { uname -a; python3 -VV; cc --version; strace -V; systemd --version; } > "$RUNNER_TEMP/native-control/versions.txt"
+      - name: 保留原來 20 秒上限，各執行兩個單例一次
+        working-directory: tested
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/native-control"
+          helper="$GITHUB_WORKSPACE/helper/.github/diagnostics/r448_box_native_budget.py"
+          for mode in normal quota25; do
+            params=()
+            if [[ "$mode" == quota25 ]]; then params=(-p CPUQuota=25% -p CPUQuotaPeriodSec=100ms); fi
+            for testcase in r363 beam; do
+              mkdir "$out/$mode-$testcase"
+              sudo systemd-run --wait --pipe --quiet --collect --uid="$(id -un)" --gid="$(id -gn)" \
+                -p CPUAccounting=yes -p MemoryAccounting=yes -p PrivateTmp=no -p LimitSTACK=16777216:infinity \
+                "${params[@]}" --working-directory="$PWD" \
+                /usr/bin/python3 -B "$helper" "$mode" "$testcase" "$out/$mode-$testcase"
+            done
+          done
+          sha256sum --check "$out/bridge.sha256"
+          git status --porcelain=v1 --untracked-files=all > "$out/status-after.txt"
+          test ! -s "$out/status-after.txt"
+      - name: 保留各組原始輸出與資源收據
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r448-native-budget-comparison
+          path: ${{ runner.temp }}/native-control/
+          if-no-files-found: error
+          retention-days: 14
