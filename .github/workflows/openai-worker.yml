@@ -380,7 +380,9 @@ jobs:
           node_dir="$(cat "$opt/node-dir")"
           branch="$(cat "$opt/branch")"
           base="$(cat "$opt/base-sha")"
-          flags=(--mode worker --workdir "$work" --read-root "$opt/trusted")
+          # main 版 AGENTS.md 是必讀檔（開頭直接放進第一則訊息，沒讀完就交報告會被退回）；CLAUDE.md 全文附上。
+          flags=(--mode worker --workdir "$work" --read-root "$opt/trusted" --require-read "$opt/trusted/AGENTS.md")
+          if [ -f "$opt/trusted/CLAUDE.md" ]; then flags+=(--attach "$opt/trusted/CLAUDE.md"); fi
           # 允許清單式環境：除下列變數外一律不帶（沒有任何 GITHUB_*／ACTIONS_*／RUNNER_*、OPENAI_BASE_URL 與 token）。
           base_env=(PATH="$node_dir:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                     HOME="$HOME" USER=apiworker LOGNAME=apiworker LANG=C.UTF-8 LC_ALL=C.UTF-8 TMPDIR="$HOME/tmp"
@@ -919,6 +921,7 @@ jobs:
               "usage_missing": "回應沒有 usage，無法估算花費，為守住上限而停止",
               "unexpected_service_tier": "回應的 service tier 不在價格表內，無法估算花費而停止",
               "incomplete": "回應未完成且沒有可用報告",
+              "incomplete_coverage": "模型被退回多次後仍沒有讀完必讀檔（main 版 AGENTS.md）",
               "interrupted": "模型迴圈被中斷（收到 SIGTERM／SIGINT）",
               "missing_api_key": "沒有 OPENAI_API_KEY（repo secret 未設定？）",
               "empty_prompt": "提示詞是空的",
