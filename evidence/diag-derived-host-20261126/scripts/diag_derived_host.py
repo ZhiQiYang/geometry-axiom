@@ -2,7 +2,7 @@
 
 用法：
   python3 -I diag_derived_host.py --bridge <bridge 執行檔> --repo <repo 根目錄> <scene> [<scene> ...]
-          [--ui-result walk_repro.result.json --ui-scene <該次匯出的 scene>]
+          [--ui-result walk_repro.result.json --ui-scene <該次匯出的 scene>] [--t6-cases]
 
 做法（只讀）：
   - 每個場景各起一支新的 bridge 子行程（私有記憶體世界），`loadfile` 載入，接著只送唯讀查詢
@@ -11,7 +11,7 @@
   - 前端取值用與 app.js／parameters.js 相同的運算式在 Python 重算（每項列出來源行，行號由下方程式片段在
     目前 repo 原始碼裡搜尋得出；找不到就標 MISSING，不猜）。
   - 有 --ui-result 時，把重算值與真 Chromium 走查（walk_repro.js）讀到的畫面值逐項比對。
-結束碼：0＝所有場景載入成功、只讀、片段都找到且（若有）與 UI 值一致；1＝否則。
+結束碼：0＝所有場景載入成功、只讀、片段都找到，指定 --t6-cases 時三組原生數據吻合，且（若有）與 UI 值一致；1＝否則。
 """
 import argparse
 import json
@@ -216,10 +216,29 @@ def compare_ui(rep, ui):
     }
 
 
+def t6_cases_match(reports):
+    """依序核對完整、刪行與一般宿主三組夾具；不是拿其中一組的輸出當另兩組的期望值。"""
+    if len(reports) != 3:
+        return False
+    for rep, derived, n in zip(reports, (True, True, False), (53, 1, 5)):
+        native = rep.get('native', {})
+        surfaces = {(s['id'], s['boundary']) for s in native.get('surfaces', [])}
+        hosts = [s['id'] for s in native.get('panel-fill-read.derivedPlacements', [])]
+        timbers = {2 if derived else 1: n}
+        if (surfaces != ({(1, 1), (2, 0)} if derived else {(1, 1)})
+                or hosts != ([2] if derived else [])
+                or native.get('references.timbersBySurface') != timbers
+                or native.get('objects.timbersBySurface') != timbers
+                or native.get('references.gridsBySurface') != ({2: 1} if derived else {})):
+            return False
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--bridge', required=True)
     ap.add_argument('--repo', required=True)
+    ap.add_argument('--t6-cases', action='store_true', help='依序傳入完整匯出、最小場景、一般宿主，核對宿主與角材／網格數')
     ap.add_argument('--ui-result')
     ap.add_argument('--ui-scene', help='與 --ui-result 同一次走查匯出的場景（只比對這一份）')
     ap.add_argument('scenes', nargs='+')
@@ -232,6 +251,9 @@ def main():
         rep = diagnose(a.bridge, scene)
         ok = ok and rep.get('loaded') is True and rep.get('readOnly') is True
         out['scenes'].append(rep)
+    if a.t6_cases:
+        out['t6CasesMatch'] = t6_cases_match(out['scenes'])
+        ok = ok and out['t6CasesMatch']
     if a.ui_result:
         with open(a.ui_result, encoding='utf-8') as f:
             ui = json.load(f)

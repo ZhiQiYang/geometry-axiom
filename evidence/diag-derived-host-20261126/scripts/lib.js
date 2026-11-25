@@ -1,5 +1,5 @@
 // 共用：開頁、存檔、開檔、讀狀態（唯讀）。改自 evidence/l4-cloud-20261114/scripts/lib1113.js。
-// 只有 snap()/q() 透過 apiRequest 讀 dump 與唯讀查詢；所有變更都經由滑鼠與鍵盤。
+// 場景變更經 UI；noPickers 修改頁面的開／存檔 API，以走下載和檔案輸入的後備路徑。
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');

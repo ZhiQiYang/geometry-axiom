@@ -2,7 +2,7 @@
 // 並在確認後只讀蒐集各畫面的資料來源（原生唯讀查詢回覆＋前端狀態），另存 .gcanvas 與匯出 .scene。
 // 改自 evidence/l4-cloud-20261122r03a/scripts/walk_r03a.js 的第一階段（只留：建面 → 板材 → X → 配方 → 明選 → 預覽 → 確認 → 一般畫面 → 存檔）。
 // 用法：APP_URL=http://localhost:18891/ OUT=<輸出目錄> node walk_repro.js
-// 場景變更全部經滑鼠與鍵盤；page.evaluate 只讀畫面、換算座標、送唯讀查詢（dump、objects、surfaces、references、
+// 場景變更經 UI；noPickers 會停用瀏覽器的開存檔 picker，強制走後備路徑。其餘 evaluate 讀畫面、換算座標、送唯讀查詢（dump、objects、surfaces、references、
 // panel-fill-read、engineering-read、identity-read、newid）與讀前端變數（oc.*、feSid、ParameterUI.usage）。
 const L = require('./lib.js'), U = require('./ui.js');
 const fs = require('fs'), path = require('path');
@@ -186,7 +186,7 @@ async function generalView(p, label) {
   fs.writeFileSync(path.join(O, 'r03-fixed.dump.scene'), sCommit.scene);
   R.dumpSceneSha256 = U.sha(sCommit.scene);
   const sEnd = await U.checkpoint(p, L);
-  check('SAVE_EXPORT_ZERO_WRITE', sEnd.sceneSha === sCommit.sceneSha, U.diff(sCommit, sEnd));
+  check('SAVE_EXPORT_SCENE_HASH_UNCHANGED', sEnd.sceneSha === sCommit.sceneSha, U.diff(sCommit, sEnd));
   step('9-save', { gcanvas: [R.gcanvasBytes, R.gcanvasSha256], exportScene: [R.exportSceneBytes, R.exportSceneSha256], dumpScene: R.dumpSceneSha256 });
   R.errs = errs;
   L.writeJson(path.join(O, 'walk_repro.result.json'), R);
