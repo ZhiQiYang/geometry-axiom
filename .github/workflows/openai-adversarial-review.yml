@@ -55,6 +55,8 @@ jobs:
     env:
       # 官方 openai Python SDK 的釘選版本；依賴全部釘版並驗 sha256（與 openai-worker.yml 相同的清單）。
       OPENAI_SDK_VERSION: "3.56.0"
+      # 系統 Python。不寫死小版號：安裝 step 依實際版本挑對應的 wheel 雜湊，不在清單內就失敗。
+      PYTHON_BIN: /usr/bin/python3
       REVIEW_MODEL: ${{ inputs.model }}
       REVIEW_EFFORT: high
       REVIEW_MAX_TURNS: "120"
@@ -171,11 +173,32 @@ jobs:
       - name: Install pinned openai SDK into a venv (hash-verified, no API key in this step)
         run: |
           set -euo pipefail
-          # 與 openai-worker.yml 相同：依賴全部釘版、驗 sha256、只收 wheel；CPython 3.12／manylinux x86_64。
-          if ! /usr/bin/python3.12 -c 'import ensurepip' 2> /dev/null; then
+          # 與 openai-worker.yml 相同的安裝方式與雜湊清單。
+          if ! "$PYTHON_BIN" -c 'import ensurepip' 2> /dev/null; then
             sudo apt-get update -q
             sudo apt-get install -y -q --no-install-recommends python3-venv
           fi
+          # 依賴全部釘版、驗 sha256（--require-hashes、--no-deps、只收 wheel）。清單是 openai==${OPENAI_SDK_VERSION} 的完整依賴：
+          # 12 個純 Python wheel（各版本共用），加上 2 個含編譯擴充的 wheel（jiter、pydantic-core），後者依 CPython 小版號各有一組雜湊。
+          # 系統 Python 不在下表（CPython 3.12／3.13／3.14、x86_64）時明確失敗，不猜、不放寬（例如不改用無雜湊安裝）。
+          py="$PYTHON_BIN"
+          test -x "$py" || { echo "::error::找不到 $py" >&2; exit 1; }
+          pyid="$("$py" -I -c 'import platform, sys; print(f"{sys.implementation.name}-{sys.version_info[0]}.{sys.version_info[1]}-{platform.machine()}")')"
+          echo "runner Python：$pyid（$("$py" -I -c 'import sys; print(sys.version.split()[0])')）"
+          case "$pyid" in
+            cpython-3.12-x86_64)
+              jiter_sha=0956b5f58b804221dfb929c120e6d4032138fed20c1cc0ef683a2d1326255e46
+              pcore_sha=470bbc2495367f60d3ca849a8039e4c164701d10637e7743f4427d92651bdb6d ;;
+            cpython-3.13-x86_64)
+              jiter_sha=3b27d6bec319dc17cdced13e495f90ce066676ca296fc56f2dd2128f6a7599ed
+              pcore_sha=cbfde3ad127786f1dea1a6cd89a5eb824a16203f24743ad2b4e07506f43bc844 ;;
+            cpython-3.14-x86_64)
+              jiter_sha=def1f12b5cef4f53c30ec89d1644c6c5500b343f1ec5e9ac8010dad8c0a41d7b
+              pcore_sha=88b543705849d0c59343f97c38296dbf59eb7b3c9565bd4fe1ed638ba38da5ed ;;
+            *)
+              echo "::error::runner 的 Python（$pyid）不在釘選清單（CPython 3.12／3.13／3.14、x86_64）；要先在 workflow 補上該版本 jiter==0.19.0 與 pydantic-core==2.50.5 wheel 的 sha256，才能安裝" >&2
+              exit 1 ;;
+          esac
           req="$RUNNER_TEMP/openai-requirements.txt"
           cat > "$req" <<'REQ'
           annotated-types==0.8.0 --hash=sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0
@@ -184,23 +207,25 @@ jobs:
           httpcore2==2.16.2 --hash=sha256:16051ae2a42f776007543f32de9349a317b23d2cbb4e1456b4bac0e88b87419a
           httpx2==2.16.2 --hash=sha256:f05c13aade4c45dbf1c9060647a1058f0acad62398fad96e741269edb33d46f5
           idna==3.20 --hash=sha256:ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c
-          jiter==0.19.0 --hash=sha256:0956b5f58b804221dfb929c120e6d4032138fed20c1cc0ef683a2d1326255e46
           openai==3.56.0 --hash=sha256:24043ea80048ed1cd6c263c4fc4192406d05c418e87e89310eecbf55a9021c32
           pydantic==2.14.4 --hash=sha256:653a2ad9f6d8858529c77c72717d0ea991d6c6837fe683246b2f4b2bbfc3fadc
-          pydantic-core==2.50.5 --hash=sha256:470bbc2495367f60d3ca849a8039e4c164701d10637e7743f4427d92651bdb6d
           sniffio==1.3.1 --hash=sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2
           truststore==0.10.5 --hash=sha256:9aaaedaefaf06d8b206278cf8b5012bc897f485a874503501e12d776df78951c
           typing-extensions==4.16.0 --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8
           typing-inspection==0.4.5 --hash=sha256:bc210535442b39e1bf2805e0c7a17dfd6a4ace760c84c7f7d16245d23a6b1c39
           REQ
           sed -i 's/^ *//' "$req"
+          printf 'jiter==0.19.0 --hash=sha256:%s\npydantic-core==2.50.5 --hash=sha256:%s\n' "$jiter_sha" "$pcore_sha" >> "$req"
           grep -qx "openai==${OPENAI_SDK_VERSION} --hash=sha256:[0-9a-f]\{64\}" "$req"
+          test "$(grep -c -- '--hash=sha256:[0-9a-f]\{64\}$' "$req")" = 14
           venv="$RUNNER_TEMP/openai-venv"
           rm -rf "$venv"
-          /usr/bin/python3.12 -m venv "$venv"
+          "$py" -m venv "$venv"
           env -i PATH=/usr/bin:/bin HOME="$RUNNER_TEMP" PIP_DISABLE_PIP_VERSION_CHECK=1 "$venv/bin/pip" install -q \
             --no-deps --require-hashes --only-binary :all: --no-cache-dir -r "$req"
           env -i PATH=/usr/bin:/bin "$venv/bin/pip" check
+          vid="$("$venv/bin/python" -I -c 'import platform, sys; print(f"{sys.implementation.name}-{sys.version_info[0]}.{sys.version_info[1]}-{platform.machine()}")')"
+          test "$vid" = "$pyid" || { echo "::error::venv 的 Python（$vid）與挑選雜湊時的版本（$pyid）不符" >&2; exit 1; }
           got="$("$venv/bin/python" -I -c 'import openai; print(openai.__version__)')"
           test "$got" = "$OPENAI_SDK_VERSION" || { echo "::error::openai SDK 版本不符：$got" >&2; exit 1; }
           echo "openai SDK $got"
