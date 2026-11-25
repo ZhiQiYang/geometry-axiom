@@ -1,0 +1,9 @@
+PASS FRESH_PROCESS_AND_PROFILE {"runtime":{"schema":"geometry-runtime/1","version":"b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c","fresh":true,"root":"/tmp/l4w/wt2","pid":20491,"session":"6264f3a0d2e0419597cef2f4c2412eef"},"prevSession":"42404a4283f3452aa57bbc839d004a32","prevPid":17328}
+PASS COLD_FILE_IS_SAVED_FILE {"open":"d6d340d2325940142ea2cd1a9ef25140d3b6e1e359ad729564a2b9183d40a8ba","saved":"d6d340d2325940142ea2cd1a9ef25140d3b6e1e359ad729564a2b9183d40a8ba"}
+PASS COLD_SCENE_EXACT {"before":"c3abdfb15c4258c18c5d3169cbf227cb3894c228300b252d8aa5add4ed4b45db","cold":"c3abdfb15c4258c18c5d3169cbf227cb3894c228300b252d8aa5add4ed4b45db"}
+PASS COLD_RECIPE_EXACT {"recipes":[["aeb7b2b4-6c05-427d-a941-5c1e73638bf9","L4 R03B along-u",{"corner":"min-min","lengthAlong":"u"}]]}
+PASS COLD_NO_SEARCH {"openReqs":[],"generatorInvocations":0}
+PASS COLD_THREE_VIEW_SHOWS_ALL {"cold":28,"afterRedo":28}
+PASS COLD_FORM_RECIPE_SOURCES_BLANK_ZERO_WRITE {"form":{"mode":"framing-fixed","recipe":"L4 R03B along-u · flat-ceiling/2","recipeValue":"aeb7b2b4-6c05-427d-a941-5c1e73638bf9","recipeOptions":["請明選","L4 R03B along-u · flat-ceiling/2"],"name":"L4 R03B along-u","corner":"min-min","lengthAlong":"u","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新
+PASS COLD_FORM_NO_GENERATION [{"path":"/framing-template/read","cmd":null,"schema":"framing-template-read/1","template":null,"layout":null,"t":1795634536014},{"path":"/framing-template/read","cmd":null,"schema":"framing-template-read/1","template":null,"layout":null,"t":1795634547451},{"path":"/framing-template/read","cmd":null
+SUMMARY along-u 2 8/8

@@ -1,0 +1,9 @@
+PASS FRESH_PROCESS_AND_PROFILE {"runtime":{"schema":"geometry-runtime/1","version":"b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c","fresh":true,"root":"/tmp/l4w/wt2","pid":19781,"session":"5e4ab34e070b419797015f377a4886d8"},"prevSession":"db2ab3ad5a1a46f7b168c7150076cc16","prevPid":15926}
+PASS COLD_FILE_IS_SAVED_FILE {"open":"dcec7c58dd0c3679b03610a6244e64659e888ab69cfae1e1de96c61b8186a3ea","saved":"dcec7c58dd0c3679b03610a6244e64659e888ab69cfae1e1de96c61b8186a3ea"}
+PASS COLD_SCENE_EXACT {"before":"f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354","cold":"f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354"}
+PASS COLD_RECIPE_EXACT {"recipes":[["23870b8b-c519-4cfb-8bfd-dd94b3c1f4f2","L4 R03B corner-min-max",{"corner":"min-max","lengthAlong":"v"}]]}
+PASS COLD_NO_SEARCH {"openReqs":[],"generatorInvocations":0}
+PASS COLD_THREE_VIEW_SHOWS_ALL {"cold":53,"afterRedo":53}
+PASS COLD_FORM_RECIPE_SOURCES_BLANK_ZERO_WRITE {"form":{"mode":"framing-fixed","recipe":"L4 R03B corner-min-max · flat-ceiling/2","recipeValue":"23870b8b-c519-4cfb-8bfd-dd94b3c1f4f2","recipeOptions":["請明選","L4 R03B corner-min-max · flat-ceiling/2"],"name":"L4 R03B corner-min-max","corner":"min-max","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保
+PASS COLD_FORM_NO_GENERATION [{"path":"/framing-template/read","cmd":null,"schema":"framing-template-read/1","template":null,"layout":null,"t":1795634476398},{"path":"/framing-template/read","cmd":null,"schema":"framing-template-read/1","template":null,"layout":null,"t":1795634487838},{"path":"/framing-template/read","cmd":null
+SUMMARY corner-min-max 2 8/8

@@ -1,0 +1,295 @@
+{
+ "schema": "r03b-l4-oracle-compare/1",
+ "oracle": {
+  "path": "geometry-core/framing-template/oracle/framing_oracle.py",
+  "sha256": "7aa56990aa36abab695aee816c64710ffa60974cf1880879634885259406b359"
+ },
+ "golden": {
+  "path": "geometry-core/framing-template/oracle/oracle-golden.json",
+  "sha256": "67027cbf023301d5280613856d7d26a3b29f2b6c0ec52073e428eeaae74f0ef1"
+ },
+ "params": {
+  "P": 915,
+  "L": 1830,
+  "gap": 2,
+  "w": 27,
+  "M": 367,
+  "X": 8,
+  "min_piece": 27
+ },
+ "items": {
+  "along-u": {
+   "outline": [
+    [
+     150,
+     150
+    ],
+    [
+     1830,
+     150
+    ],
+    [
+     1830,
+     4030
+    ],
+    [
+     150,
+     4030
+    ]
+   ],
+   "preference": {
+    "corner": "min-min",
+    "lengthAlong": "u"
+   },
+   "layout": {
+    "A": "y",
+    "a_start": "min",
+    "b_start": "min"
+   },
+   "appMembers": 28,
+   "oracleMembers": 28,
+   "multisetEqual": true,
+   "allAxB27x33": true,
+   "oracleCheckFailures": [],
+   "oracleConflicts": [],
+   "oracleCoreLimits": [],
+   "onlyInApp": [],
+   "onlyInOracle": [],
+   "input": {
+    "file": "walk_r03b.along-u.phase1.result.json",
+    "sha256": "55ed840d9a106aaac0103918f5ccd43aaab601cd771d30cb2f4e25ac152f9ff5"
+   },
+   "frozenGolden": {
+    "found": true,
+    "room": "F4走道",
+    "goldenDims": [
+     1680,
+     3880
+    ],
+    "shift": [
+     -3170,
+     -2970
+    ],
+    "members": 28,
+    "equalAfterShift": true
+   },
+   "ok": true
+  },
+  "corner-max-max": {
+   "outline": [
+    [
+     150,
+     150
+    ],
+    [
+     3890,
+     150
+    ],
+    [
+     3890,
+     3451
+    ],
+    [
+     150,
+     3451
+    ]
+   ],
+   "preference": {
+    "corner": "max-max",
+    "lengthAlong": "v"
+   },
+   "layout": {
+    "A": "x",
+    "a_start": "max",
+    "b_start": "max"
+   },
+   "appMembers": 53,
+   "oracleMembers": 53,
+   "multisetEqual": true,
+   "allAxB27x33": true,
+   "oracleCheckFailures": [],
+   "oracleConflicts": [],
+   "oracleCoreLimits": [],
+   "onlyInApp": [],
+   "onlyInOracle": [],
+   "input": {
+    "file": "walk_r03b.corner-max-max.phase1.result.json",
+    "sha256": "dda6a88218c7cad88593b00c64a9fe8ec4eca0753f5e3e8b3cd8bca8bcb8b08b"
+   },
+   "ok": true
+  },
+  "corner-max-min": {
+   "outline": [
+    [
+     150,
+     150
+    ],
+    [
+     3890,
+     150
+    ],
+    [
+     3890,
+     3451
+    ],
+    [
+     150,
+     3451
+    ]
+   ],
+   "preference": {
+    "corner": "max-min",
+    "lengthAlong": "v"
+   },
+   "layout": {
+    "A": "x",
+    "a_start": "max",
+    "b_start": "min"
+   },
+   "appMembers": 53,
+   "oracleMembers": 53,
+   "multisetEqual": true,
+   "allAxB27x33": true,
+   "oracleCheckFailures": [],
+   "oracleConflicts": [],
+   "oracleCoreLimits": [],
+   "onlyInApp": [],
+   "onlyInOracle": [],
+   "input": {
+    "file": "walk_r03b.corner-max-min.phase1.result.json",
+    "sha256": "7fc82221b3458af12834cca8efadc5b907a558f2b43cd7a18234e4cee70d0513"
+   },
+   "ok": true
+  },
+  "corner-min-max": {
+   "outline": [
+    [
+     150,
+     150
+    ],
+    [
+     3890,
+     150
+    ],
+    [
+     3890,
+     3451
+    ],
+    [
+     150,
+     3451
+    ]
+   ],
+   "preference": {
+    "corner": "min-max",
+    "lengthAlong": "v"
+   },
+   "layout": {
+    "A": "x",
+    "a_start": "min",
+    "b_start": "max"
+   },
+   "appMembers": 53,
+   "oracleMembers": 53,
+   "multisetEqual": true,
+   "allAxB27x33": true,
+   "oracleCheckFailures": [],
+   "oracleConflicts": [],
+   "oracleCoreLimits": [],
+   "onlyInApp": [],
+   "onlyInOracle": [],
+   "input": {
+    "file": "walk_r03b.corner-min-max.phase1.result.json",
+    "sha256": "874d65f1b6b71c43f191a6039cb90aa6d4b2048b642a6d6e1769693486da7c98"
+   },
+   "ok": true
+  },
+  "recipes": {
+   "outline": [
+    [
+     150,
+     150
+    ],
+    [
+     3890,
+     150
+    ],
+    [
+     3890,
+     3451
+    ],
+    [
+     150,
+     3451
+    ]
+   ],
+   "preference": {
+    "corner": "max-max",
+    "lengthAlong": "v"
+   },
+   "layout": {
+    "A": "x",
+    "a_start": "max",
+    "b_start": "max"
+   },
+   "appMembers": 53,
+   "oracleMembers": 53,
+   "multisetEqual": true,
+   "allAxB27x33": true,
+   "oracleCheckFailures": [],
+   "oracleConflicts": [],
+   "oracleCoreLimits": [],
+   "onlyInApp": [],
+   "onlyInOracle": [],
+   "input": {
+    "file": "walk_r03b.recipes.phase1.result.json",
+    "sha256": "866f925b16fb7cc6d2818d05c479486cbfb546e9c122a8cb13dad8488639b643"
+   },
+   "ok": true
+  },
+  "size-2500x3000": {
+   "outline": [
+    [
+     150,
+     150
+    ],
+    [
+     2650,
+     150
+    ],
+    [
+     2650,
+     3150
+    ],
+    [
+     150,
+     3150
+    ]
+   ],
+   "preference": {
+    "corner": "min-min",
+    "lengthAlong": "v"
+   },
+   "layout": {
+    "A": "x",
+    "a_start": "min",
+    "b_start": "min"
+   },
+   "appMembers": 30,
+   "oracleMembers": 30,
+   "multisetEqual": true,
+   "allAxB27x33": true,
+   "oracleCheckFailures": [],
+   "oracleConflicts": [],
+   "oracleCoreLimits": [],
+   "onlyInApp": [],
+   "onlyInOracle": [],
+   "input": {
+    "file": "walk_r03b.size-2500x3000.phase1.result.json",
+    "sha256": "e86d6694c6a08c7c42f7afb5b51fa3002f3cbe83630589409b33a1b01cb3d3c3"
+   },
+   "ok": true
+  }
+ },
+ "ok": true
+}

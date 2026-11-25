@@ -1,0 +1,9 @@
+PASS FRESH_PROCESS_AND_PROFILE {"runtime":{"schema":"geometry-runtime/1","version":"b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c","fresh":true,"root":"/tmp/l4w/wt2","pid":20136,"session":"7fb8bfb8f6c24d65981fafe20b6104b3"},"prevSession":"b07302f355664ad39b57d3abd7a83d91","prevPid":16668}
+PASS COLD_FILE_IS_SAVED_FILE {"open":"5e38631eb63cc1d6eaccb72094ebc33908f67b989dfd72013a7556c7f42eddcf","saved":"5e38631eb63cc1d6eaccb72094ebc33908f67b989dfd72013a7556c7f42eddcf"}
+PASS COLD_SCENE_EXACT {"before":"55e59db586c2df53555eea61bc859ab37943b82568d5d748e6d24611e83bce9d","cold":"55e59db586c2df53555eea61bc859ab37943b82568d5d748e6d24611e83bce9d"}
+PASS COLD_RECIPE_EXACT {"recipes":[["6ecbbc09-7181-4e2a-975f-114d9c0c6e51","L4 R03B corner-max-max",{"corner":"max-max","lengthAlong":"v"}]]}
+PASS COLD_NO_SEARCH {"openReqs":[],"generatorInvocations":0}
+PASS COLD_THREE_VIEW_SHOWS_ALL {"cold":53,"afterRedo":53}
+PASS COLD_FORM_RECIPE_SOURCES_BLANK_ZERO_WRITE {"form":{"mode":"framing-fixed","recipe":"L4 R03B corner-max-max · flat-ceiling/2","recipeValue":"6ecbbc09-7181-4e2a-975f-114d9c0c6e51","recipeOptions":["請明選","L4 R03B corner-max-max · flat-ceiling/2"],"name":"L4 R03B corner-max-max","corner":"max-max","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保
+PASS COLD_FORM_NO_GENERATION [{"path":"/framing-template/read","cmd":null,"schema":"framing-template-read/1","template":null,"layout":null,"t":1795634506180},{"path":"/framing-template/read","cmd":null,"schema":"framing-template-read/1","template":null,"layout":null,"t":1795634517620},{"path":"/framing-template/read","cmd":null
+SUMMARY corner-max-max 2 8/8
