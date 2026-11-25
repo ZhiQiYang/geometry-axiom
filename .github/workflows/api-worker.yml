@@ -431,16 +431,33 @@ jobs:
           # 託管映像把 /usr/local/bin、/opt 等設成 777。模型（apiworker）若能在這些地方放同名程式或改名目錄，
           # runner／root 之後的步驟就可能執行它。這裡全機掃描：除了帶 sticky bit 的暫存目錄、apiworker 自己的家目錄以外，
           # 任何 other 可寫的目錄與一般檔案一律改成 o-w；下一步再以 apiworker 身分逐項驗證寫不進去。
+          # 掃描必須完整：find 的結束碼與錯誤訊息都要看。只接受「掃描途中檔案消失」（No such file or directory）這一種錯誤；
+          # 其他任何錯誤（I/O、權限、記憶體……）或沒有說明的非零結束碼，都代表掃描不完整，不啟動模型。
           scan() {
+            local list="$1" err="$1.err" rc=0
+            # 清單與錯誤由 runner 寫檔（重導向刻意不經 sudo）。
+            # shellcheck disable=SC2024
             sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \
-              \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 2> /dev/null || true
+              \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err" || rc=$?
+            if [ "$rc" -ne 0 ]; then
+              if [ ! -s "$err" ] || grep -q -v -E ': No such file or directory$' "$err"; then
+                echo "::error::全機掃描未完成（find 結束碼 $rc），不啟動模型" >&2
+                sed -n 1,20p "$err" >&2
+                return 1
+              fi
+              echo "find 結束碼 $rc：只有掃描途中消失的檔案（$(wc -l < "$err") 行 No such file or directory），掃描視為完整"
+            fi
           }
-          n="$(scan | tr -cd '\0' | wc -c)"
-          echo "world-writable entries before: $n"
-          scan | sudo xargs -0 -r chmod o-w
-          left="$(scan | tr '\0' '\n')"
-          if [ -n "$left" ]; then
-            printf '%s\n' "$left" | head -50
+          before="$RUNNER_TEMP/world-writable-before"
+          after="$RUNNER_TEMP/world-writable-after"
+          scan "$before"
+          echo "world-writable entries before: $(tr -cd '\0' < "$before" | wc -c)"
+          # chmod 個別失敗（例如檔案剛好消失）不在這裡判斷；下面的第二次完整掃描才是判準。
+          # shellcheck disable=SC2024
+          sudo xargs -0 -r chmod o-w < "$before" || true
+          scan "$after"
+          if [ -s "$after" ]; then
+            tr '\0' '\n' < "$after" | head -50
             echo "::error::仍有 other 可寫的目錄或檔案，不啟動模型" >&2; exit 1
           fi
           echo "world-writable entries after: 0"
@@ -532,11 +549,17 @@ jobs:
           export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
           # 清理 apiworker 的所有行程並核對沒有剩餘；核對不到就失敗，不以忽略錯誤代替。
+          # pgrep 結束碼：1＝確定沒有匹配；0＝仍有行程；其他（2 命令錯誤、3 致命錯誤、無法執行）＝無法確認，一律當清理失敗。
           stop_worker() {
+            local rc
             for _ in 1 2 3 4 5 6 7 8 9 10; do
               sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
-              if ! pgrep -u "$WORKER_USER" > /dev/null; then return 0; fi
-              sleep 1
+              rc=0; pgrep -u "$WORKER_USER" > /dev/null || rc=$?
+              case "$rc" in
+                1) return 0 ;;
+                0) sleep 1 ;;
+                *) echo "::error::pgrep 結束碼 $rc，無法確認 apiworker 行程已清除" >&2; return 2 ;;
+              esac
             done
             pgrep -a -u "$WORKER_USER" || true
             return 1
@@ -593,11 +616,17 @@ jobs:
           export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
           # 清理 apiworker 的所有行程並核對沒有剩餘；核對不到就失敗，不以忽略錯誤代替。
+          # pgrep 結束碼：1＝確定沒有匹配；0＝仍有行程；其他（2 命令錯誤、3 致命錯誤、無法執行）＝無法確認，一律當清理失敗。
           stop_worker() {
+            local rc
             for _ in 1 2 3 4 5 6 7 8 9 10; do
               sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
-              if ! pgrep -u "$WORKER_USER" > /dev/null; then return 0; fi
-              sleep 1
+              rc=0; pgrep -u "$WORKER_USER" > /dev/null || rc=$?
+              case "$rc" in
+                1) return 0 ;;
+                0) sleep 1 ;;
+                *) echo "::error::pgrep 結束碼 $rc，無法確認 apiworker 行程已清除" >&2; return 2 ;;
+              esac
             done
             pgrep -a -u "$WORKER_USER" || true
             return 1
@@ -618,11 +647,17 @@ jobs:
           export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
           # 清理 apiworker 的所有行程並核對沒有剩餘；核對不到就失敗，不以忽略錯誤代替。
+          # pgrep 結束碼：1＝確定沒有匹配；0＝仍有行程；其他（2 命令錯誤、3 致命錯誤、無法執行）＝無法確認，一律當清理失敗。
           stop_worker() {
+            local rc
             for _ in 1 2 3 4 5 6 7 8 9 10; do
               sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
-              if ! pgrep -u "$WORKER_USER" > /dev/null; then return 0; fi
-              sleep 1
+              rc=0; pgrep -u "$WORKER_USER" > /dev/null || rc=$?
+              case "$rc" in
+                1) return 0 ;;
+                0) sleep 1 ;;
+                *) echo "::error::pgrep 結束碼 $rc，無法確認 apiworker 行程已清除" >&2; return 2 ;;
+              esac
             done
             pgrep -a -u "$WORKER_USER" || true
             return 1
@@ -675,6 +710,7 @@ jobs:
       reasons: ${{ steps.check.outputs.reasons }}
       push_state: ${{ steps.push.outputs.push_state }}
       push_rc: ${{ steps.push.outputs.push_rc }}
+      push_outcome: ${{ steps.push.outputs.push_outcome }}
       remote_sha: ${{ steps.push.outputs.remote_sha }}
     env:
       BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
@@ -859,15 +895,27 @@ jobs:
           echo "push_state=attempting" >> "$GITHUB_OUTPUT"
           # 憑證只經環境變數給這一次 git 呼叫；只推新分支，不推 main。
           # 「只建立、不更新」要在伺服器端原子成立：--force-with-lease=<ref>: 的空期望值表示「遠端這個 ref 必須不存在」，
-          # 伺服器在同一次更新裡核對舊值為空才建立；ref 已存在（不論是不是祖先）一律拒絕。這個寫法不能覆寫或快轉任何既有 ref。
+          # 伺服器在同一次更新裡核對舊值為空才建立。ref 已存在且指向別的 SHA 時拒絕；若恰好已指向成果 SHA，
+          # Git 回「up to date」且不做任何更新。這個寫法不能覆寫或快轉任何既有 ref。
+          # 兩件事分開記錄：本次 push 的結果（--porcelain 的狀態旗標）與事後查到的遠端狀態，不用後者反推前者。
           rc=0
+          porcelain="$RUNNER_TEMP/push-porcelain.txt"
           GIT_CONFIG_COUNT=2 \
           GIT_CONFIG_KEY_0="http.$GITHUB_SERVER_URL/.extraheader" GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth" \
           GIT_CONFIG_KEY_1=core.hooksPath GIT_CONFIG_VALUE_1=/dev/null \
-            git -C "$repo" push --no-verify --force-with-lease="refs/heads/$WORKER_BRANCH:" \
-              origin "$HEAD_SHA:refs/heads/$WORKER_BRANCH" || rc=$?
+            git -C "$repo" push --porcelain --no-verify --force-with-lease="refs/heads/$WORKER_BRANCH:" \
+              origin "$HEAD_SHA:refs/heads/$WORKER_BRANCH" > "$porcelain" || rc=$?
+          cat "$porcelain"
           echo "push_rc=$rc" >> "$GITHUB_OUTPUT"
-          # 推送結果以遠端實際狀態為準；讀不到就是「未確認」，不斷言遠端沒有變更。
+          flag="$(awk -F '\t' -v want="$HEAD_SHA:refs/heads/$WORKER_BRANCH" '$2 == want { print substr($1, 1, 1); exit }' "$porcelain")"
+          case "$flag" in
+            '*') outcome=created ;;      # 伺服器接受並新建
+            '=') outcome=up_to_date ;;   # 遠端已指向同一 SHA，本次沒有新建
+            '!') outcome=rejected ;;     # 被拒（例如 ref 已存在）
+            *) outcome=unknown ;;        # 沒有可辨識的回應
+          esac
+          echo "push_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          # 事後的遠端狀態另外記錄；讀不到就是「未確認」。
           lrc=0
           got="$(git -C "$repo" ls-remote origin "refs/heads/$WORKER_BRANCH")" || lrc=$?
           got="${got%%[[:space:]]*}"
@@ -878,8 +926,8 @@ jobs:
           fi
           echo "remote_sha=$got" >> "$GITHUB_OUTPUT"
           echo "push_state=$state" >> "$GITHUB_OUTPUT"
-          echo "push rc=$rc ls-remote rc=$lrc state=$state remote=${got:-none} expected=$HEAD_SHA"
-          [ "$state" = confirmed ]
+          echo "push rc=$rc outcome=$outcome ls-remote rc=$lrc state=$state remote=${got:-none} expected=$HEAD_SHA"
+          [ "$outcome" = created ] && [ "$state" = confirmed ]
 
   report:
     name: Post the result on the task issue
@@ -927,6 +975,7 @@ jobs:
           CHECK_OK: ${{ needs.push.outputs.ok }}
           PUSH_STATE: ${{ needs.push.outputs.push_state }}
           PUSH_RC: ${{ needs.push.outputs.push_rc }}
+          PUSH_OUTCOME: ${{ needs.push.outputs.push_outcome }}
           REMOTE_SHA: ${{ needs.push.outputs.remote_sha }}
           HEAD_SHA: ${{ needs.push.outputs.head_sha }}
           COMMITS: ${{ needs.push.outputs.commits }}
@@ -1001,9 +1050,14 @@ jobs:
           except ValueError:
               reasons = ["推送前檢查的結果無法解析"]
           state = env.get("PUSH_STATE") or ""
-          pushed = state == "confirmed"
-          # 檢查通過、推送 step 有開始（或 output 不完整）但遠端狀態沒有確認：只能說「未確認」，不能說沒有推送。
-          push_unknown = env.get("CHECK_OK") == "true" and state in ("", "attempting", "unconfirmed")
+          outcome = env.get("PUSH_OUTCOME") or ""
+          remote = env.get("REMOTE_SHA") or ""
+          remote_text = {"confirmed": f"指向成果 `{env.get('HEAD_SHA')}`", "absent": "不存在",
+                         "exists_other": f"指向 `{remote}`", "unconfirmed": "讀不到"}.get(state, "未記錄")
+          # 本次 push 的結果（伺服器回應）與事後查到的遠端狀態分開判斷，不用後者反推前者。
+          pushed = outcome == "created" and state == "confirmed"
+          push_mismatch = outcome == "created" and state != "confirmed"
+          push_unknown = env.get("CHECK_OK") == "true" and outcome not in ("created", "up_to_date", "rejected")
           branch = env["WORKER_BRANCH"]
           cid = unmention(env.get("COMMENT_ID", ""))
 
@@ -1018,18 +1072,24 @@ jobs:
                             f"已推送到新分支 `{branch}`，head `{env.get('HEAD_SHA')}`"
                             f"（相對 base {env.get('COMMITS')} 個 commit、淨差異 {env.get('FILES')} 個檔案）。",
                             "本 workflow 不開 PR；要開 PR 由本機 Claude 以使用者身分開（用 GITHUB_TOKEN 開的 PR 不會觸發 CI）。"]
+              elif push_mismatch:
+                  lines += ["### 結論",
+                            f"**推送已被伺服器接受並新建 `{branch}`（成果 `{env.get('HEAD_SHA')}`），但事後查到的遠端狀態不一致**："
+                            f"目前{remote_text}。可能是推送後分支被其他操作改動或刪除，或讀取失敗；不能據此斷言本次沒有寫入。",
+                            f"請以 `git ls-remote origin refs/heads/{branch}` 核對。"]
+              elif outcome == "up_to_date":
+                  lines += ["### 結論",
+                            f"**本次沒有新建分支**：遠端 `{branch}` 在推送時已指向成果 `{env.get('HEAD_SHA')}`（Git 回 up to date），"
+                            f"所以不是本次建立的；事後查到的遠端狀態：{remote_text}。"]
+              elif outcome == "rejected":
+                  lines += ["### 結論",
+                            f"**沒有推送**：伺服器拒絕建立 `{branch}`（以「ref 必須不存在」為條件，push 結束碼 {env.get('PUSH_RC') or '未記錄'}），"
+                            f"既有分支沒有被本次更動；事後查到的遠端狀態：{remote_text}。"]
               elif push_unknown:
                   lines += ["### 結論",
-                            f"**推送結果未確認**：固定檢查已通過，推送請求可能已送出，但沒有讀到遠端的確認"
-                            f"（push 結束碼 {env.get('PUSH_RC') or '未記錄'}；狀態 {state or '無'}）。",
+                            f"**推送結果未確認**：固定檢查已通過，推送請求可能已送出，但沒有可辨識的伺服器回應"
+                            f"（push 結束碼 {env.get('PUSH_RC') or '未記錄'}；事後查到的遠端狀態：{remote_text}）。",
                             f"請以 `git ls-remote origin refs/heads/{branch}` 核對；預期 SHA `{env.get('HEAD_SHA')}`。"]
-              elif state == "exists_other":
-                  lines += ["### 結論",
-                            f"**沒有推送**：目標分支 `{branch}` 在檢查之後被別人建立（遠端 `{env.get('REMOTE_SHA')}`），"
-                            "推送以「ref 必須不存在」為條件被拒，既有分支沒有被更動。"]
-              elif state == "absent":
-                  lines += ["### 結論",
-                            f"**沒有推送**：推送失敗（結束碼 {env.get('PUSH_RC') or '未記錄'}），之後確認遠端沒有 `{branch}`。"]
               else:
                   lines += ["### 結論", "**沒有推送**。"]
                   if reasons:
@@ -1041,7 +1101,7 @@ jobs:
                         f"- 任務留言：{env.get('COMMENT_URL')}（內文 SHA-256 `{env.get('COMMENT_SHA256')}`；讀取時 updated_at {env.get('COMMENT_UPDATED_AT')}）",
                         f"- 引用留言：{env.get('REFS_SUMMARY') or '無'}",
                         f"- base：`{env.get('BASE_REF')}` `{env.get('BASE_SHA')}`",
-                        f"- 分支：`{branch}`；head：`{env.get('HEAD_SHA') or '無'}`；推送：{'是' if pushed else ('未確認' if push_unknown else '否')}",
+                        f"- 分支：`{branch}`；head：`{env.get('HEAD_SHA') or '無'}`；推送：{'是' if pushed else ('未確認' if (push_unknown or push_mismatch) else '否')}",
                         f"- CLI 啟動：{('是' if started else '否') if receipt else '未確認（成果收據取不到）'}；結束碼：{exit_text}；"
                         f"可解析結果：{'是' if parsed else '否（' + (parse_note or '無') + '）'}；"
                         f"subtype `{res.get('subtype')}`；is_error `{res.get('is_error')}`；work job：{env.get('WORK_RESULT')}"]
