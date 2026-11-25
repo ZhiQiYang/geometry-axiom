@@ -61,7 +61,7 @@ jobs:
               print(json.dumps({"cases":[[r["id"],r["assertions"]["passed"]] for r in checkpoints],"total":len(checkpoints)},sort_keys=True))
           subprocess.run(["node","geometry-web/canvas_registry.js","import-cost","--id","P1162","--artifact-id",artifact_id,"--artifact",str(archive)], check=True)
           current = json.loads(row_path.read_bytes())
-          old = json.loads(git("show", "5825e69f1e04a37248ad9944d14360c6e9e80ecd:"+row_path.as_posix()))
+          old = json.loads(subprocess.check_output(["gh","api","-H","Accept: application/vnd.github.raw+json","repos/ZhiQiYang/geometry-axiom/contents/"+row_path.as_posix()+"?ref=5825e69f1e04a37248ad9944d14360c6e9e80ecd"]))
           assert current["assertions"] == old["assertions"] == 504, current
           assert current["provenance"]["headSha"] == os.environ["TARGET"] and current["provenance"]["executionSha"] == os.environ["TARGET"]
           assert current["provenance"]["runId"] == str(metadata["workflow_run"]["id"])
