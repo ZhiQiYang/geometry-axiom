@@ -1,0 +1,121 @@
+name: "#448 Canvas 來源污染對照"
+on:
+  push:
+    branches: [codex/box448-canvas-preflight-20261126]
+    paths: [.github/workflows/box448-preflight-witness.yml]
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRODUCT_SHA: a2620da6b3ae79df19905285ea80f3df5396a37e
+      PRODUCT_TREE: 63cfef296f77525907288b60d47a5e362118bd2a
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: 簽出將執行物化的獨立工作區
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: a2620da6b3ae79df19905285ea80f3df5396a37e
+          path: original
+          persist-credentials: false
+      - name: 簽出第二份相同來源
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: a2620da6b3ae79df19905285ea80f3df5396a37e
+          path: independent
+          persist-credentials: false
+      - name: 對照原始物化命令與 Canvas 正式來源閘門
+        shell: python
+        run: |
+          from pathlib import Path
+          import hashlib
+          import json
+          import os
+          import subprocess
+          import sys
+          
+          root = Path(os.environ["GITHUB_WORKSPACE"])
+          receipt = Path(os.environ["RUNNER_TEMP"]) / "box448-preflight"
+          receipt.mkdir()
+          source = os.environ["PRODUCT_SHA"]
+          expected_tree = os.environ["PRODUCT_TREE"]
+          ledger = Path("tests/mutants_results.json")
+          probe = """import json, runpy
+          module = runpy.run_path(".github/scripts/canvas_evidence.py")
+          print(json.dumps(module["source_identity"](), sort_keys=True))"""
+          git_status_args = ["git", "status", "--porcelain=v1"]
+          
+          def run(directory, args):
+              return subprocess.run(args, cwd=directory, capture_output=True, check=False)
+          
+          def git(directory, *args):
+              return subprocess.check_output(["git", *args], cwd=directory, text=True).strip()
+          
+          def persist(name, process):
+              (receipt / (name + ".stdout")).write_bytes(process.stdout)
+              (receipt / (name + ".stderr")).write_bytes(process.stderr)
+              (receipt / (name + ".exit")).write_text(str(process.returncode) + "\n", encoding="utf-8")
+              return process.returncode
+          
+          def sample(name, directory):
+              raw = (directory / ledger).read_bytes()
+              status = run(directory, git_status_args)
+              persist(name + "-status", status)
+              assert status.returncode == 0
+              outcome = run(directory, [sys.executable, "-B", "-c", probe])
+              persist(name + "-preflight", outcome)
+              entry = {
+                  "path": directory.name,
+                  "head": git(directory, "rev-parse", "HEAD"),
+                  "tree": git(directory, "rev-parse", "HEAD^{tree}"),
+                  "seed_index_blob": git(directory, "rev-parse", "HEAD:" + ledger.as_posix()),
+                  "seed_worktree_blob": git(directory, "hash-object", ledger.as_posix()),
+                  "seed_bytes": len(raw),
+                  "seed_sha256": hashlib.sha256(raw).hexdigest(),
+                  "porcelain": status.stdout.decode().splitlines(),
+                  "preflight_exit": outcome.returncode,
+                  "preflight_stdout": outcome.stdout.decode().strip(),
+                  "preflight_stderr": outcome.stderr.decode().strip(),
+              }
+              print(name, json.dumps(entry, ensure_ascii=False, sort_keys=True), flush=True)
+              (receipt / (name + ".json")).write_text(json.dumps(entry, sort_keys=True) + "\n", encoding="utf-8")
+              assert entry["head"] == source and entry["tree"] == expected_tree
+              return entry
+          
+          first = root / "original"
+          other = root / "independent"
+          before = sample("01-clean", first)
+          assert before["porcelain"] == [] and before["preflight_exit"] == 0
+          assert before["seed_index_blob"] == before["seed_worktree_blob"] == "205b18792d436d5fb81613e199f8d9191dfdeece"
+          
+          command = [sys.executable, "-B", ".github/scripts/evidence_records.py", "materialize", "--root", "."]
+          result = run(first, command)
+          assert persist("02-native-materialize", result) == 0, result.stderr.decode()[-1500:]
+          materialized = json.loads(result.stdout)
+          print("materialize", json.dumps(materialized, sort_keys=True), flush=True)
+          after = sample("03-after-materialize", first)
+          assert after["seed_index_blob"] == before["seed_index_blob"] != after["seed_worktree_blob"]
+          assert after["seed_sha256"] == materialized["sha256"] and after["seed_bytes"] == materialized["bytes"]
+          assert after["porcelain"] == [" M tests/mutants_results.json"]
+          assert after["preflight_exit"] == 1 and after["preflight_stderr"].endswith("ValueError: CANVAS_DIRTY_SOURCE")
+          
+          clean = sample("04-independent-checkout", other)
+          assert clean["preflight_exit"] == 0 and clean["porcelain"] == []
+          assert clean["seed_sha256"] == before["seed_sha256"]
+          kept = sample("05-original-still-dirty", first)
+          assert kept == after
+          summary = {"source": source, "tree": expected_tree, "command": command, "materialize": materialized,
+                     "clean": before, "dirty": after, "independent": clean, "original_after_independent": kept,
+                     "browser_executed": False}
+          (receipt / "summary.json").write_text(json.dumps(summary, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          print("PASS 乾淨 → 同工作樹物化 → 獨立乾淨：Canvas 前置檢查 0／1／0；保留原髒樹再次檢查為 1。", flush=True)
+      - name: 保留逐步來源、stdout、stderr 與退出碼
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: box448-canvas-preflight
+          path: ${{ runner.temp }}/box448-preflight/
+          if-no-files-found: error
+          retention-days: 14
