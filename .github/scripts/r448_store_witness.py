@@ -189,6 +189,7 @@ def adopt():
         git('bundle', 'create', str(bundle), branch, '^' + head)
         git('bundle', 'verify', str(bundle))
         require(git('bundle', 'list-heads', str(bundle)) == candidate + ' ' + branch, 'unexpected bundle ref')
+    (REPORT / 'candidate-commit.txt').write_bytes(command('git', 'cat-file', 'commit', candidate))
     require(git('rev-parse', candidate + '^{tree}') == tree, 'candidate tree differs')
     seeds_after = seed_blobs(candidate)
     save('candidate.json', {
