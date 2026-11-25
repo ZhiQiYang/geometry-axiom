@@ -94,7 +94,7 @@ window.SpaceModelWorkspace = (() => {
     const boundaryWarning=document.createElement('p');boundaryWarning.id='smBoundaryWarning';boundaryWarning.className='sm-missing';boundaryWarning.hidden=true;
     common.append(material,timber,boundarySummary,boundaryWarning,holes,boundary);
     const guide=dialog.querySelector('.sm-guide');guide.open=false;guide.querySelector('summary').textContent='操作說明與幾何定義';
-    guide.querySelector('ol').innerHTML='<li>使用自己的面時，在這裡確認平面投影用途與俯視／仰視；或從上方選現成範例。</li><li>指定牆底，牆高預設 3000 mm、材料牆厚 100 mm。可修改設定及納入清單，再按「更新預覽」。</li><li>核對預覽及各面用途，在建立按鈕旁勾選確認、按「建立空間」，最後使用頂列的「保存」保存專案。</li>';
+    guide.querySelector('ol').innerHTML='<li>使用自己的面時，在這裡確認平面投影用途與俯視／仰視；或選現成範例。</li><li>指定牆底，牆高預設 3000 mm、材料牆厚 100 mm。可修改設定及納入清單，再按「更新預覽」。</li><li>核對預覽及各面用途，在建立按鈕旁勾選確認、按「建立空間」，最後使用頂列的「保存」保存專案。</li>';
     guide.querySelector('p').textContent='圖面 z 是原面位置，不代替牆底或牆高。輪廓內代表室內淨空，材料牆向外加厚；FREE 邊及孔洞需明確核對。需要逐邊、底頂用途或另一種建模方式時，可展開對應設定。';
     dialog.querySelector('.sm-setup-scroll').append(guide);
     const review=$('smPreviewDetails'),heading=review.querySelector('.sm-section-heading'),details=document.createElement('details');details.id='smReviewFaces';details.className='sm-advanced sm-review-faces';
@@ -107,6 +107,19 @@ window.SpaceModelWorkspace = (() => {
     const saveNotice=document.createElement('p');saveNotice.id='smSaveNotice';saveNotice.className='sm-save-notice';saveNotice.textContent='已加入目前專案。還需要保存 .gcanvas 檔案，才能在下次開啟。';$('smCreatedActions').prepend(saveNotice);
   }
   organizeSetup();
+  function organizeHeightViewport() {
+    // R123H_MODEL_DOCK: move the original nodes, including their IDs and state.
+    // Navigation stays outside #smMain: setup hides the stage on mobile and
+    // the library hides #smMain, but both must retain their existing exits.
+    const dock=document.createElement('aside');dock.id='smHeightDock';
+    dock.setAttribute('aria-label','模型檢視與來源');
+    const navigation=document.createElement('div');navigation.className='sm-height-navigation';
+    navigation.append(dialog.querySelector('.sm-source-actions'),dialog.querySelector('.sm-steps'));
+    const view=document.createElement('div');view.id='smHeightView';
+    for(const selector of ['.sm-stage-head','#smWelcome','.sm-view-tools','#smViewDirection','.sm-display-options','.sm-metrics','#smMobileNext'])view.append(dialog.querySelector(selector));
+    dock.append(dialog.querySelector('.sm-mobile-tabs'),navigation,view);dialog.append(dock);
+  }
+  organizeHeightViewport();
   let capabilitiesPromise=null, supportsTimbers=null, supportsProfileRuns=null, supportsEngineering=false;
   function probeCapabilities() {
     if(capabilitiesPromise)return capabilitiesPromise;
@@ -753,7 +766,7 @@ window.SpaceModelWorkspace = (() => {
     const list=$("smTimberReviewList");
     if(state.readonly&&!state.editing&&state.input?.mode==='plan'&&count){
       list.replaceChildren();
-      $('smShowTimbers').closest('.sm-display-options').after(list);
+      dialog.querySelector('.sm-stage').append(list);
     }else{
       $('smTimberReview').after(list);
       list.innerHTML='<ul>'+timberObjects.map(o=>{const zs=o.vertices_mm.map(p=>p[2]),lo=Math.min(...zs),hi=Math.max(...zs);return `<li><strong>角材 #${esc(o.root?.id)}</strong><span>世界 z：${esc(lo)}～${esc(hi)} mm${typeof s.top==="number"&&hi>s.top?" · 高於空間牆頂，保留原位置":""}</span></li>`;}).join("")+'</ul>';

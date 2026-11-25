@@ -201,6 +201,17 @@ module.exports=async function roomOutlineTest({send,eval_,sleep,click,drag,waitF
   await send('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
   // Reproduce the reported 4000 x 3000 ring covering only the legend after 323.5 cm calibration.
   await setup({enlarged:true,calibrate:false});
+  // Give both known PDF endpoints exact CSS-pixel positions for real pointer
+  // input. At fit-to-view zoom their 100 px separation can span a noninteger
+  // number of CSS pixels, which pointer events store with finite precision.
+  await read(`(()=>{
+    const page=ReferenceWorkspace.active(1), view=$('faceEditorSvg').getBoundingClientRect();
+    fe.zoom=1/page.mmPerPx;
+    fe.panX=Math.round(view.left+(view.width-page.imgW)/2)-view.left;
+    fe.panY=Math.round(view.top+(view.height-page.imgH)/2)-view.top;
+    feApplyZoom();
+    return true;
+  })()`);
   const enlargedOriginal=await read(`api('dump').then(r=>r.text)`);
   await ctl('#ulCalibStart');await sourcePoint(220,150);await sourcePoint(320,150);
   await fill('#ulCalibDist',323.5);await select('#ulCalibUnit','cm');await ctl('#ulCalibApply');

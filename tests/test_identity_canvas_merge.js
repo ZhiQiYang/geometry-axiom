@@ -15,6 +15,7 @@ const r06LegacyExtension = require('./diagnostics/r06_legacy_canvas_extension.cj
 const r335Extension = require('./diagnostics/r335_canvas_extension.cjs');
 const pf4aExtension = require('./diagnostics/pf4a_canvas_extension.cjs');
 const r03Extension = require('./diagnostics/r03_framing_canvas_extension.cjs');
+const r16Extension = require('./diagnostics/r16_canvas_extension.cjs');
 // PF-4A (#128) P1284 is projected out first by its own exact helper (measured count, P128→P1284→P353).
 // R386: census() is the current legacy projection (or the mutation runner's isolated aggregate fixture).
 // R03 (#205) P205 follows P1284 in the merged plan, so its exact helper runs before PF-4A's.
@@ -27,11 +28,21 @@ const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const file = name => path.join(WEB, name);
 const read = name => fs.readFileSync(file(name), 'utf8');
 const registry = require('../geometry-web/canvas_registry.js');
+function currentLegacy() {
+  const current = registry.load(ROOT);
+  const view = r16Extension.registeredView(current);
+  const projected = {plan:r16Extension.projectPlan(view.plan), golden:r16Extension.projectGolden(view.golden)};
+  const legacy = registry.legacyView(ROOT);
+  assert.deepEqual(projected, legacy, 'R16_IDENTITY_EXACT_CURRENT_TO_LEGACY_PROJECTION');
+  assert.equal(r16Extension.projectRaw(registry.encode(view.golden)), registry.encode(legacy.golden),
+    'R16_IDENTITY_UNCHANGED_LEGACY_BYTES');
+  return projected;
+}
 // The historical mutation runner supplies derived aggregate fixtures in an
 // isolated directory. Normal CI always projects the active legacy fragments.
 const census = () => process.env.R360_CONTRACT_ROOT
   ? {plan:JSON.parse(read('canvas_shards.json')),golden:JSON.parse(read('cdp_sections.golden.json'))}
-  : registry.legacyView(ROOT);
+  : currentLegacy();
 const numeric = () => {
   const module = require(file('canvas_shards.js'));
   return process.env.R360_CONTRACT_ROOT ? {...module,loadPlan:()=>census().plan,loadGolden:()=>census().golden,

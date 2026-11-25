@@ -2290,5 +2290,6 @@ const ReferenceWorkspace = (() => {
     manifest,readScenarioProject,readScenarioCatalog,commitScenarioCatalog,adoptScenario,exportBytes,importBytes,openProject,uploadScene,recoverLoad,mayLeave,sync,save,escape,
     readScenarioEditorTicket,createScenarioEditorTicket,updateScenarioEditorTicket,markScenarioEditorRetiring,verifyScenarioEditorRetirement,clearScenarioEditorTicket,
     initializeScenarioProject,pauseScenarioProject,resumeScenarioProject,freezeScenarioProject,assertScenarioFrozen,releaseScenarioProject,finishScenarioEditor,
+    get recoveryIdle() { return recoveryTimer === null && !recoveryWriting && !recoveryAgain; },
     historyActionLabel:op=>history.actionLabel(op),get busy(){return busy;},get saveOutcome(){return {...saveOutcome};} };
 })();

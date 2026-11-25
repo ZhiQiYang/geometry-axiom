@@ -1,0 +1,236 @@
+/* U123-H:A. The shared helper records layout viewport innerHeight, not the
+   visual viewport. Original controls occupy real columns beside each canvas. */
+#infiniteGridWorkspace,
+#smWorkspace {
+  --r123h-dialog-header: 56px;
+  --r123h-dialog-dock: 156px;
+  width: 100vw;
+  height: var(--r123h-layout-height, 100vh);
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+/* R123H_GRID_HEIGHT_BEGIN: retain the 360px desktop inspector and fill its peer
+   drawing column. The source's main/canvas bottom-edge oracle stays exact. */
+#infiniteGridWorkspace .ig-main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0;
+  padding: 0 var(--r123h-dialog-dock) 0 0;
+  border: 0;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+}
+#infiniteGridWorkspace .ig-canvas {
+  flex: 1 0 calc(var(--r123h-layout-height, 100vh) - var(--r123h-dialog-header));
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+/* R123H_GRID_HEIGHT_END */
+
+/* R123H_GRID_DOCK_BEGIN: .ig-main reserves this exact width outside .ig-canvas.
+   The canvas remains a real column-flex item for the existing resize guard. */
+#igHeightDock {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--r123h-dialog-dock);
+  height: calc(var(--r123h-layout-height, 100vh) - var(--r123h-dialog-header));
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  border-left: 1px solid var(--border);
+  background: var(--panel);
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+#igHeightDock > * { max-width: 100%; box-sizing: border-box; }
+#igHeightDock #igWorkspaceLesson { margin: 0 0 12px; }
+#igHeightDock .ig-hint {
+  position: static;
+  display: block;
+  margin: 0 0 12px;
+  padding: 8px;
+  overflow-wrap: anywhere;
+}
+#igHeightDock .ig-zoombar {
+  position: static;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  gap: 4px;
+  box-shadow: none;
+}
+#igHeightDock #igZoom {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  padding: 6px 2px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#igHeightDock .ig-zoom-sep { display: none; }
+#igHeightDock #igFit { grid-column: 1 / -1; }
+#igHeightDock .ig-density { margin: 12px 0 0; overflow-wrap: anywhere; }
+/* R123H_GRID_DOCK_END */
+
+/* R123H_MODEL_HEIGHT_BEGIN: the actual model canvas fills the stage's free space.
+   The original setup remains its desktop peer and its mobile alternate. */
+#smWorkspace[open] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--r123h-dialog-dock);
+  grid-template-rows: var(--r123h-dialog-header) minmax(0, 1fr);
+}
+#smWorkspace > .sm-header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: var(--r123h-dialog-header);
+  min-height: var(--r123h-dialog-header);
+  box-sizing: border-box;
+}
+#smWorkspace > #smMain,
+#smWorkspace > #smLibraryPanel {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+#smWorkspace > #smMain { margin: 0; padding: 0; border: 0; gap: 0; }
+#smWorkspace .sm-stage {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#smWorkspace .sm-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#smWorkspace .sm-canvas-wrap > canvas { display: block; width: 100%; height: 100%; }
+#smWorkspace .sm-setup { min-width: 0; }
+/* R123H_MODEL_HEIGHT_END */
+
+#smWorkspace .sm-stage > #smTimberReviewList {
+  flex: 0 0 auto;
+  max-height: min(260px, 40%);
+}
+#smWorkspace .sm-stage > #smTimberReviewList:empty { display: none; }
+
+/* R123H_MODEL_DOCK_BEGIN: navigation is outside the hideable stage and #smMain.
+   No lesson is dismissed, no button is duplicated, and every group scrolls. */
+#smHeightDock {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-left: 1px solid var(--sm-line);
+  background: #f7f9fb;
+  scrollbar-width: thin;
+}
+#smHeightDock * { min-width: 0; overflow-wrap: anywhere; }
+#smHeightDock .sm-source-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+#smHeightDock .sm-source-actions .sm-button,
+#smHeightDock .sm-other-examples { width: 100%; margin: 0; }
+#smHeightDock .sm-source-actions .sm-button { white-space: normal; }
+#smHeightDock .sm-other-examples[open] { display: flex; flex-direction: column; }
+#smHeightDock .sm-steps { display: flex; flex-direction: column; gap: 12px; padding: 12px 8px; }
+#smHeightDock .sm-stage-head { flex-direction: column; align-items: flex-start; }
+#smHeightDock .sm-badge { max-width: 100%; white-space: normal; }
+#smHeightDock .sm-welcome { position: static; inset: auto; padding: 12px; }
+#smHeightDock .sm-welcome h2 { font-size: 16px; }
+#smHeightDock .sm-welcome .sm-button { width: 100%; white-space: normal; }
+#smHeightDock .sm-wire-cube { font-size: 44px; }
+#smHeightDock .sm-view-tools { flex-direction: column; align-items: stretch; }
+#smHeightDock .sm-view-segment { flex-direction: column; align-items: stretch; }
+#smHeightDock .sm-display-options { flex-direction: column; align-items: flex-start; }
+#smHeightDock .sm-display-options label { width: 100%; white-space: normal; }
+#smHeightDock .sm-metrics { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+#smHeightDock .sm-metrics > div + div { padding: 12px 0 0; border-left: 0; border-top: 1px solid var(--sm-line); }
+#smHeightDock #smMobileNext { width: 100%; white-space: normal; }
+#smWorkspace.sm-in-library #smHeightView,
+#smWorkspace.sm-in-library .sm-steps,
+#smWorkspace.sm-in-library .sm-mobile-tabs { display: none; }
+/* R123H_MODEL_DOCK_END */
+
+@media (max-width: 760px) {
+  /* Preserve P73's first-screen primary action and the original inspector
+     owner. Only its physical rectangle uses the reserved right-hand lane. */
+  #infiniteGridWorkspace .ig-main { flex: none; overflow: visible; }
+  #infiniteGridWorkspace .ig-layout {
+    padding-bottom: var(--r123h-grid-footer-height, 260px);
+    scroll-padding-bottom: calc(var(--r123h-grid-footer-height, 260px) + 12px);
+  }
+  #igHeightDock {
+    height: calc(var(--r123h-layout-height, 100vh) - var(--r123h-dialog-header) - var(--r123h-grid-footer-height, 260px));
+  }
+  #infiniteGridWorkspace .ig-inspector .ig-footer {
+    position: fixed;
+    inset: auto 0 0 auto;
+    width: var(--r123h-dialog-dock);
+    max-height: calc(var(--r123h-layout-height, 100vh) - var(--r123h-dialog-header));
+    box-sizing: border-box;
+    padding: 8px;
+    gap: 8px;
+    overflow: auto;
+  }
+  #infiniteGridWorkspace .ig-footer-actions { flex-direction: column; gap: 6px; }
+  #infiniteGridWorkspace .ig-footer-actions button { flex: none; width: 100%; min-height: 44px; padding: 8px 6px; white-space: normal; }
+}
+
+@media (max-width: 720px) {
+  #smHeightDock .sm-mobile-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    flex: none;
+  }
+  #smHeightDock .sm-mobile-tabs button { width: 100%; flex: none; }
+  #smWorkspace:has(#smMain[data-tab="setup"]) #smHeightView { display: none; }
+}
+
+@media (max-width: 560px) {
+  #infiniteGridWorkspace,
+  #smWorkspace { --r123h-dialog-header: 96px; }
+  #infiniteGridWorkspace .ig-header .ig-back { min-height: 44px; }
+}
+
+@media (max-width: 720px) {
+  /* Reveal focused controls below the two sticky tab buttons and their divider. */
+  #smWorkspace:not(.sm-in-library) #smHeightDock {
+    --sm-mobile-tab-height: 44px;
+    scroll-padding-block-start: calc(2 * var(--sm-mobile-tab-height) + 1px);
+  }
+  #smHeightDock .sm-mobile-tabs button { height: var(--sm-mobile-tab-height, 44px); }
+}

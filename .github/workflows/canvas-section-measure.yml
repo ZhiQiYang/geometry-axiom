@@ -7,6 +7,10 @@ on:
         description: Declared independent section ID (capture only; acceptance remains false)
         required: true
         type: string
+      r16_withdrawals:
+        description: Also run the named R16 product withdrawals against P1231
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -56,3 +60,85 @@ jobs:
           path: ${{ runner.temp }}/canvas-section-measure/
           if-no-files-found: error
           retention-days: 14
+
+  r16-withdrawals:
+    if: inputs.r16_withdrawals
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      GEOMETRY_CHROME: /usr/bin/google-chrome
+      GEOMETRY_CHROME_FLAGS: --no-sandbox
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install Chinese fonts
+        timeout-minutes: 8
+        uses: ./.github/actions/install-cjk-fonts
+      - name: Reserve space for baseline and mutant snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/r16-height-withdrawals"
+          mkdir -p "$out"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git log -1 --format='%H %T %P' > "$out/source.txt"
+          "$GEOMETRY_CHROME" --version > "$out/chromium-version.txt"
+          size=$(du -sb --exclude=.git . | cut -f1)
+          need=$(( 2 * size + 6 * 1024 * 1024 * 1024 ))
+          pick_volume() {
+            local mount free
+            for mount in /mnt /tmp; do
+              [[ -d "$mount" ]] || continue
+              free=$(df -B1 --output=avail "$mount" | tail -1)
+              if [[ $free -ge $need ]]; then printf '%s\n' "$mount"; return 0; fi
+            done
+            return 1
+          }
+          if ! mount=$(pick_volume); then
+            # These SDKs are unused on this disposable GitHub-hosted runner.
+            sudo rm -rf -- /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup
+            mount=$(pick_volume)
+          fi
+          scratch="$mount/r16-snapshots-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          sudo install -d -m 700 -o "$(id -u)" -g "$(id -g)" "$scratch"
+          df -h "$scratch" > "$out/space.txt"
+          echo "TMPDIR=$scratch" >> "$GITHUB_ENV"
+      - name: Build native executables and run the original Chromium mutation judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -s 16384
+          out="$RUNNER_TEMP/r16-height-withdrawals"
+          python3 -Bu geometry-web/start_local.py --build-only --binary-dir "$TMPDIR/native" 2>&1 | tee "$out/native-build.log"
+          sed -n 's/^LOCAL_RUNTIME //p' "$out/native-build.log" > "$out/local-runtime.json"
+          bridge=$(jq -er '.executables.bridge' "$out/local-runtime.json")
+          model=$(jq -er '.executables["model-base"]' "$out/local-runtime.json")
+          test -x "$bridge" && test -x "$model"
+          sha256sum "$bridge" "$model" > "$out/binary-sha256.txt"
+          python3 -Bu tests/diagnostics/r16_height_mutations.py --bridge "$bridge" --model-base "$model" \
+            --timeout 900 --output-dir "$out/withdrawals" 2>&1 | tee "$out/withdrawals.log"
+      - name: Show each mutation and verify the receipt belongs to this run
+        if: always()
+        shell: bash
+        run: |
+          receipt="$RUNNER_TEMP/r16-height-withdrawals/withdrawals/receipt.json"
+          jq -c '.mutations[] | {id,status,baselineMutantRestoredExit,sourceRestoredExactly,assertions:.mutant.assertions}' "$receipt"
+          jq -e --arg head "$GITHUB_SHA" '
+            .sourceHead == $head and .browserExecuted and .baseline.green and .status == "passed"
+            and (.mutations | length >= 13)
+            and all(.mutations[]; .status == "killed" and .baselineMutantRestoredExit == [0,1,0] and .sourceRestoredExactly)
+          ' "$receipt"
+      - name: Preserve receipt and raw CDP, runtime and server output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: r16-height-withdrawals-${{ github.sha }}
+          path: ${{ runner.temp }}/r16-height-withdrawals/
+          if-no-files-found: error
+          retention-days: 30

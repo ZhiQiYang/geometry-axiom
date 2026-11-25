@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_sections/P1231.js",
+    "reason": "R16 P1231 strict independent canvas module: real-CDP height and control reachability acceptance, dispatched only by canvas_registry.js; never a product runtime or served application dependency.",
+    "sha256": "e235574e52d053645fcb894c56c12038e6d4326ad00543b0dc6ffd2d394395ce"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

@@ -8,6 +8,7 @@ const extension=require('./diagnostics/r335_canvas_extension.cjs');
 const r03Extension=require('./diagnostics/r03_framing_canvas_extension.cjs');
 const r03aExtension=require('./diagnostics/r03a_framing_canvas_extension.cjs');
 const pf4aExtension=require('./diagnostics/pf4a_canvas_extension.cjs');
+const r16Extension=require('./diagnostics/r16_canvas_extension.cjs');
 const touchExtension=require('./diagnostics/r433_canvas_touch_extension.cjs');
 // Train 3 (#426 + #419 + #420): #396's P1161 and #420's P420 are independent
 // sections. Strip them first (P420 by its exact count and tail position, P1161
@@ -17,8 +18,14 @@ const train3Inputs=()=>{
   // PF-4A (#128) P1284 is a later independent section; project it out exactly first.
   // R03 (#205) P205 follows P1284; project it out exactly before PF-4A.
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
-  const touchBase=touchExtension.project(shards.loadGolden(),shards.loadPlan());
-  const r03Plan=r03Extension.projectPlan(r03aExtension.projectPlan(touchBase.plan)),r03Golden=r03Extension.projectGolden(r03aExtension.projectGolden(touchBase.golden));
+  // Merge of main (R433 P1162) and R16 (P1231): keep main's exact P1162 projection
+  // before R03A's checks, and keep R16's legacy-view input to the historical chain.
+  const touchInput=r16Extension.beforeTouch(shards.loadGolden(),shards.loadPlan());
+  const touchBase=touchExtension.project(touchInput.golden,touchInput.plan);
+  train3.checkPlan(r03aExtension.projectPlan(touchBase.plan));
+  r03aExtension.projectGolden(touchBase.golden);
+  const legacy=require('../geometry-web/canvas_registry.js').legacyView();
+  const r03Plan=r03Extension.projectPlan(legacy.plan),r03Golden=r03Extension.projectGolden(legacy.golden);
   assert.deepEqual(shards.validatePlan(r03Plan,r03Golden),[],'PF4A_RAW_PLAN_COMPLETE');
   const rawPlan=pf4aExtension.projectPlan(r03Plan),rawGolden=pf4aExtension.projectGolden(r03Golden);
   assert.deepEqual(shards.validatePlan(rawPlan,rawGolden),[],'TRAIN3_RAW_PLAN_COMPLETE');

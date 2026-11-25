@@ -25,12 +25,12 @@ const cases = [
     after: "  delete projectedGolden.sections.P1162;\n  delete projectedGolden.sections.P2052;\n  projectedGolden.total -= 28;\n  projectedPlan.shards[1].sections = projectedPlan.shards[1].sections.filter(id => id !== 'P2052');",
     tests: ['R433_ONLY_P1162_PROJECTED', 'R433_UNRELATED_INPUT_PRESERVED'], oracle: 'R433_OTHER_INPUTS_UNCHANGED'},
   {id: 'R433_WITHDRAW_BOUNDARY_PROJECTION', file: BOUNDARY, count: 7,
-    before: 'const touchBase=touchExtension.project(shards.loadGolden(),shards.loadPlan());',
-    after: 'const touchBase={golden:shards.loadGolden(),plan:shards.loadPlan()};',
+    before: 'const touchBase=touchExtension.project(touchInput.golden,touchInput.plan);',
+    after: 'const touchBase=touchInput;',
     tests: ['R335_EXTENSION preserves all old sections and handoff while adding exactly one independent section',
       'R335_EXTENSION rejects count drift, duplicate ownership and a changed execution position'], oracle: 'TRAIN3_CANVAS_TAIL'},
   {id: 'R433_WITHDRAW_CANVAS_PROJECTION', file: CANVAS, count: 41,
-    before: 'const touchBase = touchExtension.project(golden, plan);', after: 'const touchBase = {golden, plan};',
+    before: 'const touchBase = touchExtension.project(touchInput.golden, touchInput.plan);', after: 'const touchBase = touchInput;',
     test: '完整、互斥、逐段相等的兩片收據彙總為綠，total 等於 golden', oracle: 'R433_P1162_PROJECTED_BEFORE_LEGACY_ORACLES'}
 ];
 

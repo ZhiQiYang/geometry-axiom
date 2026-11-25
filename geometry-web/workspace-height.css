@@ -1,0 +1,465 @@
+/* R16 U123-H:A. Loaded after the established workspace styles.
+ * V is window.innerHeight (layout viewport). A dock uses width, never a strip
+ * of the drawing's height. Existing IDs, hit targets and scroll routes remain.
+ */
+:root {
+  --r123h-header: 56px;
+  --r123h-dock: 156px;
+}
+/* R123H_BREAKPOINT_BEGIN */
+@media (max-width: 560px) {
+  :root { --r123h-header: 96px; }
+}
+/* R123H_BREAKPOINT_END */
+
+/* R123H_NORMAL_HEIGHT_BEGIN */
+#app { height: var(--r123h-layout-height, 100vh); }
+#objectWorkspace {
+  height: var(--r123h-layout-height, 100vh);
+  grid-template-rows: var(--r123h-header) minmax(0, 1fr) 32px;
+}
+#canvasViewport, #faceEditorViewport { overflow: visible; }
+#canvasViewport > :is(#ocv, #cv), #faceEditorSvg { overflow: hidden; }
+/* R123H_NORMAL_HEIGHT_END */
+
+/* R123H_STATUSBAR_ROW_BEGIN: the adopted 32px row contains the existing
+ * 28px command button and 1px top border at every composition width.
+ */
+body.canvas-composition { --statusbar-h: 32px; }
+/* R123H_STATUSBAR_ROW_END */
+
+.wsh-dock {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 60px 8px 8px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scroll-padding: 60px 6px 6px;
+  border-inline: 1px solid var(--border);
+  background: var(--panel);
+  touch-action: auto;
+  cursor: auto;
+}
+.wsh-dock > * { flex: 0 0 auto; min-width: 0; max-width: 100%; }
+.wsh-dock :is(button, input, select, summary) { scroll-margin: 6px; }
+.wsh-dock :is(button, label, input, select) { cursor: auto !important; }
+.wsh-dock button { cursor: pointer !important; }
+
+/* R123H_DOCK_BEGIN: main keeps #ocv == #canvasViewport and its right edge.
+ * The desktop library retains its previous content width beside the dock.
+ * At drawer widths the lane occupies the left 156px of the workspace.
+ */
+body.canvas-composition { --left-w: calc(278px + var(--r123h-dock)); }
+body.v3-mode { --left-w: calc(200px + var(--r123h-dock)); }
+/* R123H_SIDEBAR_CLEARANCE_BEGIN: padding is still painted by the z=10
+ * sidebar over the z=7 dock. A margin reserves the same lane outside its
+ * border box; the library's content width and the canvas rectangle stay put.
+ */
+body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {
+  margin-inline-end: var(--r123h-dock);
+}
+/* R123H_SIDEBAR_CLEARANCE_END */
+#mainCanvasDock, #faceCanvasDock {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--r123h-dock);
+  z-index: 7;
+}
+#mainCanvasDock { left: calc(-1 * var(--r123h-dock)); }
+#faceEditorViewport { margin-inline-end: var(--r123h-dock); }
+#faceCanvasDock { left: 100%; }
+@media (min-width: 901px) {
+  body.canvas-composition.canvas-library-collapsed { --left-w: calc(64px + var(--r123h-dock)); }
+  /* Share the dock's width between the face sidebars as the workspace narrows.
+   * The actual SVG still fits the established 700 mm drawing at 1 px/mm. */
+  #faceWorkspaceLayout {
+    grid-template-columns: min(var(--left-w), 16vw) minmax(0, 1fr) min(var(--right-w), 21vw);
+  }
+  /* Let the separate delete action wrap before it squeezes the grid summary.
+   * The open button keeps its 26px icon, 8px gap and 120px of readable text. */
+  .face-layer-row[data-grid-id] { display: flex; flex-wrap: wrap; }
+  .face-layer-row[data-grid-id] > .grid-layer-open {
+    flex: 1 0 min(100%, 154px);
+    flex-wrap: wrap;
+  }
+  .face-layer-row[data-grid-id] .face-layer-copy { flex: 1 1 min(100%, 120px); }
+  .face-layer-row[data-grid-id] > .face-layer-del { margin-inline-start: auto; }
+}
+@media (max-width: 900px) {
+  body:is(.canvas-composition, .v3-mode) #canvasViewport { margin-inline-start: var(--r123h-dock); }
+  body:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left { margin-inline-end: 0; }
+  body.v3-mode { --left-w: 0px; }
+}
+/* R123H_DOCK_END */
+
+/* These are the same original nodes, including their help/dismiss controls. */
+#mainCanvasDock :is(#canvasDrawToolbar, #ocSelectionSummary, #canvasModeHint, #focusBar, #emptyState),
+#faceCanvasDock :is(#feSelectionSummary, #faceCanvasHint, #calibrationCanvasPrompt, #gridLegend, #gridReturnSettings, #faceCoordinateReadout) {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  flex-wrap: wrap;
+}
+#mainCanvasDock #canvasDrawToolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 3px;
+  gap: 4px;
+}
+#mainCanvasDock #canvasDrawToolbar .tool-button { width: 100%; min-width: 44px; }
+#mainCanvasDock #canvasDrawToolbar .guidance-help { grid-column: 1 / -1; width: 100%; min-width: 0; }
+#mainCanvasDock .selection-copy, #faceCanvasDock .selection-copy { min-width: 0; }
+#mainCanvasDock #canvasModeHint { anchor-name: --r123h-mode-hint; }
+/* The drawing hint now wraps in the control lane. Follow its visible bottom
+ * when placing the existing toast, including after a resize or dock scroll. */
+body.canvas-composition:has(#mainCanvasDock #canvasModeHint:not([hidden])) .toast-region {
+  top: max(calc(var(--topbar-h) + 116px), calc(anchor(--r123h-mode-hint bottom) + 8px));
+  position-try-fallbacks: flip-block;
+}
+#faceCanvasDock #feSelectionSummary {
+  /* Keep the established camera-fit top inset below its 30% cap. Long teaching
+   * text scrolls inside the same original lesson; it is never discarded. */
+  max-height: calc(30% - 100px);
+  overflow: auto;
+}
+#faceCanvasDock :is(.fe-lattice-density, .fe-rule-density) {
+  position: relative; inset: auto; margin: 0; padding: 6px; max-width: 100%; font-size: 12px;
+}
+#mainCanvasDock .empty-illustration { max-width: 100%; }
+#mainCanvasDock #emptyState { padding: 10px 4px; font-size: 12px; }
+#mainCanvasDock #emptyState h2 { font-size: 14px; }
+#mainCanvasDock .minimap-shell {
+  display: block;
+  position: relative;
+  inset: auto;
+  width: 112px;
+  height: 72px;
+  margin: auto auto 0;
+}
+#mainCanvasDock .minimap-shell.collapsed { width: 46px; height: 46px; }
+#mainCanvasDock #minimapToggle { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+#mainCanvasDock .minimap-shell.collapsed #minimapToggle { margin: 0; }
+#mainCanvasDock > .canvas-controls,
+#faceCanvasDock > .face-canvas-controls {
+  position: relative;
+  inset: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: auto 0 0;
+  flex: 0 0 auto;
+}
+#mainCanvasDock .canvas-controls .toolbar-separator,
+#faceCanvasDock .face-canvas-controls .toolbar-separator { display: none; }
+#mainCanvasDock .canvas-controls :is(.icon-button, .zoom-level, .mini-toggle),
+#faceCanvasDock .face-canvas-controls :is(button, .mini-toggle) { width: 100%; min-width: 44px; }
+#faceCanvasDock .face-grid-size { grid-column: 1 / -1; margin-left: 0; justify-content: center; }
+#mainCanvasDock #v3ZoomBar { display: block; }
+#mainCanvasDock .v3-zoom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+body.v3-mode #mainCanvasDock > .canvas-controls:not(#v3ZoomBar),
+body.v3-mode #mainCanvasDock :is(#canvasDrawToolbar, #ocSelectionSummary, #canvasModeHint, .minimap-shell) { display: none; }
+#mainCanvasDock > [hidden], #faceCanvasDock > [hidden] { display: none; }
+
+/* Retain the readonly segment buffer above the decorative cursor's z=60.
+ * The lesson lives in the dock; neither is allowed to cover the typed digits.
+ */
+/* R123H_LENGTH_PAINT_BEGIN */
+#faceEditorViewport > #feLenInput { z-index: 61; }
+/* R123H_LENGTH_PAINT_END */
+
+/* R123H_SPACE_HEIGHT_BEGIN */
+.space-workspace-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--r123h-dock);
+  grid-template-rows: minmax(0, 1fr);
+  padding: 0;
+}
+.space-workspace-stage > .ss-pane { grid-area: 1 / 1; height: 100%; min-width: 0; }
+#spaceCanvasDock { grid-area: 1 / 2; }
+.space-workspace-stage :is(.space-plan-strip, .space-hero-preview) {
+  width: 100%; height: 100%; border: 0; border-radius: 0; margin: 0;
+}
+#spacePlanSvg, #spaceProjSvg { height: 100%; min-width: 0; }
+#spaceCanvasDock #spaceStageTabs { display: flex; flex-direction: column; margin: 0; padding: 2px; }
+#spaceCanvasDock #spaceStageTabs button { width: 100%; }
+#spaceCanvasDock #spaceWorkspaceTools { display: flex; flex-direction: column; gap: 6px; padding: 0; }
+#spaceCanvasDock #spaceWorkspaceTools[hidden] { display: none; }
+#spaceCanvasDock #spaceWorkspaceTools .workspace-tool { width: 100%; }
+#spaceCanvasDock #spacePlanMetrics { padding: 6px 0; margin: 0; }
+.space-workspace-stage:has(> [data-ss-pane="plan"][hidden]) #spacePlanMetrics { display: none; }
+/* R123H_SPACE_HEIGHT_END */
+
+/* R123H_THREE_VIEW_HEIGHT_BEGIN */
+body.v3-mode .topbar {
+  display: grid;
+  grid-template-columns: minmax(50px, 120px) minmax(96px, 1fr) minmax(200px, auto);
+  grid-template-rows: 44px;
+  height: 56px;
+  gap: 0 8px;
+  padding: 6px 8px;
+}
+body.v3-mode .topbar > .brand { grid-column: 1; grid-row: 1; min-width: 0; overflow: hidden; }
+body.v3-mode .topbar > #viewToolbar {
+  grid-column: 2; grid-row: 1;
+  width: 100%; height: 44px; min-height: 44px;
+  padding: 0; border: 0;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin;
+}
+body.v3-mode #viewToolbar .v3-seg { padding: 0; height: 44px; }
+body.v3-mode #viewToolbar .v3-seg-btn { min-width: 44px; min-height: 44px; }
+body.v3-mode .topbar > .top-actions {
+  grid-column: 3; grid-row: 1; min-width: 0; max-width: 58vw;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: thin;
+}
+body.v3-mode .top-actions > * { flex-shrink: 0; }
+body.v3-mode #cv { width: 100%; height: 100%; flex: 1; }
+/* R123H_THREE_VIEW_HEIGHT_END */
+
+/* R123H_THREE_VIEW_SCROLL_CLEARANCE_BEGIN: 44px buttons plus the thin
+ * horizontal scrollbar need 52px inside the same adopted 56px header.
+ * Narrow headers already use scrollbar-width:none and retain two 44px rows.
+ */
+@media (min-width: 561px) {
+  body.v3-mode .topbar { grid-template-rows: 52px; padding-block: 2px; }
+  body.v3-mode .topbar > #viewToolbar { height: 52px; min-height: 52px; }
+}
+/* R123H_THREE_VIEW_SCROLL_CLEARANCE_END */
+
+/* R123H_FACE_TOOL_END_GUTTER_BEGIN: scroll-padding changes alignment but
+ * adds no scrollable extent. Keep an actual end gutter after the final tool
+ * so its right-hand hit point can leave the rounded/clipped scrollport edge.
+ */
+.workspace-tools-row #faceWorkspaceTools::after { content: ''; flex: 0 0 8px; }
+/* R123H_FACE_TOOL_END_GUTTER_END */
+
+/* R123H_FACE_GUIDANCE_WIDTH_BEGIN: these original buttons have full text,
+ * not icons. The global 29/34px .tool-button width lets their text hit area
+ * overflow onto the preceding pan tool. Keep intrinsic width in this nav.
+ */
+#faceWorkspaceTools > .guidance-help { width: auto; min-width: 44px; }
+/* R123H_FACE_GUIDANCE_WIDTH_END */
+
+/* R123H_FEEDBACK_DOCK_BEGIN */
+body #fbRoot > #fbButton:not([hidden]) {
+  position: fixed;
+  left: var(--r123h-feedback-left, 12px);
+  top: var(--r123h-feedback-top, calc(var(--topbar-h) + 8px));
+  right: auto; bottom: auto;
+  width: var(--r123h-feedback-width, 140px);
+  height: 44px; min-height: 44px; margin: 0;
+  border-radius: 8px; opacity: 1;
+}
+/* R123H_FEEDBACK_DOCK_END */
+
+/* R123H_NARROW_WORKSPACE_STRIP_BEGIN:
+ * 561–680px must keep the adopted 56px header (V-88 canvas contract).
+ * The three desktop columns cannot all own fixed width there, so the topbar
+ * becomes one horizontal scroll owner. Nested 33px lanes must not clip a
+ * 74px teaching button; scrollIntoView moves the outer strip instead.
+ */
+@media (min-width: 561px) and (max-width: 680px) {
+  .object-workspace-topbar,
+  .reference-editor .object-workspace-topbar {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    min-height: 56px;
+    box-sizing: border-box;
+    gap: 8px;
+    padding: 0 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 8px;
+    scrollbar-width: thin;
+  }
+  /* Keep the 44px controls inside the 56px header with its native scrollbar. */
+  .object-workspace-topbar .face-workspace-tools { border-block-width: 0; }
+  .object-workspace-topbar > :is(.object-workspace-trail, .workspace-tools-row, .object-workspace-actions) {
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: max-content;
+  }
+  .object-workspace-topbar > .workspace-tools-row,
+  .object-workspace-topbar .face-workspace-tools {
+    overflow: visible;
+    max-width: none;
+  }
+  .object-workspace-topbar .face-workspace-tools {
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: max-content;
+  }
+}
+/* R123H_NARROW_WORKSPACE_STRIP_END */
+@media (max-width: 560px) {
+  /* The face fills the phone's width. Its existing controls scroll in the
+   * second header row beside the tools; the drawing and the two scroll areas
+   * have independent pointer targets. Keep feedback in the first row. */
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) {
+    --face-mobile-dock: min(36vw, 156px);
+  }
+  #faceEditorViewport { margin-inline-end: 0; }
+  #faceCanvasDock {
+    position: fixed;
+    inset: 48px 8px auto auto;
+    z-index: 46;
+    width: var(--face-mobile-dock);
+    height: 48px;
+    padding: 0 3px;
+    scroll-padding: 0;
+    border-block: 0;
+  }
+  #faceCanvasDock :is(button, label, select) { scroll-margin-block: 0; }
+  #faceCanvasDock #feSelectionSummary { max-height: none; overflow: visible; }
+  #faceCanvasDock :is(#feSelectionSummary, #faceCoordinateReadout, #faceCanvasHint) { pointer-events: auto; }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) > .object-workspace-topbar {
+    grid-template-columns: minmax(44px, auto) minmax(0, 1fr);
+    padding-inline-end: 56px;
+  }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) .object-workspace-actions {
+    justify-self: stretch;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) .workspace-history-tools { position: static; }
+  #objectWorkspace:has(#faceWorkspaceLayout:not([hidden])) .workspace-tools-row {
+    padding-inline-end: 0;
+    margin-inline-end: calc(var(--face-mobile-dock) - 44px);
+  }
+  body:has(#objectWorkspace:not([hidden]) #faceWorkspaceLayout:not([hidden])) #fbRoot > #fbButton:not([hidden]) {
+    inset: 4px 8px auto auto;
+    width: 44px;
+    padding-inline: 0;
+  }
+  .object-workspace-topbar, .reference-editor .object-workspace-topbar {
+    grid-template-rows: 44px 44px;
+    padding-block: 4px;
+  }
+  .workspace-tools-row, .workspace-tools-row .face-workspace-tools {
+    padding-block: 0;
+    scrollbar-width: none;
+  }
+  .workspace-tools-row::-webkit-scrollbar,
+  .workspace-tools-row .face-workspace-tools::-webkit-scrollbar { height: 0; }
+  body.v3-mode { --topbar-h: 96px; }
+  body.v3-mode .topbar {
+    grid-template-columns: minmax(44px, 100px) minmax(0, 1fr);
+    grid-template-rows: 44px 44px; height: 96px; padding: 4px 8px;
+  }
+  body.v3-mode .topbar > .top-actions { grid-column: 1 / -1; grid-row: 2; max-width: 100%; width: 100%; }
+  body.v3-mode .top-actions > .icon-button,
+  body.v3-mode .top-actions :is(#fileMenuBtn, #viewSwitch > .seg) {
+    min-width: 44px; min-height: 44px;
+  }
+  body.v3-mode #viewSwitch { padding-block: 0; border-block-width: 0; }
+  body.v3-mode .topbar > :is(.top-actions, #viewToolbar) { scrollbar-width: none; }
+  body.v3-mode .topbar > :is(.top-actions, #viewToolbar)::-webkit-scrollbar { height: 0; }
+  .wsh-dock :is(button, select, .mini-toggle) { min-height: 44px; }
+  #gridInlineInspector :is(.gi-actions .btn, input, select, .primary-button) { min-height: 44px; }
+}
+@media (max-width: 680px) {
+  /* Keep the established mobile editing sheet, beside the control lane. Its
+   * fields and the zoom/feedback controls must not cover one another. */
+  body.canvas-composition.canvas-has-inspector .sidebar-right {
+    left: calc(var(--r123h-dock) + 8px);
+  }
+  /* The parameter form needs the full bottom row. Using its existing grid
+   * cell ends the canvas and its scrollable control lane above the editor. */
+  body.canvas-composition.parameter-editing.canvas-has-inspector .sidebar-right {
+    position: static;
+    margin: 0 8px 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Put the dock in the first row between the project name and its info
+     button. The second row keeps all its actions in reach at once. */
+  body.canvas-composition {
+    --main-mobile-dock: clamp(64px, calc(100vw - 266px), 156px);
+    --main-dock-end: 145px; /* 97px info inset, 44px button and a 4px gap */
+  }
+  body.canvas-composition #canvasViewport { margin-inline-start: 0; }
+  body.canvas-composition #mainCanvasDock {
+    position: fixed;
+    inset: 4px var(--main-dock-end) auto auto;
+    z-index: 46;
+    width: var(--main-mobile-dock);
+    height: 44px;
+    padding: 0 3px;
+    scroll-padding: 0;
+    border-block: 0;
+  }
+  body.canvas-composition #mainCanvasDock :is(button, label, select) { scroll-margin-block: 0; }
+  body.canvas-composition #mainCanvasDock #ocSelectionSummary {
+    order: -1;
+    padding-block: 0;
+    pointer-events: auto;
+  }
+  body.canvas-composition #ocSelectionSummary > .guidance-dismiss { order: -1; }
+  body.canvas-composition .topbar > .top-actions > #projectBar :is(.project-bar-name, .main-project-status) {
+    max-width: calc(100% - 54px - var(--main-dock-end) - var(--main-mobile-dock));
+  }
+  body.canvas-composition #mainCanvasDock :is(#canvasDrawToolbar, .canvas-controls) {
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  }
+  body.canvas-composition #fileMenuPop {
+    position: fixed;
+    inset: var(--topbar-h) 8px auto auto;
+  }
+  body.canvas-composition .topbar > .brand .brand-mark { visibility: hidden; }
+  body.canvas-composition:has(#objectWorkspace[hidden]) #fbRoot > #fbButton:not([hidden]) {
+    inset: 4px auto auto 4px;
+    width: 44px;
+    padding-inline: 0;
+  }
+  body.canvas-composition.canvas-has-inspector .sidebar-right { left: 8px; }
+  /* The ordinary inspector reserves a row below its sheet for canvas zoom.
+     Keep the selected card above that row and its six controls within reach. */
+  body.canvas-composition.canvas-has-inspector:not(.parameter-editing) #mainCanvasDock > .canvas-controls:not(#v3ZoomBar) {
+    position: fixed;
+    inset: auto 8px calc(var(--statusbar-h) + 8px);
+    width: auto;
+    margin: 0;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: minmax(44px, 1fr);
+    overflow-x: auto;
+  }
+}
+@media (max-width: 360px) {
+  /* Keep the full 44px height. Double gutters around the control groups
+     would otherwise add a horizontal scrollbar to the narrowest dock. */
+  body.canvas-composition #mainCanvasDock {
+    padding-inline: 0;
+    border-inline-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  body.canvas-composition #mainCanvasDock #ocSelectionSummary {
+    padding-inline: 0;
+    border-block-width: 0;
+  }
+  body.canvas-composition #ocSelectionSummary > .guidance-dismiss {
+    min-width: 44px;
+    padding-inline: 2px;
+  }
+}
