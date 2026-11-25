@@ -15,6 +15,7 @@ function lessonState(dismiss,help) {
 function layout() {
   const dock=document.querySelector('#mainCanvasDock'), r=dock.getBoundingClientRect();
   const x=r.left+dock.clientLeft+dock.clientWidth/2, y=r.top+dock.clientTop+dock.clientHeight/2;
+  const target=document.elementFromPoint(x,y);
   const controls=selector=>[...document.querySelectorAll(selector)]
     .filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility==='visible').map(e=>{
       const b=e.getBoundingClientRect();
@@ -30,7 +31,7 @@ function layout() {
     });
   return {width:innerWidth,height:innerHeight,pageWidth:document.documentElement.scrollWidth,
     pageLeft:window.scrollX,dockLeft:dock.scrollLeft,top:dock.scrollTop,max:dock.scrollHeight-dock.clientHeight,
-    x,y,wheelOwned:dock.contains(document.elementFromPoint(x,y)),
+    x,y,wheelOwned:dock.contains(target),wheelTarget:target&&{tag:target.tagName,id:target.id,classes:target.getAttribute('class')},
     dock:controls('#mainCanvasDock :is(button,input,select)'),header:controls('#app > .topbar button')};
 }
 
@@ -59,12 +60,17 @@ function glyphs(selector,ancestorClip) {
 
 async function phoneLessonRegression({call,key,click,send,settle}) {
   const state=()=>call(lessonState,dismiss,help);
-  const wheel=(row,deltaX,deltaY)=>send('Input.dispatchMouseEvent',{type:'mouseWheel',x:row.x,y:row.y,deltaX,deltaY});
+  // Await a whole mouse scroll gesture on each axis. Consecutive unframed
+  // wheel events can latch to the previous axis when the narrow dock clips X.
+  async function scroll(row,xDistance,yDistance) {
+    await send('Input.synthesizeScrollGesture',{x:row.x,y:row.y,xDistance,yDistance,gestureSourceType:'mouse'});
+    await settle();
+  }
   async function edge(start,bottom) {
     let row=start;
     const path=[row.top];
     for(let i=0;i<16&&row.wheelOwned&&Math.abs(row.top-(bottom?row.max:0))>1;i++){
-      await wheel(row,0,bottom?420:-420);await settle();
+      await scroll(row,0,bottom?-420:420);
       row=await call(layout);path.push(row.top);
     }
     return {row,path};
@@ -94,10 +100,10 @@ async function phoneLessonRegression({call,key,click,send,settle}) {
   const opened=await state(),button=await call(controlProbe,dismiss);
   const letters=await call(glyphs,dismiss,button.effectiveClip);
 
-  await wheel(top.row,120,0);await settle();
-  const sideways=await call(layout);
-  const bottom=await edge(sideways,true),grid=await call(controlProbe,'#gridToggle');
+  const bottom=await edge(top.row,true),grid=await call(controlProbe,'#gridToggle');
   const back=await edge(bottom.row,false),atTop=await call(controlProbe,dismiss);
+  await scroll(back.row,-120,0);
+  const sideways=await call(layout);
   const tabCount=await tabTo(dismiss);await settle();
   const focused=await call(controlProbe,dismiss);
   const center=focused.points?.[0];

@@ -445,21 +445,3 @@ body #fbRoot > #fbButton:not([hidden]) {
     overflow-x: auto;
   }
 }
-@media (max-width: 360px) {
-  /* Keep the full 44px height. Double gutters around the control groups
-     would otherwise add a horizontal scrollbar to the narrowest dock. */
-  body.canvas-composition #mainCanvasDock {
-    padding-inline: 0;
-    border-inline-width: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  body.canvas-composition #mainCanvasDock #ocSelectionSummary {
-    padding-inline: 0;
-    border-block-width: 0;
-  }
-  body.canvas-composition #ocSelectionSummary > .guidance-dismiss {
-    min-width: 44px;
-    padding-inline: 2px;
-  }
-}
