@@ -20,15 +20,15 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          fetch-depth: 2
+          fetch-depth: 3
           persist-credentials: false
       - name: 使用原 PR 提交，核對來源
         shell: bash
         run: |
           set -euo pipefail
           mkdir "$RUNNER_TEMP/trace"
-          cp .github/scripts/r448-p1162-trace.json "$RUNNER_TEMP/trace/probe.json"
-          test "$(git rev-parse HEAD^)" = "$SOURCE_SHA"
+          cp .github/scripts/r448-p1162-observer.cjs "$RUNNER_TEMP/trace/observer.cjs"
+          git merge-base --is-ancestor "$SOURCE_SHA" HEAD
           git checkout --detach "$SOURCE_SHA"
           test "$(git rev-parse HEAD^{tree})" = 0e03e0ca49b673496098e05d8482e0b03b56ed99
           git show -s --format='%H %T %P' HEAD > "$RUNNER_TEMP/trace/source.txt"
@@ -40,27 +40,13 @@ jobs:
       - name: 安裝原測試中文字型
         timeout-minutes: 8
         uses: ./.github/actions/install-cjk-fonts
-      - name: 暫加唯讀測試探針
+      - name: 核對原裁判與旁聽程式
         shell: bash
         run: |
           set -euo pipefail
-          p=geometry-web/canvas_sections/P1162.js
-          test "$(git hash-object "$p")" = 4f59a0c394e66145fd3fa89ada010d3d42aa4a69
-          python3 -B - "$p" "$RUNNER_TEMP/trace/probe.json" <<'PY'
-          import json, sys
-          from pathlib import Path
-          path = Path(sys.argv[1])
-          source = path.read_bytes()
-          for before, after in json.loads(Path(sys.argv[2]).read_bytes()):
-              old, new = before.encode(), after.encode()
-              if source.count(old) != 1:
-                  raise ValueError("Probe anchor count differs")
-              source = source.replace(old, new)
-          path.write_bytes(source)
-          PY
-          git diff -- "$p" > "$RUNNER_TEMP/trace/probe.diff"
-          test "$(git diff --name-only)" = "$p"
-          node --check "$p"
+          test "$(git hash-object geometry-web/canvas_sections/P1162.js)" = 4f59a0c394e66145fd3fa89ada010d3d42aa4a69
+          git diff --exit-code HEAD
+          node --check "$RUNNER_TEMP/trace/observer.cjs"
           google-chrome --version > "$RUNNER_TEMP/trace/browser.txt"
       - name: 原 P1162 完整模組單次實跑
         shell: bash
@@ -79,13 +65,13 @@ jobs:
           python3 -B geometry-web/runtime_version.py --probe 18839 > "$out/runtime.json"
           python3 -Bc 'import json,sys; assert json.load(open(sys.argv[1]))["fresh"] is True' "$out/runtime.json"
           set +e
-          node geometry-web/cdp_test.js > "$out/stdout.log" 2> "$out/stderr.log"
+          P1162_TRACE_FILE="$out/trace.jsonl" node --require "$out/observer.cjs" geometry-web/cdp_test.js > "$out/stdout.log" 2> "$out/stderr.log"
           code=$?
           set -e
           echo "$code" > "$out/exit-code.txt"
-          sed -n 's/^P1162_REQUEST_ORIGIN //p' "$out/stdout.log" > "$out/trace.jsonl"
           rg '^(P1162_CASE_RESULT|CDP_RESULT)' "$out/stdout.log" | cut -c1-420
           test -s "$out/trace.jsonl"
+          git diff --exit-code HEAD
           exit "$code"
       - name: 保存來源與原始紀錄
         if: always()
