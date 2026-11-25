@@ -1,0 +1,353 @@
+{
+ "checks": [
+  {
+   "code": "D06_PAGE2_NEW_TRACE_FACE",
+   "pass": true,
+   "page": "2",
+   "face": 2
+  },
+  {
+   "code": "D06_CALIBRATED_10MM_PER_UNIT",
+   "pass": true,
+   "mmPerUnit": 9.999999917520062
+  },
+  {
+   "code": "D06_SNAP_TO_ENDPOINT_AFTER_H",
+   "pass": true,
+   "expectedMm": [
+    400,
+    1800
+   ],
+   "exactMm": [
+    399.9999967008023,
+    1799.9999851536104
+   ],
+   "freeMm": [
+    429.1892395019531,
+    1795.1351318359375
+   ],
+   "draftFirst": [
+    400,
+    1800
+   ],
+   "jitterPx": {
+    "x": 6,
+    "y": -1
+   },
+   "cursorLabel": "格點外環E",
+   "grid": {
+    "spacingText": "21% 吸附 格點 格距 10 25 50 100 250 mm"
+   }
+  },
+  {
+   "code": "D06_CONTROL_NOT_SNAPPED_TO_400",
+   "pass": true,
+   "gridSpacing": "tracing",
+   "control": {
+    "src": [
+     40,
+     160
+    ],
+    "exactMm": [
+     399.9999967008023,
+     1599.9999868032091
+    ],
+    "freeMm": [
+     429.1892395019531,
+     1595.13525390625
+    ],
+    "draftFirst": [
+     500,
+     1500
+    ]
+   }
+  },
+  {
+   "code": "D06_PROBE_ZERO_WRITE",
+   "pass": true,
+   "n": 0,
+   "tool": "redraw",
+   "focus": {
+    "t": "face",
+    "id": 2
+   }
+  },
+  {
+   "code": "D06_TRACE_DRAFT_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "D06_TRACED_EDGES",
+   "pass": true,
+   "edges": [
+    2400,
+    1000,
+    800,
+    600,
+    1600,
+    1600
+   ],
+   "undo": [
+    3,
+    4
+   ]
+  },
+  {
+   "code": "D06_UNDO",
+   "pass": true
+  },
+  {
+   "code": "D06_REDO",
+   "pass": true
+  },
+  {
+   "code": "D06_COLD_OUTLINE",
+   "pass": true,
+   "cold": [
+    [
+     600,
+     1800
+    ],
+    [
+     3000,
+     1800
+    ],
+    [
+     3000,
+     800
+    ],
+    [
+     2200,
+     800
+    ],
+    [
+     2200,
+     200
+    ],
+    [
+     600,
+     200
+    ]
+   ]
+  },
+  {
+   "code": "D06_COLD_UNDERLAY_AND_SCALE",
+   "pass": true,
+   "page": 2,
+   "mmPerUnit": 9.999999917520062
+  }
+ ],
+ "browser": "153.0.8010.12",
+ "pdf": {
+  "file": "pdf/h-then-line.pdf",
+  "sha256": "72692ee7f658c18d0e658a401983bede71c06153c3fb1377864ae43d48fa0a06"
+ },
+ "selectedPage": "2",
+ "face": 2,
+ "mmPerUnit": 9.999999917520062,
+ "snapOn": true,
+ "afterH": {
+  "expectedMm": [
+   400,
+   1800
+  ],
+  "exactMm": [
+   399.9999967008023,
+   1799.9999851536104
+  ],
+  "freeMm": [
+   429.1892395019531,
+   1795.1351318359375
+  ],
+  "draftFirst": [
+   400,
+   1800
+  ],
+  "jitterPx": {
+   "x": 6,
+   "y": -1
+  },
+  "cursorLabel": "格點外環E",
+  "grid": {
+   "spacingText": "21% 吸附 格點 格距 10 25 50 100 250 mm"
+  }
+ },
+ "shotAfterH": {
+  "file": "screens/D06-1-snap-after-h-endpoint.png",
+  "sha256": "0f00f287bb58e453ae743772531f6762fc0303bf4bb2c4c16a33117be426a8fa"
+ },
+ "gridSpacing": "tracing",
+ "control": {
+  "src": [
+   40,
+   160
+  ],
+  "exactMm": [
+   399.9999967008023,
+   1599.9999868032091
+  ],
+  "freeMm": [
+   429.1892395019531,
+   1595.13525390625
+  ],
+  "draftFirst": [
+   500,
+   1500
+  ]
+ },
+ "afterEsc": {
+  "n": 0,
+  "tool": "redraw",
+  "focus": {
+   "t": "face",
+   "id": 2
+  }
+ },
+ "trace": [
+  {
+   "src": [
+    60,
+    180
+   ],
+   "mm": [
+    600,
+    1800
+   ]
+  },
+  {
+   "src": [
+    300,
+    180
+   ],
+   "mm": [
+    3000,
+    1800
+   ]
+  },
+  {
+   "src": [
+    300,
+    80
+   ],
+   "mm": [
+    3000,
+    800
+   ]
+  },
+  {
+   "src": [
+    220,
+    80
+   ],
+   "mm": [
+    2200,
+    800
+   ]
+  },
+  {
+   "src": [
+    220,
+    20
+   ],
+   "mm": [
+    2200,
+    200
+   ]
+  },
+  {
+   "src": [
+    60,
+    20
+   ],
+   "mm": [
+    600,
+    200
+   ]
+  }
+ ],
+ "draftPts": [
+  [
+   600,
+   1800
+  ],
+  [
+   3000,
+   1800
+  ],
+  [
+   3000,
+   800
+  ],
+  [
+   2200,
+   800
+  ],
+  [
+   2200,
+   200
+  ],
+  [
+   600,
+   200
+  ]
+ ],
+ "outline": [
+  [
+   600,
+   1800
+  ],
+  [
+   3000,
+   1800
+  ],
+  [
+   3000,
+   800
+  ],
+  [
+   2200,
+   800
+  ],
+  [
+   2200,
+   200
+  ],
+  [
+   600,
+   200
+  ]
+ ],
+ "edges": [
+  2400,
+  1000,
+  800,
+  600,
+  1600,
+  1600
+ ],
+ "shotTrace": {
+  "file": "screens/D06-2-traced.png",
+  "sha256": "e1e9234ae9249bb263f55a39db485e08b39bb3e54c2fc05b46288f558e22f2b4"
+ },
+ "saved": {
+  "suggested": "未命名專案.gcanvas",
+  "sha256": "70bf3b40ade22c214777e31fb49b2979c127d4915094da387251c7956278d175",
+  "bytes": 3178
+ },
+ "errorsA": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "coldUnderlay": {
+  "page": 2,
+  "mmPerUnit": 9.999999917520062
+ },
+ "shotCold": {
+  "file": "screens/D06-3-cold.png",
+  "sha256": "495db3a089a7a070c69e6564024cbcef30131b9fc924c7917ee90e2bd4695037"
+ },
+ "errorsB": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "pass": true,
+ "passed": "11/11"
+}

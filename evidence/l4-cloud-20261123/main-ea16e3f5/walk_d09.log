@@ -1,0 +1,15 @@
+PASS D09_EXAMPLE_WORKSPACE_READY {}
+PASS D09_INITIAL_INHERIT {"mode":"inherit","modeText":"沿用來源","value":null,"note":"移除覆寫後會重新預覽來源與完整影響。"}
+PASS D09_PREVIEW_ZERO_WRITE {}
+PASS D09_CONFIRM_ONE_HISTORY {"undo":[2,3],"overrides":{"gap":{"kind":"literal","value":4}}}
+PASS D09_SAME_OPEN_SHOWS_4 {"mode":"literal","modeText":"改成本面數值","value":"4","note":null}
+PASS D09_REOPEN_SHOWS_LITERAL_4 {"mode":"literal","modeText":"改成本面數值","value":"4","note":null}
+PASS D09_UNEDITED_PREVIEW_ZERO_CHANGE {"review":"核對這次變更核對 0 項版本或定義變更。目前工程尚未改動。核心未回傳變更列，請核對操作摘要。保留的覆寫 · 1放置面1欄位gap來源種類literal值4我已核對版本、目標、覆寫及連帶影響"}
+PASS D09_CANCEL_ZERO_WRITE {}
+PASS D09_UNDO_RESTORES_SCENE {"undo":2,"redo":1}
+PASS D09_UNDO_FORM_INHERIT {"mode":"inherit","modeText":"沿用來源","value":null,"note":"移除覆寫後會重新預覽來源與完整影響。"}
+PASS D09_REDO_RESTORES_SCENE {}
+PASS D09_REDO_FORM_SHOWS_4 {"mode":"literal","modeText":"改成本面數值","value":"4","note":null}
+PASS D09_COLD_SCENE_EQUAL {"cold":"abc120d3920c9f852e9a8cf6997bd4ec0de5edd0c7cc39001f812d218929823f","saved":"abc120d3920c9f852e9a8cf6997bd4ec0de5edd0c7cc39001f812d218929823f"}
+PASS D09_COLD_390_SHOWS_4 {"mode":"literal","modeText":"改成本面數值","value":"4","note":null}
+D09 14/14

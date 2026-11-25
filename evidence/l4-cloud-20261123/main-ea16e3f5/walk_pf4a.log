@@ -1,0 +1,17 @@
+PASS PREP_FILL_HOST_CONFIRMABLE {}
+PASS PREP_DEFINITION_TABLES_READABLE_1400 {"tables":3,"captions":["完成面 #1 · 新增","鋪排 #1 · 新增","派生宿主 #1 · 新增"],"headers":["欄位","確認前","候選後"],"headerLines":["111","111","111"],"overflow":[false,false,false],"broken":[]}
+PASS PREP_FILL_AND_HOST_FORMAL {"revision":34,"fills":1,"hosts":1,"grids":[]}
+PASS GRID_PREVIEW_CONFIRMABLE {}
+PASS GRID_PREVIEW_TABLES_READABLE_1400 {"tables":4,"captions":["鋪排 #1 · 原生派生結果變動","派生宿主 #1 · 原生派生結果變動","來源主格 #1 · 新增","主格 #1"],"headers":["欄位","確認前","候選後"],"headerLines":["111","111","111","111"],"overflow":[false,false,false,false],"broken":[]}
+PASS GRID_PREVIEW_LABELS {"caption":"主格 #1","mainAlong":["主支偏好","不存在","沿 u"],"paths":["id","surface","fillId","mainAlong","indexSpace","bandIndexSpace","fillSide","geometryMode","geometryExact","evaluatedFill.staggerAxis","evaluatedFill.staggerDelta","lattice.u.baseCoordinate","lattice.u.pitch","lattice.u.baseIndex","lattic
+PASS GRID_PREVIEW_TABLES_READABLE_390 {"tables":4,"captions":["鋪排 #1 · 原生派生結果變動","派生宿主 #1 · 原生派生結果變動","來源主格 #1 · 新增","主格 #1"],"headers":["欄位","確認前","候選後"],"headerLines":["111","111","111","111"],"overflow":[false,false,false,false],"broken":[]}
+PASS RESIZE_ZERO_WRITE {}
+PASS GRID_CANCEL_ZERO_WRITE {}
+PASS GRID_CONFIRM_ONE_HISTORY {"undo":[5,6],"grids":[{"id":1,"definition":{"id":1,"hostId":1,"fillId":1,"mainAlong":"u"}}]}
+PASS GRID_RESULT_TABLE_READABLE_1400 {"tables":1,"captions":["主格定義與有效值"],"headers":["欄位","原生值"],"headerLines":["11"],"overflow":[false],"broken":[]}
+PASS SOURCE_EDIT_TABLES_READABLE_1400 {"tables":4,"captions":["鋪排 #1 · 定義修改","派生宿主 #1 · 原生派生結果變動","來源主格 #1 · 原生派生結果變動","主格 #1"],"headers":["欄位","確認前","候選後"],"headerLines":["111","111","111","111"],"overflow":[false,false,false,false],"broken":[]}
+PASS SOURCE_EDIT_SHOWS_BASIS_BEFORE_AFTER {"row":["週期基準 · u 軸 · 基準座標（mm）","101","111"]}
+PASS SOURCE_EDIT_CANCEL_ZERO_WRITE {}
+PASS COLD_SCENE_EQUAL {"cold":"0d8681a64a5761ebe63d9d7de48378b44d95d8fb7b59d151a81e3bcad63ece4b","saved":"0d8681a64a5761ebe63d9d7de48378b44d95d8fb7b59d151a81e3bcad63ece4b"}
+PASS COLD_GRID_RESULT_READABLE_390 {"tables":1,"captions":["主格定義與有效值"],"headers":["欄位","原生值"],"headerLines":["11"],"overflow":[false],"broken":[]}
+PF4A 16/16

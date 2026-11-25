@@ -1,0 +1,31 @@
+PASS 1400_LONG_PRESS_RING_THEN_MENU {"at250":{"ring":true,"menu":false,"ms":255},"at400":{"menu":false,"ms":408},"at700":{"menu":true,"ms":712}}
+PASS 1400_LONG_PRESS_CARD_ITEMS {"title":"面 1","items":["open:開啟","locate:定位","delete:刪除","props:在右欄查看"]}
+PASS 1400_RELEASE_KEEPS_MENU_NO_OPEN {"afterRelease":true,"focus":null,"clicks":[]}
+PASS 1400_SHEET_INSIDE_VIEWPORT {"left":278,"top":310,"right":1400,"bottom":580.484375}
+PASS 1400_LONG_PRESS_ZERO_WRITE {}
+PASS 1400_TAP_MENU_ITEM_RUNS_CLOSES {"item":"定位","sel":{"sel":{"kind":"boundary","id":1},"n":1,"focus":null}}
+PASS 1400_BLANK_POINT_IS_CANVAS {"point":{"x":318,"y":96,"clearance":268.55643818538897,"hit":"ocv"},"downs":[{"t":"touchstart","pt":null,"trusted":true,"card":null,"target":"ocv","at":10765}]}
+PASS 1400_LONG_PRESS_BLANK_VIEW_MENU {"title":"物件畫布","items":["home:回到原點","fit:顯示全部","create:建立物件","snap:格點吸附","grid:顯示背景格點"]}
+PASS 1400_BLANK_SHEET_INSIDE_VIEWPORT {"left":278,"top":507,"right":1400,"bottom":872.484375}
+PASS 1400_ESC_CLOSES_BLANK_MENU {}
+PASS 1400_BLANK_ZERO_WRITE {}
+PASS 1400_SHORT_TAP_SELECTS {"sel":{"kind":"boundary","id":1},"n":1,"focus":null}
+PASS 1400_MOVE_OVER_8_CANCELS_LONG_PRESS {"menuDuringDrag":false,"ringDuringDrag":false,"dx":77.71429443359375,"undo":[2,2]}
+PASS 1400_DRAG_MOVES_CARD {"menuDuringDrag":false,"ringDuringDrag":false,"dx":77.71429443359375,"undo":[2,2]}
+PASS 1400_DRAG_SAME_AS_MOUSE_PATH {"menuDuringDrag":false,"ringDuringDrag":false,"dx":77.71429443359375,"undo":[2,2],"touchDiff":["canvas-pos boundary 1 100 60"],"mouseBack":{"sceneBack":true,"left":[586.4285888671875,586.4285888671875],"undo":2}}
+PASS 1400_PINCH_ZOOM_1_5 {"start":{"x":191.85714285714283,"y":-68.28571428571428,"z":1.9428571428571428},"pinched":{"x":267.7857142857142,"y":-122.42857142857142,"z":2.914285714285714},"panned":{"x":327.7857142857142,"y":-122.42857142857142,"z":2.914285714285714},"ratio":1.5,"dx":60,"dy":0}
+PASS 1400_TWO_FINGER_PAN_60 {"start":{"x":191.85714285714283,"y":-68.28571428571428,"z":1.9428571428571428},"pinched":{"x":267.7857142857142,"y":-122.42857142857142,"z":2.914285714285714},"panned":{"x":327.7857142857142,"y":-122.42857142857142,"z":2.914285714285714},"ratio":1.5,"dx":60,"dy":0}
+PASS 1400_TWO_FINGERS_NO_MENU_NO_WRITE {}
+PASS 1400_DOUBLE_TAP_ENTERS_FACE {"sel":{"kind":"boundary","id":1},"n":1,"focus":{"t":"face","id":1}}
+PASS 390_LONG_PRESS_RING_THEN_MENU {"at250":{"ring":true,"menu":false,"ms":255},"at400":{"menu":false,"ms":407},"at700":{"menu":true,"ms":712}}
+PASS 390_LONG_PRESS_CARD_ITEMS {"title":"面 1","items":["open:開啟","locate:定位","delete:刪除","props:在右欄查看"]}
+PASS 390_RELEASE_KEEPS_MENU_NO_OPEN {"afterRelease":true,"focus":null,"clicks":[]}
+PASS 390_SHEET_INSIDE_VIEWPORT {"left":0,"top":548,"right":390,"bottom":818.484375}
+PASS 390_LONG_PRESS_ZERO_WRITE {}
+PASS 390_TAP_MENU_ITEM_RUNS_CLOSES {"item":"定位","sel":{"sel":{"kind":"boundary","id":1},"n":1,"focus":null}}
+PASS 390_BLANK_POINT_IS_CANVAS {"point":{"x":40,"y":200,"clearance":47.01063709417264,"hit":"ocv"},"downs":[{"t":"touchstart","pt":null,"trusted":true,"card":null,"target":"ocv","at":10879}]}
+PASS 390_LONG_PRESS_BLANK_VIEW_MENU {"title":"物件畫布","items":["home:回到原點","fit:顯示全部","create:建立物件","snap:格點吸附","grid:顯示背景格點"]}
+PASS 390_BLANK_SHEET_INSIDE_VIEWPORT {"left":0,"top":453,"right":390,"bottom":818.484375}
+PASS 390_ESC_CLOSES_BLANK_MENU {}
+PASS 390_BLANK_ZERO_WRITE {}
+R11 30/30

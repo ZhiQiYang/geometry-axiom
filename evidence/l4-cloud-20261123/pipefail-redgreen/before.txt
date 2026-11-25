@@ -1,0 +1,13 @@
+7bdb0c519600db5492b8e163ad2a4f1772ea02e4171038414b259ed0d3b68ccb  run_one.sh
+aa588895ebe75a90d7db0b83027e62d22df9248e9c1de34dd9da5e9e7c03ae8d  run_all.sh
+== run_one.sh walk_fail.js
+FAIL deliberate child failure
+run_one.sh exit=0
+== run_all.sh
+FAIL deliberate child failure
+FAIL deliberate child failure
+FAIL deliberate child failure
+FAIL deliberate child failure
+FAIL deliberate child failure
+FAIL deliberate child failure
+run_all.sh exit=0

@@ -1,0 +1,639 @@
+{
+ "checks": [
+  {
+   "code": "1400_LONG_PRESS_RING_THEN_MENU",
+   "pass": true,
+   "at250": {
+    "ring": true,
+    "menu": false,
+    "ms": 255
+   },
+   "at400": {
+    "menu": false,
+    "ms": 408
+   },
+   "at700": {
+    "menu": true,
+    "ms": 712
+   }
+  },
+  {
+   "code": "1400_LONG_PRESS_CARD_ITEMS",
+   "pass": true,
+   "title": "面 1",
+   "items": [
+    "open:開啟",
+    "locate:定位",
+    "delete:刪除",
+    "props:在右欄查看"
+   ]
+  },
+  {
+   "code": "1400_RELEASE_KEEPS_MENU_NO_OPEN",
+   "pass": true,
+   "afterRelease": true,
+   "focus": null,
+   "clicks": []
+  },
+  {
+   "code": "1400_SHEET_INSIDE_VIEWPORT",
+   "pass": true,
+   "left": 278,
+   "top": 310,
+   "right": 1400,
+   "bottom": 580.484375
+  },
+  {
+   "code": "1400_LONG_PRESS_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "1400_TAP_MENU_ITEM_RUNS_CLOSES",
+   "pass": true,
+   "item": "定位",
+   "sel": {
+    "sel": {
+     "kind": "boundary",
+     "id": 1
+    },
+    "n": 1,
+    "focus": null
+   }
+  },
+  {
+   "code": "1400_BLANK_POINT_IS_CANVAS",
+   "pass": true,
+   "point": {
+    "x": 318,
+    "y": 96,
+    "clearance": 268.55643818538897,
+    "hit": "ocv"
+   },
+   "downs": [
+    {
+     "t": "touchstart",
+     "pt": null,
+     "trusted": true,
+     "card": null,
+     "target": "ocv",
+     "at": 10765
+    }
+   ]
+  },
+  {
+   "code": "1400_LONG_PRESS_BLANK_VIEW_MENU",
+   "pass": true,
+   "title": "物件畫布",
+   "items": [
+    "home:回到原點",
+    "fit:顯示全部",
+    "create:建立物件",
+    "snap:格點吸附",
+    "grid:顯示背景格點"
+   ]
+  },
+  {
+   "code": "1400_BLANK_SHEET_INSIDE_VIEWPORT",
+   "pass": true,
+   "left": 278,
+   "top": 507,
+   "right": 1400,
+   "bottom": 872.484375
+  },
+  {
+   "code": "1400_ESC_CLOSES_BLANK_MENU",
+   "pass": true
+  },
+  {
+   "code": "1400_BLANK_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "1400_SHORT_TAP_SELECTS",
+   "pass": true,
+   "sel": {
+    "kind": "boundary",
+    "id": 1
+   },
+   "n": 1,
+   "focus": null
+  },
+  {
+   "code": "1400_MOVE_OVER_8_CANCELS_LONG_PRESS",
+   "pass": true,
+   "menuDuringDrag": false,
+   "ringDuringDrag": false,
+   "dx": 77.71429443359375,
+   "undo": [
+    2,
+    2
+   ]
+  },
+  {
+   "code": "1400_DRAG_MOVES_CARD",
+   "pass": true,
+   "menuDuringDrag": false,
+   "ringDuringDrag": false,
+   "dx": 77.71429443359375,
+   "undo": [
+    2,
+    2
+   ]
+  },
+  {
+   "code": "1400_DRAG_SAME_AS_MOUSE_PATH",
+   "pass": true,
+   "menuDuringDrag": false,
+   "ringDuringDrag": false,
+   "dx": 77.71429443359375,
+   "undo": [
+    2,
+    2
+   ],
+   "touchDiff": [
+    "canvas-pos boundary 1 100 60"
+   ],
+   "mouseBack": {
+    "sceneBack": true,
+    "left": [
+     586.4285888671875,
+     586.4285888671875
+    ],
+    "undo": 2
+   }
+  },
+  {
+   "code": "1400_PINCH_ZOOM_1_5",
+   "pass": true,
+   "start": {
+    "x": 191.85714285714283,
+    "y": -68.28571428571428,
+    "z": 1.9428571428571428
+   },
+   "pinched": {
+    "x": 267.7857142857142,
+    "y": -122.42857142857142,
+    "z": 2.914285714285714
+   },
+   "panned": {
+    "x": 327.7857142857142,
+    "y": -122.42857142857142,
+    "z": 2.914285714285714
+   },
+   "ratio": 1.5,
+   "dx": 60,
+   "dy": 0
+  },
+  {
+   "code": "1400_TWO_FINGER_PAN_60",
+   "pass": true,
+   "start": {
+    "x": 191.85714285714283,
+    "y": -68.28571428571428,
+    "z": 1.9428571428571428
+   },
+   "pinched": {
+    "x": 267.7857142857142,
+    "y": -122.42857142857142,
+    "z": 2.914285714285714
+   },
+   "panned": {
+    "x": 327.7857142857142,
+    "y": -122.42857142857142,
+    "z": 2.914285714285714
+   },
+   "ratio": 1.5,
+   "dx": 60,
+   "dy": 0
+  },
+  {
+   "code": "1400_TWO_FINGERS_NO_MENU_NO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "1400_DOUBLE_TAP_ENTERS_FACE",
+   "pass": true,
+   "sel": {
+    "kind": "boundary",
+    "id": 1
+   },
+   "n": 1,
+   "focus": {
+    "t": "face",
+    "id": 1
+   }
+  },
+  {
+   "code": "390_LONG_PRESS_RING_THEN_MENU",
+   "pass": true,
+   "at250": {
+    "ring": true,
+    "menu": false,
+    "ms": 255
+   },
+   "at400": {
+    "menu": false,
+    "ms": 407
+   },
+   "at700": {
+    "menu": true,
+    "ms": 712
+   }
+  },
+  {
+   "code": "390_LONG_PRESS_CARD_ITEMS",
+   "pass": true,
+   "title": "面 1",
+   "items": [
+    "open:開啟",
+    "locate:定位",
+    "delete:刪除",
+    "props:在右欄查看"
+   ]
+  },
+  {
+   "code": "390_RELEASE_KEEPS_MENU_NO_OPEN",
+   "pass": true,
+   "afterRelease": true,
+   "focus": null,
+   "clicks": []
+  },
+  {
+   "code": "390_SHEET_INSIDE_VIEWPORT",
+   "pass": true,
+   "left": 0,
+   "top": 548,
+   "right": 390,
+   "bottom": 818.484375
+  },
+  {
+   "code": "390_LONG_PRESS_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "390_TAP_MENU_ITEM_RUNS_CLOSES",
+   "pass": true,
+   "item": "定位",
+   "sel": {
+    "sel": {
+     "kind": "boundary",
+     "id": 1
+    },
+    "n": 1,
+    "focus": null
+   }
+  },
+  {
+   "code": "390_BLANK_POINT_IS_CANVAS",
+   "pass": true,
+   "point": {
+    "x": 40,
+    "y": 200,
+    "clearance": 47.01063709417264,
+    "hit": "ocv"
+   },
+   "downs": [
+    {
+     "t": "touchstart",
+     "pt": null,
+     "trusted": true,
+     "card": null,
+     "target": "ocv",
+     "at": 10879
+    }
+   ]
+  },
+  {
+   "code": "390_LONG_PRESS_BLANK_VIEW_MENU",
+   "pass": true,
+   "title": "物件畫布",
+   "items": [
+    "home:回到原點",
+    "fit:顯示全部",
+    "create:建立物件",
+    "snap:格點吸附",
+    "grid:顯示背景格點"
+   ]
+  },
+  {
+   "code": "390_BLANK_SHEET_INSIDE_VIEWPORT",
+   "pass": true,
+   "left": 0,
+   "top": 453,
+   "right": 390,
+   "bottom": 818.484375
+  },
+  {
+   "code": "390_ESC_CLOSES_BLANK_MENU",
+   "pass": true
+  },
+  {
+   "code": "390_BLANK_ZERO_WRITE",
+   "pass": true
+  }
+ ],
+ "sizes": {
+  "390": {
+   "browser": "153.0.8010.12",
+   "maxTouchPoints": 2,
+   "ready": {
+    "phase": "ready",
+    "on": true,
+    "focus": null,
+    "view3": false
+   },
+   "cardId": "1",
+   "cardPress": {
+    "point": {
+     "x": 128.48739624023438,
+     "y": 396.8739318847656
+    },
+    "at250": {
+     "ring": true,
+     "menu": false,
+     "ms": 255
+    },
+    "at400": {
+     "menu": false,
+     "ms": 407
+    },
+    "at700": {
+     "menu": true,
+     "ms": 712
+    },
+    "menu": {
+     "sheet": true,
+     "title": "面 1",
+     "items": [
+      "open:開啟",
+      "locate:定位",
+      "delete:刪除",
+      "props:在右欄查看"
+     ],
+     "rect": {
+      "left": 0,
+      "top": 548,
+      "right": 390,
+      "bottom": 818.484375
+     },
+     "vw": 390,
+     "vh": 844
+    },
+    "afterRelease": {
+     "sheet": true,
+     "title": "面 1",
+     "items": [
+      "open:開啟",
+      "locate:定位",
+      "delete:刪除",
+      "props:在右欄查看"
+     ],
+     "rect": {
+      "left": 0,
+      "top": 548,
+      "right": 390,
+      "bottom": 818.484375
+     },
+     "vw": 390,
+     "vh": 844
+    },
+    "sel": {
+     "sel": {
+      "kind": "boundary",
+      "id": 1
+     },
+     "n": 1,
+     "focus": null
+    },
+    "events": [
+     {
+      "t": "touchstart",
+      "pt": null,
+      "trusted": true,
+      "card": "1",
+      "target": "text",
+      "at": 8948
+     }
+    ]
+   },
+   "cardShot": {
+    "file": "screens/R11-390-1-card-sheet.png",
+    "sha256": "5ef455f8a1eabea8e3ebeb2aa538b51d8a358ca5d7961b551530b302644f43d1"
+   },
+   "tappedItem": {
+    "act": "locate",
+    "label": "定位",
+    "x": 194.9921875,
+    "y": 646.546875
+   },
+   "blankPress": {
+    "point": {
+     "x": 40,
+     "y": 200,
+     "clearance": 47.01063709417264,
+     "hit": "ocv"
+    },
+    "menu": {
+     "sheet": true,
+     "title": "物件畫布",
+     "items": [
+      "home:回到原點",
+      "fit:顯示全部",
+      "create:建立物件",
+      "snap:格點吸附",
+      "grid:顯示背景格點"
+     ],
+     "rect": {
+      "left": 0,
+      "top": 453,
+      "right": 390,
+      "bottom": 818.484375
+     },
+     "vw": 390,
+     "vh": 844
+    },
+    "shot": {
+     "file": "screens/R11-390-2-blank-sheet.png",
+     "sha256": "32af65b2a38a91bd47058db18ff9ed6282913a22dd9c132bd3e8eb862b669013"
+    }
+   },
+   "errors": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+   ]
+  },
+  "1400": {
+   "browser": "153.0.8010.12",
+   "maxTouchPoints": 2,
+   "ready": {
+    "phase": "ready",
+    "on": true,
+    "focus": null,
+    "view3": false
+   },
+   "cardId": "1",
+   "cardPress": {
+    "point": {
+     "x": 626.4285888671875,
+     "y": 280.2857208251953
+    },
+    "at250": {
+     "ring": true,
+     "menu": false,
+     "ms": 255
+    },
+    "at400": {
+     "menu": false,
+     "ms": 408
+    },
+    "at700": {
+     "menu": true,
+     "ms": 712
+    },
+    "menu": {
+     "sheet": true,
+     "title": "面 1",
+     "items": [
+      "open:開啟",
+      "locate:定位",
+      "delete:刪除",
+      "props:在右欄查看"
+     ],
+     "rect": {
+      "left": 278,
+      "top": 310,
+      "right": 1400,
+      "bottom": 580.484375
+     },
+     "vw": 1400,
+     "vh": 900
+    },
+    "afterRelease": {
+     "sheet": true,
+     "title": "面 1",
+     "items": [
+      "open:開啟",
+      "locate:定位",
+      "delete:刪除",
+      "props:在右欄查看"
+     ],
+     "rect": {
+      "left": 278,
+      "top": 310,
+      "right": 1400,
+      "bottom": 580.484375
+     },
+     "vw": 1400,
+     "vh": 900
+    },
+    "sel": {
+     "sel": {
+      "kind": "boundary",
+      "id": 1
+     },
+     "n": 1,
+     "focus": null
+    },
+    "events": [
+     {
+      "t": "touchstart",
+      "pt": null,
+      "trusted": true,
+      "card": "1",
+      "target": "rect",
+      "at": 8832
+     }
+    ]
+   },
+   "cardShot": {
+    "file": "screens/R11-1400-1-card-sheet.png",
+    "sha256": "200ce491a68c142076e750de9baeabfb8bf91f9593035a450646c760fc6cfd76"
+   },
+   "tappedItem": {
+    "act": "locate",
+    "label": "定位",
+    "x": 838.9921875,
+    "y": 408.546875
+   },
+   "blankPress": {
+    "point": {
+     "x": 318,
+     "y": 96,
+     "clearance": 268.55643818538897,
+     "hit": "ocv"
+    },
+    "menu": {
+     "sheet": true,
+     "title": "物件畫布",
+     "items": [
+      "home:回到原點",
+      "fit:顯示全部",
+      "create:建立物件",
+      "snap:格點吸附",
+      "grid:顯示背景格點"
+     ],
+     "rect": {
+      "left": 278,
+      "top": 507,
+      "right": 1400,
+      "bottom": 872.484375
+     },
+     "vw": 1400,
+     "vh": 900
+    },
+    "shot": {
+     "file": "screens/R11-1400-2-blank-sheet.png",
+     "sha256": "f61e51411201801380c35966bf0d7a7818fdc9e9234e9f4c922d92420accb806"
+    }
+   },
+   "drag": {
+    "menuDuringDrag": false,
+    "ringDuringDrag": false,
+    "dx": 77.71429443359375,
+    "undo": [
+     2,
+     2
+    ],
+    "touchDiff": [
+     "canvas-pos boundary 1 100 60"
+    ],
+    "mouseBack": {
+     "sceneBack": true,
+     "left": [
+      586.4285888671875,
+      586.4285888671875
+     ],
+     "undo": 2
+    }
+   },
+   "twoFingers": {
+    "start": {
+     "x": 191.85714285714283,
+     "y": -68.28571428571428,
+     "z": 1.9428571428571428
+    },
+    "pinched": {
+     "x": 267.7857142857142,
+     "y": -122.42857142857142,
+     "z": 2.914285714285714
+    },
+    "panned": {
+     "x": 327.7857142857142,
+     "y": -122.42857142857142,
+     "z": 2.914285714285714
+    },
+    "ratio": 1.5,
+    "dx": 60,
+    "dy": 0
+   },
+   "twoFingerShot": {
+    "file": "screens/R11-1400-3-after-pinch-pan.png",
+    "sha256": "d873802ef3ebddbe5c66431e47dd1c5a6ce11af00c1f78dbe48e2ef3d40a4060"
+   },
+   "errors": [
+    "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+   ]
+  }
+ },
+ "pass": true,
+ "passed": "30/30"
+}
