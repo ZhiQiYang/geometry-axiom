@@ -183,6 +183,11 @@ module.exports = async helpers => {
       connectionReady:values.phase==='ready',referenceUnblocked:values.blocked===false,
       parameterIdle:!values.previewing};
     return {values,conditions,samples,falseConditions:Object.keys(conditions).filter(key=>!conditions[key])};})()`;
+  const fixtureStateExpression = `(()=>{const native=${nativeStateExpression};
+    const idle=ReferenceWorkspace.recoveryIdle;
+    native.values.recoveryIdle=idle;native.conditions.recoveryIdle=idle===true;
+    if (idle!==true) native.falseConditions.push('recoveryIdle');
+    return native;})()`;
   function stateExpression(nativeExpression = nativeStateExpression) {
     return `(()=>{const nativeState=${nativeExpression};try{const r=ocv.getBoundingClientRect();return {
       native:nativeState,
@@ -201,22 +206,24 @@ module.exports = async helpers => {
       catch(error){return {diagnosticError:String(error),native:nativeState};}})()`;
   }
   async function state() { return read(stateExpression()); }
-  async function until(name, expression, nativeSettlement = false) {
+  async function until(name, expression, nativeExpression = null) {
     try { await waitForUI(expression, 15000); }
     catch (error) {
       if (!String(error.message).startsWith('UI condition timed out at ')) throw error;
-      check(name, false, {expression, phase:'timeout', state:await state()});
+      check(name, false, {expression, phase:'timeout', state:await read(stateExpression(nativeExpression || nativeStateExpression))});
     }
-    const observation = await read(nativeSettlement
-      ? `(()=>{const observedNative=${nativeStateExpression},value=Object.values(observedNative.conditions).every(value=>value);
+    const observation = await read(nativeExpression
+      ? `(()=>{const observedNative=${nativeExpression},value=Object.values(observedNative.conditions).every(value=>value);
           return {value,state:value?undefined:${stateExpression('observedNative')}};})()`
       : `(()=>{const value=!!(${expression});return {value,state:value?undefined:${stateExpression()}};})()`);
     check(name, observation.value, observation.value ? undefined : {expression, phase:'post-wait-recheck', state:observation.state});
   }
   const frames = () => read('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))');
-  async function settled(name = 'NATIVE_SETTLED') {
-    await until(name, `__p1162.pending===0 && !oc.busy && connection.phase==='ready' &&
-      ReferenceWorkspace.getEvidenceState().blocked===false && !window.ParameterUI?.previewing`, true);
+  async function settled(name = 'NATIVE_SETTLED', waitForRecovery = false) {
+    const ready = `__p1162.pending===0 && !oc.busy && connection.phase==='ready' &&
+      ReferenceWorkspace.getEvidenceState().blocked===false && !window.ParameterUI?.previewing`;
+    await until(name, waitForRecovery ? `(${ready}) && ReferenceWorkspace.recoveryIdle===true` : ready,
+      waitForRecovery ? fixtureStateExpression : nativeStateExpression);
     await frames();
   }
   async function key(key, code, vk, modifiers = 0) {
@@ -355,7 +362,8 @@ module.exports = async helpers => {
       return {visible:true,x,y,hit:e.contains(document.elementFromPoint(x,y))};})()`);
     check('FIXTURE_GUIDANCE_REACHABLE_OR_ABSENT', !dismiss.visible || dismiss.hit === true, dismiss);
     if (dismiss.visible) await mouse(dismiss);
-    await settled('FIXTURE_SETTLED');
+    // 夾具的 reset 與 line 會排程恢復資料寫入，即使目前沒有請求，稍後仍會讀取 dump。
+    await settled('FIXTURE_SETTLED', true);
     await read('__p1162.clear();void 0');
   }
   async function checkpoint() {

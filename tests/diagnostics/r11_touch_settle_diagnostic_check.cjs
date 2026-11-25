@@ -29,6 +29,20 @@ function once(source, before, after) {
   return source.replace(before, after);
 }
 
+// 只在 VM 內設定恢復排程的私有狀態。getter 由完整的產品模組提供。
+function fixtureRecoveryOwner() {
+  const filename = path.join(ROOT, 'geometry-web/reference-workspace.js');
+  const source = fs.readFileSync(filename, 'utf8');
+  const anchor = '  return { getEvidenceState,getEvidenceNavigationStamp,';
+  const owner = vm.createContext({GeometryProject:{ContextHistory:class {}, Features:{}},
+    crypto:{randomUUID:()=>'fixture-owner'}});
+  vm.runInContext(once(source, anchor,
+    '  globalThis.setRecovery=(timer,writing,again)=>{recoveryTimer=timer;recoveryWriting=writing;recoveryAgain=again;};\n'+anchor),
+    owner, {filename});
+  return {idle:Object.getOwnPropertyDescriptor(vm.runInContext('ReferenceWorkspace',owner), 'recoveryIdle'),
+    set:owner.setRecovery};
+}
+
 async function harness(source, options = {}) {
   const checks = [], evals = [], waits = [];
   const native = {...HEALTHY};
@@ -61,16 +75,34 @@ async function harness(source, options = {}) {
   for (const [target, key, field] of [[browser.__p1162,'pending','pending'],[browser.oc,'busy','busy'],
     [browser.connection,'phase','phase'],[browser.ParameterUI,'previewing','previewing']])
     Object.defineProperty(target, key, {get:()=>native[field]});
+  const polls = [], handoffs = [];
+  let phase, owner;
+  if (options.fixture) {
+    owner = fixtureRecoveryOwner();
+    if (owner.idle) Object.defineProperty(browser.ReferenceWorkspace, 'recoveryIdle', owner.idle);
+    const empty = ()=>{};
+    Object.assign(browser, {CanvasContextMenu:{hide:empty}, FaceContextMenu:{hide:empty},
+      closeDialogs:empty, closeMenus:empty, closePanels:empty, resetSceneFocus:empty, setView3:empty,
+      renderObjects:()=>true, setOcTool:empty, ocSetSelection:empty, ocApply:empty,
+      apiRequest:async()=>({ok:true})});
+    browser.ParameterUI.discard = empty;
+    browser.oc.groupOn = {};
+    browser.document.querySelector = ()=>null;
+    browser.__p1162.clear = ()=>handoffs.push(phase);
+  }
   const context = vm.createContext(browser);
   const contextModule = {exports:{}};
   const hook = "  const actions = new Map(Object.entries({LONG_PRESS:longPress";
   const instrumented = once(source, hook,
     "  active = {id:'TWO_FINGERS', assertions:{passed:0,failed:0}};\n"+
-    "  return {until, settled, state, getActive:()=>active};\n"+hook);
+    "  return {until, settled, state, fixture, getActive:()=>active};\n"+hook);
   vm.runInNewContext(instrumented, {module:contextModule, exports:contextModule.exports,
     require:createRequire(MODULE), console:{log:()=>{}}}, {filename:MODULE});
   const api = await contextModule.exports({
-    send:async()=>{throw Error('R433_DIAGNOSTIC_UNEXPECTED_INPUT');},
+    send:async method=>{
+      if (options.fixture && method==='Emulation.setDeviceMetricsOverride') return {};
+      throw Error('R433_DIAGNOSTIC_UNEXPECTED_INPUT');
+    },
     exceptionCount:()=>0,
     makeCheck:()=>((name,value,detail)=>checks.push(plain({name,value,detail}))),
     waitForUI:async(expression, timeout)=>{
@@ -80,7 +112,20 @@ async function harness(source, options = {}) {
         Object.assign(native, options.flip || BAD);
         throw Error('UI condition timed out at '+expression);
       }
+      if (options.fixture) {
+        // 第一輪真實 dump 收到後，IndexedDB 仍可寫入，owner 也可以再排第二輪。
+        for (const [stage,timer,writing,again,pending] of [
+          ['scheduled',1,false,false,0], ['dump',null,true,false,1], ['writing',null,true,false,0],
+          ['writing-again',null,true,true,0], ['rescheduled',2,false,false,0], ['idle',null,false,false,0],
+        ]) {
+          phase = stage; owner.set(timer,writing,again); native.pending = pending;
+          const ready = vm.runInContext(expression,context);
+          polls.push([stage,ready]);
+          if (ready===true) break;
+        }
+      }
       assert.equal(vm.runInContext('!!('+expression+')', context), true, 'R433_WAIT_MUST_FIRST_BE_TRUE');
+      if (options.fixtureRecheck) owner.set(3,false,false);
       Object.assign(native, options.flip || {});
       evidenceReads = 0;
       afterWait = true;
@@ -98,11 +143,12 @@ async function harness(source, options = {}) {
   });
   let error;
   try {
-    if (options.generic) await api.until('GENERIC_RECHECK', 'oc.busy===false');
+    if (options.fixture) await api.fixture();
+    else if (options.generic) await api.until('GENERIC_RECHECK', 'oc.busy===false');
     else await api.settled();
   } catch (caught) { error = caught; }
   return {checks,evals,waits,error,active:plain(api.getActive()),native,
-    evidenceReads,snapshotReads,frames};
+    evidenceReads,snapshotReads,frames,polls,handoffs};
 }
 
 function assertFailure(result, badFields, phase = 'post-wait-recheck') {
@@ -138,6 +184,25 @@ async function regression(source) {
     try { await run(); results.push({id,pass:true}); }
     catch (error) { results.push({id,pass:false,kind:error.code==='ERR_ASSERTION'?'assertion':'error',error:String(error.message)}); }
   }
+  await test('R433_FIXTURE_WAITS_FOR_RECOVERY', async()=>{
+    const r = await harness(source,{fixture:true});
+    assert.deepEqual(r.polls,[['scheduled',false],['dump',false],['writing',false],
+      ['writing-again',false],['rescheduled',false],['idle',true]],'R433_FIXTURE_DRAINS_BEFORE_HANDOFF');
+    assert.equal(r.error,undefined);
+    assert.deepEqual(r.handoffs,['idle'],'R433_FIXTURE_GESTURE_STARTS_AFTER_RECOVERY');
+    assert.deepEqual(r.waits.map(w=>w.timeout),[15000],'R433_FIXTURE_ONE_ORIGINAL_BUDGET');
+    assert.deepEqual(r.checks.filter(row=>row.name==='FIXTURE_SETTLED'),[{name:'FIXTURE_SETTLED',value:true}]);
+  });
+  await test('R433_FIXTURE_RECOVERY_RESTART_REMAINS_RED', async()=>{
+    const r = await harness(source,{fixture:true,fixtureRecheck:true});
+    assert.equal(r.error?.p1162Assertion,true,'R433_FIXTURE_RECHECK_REJECTS_RESTART');
+    const failure = r.active.firstFailure;
+    assert.equal(failure.assertion,'FIXTURE_SETTLED');
+    assert.equal(failure.detail.phase,'post-wait-recheck');
+    assert.deepEqual(failure.detail.state.native.falseConditions,['recoveryIdle']);
+    assert.deepEqual(r.handoffs,[]);
+    assert.deepEqual(r.waits.map(w=>w.timeout),[15000]);
+  });
   for (const field of FIELDS) await test('R433_RECHECK_DETAIL_'+field.toUpperCase(), async()=>{
     const result = await harness(source, {flip:{[field]:BAD[field]}, restoreAfterRead:true});
     assertFailure(result, [field]);
