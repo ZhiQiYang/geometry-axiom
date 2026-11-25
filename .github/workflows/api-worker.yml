@@ -324,6 +324,11 @@ jobs:
           # 由 .github/workflows/api-worker.yml 安裝；以 apiworker 身分執行。模式：preflight／run／bundle／kill。
           set -euo pipefail
           umask 022
+          # 清理模式最先處理：不讀、不建、不 cd 任何模型改得到的目錄（模型可能刪掉 work 或把 tmp 換成檔案）。
+          if [ "${1:-}" = kill ]; then
+            kill -9 -1 2> /dev/null
+            exit 0
+          fi
           opt=/opt/apiworker
           work="$HOME/work"
           cli="$opt/claude-cli/claude"
@@ -366,8 +371,6 @@ jobs:
               echo "commits=$n uncommitted=$("${G[@]}" status --porcelain=v1 | wc -l)" >&2
               [ "$n" -gt 0 ] || exit 4
               exec "${G[@]}" bundle create - "refs/heads/$branch" "^$base" ;;
-            kill)
-              kill -9 -1 2>/dev/null || true ;;
             *) exit 64 ;;
           esac
           LAUNCHER
@@ -419,9 +422,34 @@ jobs:
           sudo chmod 755 "$WORKER_OPT/trusted"
           sudo chmod 644 "$WORKER_OPT"/trusted/*
 
+      - name: Close every world-writable path before the model runs (no API key)
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+          cd /
+          # 託管映像把 /usr/local/bin、/opt 等設成 777。模型（apiworker）若能在這些地方放同名程式或改名目錄，
+          # runner／root 之後的步驟就可能執行它。這裡全機掃描：除了帶 sticky bit 的暫存目錄、apiworker 自己的家目錄以外，
+          # 任何 other 可寫的目錄與一般檔案一律改成 o-w；下一步再以 apiworker 身分逐項驗證寫不進去。
+          scan() {
+            sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \
+              \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 2> /dev/null || true
+          }
+          n="$(scan | tr -cd '\0' | wc -c)"
+          echo "world-writable entries before: $n"
+          scan | sudo xargs -0 -r chmod o-w
+          left="$(scan | tr '\0' '\n')"
+          if [ -n "$left" ]; then
+            printf '%s\n' "$left" | head -50
+            echo "::error::仍有 other 可寫的目錄或檔案，不啟動模型" >&2; exit 1
+          fi
+          echo "world-writable entries after: 0"
+
       - name: Verify the worker is isolated and the git remote has no credentials
         run: |
           set -euo pipefail
+          runner_path="$PATH"
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
           as_worker() { sudo -u "$WORKER_USER" -H env -i PATH=/usr/bin:/bin HOME="$WORKER_HOME" "$@"; }
           fail() { echo "::error::$1" >&2; exit 1; }
@@ -436,6 +464,23 @@ jobs:
           sudo iptables -I OUTPUT -m owner --uid-owner "$WORKER_USER" -d 169.254.0.0/16 -j REJECT
           sudo iptables -I OUTPUT -m owner --uid-owner "$WORKER_USER" -d 168.63.129.16/32 -j REJECT
           ! as_worker curl -sS -m 5 -o /dev/null http://169.254.169.254/ 2> /dev/null || fail "apiworker 仍連得到 IMDS"
+          # runner 之後會用到的每個 PATH 目錄、各層祖先，以及 /opt 下的固定檔案：apiworker 都必須寫不進去、改不了名。
+          checked=0
+          declare -A seen=()
+          for d in ${runner_path//:/ } /usr/local/bin /usr/local/sbin /opt "$WORKER_OPT" "$WORKER_OPT/trusted" \
+                   "$WORKER_OPT/claude-cli" /etc/sudoers.d; do
+            while [ -n "$d" ] && [ -z "${seen[$d]:-}" ]; do
+              seen[$d]=1
+              if as_worker test -w "$d" 2> /dev/null; then fail "apiworker 寫得進 $d"; fi
+              checked=$((checked + 1))
+              [ "$d" = / ] && break
+              d="$(dirname "$d")"
+            done
+          done
+          if as_worker mv "$WORKER_OPT" "$WORKER_OPT.moved" 2> /dev/null; then
+            sudo mv "$WORKER_OPT.moved" "$WORKER_OPT"; fail "apiworker 改得了 $WORKER_OPT 的名"
+          fi
+          echo "apiworker cannot write or rename: $checked paths checked"
           sudo -n -l -U "$WORKER_USER" || true
           echo "isolation ok"
 
@@ -484,7 +529,18 @@ jobs:
           MODEL: ${{ needs.prepare.outputs.model }}
         run: |
           set -euo pipefail
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
+          # 清理 apiworker 的所有行程並核對沒有剩餘；核對不到就失敗，不以忽略錯誤代替。
+          stop_worker() {
+            for _ in 1 2 3 4 5 6 7 8 9 10; do
+              sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+              if ! pgrep -u "$WORKER_USER" > /dev/null; then return 0; fi
+              sleep 1
+            done
+            pgrep -a -u "$WORKER_USER" || true
+            return 1
+          }
           out="$RUNNER_TEMP/preflight.jsonl"
           # 假金鑰指向關閉的本機埠：不連外、不花錢，只取 CLI 啟動時的 init 訊息（實際生效的工具清單）。
           # 輸出檔刻意由 runner 寫（重導向不經 sudo）。
@@ -497,7 +553,7 @@ jobs:
           done
           kill "$pid" 2> /dev/null || true
           wait "$pid" 2> /dev/null || true
-          sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+          stop_worker || { echo "::error::預檢後 apiworker 行程清不乾淨，不啟動模型" >&2; exit 1; }
           init="$(grep -m1 '"subtype":"init"' "$out" || true)"
           echo "$init" | jq -c '{tools, mcp_servers, permissionMode, slash_commands}'
           echo "$init" | jq -e '(.tools | sort) == ["Bash","Edit","Glob","Grep","Read","Write"] and (.mcp_servers | length) == 0 and .permissionMode == "dontAsk"' > /dev/null \
@@ -512,6 +568,7 @@ jobs:
           MAX_BUDGET_USD: ${{ needs.prepare.outputs.max_budget_usd }}
         run: |
           set -euo pipefail
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
           out="$RUNNER_TEMP/worker-out"
           mkdir -p "$out"
@@ -531,20 +588,52 @@ jobs:
 
       - name: Stop every leftover worker process (no API key)
         if: always()
-        run: cd / && { sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true; }
+        run: |
+          set -euo pipefail
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+          cd /
+          # 清理 apiworker 的所有行程並核對沒有剩餘；核對不到就失敗，不以忽略錯誤代替。
+          stop_worker() {
+            for _ in 1 2 3 4 5 6 7 8 9 10; do
+              sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+              if ! pgrep -u "$WORKER_USER" > /dev/null; then return 0; fi
+              sleep 1
+            done
+            pgrep -a -u "$WORKER_USER" || true
+            return 1
+          }
+          out="$RUNNER_TEMP/worker-out"
+          mkdir -p "$out"
+          rm -f "$out/cleanup-ok"
+          if stop_worker; then
+            echo ok > "$out/cleanup-ok"; echo "no apiworker process left"
+          else
+            echo "::error::apiworker 仍有行程，清理未確認" >&2; exit 1
+          fi
 
       - name: Package the local branch as a git bundle (no API key; git runs as the worker user)
         if: always()
         run: |
           set -uo pipefail
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           cd /
+          # 清理 apiworker 的所有行程並核對沒有剩餘；核對不到就失敗，不以忽略錯誤代替。
+          stop_worker() {
+            for _ in 1 2 3 4 5 6 7 8 9 10; do
+              sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+              if ! pgrep -u "$WORKER_USER" > /dev/null; then return 0; fi
+              sleep 1
+            done
+            pgrep -a -u "$WORKER_USER" || true
+            return 1
+          }
           out="$RUNNER_TEMP/worker-out"
           mkdir -p "$out"
           rc=0
           # bundle 由 runner 寫檔（重導向刻意不經 sudo）。
           # shellcheck disable=SC2024
           sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" bundle > "$out/worker.bundle" 2> "$out/bundle-log.txt" || rc=$?
-          sudo -n -u "$WORKER_USER" "$WORKER_OPT/apiworker-run" kill || true
+          if ! stop_worker; then rm -f "$out/cleanup-ok"; echo "::error::打包後 apiworker 行程清不乾淨" >&2; fi
           case "$rc" in
             0) echo ok > "$out/bundle-status" ;;
             3) echo no-branch > "$out/bundle-status"; rm -f "$out/worker.bundle" ;;
@@ -584,7 +673,9 @@ jobs:
       commits: ${{ steps.check.outputs.commits }}
       files: ${{ steps.check.outputs.files }}
       reasons: ${{ steps.check.outputs.reasons }}
-      pushed: ${{ steps.push.outputs.pushed }}
+      push_state: ${{ steps.push.outputs.push_state }}
+      push_rc: ${{ steps.push.outputs.push_rc }}
+      remote_sha: ${{ steps.push.outputs.remote_sha }}
     env:
       BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
       WORKER_MAX_BUNDLE_BYTES: "104857600"
@@ -599,6 +690,9 @@ jobs:
 
       - name: Refusal checks (no token, no API key, no model)
         id: check
+        env:
+          # download 設 continue-on-error：用 outcome（不是 conclusion）判斷成果收據是否真的取到。
+          FETCH_OUTCOME: ${{ steps.fetch.outcome }}
         run: |
           set -euo pipefail
           out="$RUNNER_TEMP/worker-out"
@@ -641,6 +735,12 @@ jobs:
               with open(env["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
                   f.write(f"{key}={value}\n")
 
+          # 0. 成果收據必須取得到，且模型行程清理已確認。
+          receipt = env.get("FETCH_OUTCOME") == "success"
+          if not receipt:
+              reasons.append(f"取不到 work job 的成果收據（下載結果：{env.get('FETCH_OUTCOME') or '未執行'}）")
+          elif read("cleanup-ok") is None:
+              reasons.append("模型行程清理未確認（work job 沒有留下 cleanup-ok）")
           # 1. CLI 必須正常結束並有可解析的最終報告；否則不推（成果無報告可對照）。
           started = read("cli-started") is not None
           exit_code = (read("cli-exit") or b"").strip().decode("ascii", "replace") or None
@@ -654,7 +754,8 @@ jobs:
               res = None
           text = res.get("result") if res and isinstance(res.get("result"), str) else ""
           if not (started and exit_code == "0" and res is not None and res.get("is_error") is False and text.strip()):
-              reasons.append(f"CLI 未正常結束或沒有可解析的最終報告（啟動：{'是' if started else '否'}；結束碼：{exit_code or '未記錄'}）")
+              started_text = ("是" if started else "否") if receipt else "未確認"
+              reasons.append(f"CLI 未正常結束或沒有可解析的最終報告（啟動：{started_text}；結束碼：{exit_code or '未記錄'}）")
           # 2. 報告含疑似憑證字串。
           if SECRET.search(text.encode("utf-8")) or (raw and SECRET.search(raw)):
               reasons.append("模型報告含疑似憑證字串")
@@ -698,9 +799,19 @@ jobs:
                           paths.discard("")
                           if any(p == "公理層.md" or p.endswith("/公理層.md") for p in paths):
                               reasons.append("改到 公理層.md（SSOT，不得由 worker 改動）")
-                          bad = sorted(p for p in paths if p.startswith((".github/workflows/", ".github/prompts/", ".github/actions/", ".github/scripts/")))
+                          # 根 entry 本身（普通檔、symlink、gitlink）與其下路徑都算；base 沒有該目錄時也擋得住。
+                          roots = (".github/workflows", ".github/prompts", ".github/actions", ".github/scripts")
+                          bad = sorted(p for p in paths if any(p == r or p.startswith(r + "/") for r in roots))
                           if bad:
                               reasons.append("改到 .github/workflows／prompts／actions／scripts：" + "、".join(bad[:10]))
+                          # 每個新 commit（含 merge，不論第幾親）的受保護 entry 都必須與 base 完全相同（mode、型別、oid）。
+                          protected = ["公理層.md", *roots]
+                          base_tree = git("ls-tree", base, "--", *protected).stdout
+                          drift = [c[:12] for c in git("rev-list", f"{base}..{head}").stdout.decode().split()
+                                   if git("ls-tree", c, "--", *protected).stdout != base_tree]
+                          if drift:
+                              reasons.append("有新 commit 的受保護路徑（公理層.md、.github/workflows／prompts／actions／scripts）與 base 不同："
+                                             + "、".join(drift[:10]))
                           # 4. 每個新物件（commit 訊息、tree、blob 原始 bytes）掃疑似憑證。
                           objs = git("rev-list", "--objects", "--missing=allow-promisor", head, f"^{base}").stdout.decode().split("\n")
                           ids = "\n".join(o.split(" ", 1)[0] for o in objs if o.strip()) + "\n"
@@ -739,20 +850,36 @@ jobs:
           HEAD_SHA: ${{ steps.check.outputs.head_sha }}
         run: |
           set -euo pipefail
+          export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           repo="$RUNNER_TEMP/check-repo"
           [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
           case "$WORKER_BRANCH" in apiworker/[0-9]*) ;; *) echo "::error::分支名不符" >&2; exit 1 ;; esac
           auth="$(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
           echo "::add-mask::$auth"
-          # 憑證只經環境變數給這一次 git 呼叫；只推新分支，不推 main、不 force。
+          echo "push_state=attempting" >> "$GITHUB_OUTPUT"
+          # 憑證只經環境變數給這一次 git 呼叫；只推新分支，不推 main。
+          # 「只建立、不更新」要在伺服器端原子成立：--force-with-lease=<ref>: 的空期望值表示「遠端這個 ref 必須不存在」，
+          # 伺服器在同一次更新裡核對舊值為空才建立；ref 已存在（不論是不是祖先）一律拒絕。這個寫法不能覆寫或快轉任何既有 ref。
+          rc=0
           GIT_CONFIG_COUNT=2 \
           GIT_CONFIG_KEY_0="http.$GITHUB_SERVER_URL/.extraheader" GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth" \
           GIT_CONFIG_KEY_1=core.hooksPath GIT_CONFIG_VALUE_1=/dev/null \
-            git -C "$repo" push --no-verify origin "$HEAD_SHA:refs/heads/$WORKER_BRANCH"
-          got="$(git -C "$repo" ls-remote origin "refs/heads/$WORKER_BRANCH" | cut -f1)"
-          test "$got" = "$HEAD_SHA"
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
-          echo "pushed $HEAD_SHA to $WORKER_BRANCH"
+            git -C "$repo" push --no-verify --force-with-lease="refs/heads/$WORKER_BRANCH:" \
+              origin "$HEAD_SHA:refs/heads/$WORKER_BRANCH" || rc=$?
+          echo "push_rc=$rc" >> "$GITHUB_OUTPUT"
+          # 推送結果以遠端實際狀態為準；讀不到就是「未確認」，不斷言遠端沒有變更。
+          lrc=0
+          got="$(git -C "$repo" ls-remote origin "refs/heads/$WORKER_BRANCH")" || lrc=$?
+          got="${got%%[[:space:]]*}"
+          if [ "$lrc" -ne 0 ]; then state=unconfirmed
+          elif [ "$got" = "$HEAD_SHA" ]; then state=confirmed
+          elif [ -z "$got" ]; then state=absent
+          else state=exists_other
+          fi
+          echo "remote_sha=$got" >> "$GITHUB_OUTPUT"
+          echo "push_state=$state" >> "$GITHUB_OUTPUT"
+          echo "push rc=$rc ls-remote rc=$lrc state=$state remote=${got:-none} expected=$HEAD_SHA"
+          [ "$state" = confirmed ]
 
   report:
     name: Post the result on the task issue
@@ -795,9 +922,12 @@ jobs:
           BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
           MODEL: ${{ needs.prepare.outputs.model || inputs.model }}
           WORK_RESULT: ${{ needs.work.result }}
+          FETCH_OUTCOME: ${{ steps.fetch.outcome }}
           PUSH_RESULT: ${{ needs.push.result }}
           CHECK_OK: ${{ needs.push.outputs.ok }}
-          PUSHED: ${{ needs.push.outputs.pushed }}
+          PUSH_STATE: ${{ needs.push.outputs.push_state }}
+          PUSH_RC: ${{ needs.push.outputs.push_rc }}
+          REMOTE_SHA: ${{ needs.push.outputs.remote_sha }}
           HEAD_SHA: ${{ needs.push.outputs.head_sha }}
           COMMITS: ${{ needs.push.outputs.commits }}
           FILES: ${{ needs.push.outputs.files }}
@@ -827,11 +957,15 @@ jobs:
               # 不讓任何內容 @ 到人：@ 後接英數字一律插零寬空白（U+200B）。
               return re.sub(r"@(?=[A-Za-z0-9])", "@​", s)
 
+          # 成果收據是否真的取到（download 設 continue-on-error，所以看 outcome）。取不到時一律「未確認」，花費未知。
+          receipt = env.get("FETCH_OUTCOME") == "success"
           started = read("cli-started") is not None
           exit_code = (read("cli-exit") or "").strip() or None
           raw = read("result.json")
           res, parse_note = None, ""
-          if raw is None:
+          if not receipt:
+              parse_note = "成果收據取不到"
+          elif raw is None:
               parse_note = "輸出檔不存在"
           elif not raw.strip():
               parse_note = "輸出檔是空的"
@@ -847,13 +981,17 @@ jobs:
           res = res or {}
           text = res.get("result").strip() if isinstance(res.get("result"), str) else ""
           cost = res.get("total_cost_usd") if parsed else None
-          if not started:
+          if not receipt:
+              cost_text = "未知（成果收據取不到，無法確認 CLI 是否啟動，可能已產生費用；請到 Anthropic Console 核對）"
+          elif not started:
               cost_text = "無（CLI 未啟動）"
           elif isinstance(cost, (int, float)) and not isinstance(cost, bool):
               cost_text = f"US${cost}（CLI 自報）"
           else:
               cost_text = "未知（CLI 已啟動，可能已產生費用；請到 Anthropic Console 核對）"
-          if exit_code is not None:
+          if not receipt:
+              exit_text = "未確認（成果收據取不到）"
+          elif exit_code is not None:
               exit_text = exit_code
           else:
               exit_text = "未記錄（模型 step 可能逾時或被中斷）" if started else "無（CLI 未啟動）"
@@ -862,7 +1000,10 @@ jobs:
               reasons = json.loads(env.get("REASONS") or "[]")
           except ValueError:
               reasons = ["推送前檢查的結果無法解析"]
-          pushed = env.get("PUSHED") == "true"
+          state = env.get("PUSH_STATE") or ""
+          pushed = state == "confirmed"
+          # 檢查通過、推送 step 有開始（或 output 不完整）但遠端狀態沒有確認：只能說「未確認」，不能說沒有推送。
+          push_unknown = env.get("CHECK_OK") == "true" and state in ("", "attempting", "unconfirmed")
           branch = env["WORKER_BRANCH"]
           cid = unmention(env.get("COMMENT_ID", ""))
 
@@ -877,6 +1018,18 @@ jobs:
                             f"已推送到新分支 `{branch}`，head `{env.get('HEAD_SHA')}`"
                             f"（相對 base {env.get('COMMITS')} 個 commit、淨差異 {env.get('FILES')} 個檔案）。",
                             "本 workflow 不開 PR；要開 PR 由本機 Claude 以使用者身分開（用 GITHUB_TOKEN 開的 PR 不會觸發 CI）。"]
+              elif push_unknown:
+                  lines += ["### 結論",
+                            f"**推送結果未確認**：固定檢查已通過，推送請求可能已送出，但沒有讀到遠端的確認"
+                            f"（push 結束碼 {env.get('PUSH_RC') or '未記錄'}；狀態 {state or '無'}）。",
+                            f"請以 `git ls-remote origin refs/heads/{branch}` 核對；預期 SHA `{env.get('HEAD_SHA')}`。"]
+              elif state == "exists_other":
+                  lines += ["### 結論",
+                            f"**沒有推送**：目標分支 `{branch}` 在檢查之後被別人建立（遠端 `{env.get('REMOTE_SHA')}`），"
+                            "推送以「ref 必須不存在」為條件被拒，既有分支沒有被更動。"]
+              elif state == "absent":
+                  lines += ["### 結論",
+                            f"**沒有推送**：推送失敗（結束碼 {env.get('PUSH_RC') or '未記錄'}），之後確認遠端沒有 `{branch}`。"]
               else:
                   lines += ["### 結論", "**沒有推送**。"]
                   if reasons:
@@ -888,8 +1041,8 @@ jobs:
                         f"- 任務留言：{env.get('COMMENT_URL')}（內文 SHA-256 `{env.get('COMMENT_SHA256')}`；讀取時 updated_at {env.get('COMMENT_UPDATED_AT')}）",
                         f"- 引用留言：{env.get('REFS_SUMMARY') or '無'}",
                         f"- base：`{env.get('BASE_REF')}` `{env.get('BASE_SHA')}`",
-                        f"- 分支：`{branch}`；head：`{env.get('HEAD_SHA') or '無'}`；推送：{'是' if pushed else '否'}",
-                        f"- CLI 啟動：{'是' if started else '否'}；結束碼：{exit_text}；"
+                        f"- 分支：`{branch}`；head：`{env.get('HEAD_SHA') or '無'}`；推送：{'是' if pushed else ('未確認' if push_unknown else '否')}",
+                        f"- CLI 啟動：{('是' if started else '否') if receipt else '未確認（成果收據取不到）'}；結束碼：{exit_text}；"
                         f"可解析結果：{'是' if parsed else '否（' + (parse_note or '無') + '）'}；"
                         f"subtype `{res.get('subtype')}`；is_error `{res.get('is_error')}`；work job：{env.get('WORK_RESULT')}"]
               lines += ["", "### 模型最終報告"]
