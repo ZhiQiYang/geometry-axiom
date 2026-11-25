@@ -1,0 +1,2513 @@
+{
+ "steps": [
+  {
+   "name": "1-rect",
+   "lines": [
+    "boundary 1 outline 266,244 4006,244 4006,3545 266,3545",
+    "placement 1 on boundary 1 origin 0 0 2500 u +x v +y"
+   ]
+  },
+  {
+   "name": "6-preview",
+   "head": "候選 53 支 · 確認前未寫入"
+  },
+  {
+   "name": "7-confirm",
+   "status": "骨架已整筆確認為一般正式物件；配方不擁有物件，冷開不重新搜尋。",
+   "undoDelta": 1,
+   "kinds": {
+    "spec": 8,
+    "requires": 1,
+    "finish-surface": 1,
+    "panel-fill": 1,
+    "derived-placement": 1,
+    "grid": 1,
+    "timber": 53,
+    "guide": 8,
+    "place": 53,
+    "#": 53,
+    "canvas-pos": 1
+   }
+  },
+  {
+   "name": "9-save",
+   "gcanvas": [
+    12182,
+    "a10f6fa81c3dc5dfe8923c0542f74f62465f824bdbe1b0eade0c9e97840df461"
+   ],
+   "exportScene": [
+    10323,
+    "44268b235b12201b874dd78bf784909af847de210273e57d4bede4dd8c967597"
+   ],
+   "dumpScene": "44268b235b12201b874dd78bf784909af847de210273e57d4bede4dd8c967597"
+  }
+ ],
+ "checks": {
+  "PREVIEW_53": {
+   "ok": true,
+   "detail": "候選 53 支 · 確認前未寫入"
+  },
+  "CONFIRM_ONE_HISTORY_53_TIMBERS": {
+   "ok": true,
+   "detail": {
+    "undo": [
+     8,
+     9
+    ],
+    "kinds": {
+     "spec": 8,
+     "requires": 1,
+     "finish-surface": 1,
+     "panel-fill": 1,
+     "derived-placement": 1,
+     "grid": 1,
+     "timber": 53,
+     "guide": 8,
+     "place": 53,
+     "#": 53,
+     "canvas-pos": 1
+    }
+   }
+  },
+  "VIEW_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "SOURCES_READ_ZERO_WRITE": {
+   "ok": true,
+   "detail": {}
+  },
+  "SAVE_EXPORT_ZERO_WRITE": {
+   "ok": true,
+   "detail": {
+    "lastUndoSha": [
+     "b4e16f782c30f867ebbae5721d9437fc692a6583e19626848a77240dc1fa47c5",
+     "e60a6f80b20f54e836a928b83d15e0340089bc2f03b57ae1354895bbf0a0eb9d"
+    ]
+   }
+  }
+ },
+ "browser": "158.0.8127.36",
+ "url": "http://localhost:18891/",
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c",
+  "fresh": true,
+  "root": "/tmp/wt",
+  "pid": 3238,
+  "session": "69c337ca8be545668205efef3b9c78fd"
+ },
+ "modePath": [
+  "finish",
+  "framing",
+  "framing-fixed"
+ ],
+ "previewHead": "候選 53 支 · 確認前未寫入",
+ "commitStatus": "骨架已整筆確認為一般正式物件；配方不擁有物件，冷開不重新搜尋。",
+ "committedAddedKinds": {
+  "spec": 8,
+  "requires": 1,
+  "finish-surface": 1,
+  "panel-fill": 1,
+  "derived-placement": 1,
+  "grid": 1,
+  "timber": 53,
+  "guide": 8,
+  "place": 53,
+  "#": 53,
+  "canvas-pos": 1
+ },
+ "view": {
+  "label": "R-V",
+  "rows": [
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+   },
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定 · 放置 #1"
+   },
+   {
+    "kind": "placement",
+    "id": "2",
+    "text": "承載面 2自帶矩形"
+   }
+  ],
+  "cards": [
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"
+   },
+   {
+    "kind": "placement",
+    "id": "2",
+    "text": "承載面 2自帶矩形 · 無邊界無邊界1×1 mm · 4 頂點檢查 ›"
+   },
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+   }
+  ],
+  "objectCanvasTimberElements": 0,
+  "hostInspector": "承載面 2\n承載面\n狀態\n已放置\n外框尺寸\n0 × 0 mm\n詳細資料\n操作\n進入面內工作區\n定位卡片\n刪除承載面 2（Delete 鍵 · 可 Ctrl+Z 復原）\n來源／影響",
+  "hostEnter": {
+   "disabled": true,
+   "title": "placement 面沒有邊界可編輯"
+  },
+  "hostCard": [
+   "承載面 2自帶矩形 · 無邊界無邊界1×1 mm · 4 頂點檢查 ›"
+  ],
+  "hostDblclickStatus": [
+   "-: 有未保存的變更",
+   "-: 尚未檢查"
+  ],
+  "face1Focus": {
+   "t": "face",
+   "kind": null,
+   "id": 1,
+   "placementId": null
+  },
+  "face1Sid": 1,
+  "face1FeTimbers": 0,
+  "face1Layers": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+  "face1TimberHits": 0,
+  "threeViewTimberIds": 53,
+  "threeViewPickInfo": "角材 3"
+ },
+ "sources": {
+  "native": {
+   "objectsFaces": [
+    {
+     "kind": "boundary",
+     "boundaryKind": "unspecified",
+     "id": 1,
+     "placed": true,
+     "bbox": [
+      266,
+      244,
+      4006,
+      3545
+     ],
+     "cx": 266,
+     "cy": 244,
+     "hasPos": true
+    },
+    {
+     "kind": "placement",
+     "id": 2,
+     "placed": true,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "cx": 357,
+     "cy": 724,
+     "hasPos": true
+    }
+   ],
+   "objectsParameters": [
+    {
+     "id": 1,
+     "name": "鋪排承接門檻",
+     "fields": [
+      {
+       "id": 1,
+       "name": "X"
+      }
+     ]
+    }
+   ],
+   "objectsParameterUses": [],
+   "objectsTimbersBySurface": {
+    "2": 53
+   },
+   "surfaces": [
+    {
+     "id": 1,
+     "boundary": 1,
+     "origin": [
+      0,
+      0,
+      2500
+     ],
+     "u": [
+      1,
+      0,
+      0
+     ],
+     "v": [
+      0,
+      1,
+      0
+     ],
+     "outerEdges": 4
+    },
+    {
+     "id": 2,
+     "boundary": 0,
+     "origin": [
+      0,
+      0,
+      2506
+     ],
+     "u": [
+      1,
+      0,
+      0
+     ],
+     "v": [
+      0,
+      1,
+      0
+     ],
+     "outerEdges": 4
+    }
+   ],
+   "referencesTimbersBySurface": {
+    "2": 53
+   },
+   "referencesGridsBySurface": {
+    "2": 1
+   },
+   "referencesTimberSample": {
+    "id": 1,
+    "role": "boundary",
+    "geometry": {
+     "surface": 2,
+     "centerline": 257,
+     "length": 3740,
+     "u": 266,
+     "v": 244,
+     "dir": "+u",
+     "side": "+n",
+     "A": 27,
+     "B": 33,
+     "origin": [
+      266,
+      244,
+      2506
+     ],
+     "axes": [
+      [
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       1
+      ]
+     ]
+    },
+    "definition": {
+     "anchor": "at-face key-hex:5b5b226530222c302c315d5d",
+     "selector": "between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d",
+     "priority": 1
+    }
+   },
+   "panelFill": {
+    "finishSurfaces": [
+     {
+      "id": 1,
+      "name": "R03 ceiling",
+      "boundaryId": 1,
+      "frame": {
+       "origin": [
+        0,
+        0,
+        2500
+       ],
+       "U": "+X",
+       "V": "+Y",
+       "N": "+Z"
+      },
+      "structureSide": 1,
+      "obstacles": [],
+      "derived": {
+       "n": "+Z",
+       "region": {
+        "outline": [
+         [
+          266,
+          244
+         ],
+         [
+          4006,
+          244
+         ],
+         [
+          4006,
+          3545
+         ],
+         [
+          266,
+          3545
+         ]
+        ],
+        "holes": []
+       },
+       "obstacles": []
+      }
+     }
+    ],
+    "panelFills": [
+     {
+      "definition": {
+       "finishSurfaceId": 1,
+       "gap": 2,
+       "id": 1,
+       "lengthAlong": "v",
+       "origin": [
+        266,
+        244
+       ],
+       "panel": {
+        "id": "material-355139e7-7783-41d2-a382-af27e6b66a71",
+        "version": 1
+       },
+       "pattern": "straight",
+       "threshold": {
+        "fieldId": 1,
+        "parameterId": 1
+       }
+      },
+      "derived": {
+       "tileCount": 10,
+       "fragmentCount": 10,
+       "wholeCount": 4,
+       "cutCount": 6,
+       "thickness": 6,
+       "tiles": [
+        {
+         "key": [
+          1,
+          0,
+          0
+         ],
+         "i": 0,
+         "j": 0,
+         "body": [
+          266,
+          244,
+          1181,
+          2074
+         ],
+         "whole": true,
+         "fragments": [
+          {
+           "key": [
+            1,
+            0,
+            0,
+            0
+           ],
+           "area": 1674450,
+           "outer": [
+            [
+             266,
+             244
+            ],
+            [
+             1181,
+             244
+            ],
+            [
+             1181,
+             2074
+            ],
+            [
+             266,
+             2074
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          0,
+          1
+         ],
+         "i": 0,
+         "j": 1,
+         "body": [
+          266,
+          2076,
+          1181,
+          3906
+         ],
+         "whole": false,
+         "fragments": [
+          {
+           "key": [
+            1,
+            0,
+            1,
+            0
+           ],
+           "area": 1344135,
+           "outer": [
+            [
+             266,
+             2076
+            ],
+            [
+             1181,
+             2076
+            ],
+            [
+             1181,
+             3545
+            ],
+            [
+             266,
+             3545
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          1,
+          0
+         ],
+         "i": 1,
+         "j": 0,
+         "body": [
+          1183,
+          244,
+          2098,
+          2074
+         ],
+         "whole": true,
+         "fragments": [
+          {
+           "key": [
+            1,
+            1,
+            0,
+            0
+           ],
+           "area": 1674450,
+           "outer": [
+            [
+             1183,
+             244
+            ],
+            [
+             2098,
+             244
+            ],
+            [
+             2098,
+             2074
+            ],
+            [
+             1183,
+             2074
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          1,
+          1
+         ],
+         "i": 1,
+         "j": 1,
+         "body": [
+          1183,
+          2076,
+          2098,
+          3906
+         ],
+         "whole": false,
+         "fragments": [
+          {
+           "key": [
+            1,
+            1,
+            1,
+            0
+           ],
+           "area": 1344135,
+           "outer": [
+            [
+             1183,
+             2076
+            ],
+            [
+             2098,
+             2076
+            ],
+            [
+             2098,
+             3545
+            ],
+            [
+             1183,
+             3545
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          2,
+          0
+         ],
+         "i": 2,
+         "j": 0,
+         "body": [
+          2100,
+          244,
+          3015,
+          2074
+         ],
+         "whole": true,
+         "fragments": [
+          {
+           "key": [
+            1,
+            2,
+            0,
+            0
+           ],
+           "area": 1674450,
+           "outer": [
+            [
+             2100,
+             244
+            ],
+            [
+             3015,
+             244
+            ],
+            [
+             3015,
+             2074
+            ],
+            [
+             2100,
+             2074
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          2,
+          1
+         ],
+         "i": 2,
+         "j": 1,
+         "body": [
+          2100,
+          2076,
+          3015,
+          3906
+         ],
+         "whole": false,
+         "fragments": [
+          {
+           "key": [
+            1,
+            2,
+            1,
+            0
+           ],
+           "area": 1344135,
+           "outer": [
+            [
+             2100,
+             2076
+            ],
+            [
+             3015,
+             2076
+            ],
+            [
+             3015,
+             3545
+            ],
+            [
+             2100,
+             3545
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          3,
+          0
+         ],
+         "i": 3,
+         "j": 0,
+         "body": [
+          3017,
+          244,
+          3932,
+          2074
+         ],
+         "whole": true,
+         "fragments": [
+          {
+           "key": [
+            1,
+            3,
+            0,
+            0
+           ],
+           "area": 1674450,
+           "outer": [
+            [
+             3017,
+             244
+            ],
+            [
+             3932,
+             244
+            ],
+            [
+             3932,
+             2074
+            ],
+            [
+             3017,
+             2074
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          3,
+          1
+         ],
+         "i": 3,
+         "j": 1,
+         "body": [
+          3017,
+          2076,
+          3932,
+          3906
+         ],
+         "whole": false,
+         "fragments": [
+          {
+           "key": [
+            1,
+            3,
+            1,
+            0
+           ],
+           "area": 1344135,
+           "outer": [
+            [
+             3017,
+             2076
+            ],
+            [
+             3932,
+             2076
+            ],
+            [
+             3932,
+             3545
+            ],
+            [
+             3017,
+             3545
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          4,
+          0
+         ],
+         "i": 4,
+         "j": 0,
+         "body": [
+          3934,
+          244,
+          4849,
+          2074
+         ],
+         "whole": false,
+         "fragments": [
+          {
+           "key": [
+            1,
+            4,
+            0,
+            0
+           ],
+           "area": 131760,
+           "outer": [
+            [
+             3934,
+             244
+            ],
+            [
+             4006,
+             244
+            ],
+            [
+             4006,
+             2074
+            ],
+            [
+             3934,
+             2074
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        },
+        {
+         "key": [
+          1,
+          4,
+          1
+         ],
+         "i": 4,
+         "j": 1,
+         "body": [
+          3934,
+          2076,
+          4849,
+          3906
+         ],
+         "whole": false,
+         "fragments": [
+          {
+           "key": [
+            1,
+            4,
+            1,
+            0
+           ],
+           "area": 105768,
+           "outer": [
+            [
+             3934,
+             2076
+            ],
+            [
+             4006,
+             2076
+            ],
+            [
+             4006,
+             3545
+            ],
+            [
+             3934,
+             3545
+            ]
+           ],
+           "holes": []
+          }
+         ]
+        }
+       ],
+       "obstacles": [],
+       "seamLines": [
+        {
+         "axis": "u",
+         "k": 0,
+         "coordinate": 1182
+        },
+        {
+         "axis": "u",
+         "k": 1,
+         "coordinate": 2099
+        },
+        {
+         "axis": "u",
+         "k": 2,
+         "coordinate": 3016
+        },
+        {
+         "axis": "u",
+         "k": 3,
+         "coordinate": 3933
+        },
+        {
+         "axis": "v",
+         "k": 0,
+         "coordinate": 2075
+        }
+       ],
+       "effectiveSeams": [
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 0,
+         "coordinate": 1182,
+         "range": [
+          244,
+          2074
+         ],
+         "edges": [
+          1181,
+          1183
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 0,
+         "coordinate": 1182,
+         "range": [
+          2076,
+          3545
+         ],
+         "edges": [
+          1181,
+          1183
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 1,
+         "coordinate": 2099,
+         "range": [
+          244,
+          2074
+         ],
+         "edges": [
+          2098,
+          2100
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 1,
+         "coordinate": 2099,
+         "range": [
+          2076,
+          3545
+         ],
+         "edges": [
+          2098,
+          2100
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 2,
+         "coordinate": 3016,
+         "range": [
+          244,
+          2074
+         ],
+         "edges": [
+          3015,
+          3017
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 2,
+         "coordinate": 3016,
+         "range": [
+          2076,
+          3545
+         ],
+         "edges": [
+          3015,
+          3017
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 3,
+         "coordinate": 3933,
+         "range": [
+          244,
+          2074
+         ],
+         "edges": [
+          3932,
+          3934
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "u",
+         "k": 3,
+         "coordinate": 3933,
+         "range": [
+          2076,
+          3545
+         ],
+         "edges": [
+          3932,
+          3934
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "v",
+         "k": 0,
+         "coordinate": 2075,
+         "range": [
+          266,
+          1181
+         ],
+         "edges": [
+          2074,
+          2076
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "v",
+         "k": 0,
+         "coordinate": 2075,
+         "range": [
+          1183,
+          2098
+         ],
+         "edges": [
+          2074,
+          2076
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "v",
+         "k": 0,
+         "coordinate": 2075,
+         "range": [
+          2100,
+          3015
+         ],
+         "edges": [
+          2074,
+          2076
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "v",
+         "k": 0,
+         "coordinate": 2075,
+         "range": [
+          3017,
+          3932
+         ],
+         "edges": [
+          2074,
+          2076
+         ]
+        },
+        {
+         "fillId": 1,
+         "axis": "v",
+         "k": 0,
+         "coordinate": 2075,
+         "range": [
+          3934,
+          4006
+         ],
+         "edges": [
+          2074,
+          2076
+         ]
+        }
+       ],
+       "nonSeams": [],
+       "nonSeamReason": "outer-edge-not-two-panels",
+       "support": [
+        {
+         "seam": 0,
+         "range": [
+          244,
+          271
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          271,
+          594
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          594,
+          621
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          621,
+          961
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          961,
+          988
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          988,
+          1328
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          1328,
+          1355
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          1355,
+          1695
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          1695,
+          1722
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          1722,
+          2062
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 0,
+         "range": [
+          2062,
+          2074
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          2076,
+          2089
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          2089,
+          2429
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          2429,
+          2456
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          2456,
+          2796
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          2796,
+          2823
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          2823,
+          3163
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          3163,
+          3190
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          3190,
+          3348
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          3348,
+          3375
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          3375,
+          3518
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 1,
+         "range": [
+          3518,
+          3545
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          244,
+          271
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          271,
+          594
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          594,
+          621
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          621,
+          961
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          961,
+          988
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          988,
+          1328
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          1328,
+          1355
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          1355,
+          1695
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          1695,
+          1722
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          1722,
+          2062
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 2,
+         "range": [
+          2062,
+          2074
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          2076,
+          2089
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          2089,
+          2429
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          2429,
+          2456
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          2456,
+          2796
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          2796,
+          2823
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          2823,
+          3163
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          3163,
+          3190
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          3190,
+          3348
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          3348,
+          3375
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          3375,
+          3518
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 3,
+         "range": [
+          3518,
+          3545
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          244,
+          271
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          271,
+          594
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          594,
+          621
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          621,
+          961
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          961,
+          988
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          988,
+          1328
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          1328,
+          1355
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          1355,
+          1695
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          1695,
+          1722
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          1722,
+          2062
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 4,
+         "range": [
+          2062,
+          2074
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          2076,
+          2089
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          2089,
+          2429
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          2429,
+          2456
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          2456,
+          2796
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          2796,
+          2823
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          2823,
+          3163
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          3163,
+          3190
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          3190,
+          3348
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          3348,
+          3375
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          3375,
+          3518
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 5,
+         "range": [
+          3518,
+          3545
+         ],
+         "left": 915,
+         "right": 915,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          244,
+          271
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          271,
+          594
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          594,
+          621
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          621,
+          961
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          961,
+          988
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          988,
+          1328
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          1328,
+          1355
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          1355,
+          1695
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          1695,
+          1722
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          1722,
+          2062
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 6,
+         "range": [
+          2062,
+          2074
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          2076,
+          2089
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          2089,
+          2429
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          2429,
+          2456
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          2456,
+          2796
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          2796,
+          2823
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          2823,
+          3163
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          3163,
+          3190
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          3190,
+          3348
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          3348,
+          3375
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          3375,
+          3518
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 7,
+         "range": [
+          3518,
+          3545
+         ],
+         "left": 915,
+         "right": 72,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 8,
+         "range": [
+          266,
+          293
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 8,
+         "range": [
+          293,
+          1169
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 8,
+         "range": [
+          1169,
+          1181
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 9,
+         "range": [
+          1183,
+          1196
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 9,
+         "range": [
+          1196,
+          2086
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 9,
+         "range": [
+          2086,
+          2098
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 10,
+         "range": [
+          2100,
+          2113
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 10,
+         "range": [
+          2113,
+          3003
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 10,
+         "range": [
+          3003,
+          3015
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 11,
+         "range": [
+          3017,
+          3030
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 11,
+         "range": [
+          3030,
+          3920
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 11,
+         "range": [
+          3920,
+          3932
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 12,
+         "range": [
+          3934,
+          3947
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 12,
+         "range": [
+          3947,
+          3979
+         ],
+         "left": 12,
+         "right": 13,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        },
+        {
+         "seam": 12,
+         "range": [
+          3979,
+          4006
+         ],
+         "left": 1830,
+         "right": 1469,
+         "supported": true,
+         "status": "supported",
+         "colour": "green"
+        }
+       ],
+       "derivedPlacement": 2,
+       "pending": [
+        "PF-5 remaining spatial flow"
+       ]
+      }
+     }
+    ],
+    "derivedPlacements": [
+     {
+      "id": 2,
+      "definition": {
+       "fillId": 1,
+       "h": 33,
+       "id": 2
+      },
+      "derived": {
+       "h": 33,
+       "frame": {
+        "origin": [
+         0,
+         0,
+         2506
+        ],
+        "U": "+X",
+        "V": "+Y",
+        "N": "+Z"
+       },
+       "components": [
+        {
+         "outline": [
+          [
+           266,
+           244
+          ],
+          [
+           4006,
+           244
+          ],
+          [
+           4006,
+           3545
+          ],
+          [
+           266,
+           3545
+          ]
+         ],
+         "holes": [],
+         "edges": [
+          {
+           "key": [
+            [
+             "e0",
+             0,
+             1
+            ]
+           ],
+           "start": [
+            266,
+            244
+           ],
+           "end": [
+            4006,
+            244
+           ],
+           "fixity": "FIXED"
+          },
+          {
+           "key": [
+            [
+             "e1",
+             0,
+             1
+            ]
+           ],
+           "start": [
+            4006,
+            244
+           ],
+           "end": [
+            4006,
+            3545
+           ],
+           "fixity": "FIXED"
+          },
+          {
+           "key": [
+            [
+             "e2",
+             0,
+             1
+            ]
+           ],
+           "start": [
+            4006,
+            3545
+           ],
+           "end": [
+            266,
+            3545
+           ],
+           "fixity": "FIXED"
+          },
+          {
+           "key": [
+            [
+             "e3",
+             0,
+             1
+            ]
+           ],
+           "start": [
+            266,
+            3545
+           ],
+           "end": [
+            266,
+            244
+           ],
+           "fixity": "FIXED"
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ],
+    "fillGrids": [
+     {
+      "id": 1,
+      "definition": {
+       "id": 1,
+       "hostId": 2,
+       "fillId": 1,
+       "mainAlong": "v"
+      },
+      "derived": {
+       "indexSpace": "lattice",
+       "bandIndexSpace": "panel-row",
+       "side": 1,
+       "staggerAxis": null,
+       "staggerDelta": 0,
+       "axes": {
+        "u": {
+         "baseCoordinate": 1182,
+         "pitch": 917,
+         "baseIndex": 0
+        },
+        "v": {
+         "baseCoordinate": 2075,
+         "pitch": 1832,
+         "baseIndex": 0
+        }
+       }
+      }
+     }
+    ]
+   }
+  },
+  "frontend": {
+   "ocFaces": [
+    {
+     "kind": "boundary",
+     "id": 1,
+     "bbox": [
+      266,
+      244,
+      4006,
+      3545
+     ]
+    },
+    {
+     "kind": "placement",
+     "id": 2,
+     "bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "ocSurfs": [
+    {
+     "id": 1,
+     "boundary": 1
+    },
+    {
+     "id": 2,
+     "boundary": 0
+    }
+   ],
+   "feSid1": 1,
+   "parameterUsage1": [],
+   "ocParameterUses": []
+  }
+ },
+ "savedName": "未命名專案.gcanvas",
+ "gcanvasSha256": "a10f6fa81c3dc5dfe8923c0542f74f62465f824bdbe1b0eade0c9e97840df461",
+ "gcanvasBytes": 12182,
+ "exportSceneSha256": "44268b235b12201b874dd78bf784909af847de210273e57d4bede4dd8c967597",
+ "exportSceneBytes": 10323,
+ "dumpSceneSha256": "44268b235b12201b874dd78bf784909af847de210273e57d4bede4dd8c967597",
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ]
+}
