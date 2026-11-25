@@ -21,12 +21,12 @@ on:
 permissions: {}
 
 concurrency:
-  group: openai-adversarial-review-pr-${{ '463' }}
+  group: openai-adversarial-review-pr-463
   cancel-in-progress: false
 
 jobs:
   review:
-    name: 'OpenAI adversarial review of PR #${{ '463' }}'
+    name: 'OpenAI adversarial review of PR #463'
     # 只准 repo 擁有者本人、從 main 上的這份 workflow 觸發。
     if: >-
       github.event_name == 'push' &&
@@ -41,7 +41,7 @@ jobs:
     env:
       # 官方 openai Python SDK 的釘選版本；依賴全部釘版並驗 sha256（與 openai-worker.yml 相同的清單）。
       OPENAI_SDK_VERSION: "3.56.0"
-      REVIEW_MODEL: ${{ 'gpt-6.2-astra' }}
+      REVIEW_MODEL: gpt-6.2-astra
       REVIEW_EFFORT: high
       REVIEW_MAX_TURNS: "120"
       # 模型迴圈自己的總時限（秒）：比審查 step 的 40 分鐘短，留時間收尾並寫出結果 JSON。
@@ -51,8 +51,8 @@ jobs:
         id: pr
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ '463' }}
-          MAX_BUDGET_USD: ${{ '5' }}
+          PR_NUMBER: 463
+          MAX_BUDGET_USD: 5
         run: |
           set -euo pipefail
           if ! [[ "$PR_NUMBER" =~ ^[1-9][0-9]{0,6}$ ]]; then
@@ -101,7 +101,7 @@ jobs:
       - name: Collect read-only git and GitHub data (no API key in this step)
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ '463' }}
+          PR_NUMBER: 463
           HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
         run: |
           set -euo pipefail
@@ -193,7 +193,7 @@ jobs:
 
       - name: Build prompt from trusted main copy
         env:
-          PR_NUMBER: ${{ '463' }}
+          PR_NUMBER: 463
           HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
           MAX_BUDGET_USD: ${{ steps.pr.outputs.max_budget_usd }}
         run: |
@@ -253,7 +253,7 @@ jobs:
         if: always() && steps.pr.outputs.head_sha != ''
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ '463' }}
+          PR_NUMBER: 463
           HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
           SHORT_SHA: ${{ steps.pr.outputs.short_sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
