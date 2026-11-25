@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
 import hashlib
 import io
 import json
@@ -671,9 +672,144 @@ def _historical(data):
     return weights, profiles
 
 
+# T9 (issue 455): CI checks out a shallow (depth 2) `blob:none` partial clone,
+# so the historical migration base is not local.  Reading it used to rely on
+# Git's implicit lazy fetch: the first read pulled the base commit with its
+# whole history of commits and trees, and `git archive` then prefetched every
+# missing blob of the *entire* base tree (11367 blobs, about 2.5 GB) although
+# its pathspec needed 27.  Those fetches have no time bound, and their
+# git-remote-https grandchildren outlive a timed-out parent.  Every Git read
+# here therefore runs with lazy fetching disabled; the only network access is
+# `_ensure_git_objects()`: a bounded, retried fetch of exactly the missing
+# commit (depth 1 in a shallow clone) and blobs, failing with a named error.
+FETCH_ATTEMPTS = 3
+FETCH_ATTEMPT_SECONDS = 10
+FETCH_BUDGET_SECONDS = 30
+_UNAVAILABLE = {}
+
+
+class GitObjectsUnavailable(OSError):
+    """Needed Git objects could not be fetched; never read as "absent in base"."""
+
+
+def _git(root, *argv, timeout=30, text=False, input=None):
+    return subprocess.run(['git', '-C', str(root), *argv], capture_output=True, text=text, input=input,
+                          timeout=timeout, check=False, env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'})
+
+
+def _promisor_remote(root):
+    listing = _git(root, 'config', '--get-regexp', r'^(extensions\.partialclone|remote\..*\.promisor)$',
+                   text=True).stdout.splitlines()
+    for line in listing:
+        name, _, value = line.partition(' ')
+        if name == 'extensions.partialclone' and value:
+            return value
+    for line in listing:
+        name, _, value = line.partition(' ')
+        if name.endswith('.promisor') and value.lower() in ('true', 'yes', 'on', '1'):
+            return name[len('remote.'):-len('.promisor')]
+    return None
+
+
+def _bounded_fetch(root, remote, argv, label, stdin=b''):
+    import signal
+    import time
+    deadline = time.monotonic() + FETCH_BUDGET_SECONDS
+    errors = []
+    for attempt in range(1, FETCH_ATTEMPTS + 1):
+        remaining = deadline - time.monotonic()
+        if remaining < 1:
+            break
+        # A new session lets a timeout kill git *and* its git-remote-https child.
+        child = subprocess.Popen(
+            ['git', '-C', str(root), '-c', 'http.lowSpeedLimit=1024',
+             '-c', 'http.lowSpeedTime=%d' % FETCH_ATTEMPT_SECONDS, *argv],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            start_new_session=(os.name == 'posix'), env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'})
+        try:
+            _, error = child.communicate(stdin, timeout=min(FETCH_ATTEMPT_SECONDS, remaining))
+        except subprocess.TimeoutExpired:
+            if os.name == 'posix':
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(child.pid, signal.SIGKILL)
+            else:
+                child.kill()
+            child.communicate()
+            errors.append('attempt %d: no answer within %.0fs' % (attempt, min(FETCH_ATTEMPT_SECONDS, remaining)))
+        else:
+            if child.returncode == 0:
+                return
+            errors.append('attempt %d: exit %d: %s' % (
+                attempt, child.returncode, error.decode('utf-8', 'replace').strip()[-300:]))
+        if attempt < FETCH_ATTEMPTS:
+            time.sleep(max(0, min(attempt, deadline - time.monotonic() - 1)))
+    raise GitObjectsUnavailable('R386_NATIVE_BASE_OBJECTS_UNAVAILABLE: %s could not be fetched from '
+                                'promisor remote %r within %ds: %s'
+                                % (label, remote, FETCH_BUDGET_SECONDS, ' | '.join(errors)))
+
+
+def _ensure_git_objects(root, revision, paths=()):
+    """Make `revision` (and the blobs at `paths`) local, or fail by name.
+
+    Only a promisor (partial) clone can lack them; any other checkout keeps
+    the old behaviour, where the following Git read fails closed.
+    """
+    if not re.fullmatch(r'[a-f0-9]{40}', revision or ''):
+        return
+    gitdir = _git(root, 'rev-parse', '--absolute-git-dir', text=True).stdout.strip()
+    if (gitdir, revision) in _UNAVAILABLE:
+        raise GitObjectsUnavailable(_UNAVAILABLE[gitdir, revision])
+    try:
+        if _git(root, 'cat-file', '-e', revision + '^{commit}').returncode:
+            remote = _promisor_remote(root)
+            if remote is None:
+                return
+            shallow = _git(root, 'rev-parse', '--is-shallow-repository', text=True).stdout.strip() == 'true'
+            _bounded_fetch(root, remote, ['fetch', '--no-tags', '--no-write-fetch-head', '--recurse-submodules=no',
+                                          '--filter=blob:none', *(['--depth=1'] if shallow else []),
+                                          remote, revision], 'commit ' + revision)
+        if not paths:
+            return
+        listing = _git(root, 'ls-tree', '-r', '-z', revision, '--', *paths)
+        if listing.returncode:
+            return
+        blobs = sorted({entry.split(b'\t', 1)[0].split()[2].decode()
+                        for entry in listing.stdout.split(b'\0') if entry.split()[1:2] == [b'blob']})
+        if not blobs:
+            return
+        query = ''.join(blob + '\n' for blob in blobs)
+        missing = [line.split()[0] for line in _git(root, 'cat-file', '--batch-check', text=True,
+                                                    input=query).stdout.splitlines()
+                   if line.endswith(' missing')]
+        if not missing:
+            return
+        remote = _promisor_remote(root)
+        if remote is None:
+            return
+        _bounded_fetch(root, remote, ['-c', 'fetch.negotiationAlgorithm=noop', 'fetch', remote, '--no-tags',
+                                      '--no-write-fetch-head', '--recurse-submodules=no', '--filter=blob:none',
+                                      '--stdin'],
+                       '%d blobs of %s' % (len(missing), revision), ''.join(m + '\n' for m in missing).encode())
+        still = [line for line in _git(root, 'cat-file', '--batch-check', text=True, input=query).stdout.splitlines()
+                 if line.endswith(' missing')]
+        if still:
+            raise GitObjectsUnavailable('R386_NATIVE_BASE_OBJECTS_UNAVAILABLE: %d blobs of %s still missing after fetch'
+                                        % (len(still), revision))
+    except GitObjectsUnavailable as error:
+        _UNAVAILABLE[gitdir, revision] = str(error)
+        raise
+
+
+def _git_show(root, revision, path):
+    result = _git(root, 'show', revision + ':' + path)
+    if result.returncode:
+        _ensure_git_objects(root, revision, [path])
+        result = _git(root, 'show', revision + ':' + path)
+    return result
+
+
 def _git_bytes(root, revision, path):
-    result = subprocess.run(['git', '-C', str(root), 'show', revision + ':' + path],
-                            capture_output=True, timeout=30, check=False)
+    result = _git_show(root, revision, path)
     if result.returncode:
         raise ValueError('R386_NATIVE_BASE_ORIGINAL_REQUIRED: ' + path)
     return result.stdout
@@ -682,8 +818,8 @@ def _git_bytes(root, revision, path):
 def _legacy_base_sources(root, base_sha):
     if not re.fullmatch(r'[a-f0-9]{40}', base_sha or ''):
         raise ValueError('R386_NATIVE_LEGACY_BASE_FULL_SHA_REQUIRED')
-    result = subprocess.run(['git', '-C', str(root), 'ls-tree', '-r', '--name-only', base_sha, '--', 'tests'],
-                            capture_output=True, text=True, timeout=30, check=False)
+    _ensure_git_objects(root, base_sha)
+    result = _git(root, 'ls-tree', '-r', '--name-only', base_sha, '--', 'tests', text=True)
     if result.returncode:
         raise ValueError('R386_NATIVE_LEGACY_BASE_GIT_TREE_REQUIRED')
     paths = [path for path in result.stdout.splitlines()
@@ -811,13 +947,12 @@ def legacy_execution_from_git(root, sha, hint=None):
     the derived files/cmd and therefore fails closed, never open.
     """
     root = Path(root)
-    gitdir = subprocess.run(['git', '-C', str(root), 'rev-parse', '--absolute-git-dir'],
-                            capture_output=True, text=True, timeout=30, check=False).stdout.strip()
+    gitdir = _git(root, 'rev-parse', '--absolute-git-dir', text=True).stdout.strip()
     cache = (gitdir, sha, canonical_bytes(hint) if hint else b'')
     if cache in _DERIVED:
         return _DERIVED[cache]
-    listing = subprocess.run(['git', '-C', str(root), 'ls-tree', '-r', '--name-only', '-z', sha],
-                             capture_output=True, timeout=60, check=False)
+    _ensure_git_objects(root, sha)
+    listing = _git(root, 'ls-tree', '-r', '--name-only', '-z', sha, timeout=60)
     if listing.returncode:
         raise ValueError('R386_NATIVE_LEGACY_BASE_GIT_TREE_REQUIRED')
     names = set(listing.stdout.decode('utf-8').split('\0')) - {''}
@@ -829,20 +964,49 @@ def legacy_execution_from_git(root, sha, hint=None):
         for arg in entry['execution']['cmd'] or ():
             wanted.add(arg[len('{root}/'):] if arg.startswith('{root}/') else arg)
     wanted &= names
-    import tarfile
     import tempfile
     with tempfile.TemporaryDirectory(prefix='r386-legacy-execution-') as temporary:
         base = Path(temporary) / 'base'
         base.mkdir()
-        archive = subprocess.run(['git', '-C', str(root), 'archive', '--format=tar', sha, '--', *sorted(wanted)],
-                                 capture_output=True, timeout=120, check=False)
-        if archive.returncode:
-            raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE: ' + archive.stderr.decode('utf-8', 'replace')[-500:])
-        with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as bundle:
-            for member in bundle.getmembers():
-                if not (member.isfile() or member.isdir()) or not _relative(member.name):
-                    raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE_MEMBER: ' + member.name)
-            bundle.extractall(base)
+        # T9: not `git archive` -- in a partial clone it prefetches every
+        # missing blob of the whole base tree, ignoring the pathspec, and with
+        # lazy fetch disabled that prefetch is fatal.  The same paths are
+        # read from the same tree; a symlink or unsafe name still rejects.
+        _ensure_git_objects(root, sha, sorted(wanted))
+        tree = _git(root, 'ls-tree', '-r', '-z', sha, '--', *sorted(wanted), timeout=60)
+        if tree.returncode:
+            raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE: ' + tree.stderr.decode('utf-8', 'replace')[-500:])
+        entries = []
+        for entry in tree.stdout.split(b'\0'):
+            if not entry:
+                continue
+            meta, name = entry.split(b'\t', 1)
+            mode, _, oid = meta.decode('ascii').split()
+            name = name.decode('utf-8')
+            if mode not in ('100644', '100755', '160000') or not _relative(name):
+                raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE_MEMBER: ' + name)
+            entries.append((mode, oid, name))
+        blobs = [(mode, oid, name) for mode, oid, name in entries if mode != '160000']
+        batch = _git(root, 'cat-file', '--batch', input=''.join(oid + '\n' for _, oid, _ in blobs).encode(),
+                     timeout=120)
+        if batch.returncode:
+            raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE: ' + batch.stderr.decode('utf-8', 'replace')[-500:])
+        offset = 0
+        for mode, oid, name in blobs:
+            end = batch.stdout.index(b'\n', offset)
+            header = batch.stdout[offset:end].decode('ascii', 'replace').split()
+            if header[:2] != [oid, 'blob'] or len(header) != 3:
+                raise ValueError('R386_NATIVE_LEGACY_BASE_ARCHIVE: %s %s' % (name, ' '.join(header)))
+            size = int(header[2])
+            target = base / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(batch.stdout[end + 1:end + 1 + size])
+            if mode == '100755':
+                target.chmod(0o755)
+            offset = end + 2 + size
+        for mode, _, name in entries:
+            if mode == '160000':  # what `git archive` emitted for a gitlink
+                (base / name).mkdir(parents=True, exist_ok=True)
         records = _records_from_export(_legacy_export(base), base.resolve())
     result = {row['name']: declaration(row) for row in records}
     _DERIVED[cache] = result
@@ -1056,8 +1220,7 @@ def verify_ci_sources(root, fetch=None, *, trusted_ref=None):
     for digest in sorted(digests):
         if trusted_ref is not None:
             relative = (SOURCES / (digest + '.json')).as_posix()
-            before = subprocess.run(['git', '-C', str(root), 'show', trusted_ref + ':' + relative],
-                                    capture_output=True, timeout=30, check=False)
+            before = _git_show(root, trusted_ref, relative)
             current = (root / relative).read_bytes()
             if before.returncode == 0 and before.stdout == current and _sha(before.stdout) == digest:
                 inherited += 1
