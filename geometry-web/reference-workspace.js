@@ -540,7 +540,16 @@ const ReferenceWorkspace = (() => {
     const record = (context().featureAttachments || []).find(record => record.kind === kind);
     return record ? JSON.parse(JSON.stringify(record.value)) : null;
   }
-  const gridDraftWrite = Symbol("per-draft-write");
+  const gridDraftWrite = Symbol("per-draft-write"), reconstructionWrite = Symbol("reconstruction-edit");
+  const preparedReconstructionModels = new WeakMap();
+  function reconstructionEdit(action, expectedContextToken) {
+    assertEditable();
+    if (expectedContextToken !== getProjectState().contextToken) throw new Error("補資料編輯上下文已過期，未寫入。");
+    if (getModelOperationState().blocked || nativePending) throw new Error("請先完成目前操作，再編輯補資料。");
+    const R = P.Features.Reconstruction, previous = readFeatureAttachment(R.KIND);
+    const next = R.edit(previous || R.empty(),action);
+    return setFeatureAttachment(R.KIND,next,expectedContextToken,{reconstructionWrite});
+  }
   function readGridDrafts(expectedContextToken) {
     return P.Features.gridDrafts(readFeatureAttachment(P.Features.GRID_KIND,expectedContextToken));
   }
@@ -672,6 +681,7 @@ const ReferenceWorkspace = (() => {
   }
   function setFeatureAttachment(kind, value, expectedContextToken, options = {}) {
     P.Features.assertKind(kind);
+    if(kind===P.Features.Reconstruction.KIND && options.reconstructionWrite!==reconstructionWrite)throw new Error("補資料必須透過原始值編輯與明確確認流程寫入。");
     if(kind===P.Features.CASE_KIND && options.caseAdmission!==caseCommitKey)throw new Error("規則案例必須先完成隔離資料驗證，再原子保留。");
     const groupedRoom = (kind === P.Features.ROOM_KIND || kind === P.Features.ROOM_CANDIDATE_KIND) && options.recordHistory === false;
     if (groupedRoom) {
@@ -693,7 +703,7 @@ const ReferenceWorkspace = (() => {
     if(kind===P.Features.Cutting.KIND)P.Features.Cutting.transition(previous,value);
     if (sameModelData(previous, value)) return previous;
     const next = structuredClone(proposal);
-    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Framing.KIND ? (value === null ? "刪除模板配方" : "保存模板配方") : kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
+    if (!groupedRoom) history.push(history.snapshot(), "local", kind === P.Features.Reconstruction.KIND ? "編輯房間高度補資料" : kind === P.Features.Framing.KIND ? (value === null ? "刪除模板配方" : "保存模板配方") : kind === P.Features.Cutting.KIND ? "裁切設定" : kind === P.Features.CASE_KIND ? "保留規則案例" : kind === E.KIND ? "編輯參數證據" : kind === P.Features.ROOM_KIND ? "編輯房間來源" : kind === P.Features.ROOM_CANDIDATE_KIND ? (value === null ? "捨棄房間候選草稿" : "編輯房間候選草稿") : value === null ? "捨棄網格編輯草稿" : "編輯網格草稿");
     context().featureAttachments = next; dirty(); sync();
     if (kind === E.KIND) window.dispatchEvent(new CustomEvent("evidence-links-changed"));
     return readFeatureAttachment(kind);
@@ -841,27 +851,96 @@ const ReferenceWorkspace = (() => {
     if (pendingLoad || history.group) throw new Error("請先完成目前的操作再變更空間模型。");
     if (typeof connection !== "undefined" && connection.phase !== "ready") throw new Error("場景連線尚未確認，請先重新連線。");
   }
-  function addSpaceModel(record) {
-    assertModelReady(); P.validateSpaceModel(record);
+  function modelReviewOptions(options) {
+    if (!options || typeof options !== "object" || Array.isArray(options) ||
+        Object.keys(options).some(key=>key!=="releaseReconstructionReview") ||
+        Object.hasOwn(options,"releaseReconstructionReview") && typeof options.releaseReconstructionReview!=="boolean")
+      throw new Error("模型核對解除選擇不合法。");
+    return options.releaseReconstructionReview===true;
+  }
+  function modelFeatureProposal(models, releaseModelIds = []) {
+    const R = P.Features.Reconstruction, previous = readFeatureAttachment(R.KIND);
+    if (!previous) return context().featureAttachments || [];
+    const value = R.reconcileModels(previous,context().models,models,{releaseModelIds});
+    return (context().featureAttachments || []).map(record=>record.kind===R.KIND?P.Features.record(R.KIND,value):record);
+  }
+  function commitModelSet(models, featureAttachments) {
+    assertModelReady();
+    if (busy || oc.busy || nativePending) throw new Error("請先完成目前操作，再變更空間模型。");
+    assertMetadataCapacity({models,featureAttachments});
+    history.changeModels(models,featureAttachments);context().modelsDirty=true;dirty();sync();
+  }
+  function addSpaceModel(record, options = {}) {
+    assertModelReady();modelReviewOptions(options);P.validateSpaceModel(record);
     if (context().models.length >= P.MAX_MODELS) throw new Error("單一專案最多可保存 64 個空間模型。");
-    if (context().models.some(m => m.id === record.id)) throw new Error("空間模型 ID 重複。");
-    const next = [...context().models,record];assertMetadataCapacity({models:next});
-    history.changeModels(next); context().modelsDirty = true; dirty(); sync();
+    if (context().models.some(m=>m.id===record.id)) throw new Error("空間模型 ID 重複。");
+    const next=[...context().models,record];commitModelSet(next,modelFeatureProposal(next));
     return getSpaceModels().at(-1);
   }
-  function updateSpaceModel(id, record) {
-    assertModelReady(); P.validateSpaceModel(record);
-    const index = context().models.findIndex(m => m.id === id);
-    if (index < 0 || record.id !== id) throw new Error("找不到要更新的空間模型。");
-    const next = context().models.map((m,n) => n === index ? record : m);assertMetadataCapacity({models:next});
-    history.changeModels(next); context().modelsDirty = true; dirty(); sync();
-    return getSpaceModels()[index];
+  function updateSpaceModel(id, record, options = {}) {
+    assertModelReady();const release=modelReviewOptions(options);P.validateSpaceModel(record);
+    const index=context().models.findIndex(m=>m.id===id);
+    if (index<0 || record.id!==id) throw new Error("找不到要更新的空間模型。");
+    const next=context().models.map((m,n)=>n===index?record:m);
+    commitModelSet(next,modelFeatureProposal(next,release?[id]:[]));return getSpaceModels()[index];
   }
   function removeSpaceModel(id) {
     assertModelReady();
-    const removed = getSpaceModels().find(m => m.id === id);
+    const removed=getSpaceModels().find(m=>m.id===id);
     if (!removed) throw new Error("找不到要移除的空間模型。");
-    history.changeModels(context().models.filter(m => m.id !== id)); context().modelsDirty = true; dirty(); sync(); return removed;
+    const next=context().models.filter(m=>m.id!==id);commitModelSet(next,modelFeatureProposal(next));return removed;
+  }
+  function reconstructionScopeMode(plan, options) {
+    const reject=()=>{throw new Error("R13_SCOPE_SELECTION: 請明選本次已定子集或明選範圍已核對；選擇須與當前資料逐項相符。");};
+    if (!options || typeof options!=="object" || Array.isArray(options) ||
+        Object.getOwnPropertyNames(options).length!==1 || Object.getOwnPropertySymbols(options).length) reject();
+    const selected=Object.getOwnPropertyDescriptor(options,"scopeMode");
+    if (!selected?.enumerable || !Object.hasOwn(selected,"value") ||
+        !["defined-subset","selected-scope-reviewed"].includes(selected.value) || selected.value!==plan.completeness) reject();
+    return selected.value;
+  }
+  async function prepareReconstructionModel(record, recordId, expectedOperationState, options) {
+    assertModelReady();
+    const state=getModelOperationState(),evidence=getEvidenceState();
+    if (state.blocked || evidence.blocked || !sameModelData(state,expectedOperationState)) throw new Error("補資料模型候選的操作上下文已過期。");
+    P.validateSpaceModel(record);
+    if (context().models.length>=P.MAX_MODELS || context().models.some(m=>m.id===record.id)) throw new Error("空間模型已達容量或 ID 重複。");
+    const R=P.Features.Reconstruction,original=readFeatureAttachment(R.KIND),beforeModels=getSpaceModels();
+    if (!original) throw new Error("找不到明選的房間高度補資料。");
+    R.validate(original);
+    const scopeMode=reconstructionScopeMode(R.plan(original,recordId),options);
+    const beforeFeatures=structuredClone(context().featureAttachments || []);
+    const model=structuredClone(record),value=structuredClone(original),models=[...beforeModels,model];
+    const guard=()=>{
+      assertModelReady();
+      if (!sameModelData(getModelOperationState(),state) || !sameModelData(getEvidenceState(),evidence) ||
+          !sameModelData(getSpaceModels(),beforeModels) || !sameModelData(readFeatureAttachment(R.KIND),original) ||
+          !sameModelData(context().featureAttachments || [],beforeFeatures))
+        throw new Error("補資料模型候選已過期，未寫入模型或核對紀錄。");
+    };
+    await P.validateSpaceModelHashes(model);guard();
+    await verifyStoredModel(model);guard();
+    value.reviews.push(await R.makeReview(value,recordId,model));guard();
+    const checked=await R.verifyReviews(value,models);guard();
+    const featureAttachments=structuredClone(featureProposal(R.KIND,checked));
+    assertMetadataCapacity({models,featureAttachments});guard();
+    const handle=Object.freeze({});preparedReconstructionModels.set(handle,{guard,models,beforeFeatures,featureAttachments,id:model.id,recordId,scopeMode});return handle;
+  }
+  function commitReconstructionModel(handle) {
+    const prepared=preparedReconstructionModels.get(handle);
+    if (!prepared) throw new Error("補資料模型候選不存在、已取消或已提交。");
+    preparedReconstructionModels.delete(handle);
+    prepared.guard();
+    const R=P.Features.Reconstruction,current=readFeatureAttachment(R.KIND);
+    reconstructionScopeMode(R.plan(current,prepared.recordId),{scopeMode:prepared.scopeMode});
+    const review=prepared.featureAttachments.find(record=>record.kind===R.KIND)?.value.reviews.find(item=>item.modelId===prepared.id);
+    if (!sameModelData(context().featureAttachments || [],prepared.beforeFeatures) || !review ||
+        review.completeness!==prepared.scopeMode || review.scope.length!==1 || review.scope[0].recordId!==prepared.recordId)
+      throw new Error("R13_SCOPE_SELECTION: 模型核對候選與明選範圍或附件前像不符，未提交。");
+    P.Features.validate({schema:P.Features.SCHEMA,records:prepared.featureAttachments},true);
+    assertMetadataCapacity({models:prepared.models,featureAttachments:prepared.featureAttachments});prepared.guard();
+    commitModelSet(prepared.models,prepared.featureAttachments);
+    return getSpaceModels().find(model=>model.id===prepared.id);
   }
   function tryLocalHistory(cmd) {
     if (pendingLoad) return null;
@@ -1466,7 +1545,7 @@ const ReferenceWorkspace = (() => {
   }
   async function exportSnapshot(c = context(),includeCatalog = true,assertCurrent=()=>{},afterFlush=()=>{},transactionOwner=null,proposal=null) {
     assertCurrent();
-    if(!transactionOwner){window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();}
+    if(!transactionOwner){window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();window.ReconstructionWorkspace?.flush();}
     afterFlush();assertCurrent();
     assertSaveReady(transactionOwner); await referencesReady(c); assertCurrent();assertContext(c); assertSaveReady(transactionOwner);
     const stamp = { context:c, frame:history.frame, revision:revision(c) };
@@ -1592,7 +1671,7 @@ const ReferenceWorkspace = (() => {
     });
   }
   async function createScenarioEditorTicket({request,scenarioId,label},assertCurrent=()=>{}) {
-    assertScenarioJournalReady();assertCurrent();assertSaveReady();
+    assertScenarioJournalReady();assertCurrent();window.ReconstructionWorkspace?.flush();assertCurrent.afterFlush?.();assertSaveReady();
     if(!recoveryReady)throw new Error("原方案完整恢復資料尚未核對，未建立試改。");
     const owner=beginSceneTransaction(),session=connection.session,key=recoveryKey;busy=true;busyLabel="正在保全原方案，再開啟試改…";present();
     try{
@@ -1748,7 +1827,7 @@ const ReferenceWorkspace = (() => {
   async function freezeScenarioProject() {
     if(!scenarioContext()||scenarioFreeze)throw new Error("試改尚未就緒或已在保全中。");
     flushRoomCandidates();
-    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertSaveReady();
+    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();window.ReconstructionWorkspace?.flush();assertSaveReady();
     const owner=beginSceneTransaction(),session=connection.session,token=uuid();busy=true;busyLabel="正在凍結完整試改資料…";present();
     try{
       const snapshot=await exportSnapshot(context(),true,()=>{if(connection.session!==session||sceneTransaction!==owner)throw new Error("試改工作階段已變更。");},()=>{},owner);
@@ -1773,7 +1852,7 @@ const ReferenceWorkspace = (() => {
   async function finishScenarioEditor(catalog,sources,expected,assertCurrent=()=>{}) {
     assertScenarioJournalReady();assertCurrent();
     flushRoomCandidates();
-    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
+    window.AssemblyWorkspace?.flush();window.InfiniteGridWorkspace?.flush();window.ReconstructionWorkspace?.flush();assertCurrent.afterFlush?.();assertCurrent();assertSaveReady();
     const ticket=validateScenarioTicket(expected);
     if(ticket?.phase!=="active")throw new Error("試改尚未完整開啟，不能完成。");
     P.ScenarioCatalog.validate(catalog);
@@ -1841,6 +1920,7 @@ const ReferenceWorkspace = (() => {
     const reportSave=message=>setStatus(roomCandidateWarning?message+" "+roomCandidateWarning:message);
     window.AssemblyWorkspace?.flush();
     window.InfiniteGridWorkspace?.flush();
+    window.ReconstructionWorkspace?.flush();
     const shellState=window.WorkspaceShell?.saveState();
     if(shellState?.blocked)throw new Error(shellState.reason || "請先套用或放棄目前視窗的草稿。");
     assertSaveReady();
@@ -1965,6 +2045,7 @@ const ReferenceWorkspace = (() => {
       stage("正在驗證空間模型（"+(index+1)+"／"+m.models.length+"）…","驗證中");
       await verifyStoredModel(model);assertCurrent();
     }
+    await P.validateReconstructionModelReviews(m);assertCurrent();
     c.models=JSON.parse(JSON.stringify(m.models));
     c.assemblyDrafts=JSON.parse(JSON.stringify(m.assemblyDrafts?.records||[]));
     c.featureAttachments=JSON.parse(JSON.stringify(m.featureAttachments?.records||[]));
@@ -2276,6 +2357,7 @@ const ReferenceWorkspace = (() => {
     init,observe,adoptLegacy,calibrated,changed,remove,paneHTML,statusHTML,present,bindPane,active,group,context,history,
     reconstructionState,reconstructionStatusHTML,markReconstructionReviewed,documentFor,library,tracingFeatures,sourceFromFile,openSource,renderPage,preparePage,addPage,selectPage,chooseFile,fitReference,
     addSpaceModel,updateSpaceModel,removeSpaceModel,getSpaceModels,tryLocalHistory,
+    reconstructionEdit,prepareReconstructionModel,commitReconstructionModel,
     getFaceProjection,getFaceProjections,setFaceProjection,
     readFeatureAttachment,setFeatureAttachment,prepareFeatureAttachment,commitPreparedFeatureAttachment,validateRuleCaseClosure,getRoomIntegration:()=>roomIntegration,
     getAssemblyDrafts,setAssemblyDraft,removeAssemblyDraft,getEngineeringDrafts,setEngineeringDraft,removeEngineeringDraft,getProjectState,getModelOperationState,getProjectInfo,restoreSession,retryRecovery,persistSession,assertEditable,assertWritableLease,

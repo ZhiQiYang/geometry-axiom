@@ -1,5 +1,14 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-26 R13 C／D 第一產品片 v2（#461 R4，ChatGPT 候選）
+
+- 基底 `b3c4b981bb96b118c1c05b7a1bd98062d710c8b2`；承接 [issue #43](https://github.com/ZhiQiYang/geometry-axiom/issues/43)，本 v2 回應 [#455 預審 7171270204](https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7171270204)，取代未套用的 v1。依已採納 D51a–c／I63a–c／R58a–b／D63，接人工房間高度原文、精確確認／有限推導、完整 `.gcanvas/21`、歷史及明選供值進 D07；未改公理層。明確資料契約與可執行 oracle 見 `geometry-web/docs/RECONSTRUCTION-E1-CONTRACT.md` 與 `tests/oracles/r13_e1_contract.json`。
+- **具體減項／合併（GEO-219）**：舊「來源紀錄與待補資訊」原節點移入同一「來源與補資料」群組，與房間高度共用位置；原紀錄、R10 資料及控制不刪。新入口留在底圖頁，沒有新增主工具列鈕、候選主工作區或保存列。3D 沿用原 D07 的預覽、核對與建立；R13 供值模式將既有高度／厚度自由輸入改為唯讀，不並排兩套供值表單。
+- 原手動 D07 的 3000／100 預設與舊草稿路徑保持；R13 候選禁止借用它們。模型＋核對同一歷史；改牆高／F1b 的明選解除及刪模型一起收口。附件是宿主能力；舊專案未使用本功能不升格式，`/1`–`/20` 原能力與拒絕規則保持。
+- v2 明示單位初始未知；觀察確認與 World Z 採用資格分離；底頂用途初始尚未指定。四欄紀錄有缺值／需複核時必明選已定子集，逐欄列原因並顯示條件結果；頂高只供人工核對，不能偽稱模型供值。編輯與保存仍共用既有歷史／保存入口，沒有另外增加字串管理器或保存列。
+- 第一片只接人工來源；R10 證據引用、RC 樑柱正式採用、多筆部分 3D、R09b 來源重新關聯及骨架生成留在後續片。後續片等首片套用結果，不因本候選提升為產品 L2／L3／L4。
+- 新 native suite 用候選片段等正式 census／cost；P4313 由 Canvas section measurement 實跑，再由有權下載官方 artifact 的 grokbot／本機 Claude 原樣 import-cost。Node／native 本地證據不能替代正式六片、canvas 或 L4，衍生帳本與架構收據由正式流程重產。
+
 ## 2026-11-15 R12／Q38j(a/b/c) App 接線（ChatGPT 實作候選）
 
 - 固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。承接 issue #43 的既定 Q38j 契約，補齊 plan 明選同源已定位拉伸件、獨立 `/3` 材料包、一般 App 預覽／取消／確認、完整 `/20` 保存重開及 F1b 整筆採用現行來源；沿既有 native 斷面指令與 R39，不新增幾何求解器。逐檔／函式、DOM、資料與操作路徑見 [Q38J-APP.md](geometry-web/docs/Q38J-APP.md)。
