@@ -9,6 +9,7 @@ const {statusbarProbe,statusbarReady,statusbarMatrixReady}=require('../../tests/
 const {faceGuidanceProbe,faceGuidanceReady}=require('../../tests/diagnostics/r16_face_guidance_probe.cjs');
 const {lengthPaintProbe,naturalLengthClear,lengthPaintOrderReady}=require('../../tests/diagnostics/r123h_length_paint_probe.cjs');
 const {workspaceMatrixProbe}=require('../../tests/diagnostics/r123h_matrix_probe.cjs');
+const {phoneLessonRegression}=require('../../tests/diagnostics/r16_phone_lesson_probe.cjs');
 module.exports = async helpers => {
   const {send, eval_, sleep, click, waitForUI, makeCheck, exceptionCount} = helpers;
   console.log('=== P1231. U123-H:A 六工作區正常畫布與既有控制可達性 ===');
@@ -235,8 +236,50 @@ module.exports = async helpers => {
     console.log('P1231_CONTROLS '+JSON.stringify({label,state,requested:size,controls:rows}));
     console.log('P1231_MATRIX_CELL '+JSON.stringify(matrixRow));
     if(includeMatrix)controlMatrixRows.push(matrixRow);
+    // A disabled control remains part of the visible/pointer audit.
+    // Only browser-disabled controls are excluded from sequential Tab focus.
+    const enabled=rows.filter(row=>row.exists&&!row.disabled).map(row=>row.selector);
+    await read(`(()=>{const wanted=${JSON.stringify(enabled)},seen=new Set(),visits=[];
+      const record=()=>{const active=document.activeElement;for(const selector of wanted){const node=document.querySelector(selector);if(node&&(node===active||node.contains(active))){requestAnimationFrame(()=>{seen.add(selector);const r=node.getBoundingClientRect();visits.push({selector,left:r.left,top:r.top,right:r.right,bottom:r.bottom});});}}};
+      document.addEventListener('focusin',record);window.__p1231Tab={wanted,seen,visits,record};return true;})()`);
+    const limit=await read(`Math.max(1,[...document.querySelectorAll('button,input,select,textarea,a[href],[tabindex],summary')].filter(e=>!e.matches(':disabled')&&e.tabIndex>=0&&e.getClientRects().length>0).length)*2+2`);
+    const checkHelpOutline=label==='face'&&size.width<=560;
+    const tabState=()=>read(`({complete:__p1231Tab.seen.size===__p1231Tab.wanted.length,seen:[...__p1231Tab.seen],visits:__p1231Tab.visits,active:document.activeElement.id})`);
+    let focused,helpOutline;
+    try{
+      focused=await tabState();
+      for(let n=0;!focused.complete&&n<limit;n++){
+        await key('Tab','Tab',9);
+        await settle();
+        focused=await tabState();
+        if(checkHelpOutline&&!helpOutline&&focused.active==='feSelectionSummaryHelp'){
+          helpOutline=await call(function(){
+            const button=document.activeElement,style=getComputedStyle(button);
+            const rect=button.getBoundingClientRect();
+            const width=parseFloat(style.outlineWidth),offset=parseFloat(style.outlineOffset);
+            const left=rect.left-offset-width,right=rect.right+offset+width;
+            let clipLeft=0,clipRight=window.innerWidth;
+            for(let parent=button.parentElement;parent;parent=parent.parentElement){
+              if(getComputedStyle(parent).overflowX==='visible')continue;
+              const edge=parent.getBoundingClientRect().left+parent.clientLeft;
+              clipLeft=Math.max(clipLeft,edge);
+              clipRight=Math.min(clipRight,edge+parent.clientWidth);
+            }
+            // The last tool's focus outline must fit on both sides of the scrollport.
+            const visible=button.matches(':focus-visible')&&style.outlineStyle!=='none'&&
+              style.outlineStyle!=='hidden'&&width>0&&left>=clipLeft&&right<=clipRight;
+            return {visible,left,right,clipLeft,clipRight,width,offset};
+          });
+        }
+      }
+    }finally{
+      await read(`document.removeEventListener('focusin',__p1231Tab.record);delete window.__p1231Tab;void 0`);
+    }
+    if(checkHelpOutline)focused.helpOutline=helpOutline??null;
+    console.log('P1231_TAB '+JSON.stringify({label,state,requested:size,wanted:enabled,limit,...focused}));
     recordCheck('R123H_CONTROLS '+label+' '+state+' '+size.width,
-      rows.length===selectors.length&&rows.every(row=>row.exists&&row.reachable&&!!row.name),rows);
+      rows.length===selectors.length&&rows.every(row=>row.exists&&row.reachable&&!!row.name)&&
+      (!checkHelpOutline||helpOutline?.visible===true),checkHelpOutline?{rows,helpOutline}:rows);
     recordCheck('R123H_TOUCH_TARGETS '+label+' '+state+' '+size.width,
       size.width>560||rows.every(row=>row.exists&&row.rect.width>=44&&row.rect.height>=44),rows);
     const help=rows.find(row=>row.selector==='#feSelectionSummaryHelp');
@@ -244,26 +287,6 @@ module.exports = async helpers => {
       controlWithinClip(help),help);
     if(faceGuidance)recordCheck('R123H_FACE_GUIDANCE_CONTAINS_TEXT '+state+' '+size.width,
       faceGuidanceReady(faceGuidance),faceGuidance);
-    // A disabled control remains part of the visible/pointer audit above.
-    // Only browser-disabled controls are excluded from sequential Tab focus.
-    const enabled=rows.filter(row=>row.exists&&!row.disabled).map(row=>row.selector);
-    await read(`(()=>{const wanted=${JSON.stringify(enabled)},seen=new Set(),visits=[];
-      const record=()=>{const active=document.activeElement;for(const selector of wanted){const node=document.querySelector(selector);if(node&&(node===active||node.contains(active))){requestAnimationFrame(()=>{seen.add(selector);const r=node.getBoundingClientRect();visits.push({selector,left:r.left,top:r.top,right:r.right,bottom:r.bottom});});}}};
-      document.addEventListener('focusin',record);window.__p1231Tab={wanted,seen,visits,record};return true;})()`);
-    const limit=await read(`Math.max(1,[...document.querySelectorAll('button,input,select,textarea,a[href],[tabindex],summary')].filter(e=>!e.matches(':disabled')&&e.tabIndex>=0&&e.getClientRects().length>0).length)*2+2`);
-    let focused;
-    try{
-      for(let n=0;n<limit;n++){
-        focused=await read(`({complete:__p1231Tab.seen.size===__p1231Tab.wanted.length,seen:[...__p1231Tab.seen],visits:__p1231Tab.visits})`);
-        if(focused.complete)break;
-        await key('Tab','Tab',9);
-        await settle();
-      }
-      focused=await read(`({complete:__p1231Tab.seen.size===__p1231Tab.wanted.length,seen:[...__p1231Tab.seen],visits:__p1231Tab.visits})`);
-    }finally{
-      await read(`document.removeEventListener('focusin',__p1231Tab.record);delete window.__p1231Tab;void 0`);
-    }
-    console.log('P1231_TAB '+JSON.stringify({label,state,requested:size,wanted:enabled,limit,...focused}));
     recordCheck('R123H_TAB_REACH '+label+' '+state+' '+size.width,focused.complete&&focused.visits.every(v=>
       v.left>=0&&v.top>=0&&v.right<=size.width&&v.bottom<=size.height),focused);
   }
@@ -366,6 +389,7 @@ module.exports = async helpers => {
       'space 1 boundary 1','grid-system 31 name-hex 553132332d48 main-along u u repeat 0 400 v repeat 0 600']){
       const result=await apiRequest('line '+line);if(!result.ok)throw Error('P1231 fixture '+JSON.stringify(result));}
     if(!await renderObjects())throw Error('P1231 render fixture');setOcTool('select');return true;})()`);
+  const phoneLesson=await phoneLessonRegression({call,key,click,send,settle});
   const initialControls=await sweepEntryControl({sizes,viewport,point,selector:'#btnZoom',
     record:row=>console.log('P1231_ENTRY_CONTROL '+JSON.stringify(row))});
   for(const row of initialControls)check('R123H_ENTRY_CONTROL_REACH main '+row.requested.width,
@@ -466,8 +490,9 @@ module.exports = async helpers => {
     workspaceRows.every(row=>row.width===row.actualWidth&&row.height===row.actualHeight),workspaceRows);
   const actualControlStates=controlMatrixRows.map(row=>
     row.label+' '+row.state+' '+row.requested.width+'x'+row.requested.height).sort();
-  recordCheck('R123H_ALL_CONTROL_STATES',
-    JSON.stringify(actualControlStates)===JSON.stringify(expectedStates),controlMatrixRows);
+  const controlStatesComplete=JSON.stringify(actualControlStates)===JSON.stringify(expectedStates);
+  recordCheck(controlStatesComplete && !phoneLesson.ok ? 'R123H_320_LESSON_CLIP' : 'R123H_ALL_CONTROL_STATES',
+    controlStatesComplete && phoneLesson.ok, {controlMatrixRows,phoneLesson});
 
   // G in the original 43-row audit is an inspector, not a seventh canvas.
   // Its existing source editor must remain reachable in the same host.
