@@ -46,7 +46,9 @@ def variants(root: Path):
     app_bytes, adapter_bytes = app.read_bytes(), adapter.read_bytes()
     workspace_bytes = workspace.read_bytes()
     entry = b"window.PanelFillWorkspace?.open(Number(fill.dataset.panelFillOpen),fill);"
-    request_line = re.findall(rb"^  const requestId = connection\.session[^\n]+", app_bytes, re.MULTILINE)
+    # PF6 pins the dispatch session before POST/terminal receipt recovery. Keep
+    # the exact apiRequest declaration and all six original named withdrawals.
+    request_line = re.findall(rb"^  const requestId = originSession && /\^\(line [^\n]+", app_bytes, re.MULTILINE)
     if len(request_line) != 1 or request_line[0].count(b"|panel-fill-confirm ") != 1:
         raise ValueError("Expected one exact requestId declaration including panel-fill-confirm")
     return [

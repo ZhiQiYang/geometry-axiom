@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_sections/P1286.js",
+    "reason": "PF-6 P1286 strict independent canvas module: real-CDP normal face form, explicit set, exact preview, cancellation and one-step history; dispatched only by canvas_registry.js, never a product dependency.",
+    "sha256": "7f0a098757194184496f51088f5bab558cd5505a8760c853acad4efe9afb60ef"
+  },
+  "schema": "geometry-architecture-entry/1"
+}
