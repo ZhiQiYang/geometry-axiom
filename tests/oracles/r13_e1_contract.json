@@ -1,0 +1,843 @@
+{
+  "schema": "r13-e1-contract-oracle/2",
+  "base": "b3c4b981bb96b118c1c05b7a1bd98062d710c8b2",
+  "clauses": [
+    "D51a",
+    "D51b",
+    "D51c",
+    "I63a",
+    "I63b",
+    "I63c",
+    "R58a",
+    "R58b"
+  ],
+  "limits": {
+    "records": 256,
+    "recordBytes": 16384,
+    "reviews": 64,
+    "reviewBytes": 65536,
+    "attachmentBytes": 1048576,
+    "rawUnicodeScalars": 64,
+    "basisUnicodeScalars": 256,
+    "nameUtf8Bytes": 96,
+    "sourceRefsPerField": 8,
+    "modelReviewScopeMax": 256
+  },
+  "e1Subset": {
+    "template": "room-height",
+    "sources": "manual-only-no-external-references",
+    "association": "none-project-global",
+    "reviewScopeRecords": 1,
+    "fullScopeRequires": [
+      "bottom",
+      "top",
+      "height",
+      "wallThickness"
+    ],
+    "adoptedSettings": {
+      "bottom": "bottom",
+      "height": "height",
+      "wallThickness": "wall_thickness"
+    },
+    "topPurpose": "human-review",
+    "unknownUnit": null,
+    "unknownBasis": "unknown",
+    "basisNoteRequired": false,
+    "derivedTargetUnitExplicit": true
+  },
+  "decimalCases": [
+    {
+      "id": "zero",
+      "raw": "0",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "negative-zero",
+      "raw": "-0",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "positive-zero",
+      "raw": "+0",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "leading-zeros",
+      "raw": "00012",
+      "unit": "mm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 12
+      }
+    },
+    {
+      "id": "signed-leading-zeros",
+      "raw": "+00012.0",
+      "unit": "mm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 12
+      }
+    },
+    {
+      "id": "leading-point",
+      "raw": ".1",
+      "unit": "cm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "negative-leading-point",
+      "raw": "-.1",
+      "unit": "cm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": -1
+      }
+    },
+    {
+      "id": "positive-leading-point",
+      "raw": "+.1",
+      "unit": "cm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "zero-leading-point",
+      "raw": ".0",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "exact-cm",
+      "raw": "250.1",
+      "unit": "cm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 2501
+      }
+    },
+    {
+      "id": "fractional-mm",
+      "raw": "250.01",
+      "unit": "cm",
+      "positive": true,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_INTEGER_MM"
+      }
+    },
+    {
+      "id": "trailing-zero",
+      "raw": "1.00",
+      "unit": "mm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 1
+      }
+    },
+    {
+      "id": "million-zeros",
+      "raw": "000.000",
+      "unit": "cm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": 0
+      }
+    },
+    {
+      "id": "lower-bound",
+      "raw": "-100000000",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": -100000000
+      }
+    },
+    {
+      "id": "upper-bound",
+      "raw": "100000000",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": true,
+        "value": 100000000
+      }
+    },
+    {
+      "id": "cm-upper-bound",
+      "raw": "10000000.0",
+      "unit": "cm",
+      "positive": true,
+      "expected": {
+        "accepted": true,
+        "value": 100000000
+      }
+    },
+    {
+      "id": "over-upper",
+      "raw": "100000001",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DOMAIN"
+      }
+    },
+    {
+      "id": "under-lower",
+      "raw": "-100000001",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DOMAIN"
+      }
+    },
+    {
+      "id": "zero-distance",
+      "raw": "0",
+      "unit": "mm",
+      "positive": true,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DOMAIN"
+      }
+    },
+    {
+      "id": "negative-distance",
+      "raw": "-1",
+      "unit": "mm",
+      "positive": true,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DOMAIN"
+      }
+    },
+    {
+      "id": "fractional-distance",
+      "raw": "1.1",
+      "unit": "mm",
+      "positive": true,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_INTEGER_MM"
+      }
+    },
+    {
+      "id": "empty",
+      "raw": "",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "minus-only",
+      "raw": "-",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "plus-only",
+      "raw": "+",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "point-only",
+      "raw": ".",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "trailing-point",
+      "raw": "1.",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "leading-space",
+      "raw": " 1",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "trailing-space",
+      "raw": "1 ",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "newline",
+      "raw": "1\n",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "tab",
+      "raw": "1\t",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "nbsp",
+      "raw": " 1",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "fullwidth",
+      "raw": "１２",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "arabic-digits",
+      "raw": "١٢",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "unicode-minus",
+      "raw": "−1",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "exponent",
+      "raw": "1e3",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "thousands",
+      "raw": "1,000",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "fraction",
+      "raw": "1/2",
+      "unit": "cm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "expression",
+      "raw": "1+2",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "hex",
+      "raw": "0x10",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "unknown-unit",
+      "raw": "1",
+      "unit": null,
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_UNIT"
+      }
+    },
+    {
+      "id": "empty-unit",
+      "raw": "1",
+      "unit": "",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_UNIT"
+      }
+    },
+    {
+      "id": "metres",
+      "raw": "1",
+      "unit": "m",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_UNIT"
+      }
+    },
+    {
+      "id": "unit-case",
+      "raw": "1",
+      "unit": "MM",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_UNIT"
+      }
+    },
+    {
+      "id": "numeric-not-string",
+      "raw": 1,
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DECIMAL_LITERAL"
+      }
+    },
+    {
+      "id": "safe-integer-trap",
+      "raw": "9007199254740993",
+      "unit": "mm",
+      "positive": false,
+      "expected": {
+        "accepted": false,
+        "error": "EXACT_DOMAIN"
+      }
+    }
+  ],
+  "derivationBasisCases": [
+    {
+      "id": "bottom-from-world-z",
+      "raw": {
+        "bottom": "",
+        "height": "2700",
+        "top": "2600"
+      },
+      "unit": "mm",
+      "missing": "bottom",
+      "unknown": null,
+      "expected": {
+        "accepted": true,
+        "value": -100
+      }
+    },
+    {
+      "id": "bottom-from-bottom",
+      "raw": {
+        "bottom": "",
+        "height": "2700",
+        "top": "2600"
+      },
+      "unit": "mm",
+      "missing": "bottom",
+      "unknown": "bottom",
+      "expected": {
+        "accepted": false,
+        "error": "R13_DATUM_ADOPTION"
+      }
+    },
+    {
+      "id": "bottom-from-top",
+      "raw": {
+        "bottom": "",
+        "height": "2700",
+        "top": "2600"
+      },
+      "unit": "mm",
+      "missing": "bottom",
+      "unknown": "top",
+      "expected": {
+        "accepted": false,
+        "error": "R13_DATUM_ADOPTION"
+      }
+    },
+    {
+      "id": "height-from-world-z",
+      "raw": {
+        "bottom": "-100",
+        "height": "",
+        "top": "2600"
+      },
+      "unit": "mm",
+      "missing": "height",
+      "unknown": null,
+      "expected": {
+        "accepted": true,
+        "value": 2700
+      }
+    },
+    {
+      "id": "height-from-bottom",
+      "raw": {
+        "bottom": "-100",
+        "height": "",
+        "top": "2600"
+      },
+      "unit": "mm",
+      "missing": "height",
+      "unknown": "bottom",
+      "expected": {
+        "accepted": false,
+        "error": "R13_DATUM_ADOPTION"
+      }
+    },
+    {
+      "id": "height-from-top",
+      "raw": {
+        "bottom": "-100",
+        "height": "",
+        "top": "2600"
+      },
+      "unit": "mm",
+      "missing": "height",
+      "unknown": "top",
+      "expected": {
+        "accepted": false,
+        "error": "R13_DATUM_ADOPTION"
+      }
+    },
+    {
+      "id": "top-from-world-z",
+      "raw": {
+        "bottom": "-100",
+        "height": "2700",
+        "top": ""
+      },
+      "unit": "mm",
+      "missing": "top",
+      "unknown": null,
+      "expected": {
+        "accepted": true,
+        "value": 2600
+      }
+    },
+    {
+      "id": "top-from-bottom",
+      "raw": {
+        "bottom": "-100",
+        "height": "2700",
+        "top": ""
+      },
+      "unit": "mm",
+      "missing": "top",
+      "unknown": "bottom",
+      "expected": {
+        "accepted": false,
+        "error": "R13_DATUM_ADOPTION"
+      }
+    },
+    {
+      "id": "top-from-top",
+      "raw": {
+        "bottom": "-100",
+        "height": "2700",
+        "top": ""
+      },
+      "unit": "mm",
+      "missing": "top",
+      "unknown": "top",
+      "expected": {
+        "accepted": false,
+        "error": "R13_DATUM_ADOPTION"
+      }
+    }
+  ],
+  "stateCases": [
+    {
+      "id": "create",
+      "expected": {
+        "raw": "",
+        "unit": null,
+        "confirmation": null,
+        "positionBasis": "unknown",
+        "distanceBasis": "distance"
+      }
+    },
+    {
+      "id": "confirm-unknown-position",
+      "expected": {
+        "confirmed": true,
+        "adoptable": false
+      }
+    },
+    {
+      "id": "confirm-world-position-empty-note",
+      "expected": {
+        "confirmed": true,
+        "adoptable": true
+      }
+    },
+    {
+      "id": "derived-target-unit-unselected",
+      "expected": {
+        "confirmed": false,
+        "reason": "R13_DERIVED_UNIT"
+      }
+    },
+    {
+      "id": "bottom-height-only",
+      "expected": {
+        "completeness": "defined-subset",
+        "checks": [],
+        "omitted": [
+          {
+            "field": "top",
+            "reason": "missing-value",
+            "detail": "empty"
+          },
+          {
+            "field": "wallThickness",
+            "reason": "missing-value",
+            "detail": "empty"
+          }
+        ]
+      }
+    },
+    {
+      "id": "top-known-unconfirmed-wall-empty",
+      "expected": {
+        "completeness": "defined-subset",
+        "checks": [],
+        "omitted": [
+          {
+            "field": "top",
+            "reason": "needs-review",
+            "detail": "unconfirmed"
+          },
+          {
+            "field": "wallThickness",
+            "reason": "missing-value",
+            "detail": "empty"
+          }
+        ]
+      }
+    },
+    {
+      "id": "top-confirmed-unknown-basis",
+      "expected": {
+        "completeness": "defined-subset",
+        "checks": [],
+        "omitted": [
+          {
+            "field": "top",
+            "reason": "needs-review",
+            "detail": "world-basis-unconfirmed"
+          },
+          {
+            "field": "wallThickness",
+            "reason": "missing-value",
+            "detail": "empty"
+          }
+        ]
+      }
+    },
+    {
+      "id": "all-four-confirmed",
+      "expected": {
+        "completeness": "selected-scope-reviewed",
+        "checkFields": [
+          "top"
+        ],
+        "supplyFields": [
+          "bottom",
+          "height",
+          "wallThickness"
+        ],
+        "omitted": []
+      }
+    },
+    {
+      "id": "delete-reviewed-record",
+      "expected": {
+        "recordAbsent": true,
+        "missingMarker": true,
+        "modelUnchanged": true
+      }
+    },
+    {
+      "id": "undo-to-zero",
+      "expected": {
+        "records": 0,
+        "attachmentRetained": true,
+        "format": "geometry-canvas/21",
+        "highwaterNondecreasing": true
+      }
+    }
+  ],
+  "hostRows": [
+    {
+      "id": "frozen-reader-and-new-envelope",
+      "expected": {
+        "oldFormats": 20,
+        "newFormats": 21,
+        "oldReaderAccepts21": false,
+        "newReaderAccepts21": true,
+        "unknownFormat": "geometry-canvas/22"
+      }
+    },
+    {
+      "id": "recovery-flush",
+      "raw": "待現場量測：🧰",
+      "expected": {
+        "confirmation": null,
+        "failedFlushKeepsPreviousBytes": true,
+        "failedState": "unavailable"
+      }
+    },
+    {
+      "id": "scope-capacity-isolation",
+      "expected": {
+        "reconstructionRecordLimit": 256,
+        "legacyOwnerBytes": 131072,
+        "oversizeLegacyOwnerAccepted": false
+      }
+    },
+    {
+      "id": "scene-excludes-host-records",
+      "expected": {
+        "hostCapabilityInScene": false,
+        "rawRecordInScene": false
+      }
+    }
+  ],
+  "uiRows": [
+    {
+      "id": "raw-input-history",
+      "inputs": ["2", "27"],
+      "expected": {
+        "successfulChanges": 2,
+        "raw": "27",
+        "confirmation": null,
+        "saveAddsHistory": false
+      }
+    },
+    {
+      "id": "composing-save",
+      "raw": "2500",
+      "expected": {
+        "confirmation": null,
+        "adoptionOpened": false,
+        "saveAddsHistory": false,
+        "controlReplaced": false
+      }
+    },
+    {
+      "id": "unassociated-project-records",
+      "expected": {
+        "storedAssociation": false,
+        "recordCountAfterFaceSwitch": 2,
+        "recordBytesChangedByFaceSwitch": false
+      }
+    },
+    {
+      "id": "floor-ceiling-explicit",
+      "expected": {
+        "initialFloor": "",
+        "initialCeiling": "",
+        "oneUnsetCanPreview": false,
+        "bothExplicitNoneCanPreview": true
+      }
+    },
+    {
+      "id": "partial-review-consent",
+      "expected": {
+        "initialAccepted": false,
+        "beforeAcceptanceCanPreview": false,
+        "afterAcceptanceCanPreview": true,
+        "revokedAfterPreviewCanCommit": false
+      }
+    }
+  ]
+}

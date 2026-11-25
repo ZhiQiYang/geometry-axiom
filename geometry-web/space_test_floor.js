@@ -2,7 +2,7 @@
  * and loop cardinalities; see docs/SPACE-GROUP-VALIDATION.md. Never learned from
  * a run. Optional timber groups remain outside the default full space suite. */
 'use strict';
-const FULL_SPACE_GROUPS = Object.freeze(['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close', 'profile-space']);
+const FULL_SPACE_GROUPS = Object.freeze(['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close', 'profile-space', 'r13-reconstruction']);
 const EXPECTED = Object.freeze({
   setup: 2,
   'space-height-library': 112,
@@ -17,6 +17,8 @@ const EXPECTED = Object.freeze({
   'async-reply-ui': 8,
   'save-reopen-grid': 20,
   'profile-space': 60,
+  // Authored finite inventory; actual Chrome execution is required for evidence.
+  'r13-reconstruction': 21,
   'browser-health': 2,
 });
 

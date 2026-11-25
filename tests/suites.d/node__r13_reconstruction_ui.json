@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r13_reconstruction_ui.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r13_reconstruction_ui.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r13_reconstruction_ui.js"
+  ],
+  "name": "node:r13_reconstruction_ui",
+  "order": "new/node__r13_reconstruction_ui",
+  "schema": "geometry-native-suite/1"
+}
