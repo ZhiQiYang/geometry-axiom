@@ -93,3 +93,26 @@ typed root 保留 uint32（含 0），不以 live ID、label、尺寸、componen
 負例只延遲真正 native 回覆，保留來源／專案／紀錄替換移除／關閉重開／改選／連點的
 零 Blob 或單次 Blob 斷言；新專案視窗必須精確匹配既有確認訊息。P83 為 16 項，
 原 1839 個 Chromium 斷言不減少；正式全量須不設 scope 或 update-golden。
+
+## R05 F4b 前置片：逐列來源診斷
+
+`deriveModelSchedule` 追加唯讀 `sourceChecks`，不改既有料單列、CSV 或保存格式。
+每一明選原生列對應一個診斷列，包含 typed `timberRoot` 與 `placementRoot`，
+以及 `localIncarnationComparison`、`definition`、`effectiveValues`、
+`exactSupport`、`sourceContent`。零號根合法；相同尺寸的不同角材仍各自保留。
+
+`purpose` 固定為 `source-diagnostics`；`scopeProof` 與 `physicalSameness`
+固定為 `unverified`。這個唯讀 adapter 沒有完整專案 owner／讀取世代證明，
+不能因局部記號相等授權跨世界歸併。局部 incarnation 的 `same-mark` 只表示
+兩份已提供資料的記號相等，不等於 D62 的完整來源證明或使用者明示同件。
+只有目前資料是完整 live 讀取且身分帳啟用時才比較局部記號；不完整讀取維持
+`unknown`，不把未讀到的根說成已刪除。舊無 pins 模型仍可讀歷史料單。
+
+兩個根的 definition 與 effective-value 指紋分開核對：同有效值改來源時，
+不得以數值相等掩蓋定義改變。根指紋相同也不能替代被引用來源閉包的核對，
+`sourceContent` 仍使用既有 `freshness`。支承另外比較原生 exact 資料與 owner；
+任一端非 exact、資料不完整或根缺失，不會因兩端未知值相等就回報支承一致。
+
+診斷不修改 World、歷史、模型紀錄、dirty 或既有 CSV；不新增 itemKey、
+同件附件、跨模型合計或裁切 `/2` 入口。正式 F4b 仍需要已核條文落入 SSOT、
+完整來源取得／owner 守門、明示同件及保存／過期契約，不能直接用診斷旗標取代。

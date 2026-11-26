@@ -133,6 +133,47 @@
     if(!ledger||typeof ledger.judgeRoots!=='function')return scoped({token:'unknown',text:'物件延續性未知',listed:[]});
     return scoped(ledger.continuitySummary({roots:ledger.judgeRoots(record.sourceIdentity,graph||null)}));
   }
+  function modelSourceChecks(record,baseline,current,rows){
+    // D62/D63 diagnostics only. This adapter cannot prove historical project
+    // ownership, a selected scenario, or a user's same-item declaration.
+    let ledger=typeof IdentityLedger!=='undefined'&&IdentityLedger?IdentityLedger:null;
+    if(!ledger&&typeof module==='object'&&module.exports)ledger=require('./identity-ledger.js');
+    const judged=ledger?ledger.judgeRoots(record.sourceIdentity,current):[];
+    const complete=baseline.data.complete===true&&current.data.complete===true&&current.data.live===true;
+    const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?
+      Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])):value;
+    const equal=(a,b)=>JSON.stringify(canonical(a))===JSON.stringify(canonical(b));
+    const local=want=>{
+      const saved=record.sourceIdentity?.roots?.find(r=>r.role===want.kind&&r.kind===want.kind&&r.id===want.id);
+      const found=judged.find(r=>r.role===want.kind&&r.kind===want.kind&&r.id===want.id);
+      const node=current.nodes.get(key(want.kind,want.id));
+      let status='unknown';
+      if(saved&&found&&current.data.live===true&&current.data.complete===true){
+        if(saved.uncovered)status='untracked';
+        else if(current.data.identityLedger?.active!==true)status='inactive';
+        else status=found.status==='continuous'?'same-mark':found.status;
+      }
+      return {...want,saved:saved?.incarnation??null,current:node?.incarnation??null,status};
+    };
+    const result=rows.map(row=>{
+      const timberRoot={kind:'timber',id:row.id},placementRoot={kind:'placement',id:row.surface};
+      const roots=[key('timber',row.id),key('placement',row.surface)];
+      const axis=field=>{
+        if(roots.some(k=>!baseline.nodes.has(k)||!current.nodes.has(k)))return 'missing';
+        if(!complete)return 'unchecked';
+        return roots.every(k=>baseline.nodes.get(k)[field]===current.nodes.get(k)[field])?'consistent':'changed';
+      };
+      const a=baseline.supportEntries.get(roots[0]),b=current.supportEntries.get(roots[0]);
+      const exact=entry=>entry&&entry.start?.status==='exact'&&entry.finish?.status==='exact';
+      const exactSupport=!complete||!exact(a)||!exact(b)?'unchecked':equal(a,b)?'consistent':'changed';
+      return {timberRoot,placementRoot,localIncarnationComparison:[local(timberRoot),local(placementRoot)],
+        definition:axis('definitionFingerprint'),effectiveValues:axis('valueFingerprint'),exactSupport,
+        // The two root axes above do not certify the referenced source closure.
+        // Keep its typed edges, source pins and support checks independently.
+        sourceContent:freshness(baseline,current,roots)};
+    });
+    return {purpose:'source-diagnostics',scopeProof:'unverified',physicalSameness:'unverified',rows:result};
+  }
   function deriveModelSchedule(record,result,timberSchedule,project){
     if(typeof project?.validateSpaceModel!=='function'||typeof timberSchedule?.derive!=='function')throw Error('保存快照料單能力尚未核對。');
     project.validateSpaceModel(record);const ids=modelTimberIds(record),baseline=result?.baseline;
@@ -162,7 +203,8 @@
     return {schema:'native-timber-schedule/1',scope:'saved-model-snapshot',ids:[...ids],rows,sourceFingerprint:refs.sourceFingerprint,
       supportSourceFingerprint:refs.timberSupports.sourceFingerprint,modelId:record.id,modelName:record.name,contextId:result.context?.id||'',
       identityContinuity:continuity.token,identityContinuityText:continuity.text,identityContinuityListed:continuity.listed,
-      freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint};
+      freshness:freshness(baseline,result.graph,modelRoots(record)),liveSourceFingerprint:result.graph.data.sourceFingerprint,
+      sourceChecks:modelSourceChecks(record,baseline,result.graph,rows)};
   }
   function modelScheduleCSV(snapshot,timberSchedule,order='id',unit='mm'){
     if(snapshot?.scope!=='saved-model-snapshot'||!['mm','cm'].includes(unit)||!['id','length'].includes(order))throw Error('快照料單範圍或顯示單位無效。');
