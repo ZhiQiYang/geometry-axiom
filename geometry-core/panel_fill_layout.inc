@@ -26,6 +26,8 @@ static bool pf_build(const World *w,const PanelFill *p,PfLayout *d)
 {WoodFinishContext c=app_fs_context(w);return wood_pf_build(&c,p,d);}
 static bool pf_rebuild(const World *w)
 {WoodFinishContext c=app_fs_context(w);return wood_pf_rebuild(&c);}
+
+#include "../geometry-app/native/panel_fill_snapshot.inc"
 static bool pf_operation(World *w,GeoJson *j,int t,bool remove)
 {WoodFinishContext c=app_fs_context(w);return wood_pf_operation(&c,j,t,remove);}
 static void pf_dump(const World *w,FILE *out)

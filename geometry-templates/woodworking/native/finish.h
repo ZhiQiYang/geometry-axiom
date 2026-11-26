@@ -53,6 +53,11 @@ typedef struct {
     const PanelFill *fill; /* Authoritative definition used by this evaluation. */
     FsObstacleView obstacles[FS_OBSTACLE_MAX];bool cuts[FS_OBSTACLE_MAX];bool keep_collinear;
 } WoodFinishLayout;
+/* R44 ordinary-source values in the finish frame; no source pointers/ids. */
+typedef struct {
+    GeoCoord size[2],gap,anchor[2],stagger;
+    int stagger_axis;
+} WoodPanelGridSnapshot;
 enum { WOOD_PF_LENGTH,WOOD_PF_WIDTH,WOOD_PF_THICKNESS,WOOD_PF_GAP,WOOD_PF_STAGGER,WOOD_PF_THRESHOLD };
 typedef struct {
     void *user;
@@ -110,6 +115,7 @@ void wood_pf_free(WoodFinishLayout *);
 bool wood_pf_parse(const WoodFinishContext *,GeoJson *,int,PanelFill *);
 bool wood_pf_values(const WoodFinishContext *,const PanelFill *,WoodFinishLayout *);
 bool wood_pf_values_direct(const WoodFinishContext *,const PanelFill *,WoodFinishLayout *);
+bool wood_pf_grid_snapshot(const WoodFinishContext *,const PanelFill *,WoodPanelGridSnapshot *);
 bool wood_pf_field_direct(const WoodFinishContext *,const PanelFill *,int,GeoQuantity *);
 GeoRegionView wood_pf_region_view(const WoodBoundaryRegion *,GeoLoop2View *);
 size_t wood_pf_selected_cuts(const WoodFinishLayout *,GeoRect2 *);
