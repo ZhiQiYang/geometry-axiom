@@ -279,3 +279,76 @@ test('R13 canvas shared-image fixture preserves real source history with its act
     assert.equal(expectedMessage(dirty),actual,'R13_CANVAS_EXACT_DIALOG_MATCHES_OWNER_'+dirty);
   }
 });
+
+// The browser driver must await the end of the actual App history operation,
+// not only the earlier attachment swap. Keep repaint pending deterministically
+// and execute the original handler, owner state and save guard without a browser.
+function historyCompletionHarness(verb){
+  const vm=require('node:vm');
+  const app=fs.readFileSync(path.join(ROOT,'geometry-web/app.js'),'utf8').replace(/\r\n/g,'\n');
+  const owner=fs.readFileSync(path.join(ROOT,'geometry-web/reference-workspace.js'),'utf8').replace(/\r\n/g,'\n');
+  const section=fs.readFileSync(process.env.GEOMETRY_R13_CANVAS_SOURCE||path.join(ROOT,'geometry-web/canvas_sections/P4313.js'),'utf8');
+  function between(source,startText,endText){
+    const start=source.indexOf(startText),end=source.indexOf(endText,start);
+    assert.ok(start>=0&&end>start,'R13_HISTORY_ACTUAL_SOURCE '+startText);
+    assert.equal(source.indexOf(startText,start+1),-1,'R13_HISTORY_UNIQUE_SOURCE '+startText);
+    return source.slice(start,end);
+  }
+  const marker=verb==='undo'?'Undo':'Redo';
+  const pattern=new RegExp("await ctl\\('#face"+marker+"Button'\\);await waitForUI\\((`[^`]+`)\\);");
+  const match=section.match(pattern);
+  assert.ok(match,'R13_CANVAS_EXISTING_HISTORY_WAIT '+verb);
+  const expression=new Function('feature','return '+match[1]+';')("ReferenceWorkspace.readFeatureAttachment('reconstruction-data')");
+  const deferred=()=>{let resolve;const promise=new Promise(r=>{resolve=r;});return {promise,resolve};};
+  const painting=deferred(),paintStarted=deferred(),faceRefresh=deferred(),faceStarted=deferred();
+  const model={id:'model-r13',height:2700},review={modelId:model.id,scope:['room-r13']};
+  const state={id:'project-r13',models:verb==='undo'?[model]:[],reviews:verb==='undo'?[review]:[]};
+  const classes=new Set(),history={undo:[],redo:[],group:null,frame:{}},statuses=[];
+  let serial=0;
+  const context={oc:{busy:false,on:true,focus:{t:'face',id:4313},faces:[{kind:'boundary',id:4313}],spaces:[]},
+    document:{body:{classList:{add:key=>classes.add(key),remove:key=>classes.delete(key)}}},
+    window:{},fe:{},history,busy:false,sceneTransaction:null,preparingSceneLoad:false,pendingLoad:null,
+    nativePending:0,nativeRevision:1,nativeSession:'session-r13',connection:{phase:'ready',session:'session-r13'},
+    modelOperationIdentities:new WeakMap(),uuid:()=>String(++serial),context:()=>state,
+    getProjectState:()=>({id:state.id,contextToken:'context-r13',revision:1}),assertModelReady(){},assertEditable(){},
+    ReferenceWorkspace:{context:()=>state,historyActionLabel:()=>null,getSpaceModels:()=>state.models,
+      readFeatureAttachment:()=>({reviews:state.reviews})},
+    api:async command=>{assert.equal(command,'line '+verb);state.models=verb==='redo'?[model]:[];state.reviews=verb==='redo'?[review]:[];return {ok:true};},
+    clearCanvasSelections(){},renderObjects:()=>{paintStarted.resolve();return painting.promise;},
+    feAfterChange:()=>{faceStarted.resolve();return faceRefresh.promise;},
+    setStatus:message=>statuses.push(message),toast(){throw Error('R13_UNEXPECTED_BUSY_HISTORY_REENTRY');}};
+  vm.createContext(context);
+  vm.runInContext(between(app,'async function doUndoRedo(verb) {','\n$("btnUndo").addEventListener')+
+    between(owner,'  function getModelOperationState() {','  function dirty(')+
+    between(owner,'  function getEvidenceState() {','  const recoveryPeer=')+
+    between(owner,'  function assertSaveReady(transactionOwner=null) {','  function unchanged('),context);
+  context.ReferenceWorkspace.getEvidenceState=context.getEvidenceState;
+  return {state,context,classes,statuses,painting,paintStarted,faceRefresh,faceStarted,
+    start:()=>context.doUndoRedo(verb),ready:()=>vm.runInContext(expression,context),saveReady:()=>context.assertSaveReady()};
+}
+for(const verb of ['undo','redo'])test('R13 canvas '+verb+' waits for both App repaint stages before saving',async()=>{
+  const h=historyCompletionHarness(verb),label='R13_CANVAS_'+verb.toUpperCase()+'_WAITS_FOR_HISTORY_IDLE';
+  assert.equal(h.ready(),false,'R13_HISTORY_TARGET_NOT_REACHED '+verb);
+  const operation=h.start();
+  try{
+    await h.paintStarted.promise;
+    for(const stage of ['objects','face']){
+      if(stage==='face'){h.painting.resolve();await h.faceStarted.promise;}
+      assert.equal(h.state.models.length,verb==='redo'?1:0,'R13_HISTORY_MODEL_ALREADY_SWAPPED');
+      assert.equal(h.state.reviews.length,verb==='redo'?1:0,'R13_HISTORY_REVIEW_ALREADY_SWAPPED');
+      assert.equal(h.context.oc.busy,true,'R13_HISTORY_REPAINT_STILL_OWNED');
+      assert.throws(h.saveReady,/請先完成目前的操作再保存/,'R13_REAL_SAVE_GUARD_REJECTS_REPAINT');
+      console.log('R13_HISTORY_WAIT '+JSON.stringify({verb,stage,ocBusy:h.context.oc.busy,ownerBlocked:h.context.getEvidenceState().blocked,predicate:h.ready()}));
+      assert.equal(h.ready(),false,label+' '+stage);
+    }
+  }finally{h.painting.resolve();h.faceRefresh.resolve();await operation;}
+  assert.equal(h.context.oc.busy,false,'R13_HISTORY_FINALLY_RELEASED');
+  assert.equal(h.classes.has('oc-busy'),false,'R13_HISTORY_PRESENTATION_RELEASED');
+  assert.equal(h.ready(),true,'R13_HISTORY_WAIT_ACCEPTS_COMPLETION '+verb);
+  assert.doesNotThrow(h.saveReady,'R13_SAVE_ALLOWED_AFTER_HISTORY_COMPLETION');
+  // An idle owner is not sufficient: preserve each original data predicate.
+  const originalModels=h.state.models,originalReviews=h.state.reviews;
+  h.state.models=verb==='redo'?[]:[{}];assert.equal(h.ready(),false,'R13_HISTORY_MODEL_PREDICATE_RETAINED');
+  h.state.models=originalModels;h.state.reviews=verb==='redo'?[]:[{}];assert.equal(h.ready(),false,'R13_HISTORY_REVIEW_PREDICATE_RETAINED');
+  h.state.reviews=originalReviews;h.context.connection.phase='error';assert.equal(h.ready(),false,'R13_HISTORY_CONNECTION_MUST_BE_READY');
+});
