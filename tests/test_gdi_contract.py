@@ -412,16 +412,19 @@ class ProductStack8MiB412(unittest.TestCase):
 
 def _product_stack_frame_report(reports):
     """Read all emitted clones; keep the original maximum-frame-size rule."""
-    frames, over = {}, []
+    frames, over, unbounded = {}, [], set()
     for name, text in reports.items():
         for line in text.splitlines():
             location, size, kind = line.split('\t')
             function = location.rsplit(':', 1)[-1].split('.')[0]
             key = (name, function)
             frames[key] = max(frames.get(key, 0), int(size))
+            if kind == 'dynamic':
+                unbounded.add(key)
     for (name, function), size in sorted(frames.items(), key=lambda item: -item[1]):
-        if size >= FRAME_CAP:
-            over.append(f'{name}: {function} {size} B')
+        if size >= FRAME_CAP or (name, function) in unbounded:
+            detail = ' (unbounded dynamic)' if (name, function) in unbounded else ''
+            over.append(f'{name}: {function} {size} B' + detail)
     return frames, over
 
 
