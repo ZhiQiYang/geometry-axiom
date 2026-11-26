@@ -170,6 +170,17 @@ jobs:
           api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/comments?per_page=100" '[.[] | {user: .user.login, created_at, path, line, original_line, commit_id, in_reply_to_id, body, html_url}] | sort_by(.created_at)' > "$data/review-comments.json"
           wc -c "$data"/*.patch "$data"/*.json "$data"/*.txt
 
+      - name: Split the diff into a review plan (no API key, no model)
+        run: |
+          set -euo pipefail
+          # 固定步驟（main 版程式、只用標準函式庫、不連網）：每檔變更摘要表＋分段 patch＋必讀清單。
+          # 二進位檔只列大小與 sha256；證據類檔抽樣進必讀，其餘列選讀（細節見 review-data/review-plan.md）。
+          python3 -I "$GITHUB_WORKSPACE/main/.github/scripts/openai_agent.py" prepare-review \
+            --repo "$GITHUB_WORKSPACE/pr" --base "$GITHUB_SHA" --out "$GITHUB_WORKSPACE/review-data"
+          test -s "$GITHUB_WORKSPACE/review-data/review-plan.md"
+          test -s "$GITHUB_WORKSPACE/review-data/review-required.txt"
+          wc -l "$GITHUB_WORKSPACE/review-data/review-required.txt"
+
       - name: Install pinned openai SDK into a venv (hash-verified, no API key in this step)
         run: |
           set -euo pipefail
@@ -248,6 +259,7 @@ jobs:
             printf -- '- 資料目錄：%s/review-data（refs.txt 記錄 main、merge-base、head 的完整 SHA）\n' "$GITHUB_WORKSPACE"
             printf -- '- 本次由 OpenAI 模型（%s）經 Responses API 執行。工具只有兩個：read_file（對應上文的 Read）與 search（對應上文的 Grep；pattern 為空字串時列出符合 glob 的檔名，對應 Glob）。上文「三個工具」的限制照樣適用：沒有 shell、不能執行程式、不能上網、不能寫檔、不能留言。\n' "$REVIEW_MODEL"
             printf -- '- workflow 自動加上的標頭是「【OpenAI 對抗審查】PR #%s head <短 SHA>」（取代上文所寫的【API 對抗審查】），你同樣不要自己寫標頭。\n' "$PR_NUMBER"
+            printf -- '- 本次的差異已由固定步驟拆成摘要表與分段：先讀 review-data/review-plan.md。必讀範圍以該檔為準（摘要表、全部 core 段、全部 sample 段）；review-data/diff.patch 是同一份差異的原檔，不必重讀。證據類檔的完整差異（evidence 段）是選讀，可自行加讀。報告須寫明實際讀了哪些段、哪些沒讀；受未讀段落影響的項目判「無法判定」並寫明缺哪一段。\n'
             printf -- '- 本次有最大輪數 %s、花費上限（估算）US$%s、總時限 %s 分鐘；接近上限時 workflow 會通知你停止，屆時只能輸出最終報告，未讀完的部分列入「未驗項」。\n' "$REVIEW_MAX_TURNS" "$MAX_BUDGET_USD" "$((REVIEW_TIME_LIMIT_SEC / 60))"
           } > "$RUNNER_TEMP/review-prompt.md"
 
@@ -284,7 +296,7 @@ jobs:
             "$RUNNER_TEMP/openai-venv/bin/python" -I "$GITHUB_WORKSPACE/main/.github/scripts/openai_agent.py" \
             --mode review --workdir "$GITHUB_WORKSPACE" --model "$REVIEW_MODEL" --effort "$REVIEW_EFFORT" \
             --attach review-data/diff-name-status.txt --attach review-data/diff-stat.txt \
-            --require-read review-data/diff.patch \
+            --require-read-list "$GITHUB_WORKSPACE/review-data/review-required.txt" \
             --max-turns "$REVIEW_MAX_TURNS" --max-budget-usd "$MAX_BUDGET_USD" --time-limit-sec "$REVIEW_TIME_LIMIT_SEC" \
             < "$RUNNER_TEMP/review-prompt.md" > "$RUNNER_TEMP/review-result.json" || status=$?
           echo "$status" > "$RUNNER_TEMP/review-cli-exit"
@@ -364,7 +376,15 @@ jobs:
           lines = [f"【OpenAI 對抗審查】PR #{env['PR_NUMBER']} head {env['SHORT_SHA']}", ""]
           if current != env["HEAD_SHA"]:
               lines += [f"> ⚠️ 審查期間 PR head 已變為 `{current[:7]}`；本審查只對 `{env['HEAD_SHA']}`。", ""]
+          PARTIAL_REASONS = {"completed_partial": "退回兩次後仍未讀完必讀範圍",
+                             "budget_exceeded": "估算花費達上限", "max_turns": "達到最大輪數", "time_limit": "達到總時限"}
+          partial = (not ok and started and parsed and bool(text) and end_reason in PARTIAL_REASONS
+                     and exit_code is not None)
           if ok:
+              lines.append(text[:60000] + ("\n\n…（輸出過長，已截斷）" if len(text) > 60000 else ""))
+          elif partial:
+              lines.append(f"> ⚠️ **部分審查**（{PARTIAL_REASONS[end_reason]}）：以下結論只依已讀的段落；"
+                           "未讀段落見文末「讀取覆蓋」表。受未讀段落影響的項目應判「無法判定」，請據此決定是否可作為終審。\n")
               lines.append(text[:60000] + ("\n\n…（輸出過長，已截斷）" if len(text) > 60000 else ""))
           elif not started:
               lines.append("### 結論\n審查**沒有執行**：帶金鑰的審查 step 沒有啟動模型迴圈"
@@ -378,8 +398,6 @@ jobs:
           else:
               if end_reason == "credit_balance_exhausted":
                   lines.append("### 結論\n審查**未完成**：**OpenAI API 點數已用完**（HTTP 429，錯誤碼 credit_balance_exhausted），以下沒有可用的審查結果。")
-              elif end_reason == "incomplete_coverage":
-                  lines.append("### 結論\n審查**未完成**：模型被退回多次後仍沒有讀完 `diff.patch`，以下沒有可用的審查結果。")
               else:
                   lines.append("### 結論\n審查**未完成**，以下沒有可用的審查結果。")
               lines.append("\n" + status_line)
@@ -391,6 +409,16 @@ jobs:
               if text:
                   lines.append("\n<details><summary>模型在收尾時輸出的部分報告（未完成，不作為審查結論）</summary>\n\n"
                                + text[:30000] + "\n\n</details>")
+          cov = res.get("coverage") if isinstance(res.get("coverage"), dict) else {}
+          if cov:
+              done = sum(1 for v in cov.values() if v.get("complete"))
+              lines += ["", f"<details><summary>讀取覆蓋（固定步驟核對）：必讀 {len(cov)} 檔，讀完 {done} 檔</summary>", "",
+                        "| 必讀檔 | 行數 | 未讀行段 |", "|---|---|---|"]
+              for path, v in list(cov.items())[:200]:
+                  miss = v.get("missing_ranges") or []
+                  spans = "、".join(f"{a}–{b}" for a, b in miss[:6]) + ("…" if len(miss) > 6 else "")
+                  lines.append(f"| `{path}` | {v.get('total_lines')} | {spans or '（已讀完）'} |")
+              lines += ["", "</details>"]
           lines += [
               "",
               "---",
