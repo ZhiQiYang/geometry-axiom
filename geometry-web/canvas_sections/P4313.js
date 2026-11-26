@@ -154,9 +154,11 @@ module.exports=async helpers=>{
       await closeModel();
       const committed=await capture();
       if(await read(`innerWidth<=680&&document.body.classList.contains('drawer-right-open')`))await ctl('#workspaceToggleRight');
-      await ctl('#faceUndoButton');await waitForUI(`ReferenceWorkspace.getSpaceModels().length===0&&${feature}.reviews.length===0`);
+      // The local model/review swap precedes renderObjects and feAfterChange.
+      // Keep the existing 5 s wait; save only after the shared App owner is idle.
+      await ctl('#faceUndoButton');await waitForUI(`ReferenceWorkspace.getEvidenceState().blocked===false&&ReferenceWorkspace.getSpaceModels().length===0&&${feature}.reviews.length===0`);
       check('R13_UNDO_BOTH_MODEL_AND_REVIEW'+suffix,await read(`${first}.fields.height.confirmation.value===2700&&${first}.fields.top.confirmation.value===2600`));
-      await ctl('#faceRedoButton');await waitForUI(`ReferenceWorkspace.getSpaceModels().length===1&&${feature}.reviews.length===1`);
+      await ctl('#faceRedoButton');await waitForUI(`ReferenceWorkspace.getEvidenceState().blocked===false&&ReferenceWorkspace.getSpaceModels().length===1&&${feature}.reviews.length===1`);
       check('R13_REDO_EXACT_MODEL_AND_REVIEW'+suffix,JSON.stringify(await capture())===JSON.stringify(committed));
       const bytes=await read(`(async()=>[...await ReferenceWorkspace.exportBytes()])()`);
       await freshDocument();await importFile(bytes,'r13-confirmed-'+size.width+'.gcanvas');
