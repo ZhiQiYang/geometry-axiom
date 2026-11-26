@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_history_spare_slot.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_history_spare_slot.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_history_spare_slot.py"
+  ],
+  "name": "py:test_history_spare_slot",
+  "order": "new/py__test_history_spare_slot",
+  "schema": "geometry-native-suite/1"
+}
