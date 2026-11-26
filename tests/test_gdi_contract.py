@@ -410,28 +410,102 @@ class ProductStack8MiB412(unittest.TestCase):
         self._compare(run)
 
 
+def _product_stack_frame_report(reports):
+    """Read all emitted clones; keep the original maximum-frame-size rule."""
+    frames, over = {}, []
+    for name, text in reports.items():
+        for line in text.splitlines():
+            location, size, kind = line.split('\t')
+            function = location.rsplit(':', 1)[-1].split('.')[0]
+            key = (name, function)
+            frames[key] = max(frames.get(key, 0), int(size))
+    for (name, function), size in sorted(frames.items(), key=lambda item: -item[1]):
+        if size >= FRAME_CAP:
+            over.append(f'{name}: {function} {size} B')
+    return frames, over
+
+
+STACK_KIND_FIXTURE = r"""
+#include <stddef.h>
+extern void escape(void *);
+__attribute__((noinline)) void runtime_vla(size_t count)
+{ char bytes[count]; escape(bytes); }
+__attribute__((noinline)) void runtime_alloca(size_t count)
+{ void *bytes = __builtin_alloca(count); escape(bytes); }
+__attribute__((noinline)) void small_static(void)
+{ char bytes[64]; escape(bytes); }
+__attribute__((noinline)) void large_static(void)
+{ char bytes[2097152]; escape(bytes); }
+"""
+
+
+def _assert_product_stack_classifier(case, cc, directory):
+    """Real GCC dynamic frames and both orders of same-name compiler clones."""
+    source = Path(directory) / 'stack-kinds.c'
+    source.write_text(STACK_KIND_FIXTURE, encoding='utf-8')
+    command = [cc, '-std=c11', '-O2', '-fstack-usage', '-c', str(source),
+               '-o', str(Path(directory) / 'stack-kinds.o')]
+    compiled = subprocess.run(command, capture_output=True, timeout=60)
+    case.assertEqual(compiled.returncode, 0, 'K_STACK_FIXTURE_COMPILED: '
+                     + compiled.stderr.decode('utf-8', errors='replace'))
+    raw = (Path(directory) / 'stack-kinds.su').read_text(encoding='utf-8')
+    print('\nK_STACK_FIXTURE_COMMAND: ' + ' '.join(command) + '\n' + raw)
+    kinds = {line.split('\t')[0].rsplit(':', 1)[-1]: line.split('\t')[2]
+             for line in raw.splitlines()}
+    frames, over = _product_stack_frame_report({'probe': raw})
+    print('K_STACK_FIXTURE_VIOLATIONS: ' + repr(over))
+    for function, marker in (('runtime_vla', 'K_STACK_UNBOUNDED_VLA'),
+                             ('runtime_alloca', 'K_STACK_UNBOUNDED_ALLOCA')):
+        with case.subTest(probe=function):
+            case.assertEqual(kinds.get(function), 'dynamic', 'K_STACK_FIXTURE_IS_UNBOUNDED')
+            case.assertTrue(any(row.startswith('probe: ' + function + ' ') for row in over), marker)
+    with case.subTest(probe='large_static'):
+        case.assertTrue(any(row.startswith('probe: large_static ') for row in over),
+                        'K_STACK_STATIC_CAP_RETAINED')
+    for function in ('small_static',):
+        with case.subTest(probe=function):
+            case.assertIn(('probe', function), frames, 'K_STACK_SMALL_FRAME_PRESENT')
+            case.assertFalse(any(row.startswith('probe: ' + function + ' ') for row in over),
+                             'K_STACK_SMALL_STATIC_FRAME_ALLOWED')
+    # Explicit report fixtures cover the bounded category even on compilers
+    # that conservatively label fixed-size alloca as unbounded dynamic.
+    bounded = ('probe.c:1:1:bounded_small\t160\tdynamic,bounded\n'
+               'probe.c:2:1:bounded_at_cap\t2097152\tdynamic,bounded\n')
+    bounded_frames, bounded_over = _product_stack_frame_report({'probe': bounded})
+    with case.subTest(probe='dynamic_bounded'):
+        case.assertEqual(bounded_frames[('probe', 'bounded_small')], 160)
+        case.assertFalse(any(row.startswith('probe: bounded_small ') for row in bounded_over),
+                         'K_STACK_SMALL_BOUNDED_FRAME_ALLOWED')
+        case.assertTrue(any(row.startswith('probe: bounded_at_cap ') for row in bounded_over),
+                        'K_STACK_BOUNDED_CAP_RETAINED')
+    clones = ['probe.c:1:1:clone.constprop.0\t4096\tstatic\n',
+              'probe.c:2:1:clone.isra.0\t32\tdynamic\n']
+    for order in (clones, list(reversed(clones))):
+        with case.subTest(probe='compiler_clones', first=order[0].split('\t')[2].strip()):
+            clone_frames, clone_over = _product_stack_frame_report({'probe': ''.join(order)})
+            case.assertEqual(clone_frames[('probe', 'clone')], 4096, 'K_STACK_CLONE_MAXIMUM_RETAINED')
+            case.assertTrue(any(row.startswith('probe: clone ') for row in clone_over),
+                            'K_STACK_SMALLER_DYNAMIC_CLONE_REJECTED')
+
+
 @unittest.skipUnless(os.name == 'posix', 'requires GCC -fstack-usage for the product frame cap')
 class ProductFrameCap412(unittest.TestCase):
     def test_no_product_stack_frame_holds_a_world(self):
         cc = shutil.which(os.environ.get('CC', 'cc'))
         self.assertIsNotNone(cc, 'CC not found; this suite needs a C compiler on POSIX')
         with tempfile.TemporaryDirectory(prefix='geometry-412-frames-') as directory:
+            _assert_product_stack_classifier(self, cc, directory)
             jobs = {}
             for name, source in PRODUCT_SOURCES:      # 與 tests/binaries.py 同旗標（-std=c11 -O2），三支並行
                 jobs[name] = subprocess.Popen([cc, '-std=c11', '-O2', '-fstack-usage', '-c', str(REPO / source),
                                                '-o', str(Path(directory) / (name + '.o'))],
                                               cwd=directory, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-            frames, over = {}, []
+            reports = {}
             for name, job in jobs.items():
                 _out, err = job.communicate(timeout=600)
                 self.assertEqual(job.returncode, 0, f'{name} does not compile:\n' + err.decode(errors='replace')[-4000:])
-                for line in (Path(directory) / (name + '.su')).read_text(encoding='utf-8', errors='replace').splitlines():
-                    location, size, _kind = line.split('\t')
-                    function = location.rsplit(':', 1)[-1].split('.')[0]
-                    frames[(name, function)] = max(frames.get((name, function), 0), int(size))
-        for (name, function), size in sorted(frames.items(), key=lambda item: -item[1]):
-            if size >= FRAME_CAP:
-                over.append(f'{name}: {function} {size} B')
+                reports[name] = (Path(directory) / (name + '.su')).read_text(encoding='utf-8', errors='replace')
+        frames, over = _product_stack_frame_report(reports)
         # 守門自身要真的看得到場景 handler，否則一個空報告也會通過。
         for name, _source in PRODUCT_SOURCES:
             self.assertIn((name, 'apply_scene_line'), frames, f'{name}: stack-usage report misses the scene dispatcher')
