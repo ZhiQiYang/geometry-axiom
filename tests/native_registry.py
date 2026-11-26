@@ -16,9 +16,11 @@ import math
 import os
 from pathlib import Path, PurePosixPath
 import re
+import signal
 import stat
 import subprocess
 import sys
+import time
 import urllib.request
 import urllib.parse
 import zipfile
@@ -685,6 +687,11 @@ def _historical(data):
 FETCH_ATTEMPTS = 3
 FETCH_ATTEMPT_SECONDS = 10
 FETCH_BUDGET_SECONDS = 30
+# 清理與回報也算在 30 秒內；不是在截止後另加寬限。
+FETCH_CLEANUP_SECONDS = 1
+# 每次 registry 檢查（行程）第一次真正補抓才開始計時。即使 commit 與
+# blob 是在不同次 _ensure_git_objects 補抓，也不能取得新的 30 秒。
+_FETCH_DEADLINE = None
 _UNAVAILABLE = {}
 
 
@@ -712,13 +719,13 @@ def _promisor_remote(root):
 
 
 def _bounded_fetch(root, remote, argv, label, stdin=b''):
-    import signal
-    import time
-    deadline = time.monotonic() + FETCH_BUDGET_SECONDS
+    global _FETCH_DEADLINE
+    if _FETCH_DEADLINE is None:
+        _FETCH_DEADLINE = time.monotonic() + FETCH_BUDGET_SECONDS
+    wait_until = _FETCH_DEADLINE - FETCH_CLEANUP_SECONDS
     errors = []
     for attempt in range(1, FETCH_ATTEMPTS + 1):
-        remaining = deadline - time.monotonic()
-        if remaining < 1:
+        if wait_until - time.monotonic() < 1:
             break
         # A new session lets a timeout kill git *and* its git-remote-https child.
         child = subprocess.Popen(
@@ -726,26 +733,33 @@ def _bounded_fetch(root, remote, argv, label, stdin=b''):
              '-c', 'http.lowSpeedTime=%d' % FETCH_ATTEMPT_SECONDS, *argv],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             start_new_session=(os.name == 'posix'), env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'})
+        timeout = max(0, min(FETCH_ATTEMPT_SECONDS, wait_until - time.monotonic()))
         try:
-            _, error = child.communicate(stdin, timeout=min(FETCH_ATTEMPT_SECONDS, remaining))
+            _, error = child.communicate(stdin, timeout=timeout)
         except subprocess.TimeoutExpired:
             if os.name == 'posix':
                 with contextlib.suppress(ProcessLookupError):
                     os.killpg(child.pid, signal.SIGKILL)
             else:
+                # 非 POSIX 的 kill() 只終止 git 本身，不保證終止 transport
+                # 子孫；它們可能繼續持有管線，因此收尾也不能無限等 EOF。
                 child.kill()
-            child.communicate()
-            errors.append('attempt %d: no answer within %.0fs' % (attempt, min(FETCH_ATTEMPT_SECONDS, remaining)))
+            errors.append('attempt %d: no answer within %.0fs' % (attempt, timeout))
+            try:
+                child.communicate(timeout=max(0, _FETCH_DEADLINE - time.monotonic()))
+            except subprocess.TimeoutExpired:
+                errors.append('cleanup timed out')
+                break
         else:
             if child.returncode == 0:
                 return
             errors.append('attempt %d: exit %d: %s' % (
                 attempt, child.returncode, error.decode('utf-8', 'replace').strip()[-300:]))
         if attempt < FETCH_ATTEMPTS:
-            time.sleep(max(0, min(attempt, deadline - time.monotonic() - 1)))
+            time.sleep(max(0, min(attempt, wait_until - time.monotonic() - 1)))
     raise GitObjectsUnavailable('R386_NATIVE_BASE_OBJECTS_UNAVAILABLE: %s could not be fetched from '
-                                'promisor remote %r within %ds: %s'
-                                % (label, remote, FETCH_BUDGET_SECONDS, ' | '.join(errors)))
+                                'promisor remote %r within the shared %ds budget: %s'
+                                % (label, remote, FETCH_BUDGET_SECONDS, ' | '.join(errors) or 'no time left'))
 
 
 def _ensure_git_objects(root, revision, paths=()):
