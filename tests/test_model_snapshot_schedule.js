@@ -12,6 +12,101 @@ const derive=(e,current)=>S.deriveModelSchedule(e.record,result(e,current),T,P);
 const gate=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 const until=async predicate=>{for(let n=0;n<200&&!predicate();n++)await new Promise(r=>setTimeout(r,1));assert.ok(predicate(),'asynchronous native snapshot cycle must finish');};
 
+// Real bridge reads and ordinary-plan producer output. See the delivery's
+// reproduce.py/extend_fixture.py and raw logs; no synthetic positive receipt.
+const sourceFixtures=require('./fixtures/r05_source_checks.json');
+const sourceSample=()=>clone(sourceFixtures.single);
+const checks=(e,current=e.live)=>{
+  const schedule=derive(e,current);
+  assert.ok(schedule.sourceChecks,'R05_F4B_SOURCE_CHECKS_PRESENT');
+  return schedule.sourceChecks;
+};
+const localStatuses=row=>row.localIncarnationComparison.map(x=>[x.kind,x.id,x.status]);
+
+test('R05_F4B_NATIVE_DIAGNOSTIC_ROWS: native two-root checks are readonly, not physical identity',()=>{
+  const e=sourceSample(),before=JSON.stringify(e),s=derive(e,e.live),c=checks(e);
+  assert.equal(c.purpose,'source-diagnostics','R05_F4B_DIAGNOSTIC_ONLY');
+  assert.equal(c.scopeProof,'unverified','R05_F4B_SCOPE_NOT_INVENTED');
+  assert.equal(c.physicalSameness,'unverified','R05_F4B_NO_PHYSICAL_IDENTITY');
+  assert.equal(c.rows.length,1,'R05_F4B_ONE_CHECK_PER_ROW');
+  const r=c.rows[0];assert.deepEqual(r.timberRoot,{kind:'timber',id:0});
+  assert.deepEqual(r.placementRoot,{kind:'placement',id:0});
+  assert.deepEqual(localStatuses(r),[['timber',0,'same-mark'],['placement',0,'same-mark']],'R05_F4B_LOCAL_TWO_ROOTS');
+  assert.equal(r.definition,'consistent','R05_F4B_ROOT_DEFINITION');
+  assert.equal(r.effectiveValues,'consistent','R05_F4B_ROOT_VALUE');
+  assert.equal(r.exactSupport,'consistent','R05_F4B_EXACT_SUPPORT');
+  assert.equal(r.sourceContent.contentStatus,'consistent','R05_F4B_SOURCE_CLOSURE');
+  assert.equal(JSON.stringify(e),before,'R05_F4B_READONLY');
+  const plain=clone(s);delete plain.sourceChecks;
+  assert.equal(S.modelScheduleCSV(s,T),S.modelScheduleCSV(plain,T),'R05_F4B_CSV_BYTES_UNCHANGED');
+});
+test('R05_F4B_EQUAL_DISTINCT_ROOTS: two ordinary timbers stay two diagnostics and two rows',()=>{
+  const e=clone(sourceFixtures.independent),s=derive(e,e.live),c=checks(e);
+  assert.deepEqual(s.rows.map(r=>[r.id,r.A,r.B,r.L]),[[0,27,33,4000],[4,27,33,4000]]);
+  assert.deepEqual(c.rows.map(r=>r.timberRoot.id),[0,4],'R05_F4B_NO_DIMENSION_DEDUP');
+  assert.notEqual(c.rows[0].localIncarnationComparison[0].saved,c.rows[1].localIncarnationComparison[0].saved);
+  assert.equal(c.rows[1].localIncarnationComparison[1].status,'same-mark');
+});
+test('R05_F4B_OLD_MODEL_UNKNOWN: no retroactive pins and historical CSV remains usable',()=>{
+  const e=sample(),s=derive(e),c=checks(e,live(e));
+  assert.equal(s.rows.length,1);assert.equal(s.identityContinuity,'unknown');
+  assert.deepEqual(localStatuses(c.rows[0]),[['timber',0,'unknown'],['placement',0,'unknown']],'R05_F4B_NO_BACKFILLED_PIN');
+  assert.equal(c.rows[0].definition,'consistent');assert.ok(S.modelScheduleCSV(s,T).includes('"4000"'));
+});
+test('R05_F4B_LOCAL_IDENTITY: activation, placement and same-id recreation are separate checks',()=>{
+  const e=sourceSample(),off=clone(e.live);off.identityLedger.active=false;
+  assert.deepEqual(localStatuses(checks(e,off).rows[0]),[['timber',0,'inactive'],['placement',0,'inactive']],'R05_F4B_ACTIVE_LEDGER_REQUIRED');
+  const moved=clone(e.live);moved.nodes.find(n=>n.key==='placement:0').incarnation='f'.repeat(32)+':1';
+  assert.deepEqual(localStatuses(checks(e,moved).rows[0]),[['timber',0,'same-mark'],['placement',0,'replaced']],'R05_F4B_PLACEMENT_PIN_REQUIRED');
+  const recreated=checks(e,sourceFixtures.recreated.live).rows[0];
+  assert.equal(recreated.localIncarnationComparison[0].status,'replaced','R05_F4B_RECREATE_NOT_CONTINUOUS');
+  assert.equal(recreated.definition,'consistent');assert.equal(recreated.effectiveValues,'consistent');
+});
+test('R05_F4B_SEPARATE_AXES: real same-value source change cannot pass definition checks',()=>{
+  const e=sourceSample(),r=checks(e,sourceFixtures.sameValueDifferentSource.live).rows[0];
+  assert.equal(r.localIncarnationComparison[0].status,'same-mark');
+  assert.equal(r.definition,'changed','R05_F4B_DEFINITION_NOT_VALUE');
+  assert.equal(r.effectiveValues,'consistent','R05_F4B_VALUE_INDEPENDENT');
+  assert.equal(r.sourceContent.contentStatus,'changed','R05_F4B_CLOSURE_CHANGE');
+  const changed=clone(e.live);changed.nodes.find(n=>n.key==='timber:0').valueFingerprint='a'.repeat(64);
+  const valueOnly=checks(e,changed).rows[0];assert.equal(valueOnly.definition,'consistent');
+  assert.equal(valueOnly.effectiveValues,'changed','R05_F4B_VALUE_NOT_DEFINITION');
+});
+test('R05_F4B_TYPED_SOURCE_CLOSURE: referenced closure is checked beyond the two roots',()=>{
+  const e=sourceSample(),changed=clone(e.live);changed.nodes.find(n=>n.key==='boundary:1').definitionFingerprint='b'.repeat(64);
+  const r=checks(e,changed).rows[0];assert.equal(r.definition,'consistent');assert.equal(r.effectiveValues,'consistent');
+  assert.equal(r.sourceContent.contentStatus,'changed','R05_F4B_CLOSURE_NOT_ROOT_ONLY');
+  const edges=clone(e.live);edges.edges.find(x=>x.from==='timber:0').field='altered-field';
+  assert.equal(checks(e,edges).rows[0].sourceContent.contentStatus,'changed','R05_F4B_TYPED_EDGE_CHECKED');
+});
+test('R05_F4B_SUPPORT_AXIS: exact native endpoint changes do not hide behind opaque pins',()=>{
+  const e=sourceSample(),changed=clone(e.live);changed.timberSupports.entries[0].start.relation.edgeIndex=2;
+  const r=checks(e,changed).rows[0];assert.equal(r.definition,'consistent');assert.equal(r.effectiveValues,'consistent');
+  assert.equal(r.exactSupport,'changed','R05_F4B_SUPPORT_NOT_ROOT_HASH');
+  const unknown=clone(e.live);unknown.timberSupports.entries[0].start={status:'unknown',relation:null};
+  assert.equal(checks(e,unknown).rows[0].exactSupport,'unchecked','R05_F4B_UNKNOWN_SUPPORT_NOT_EQUAL');
+  const reordered=clone(e.live);reordered.timberSupports.entries[0].start.relation.source={id:1,kind:'boundary'};
+  assert.equal(checks(e,reordered).rows[0].exactSupport,'consistent','R05_F4B_SUPPORT_KEY_ORDER_IRRELEVANT');
+});
+test('R05_F4B_INCOMPLETE_READ: incomplete or missing facts never certify equal source',()=>{
+  const e=sourceSample(),partial=clone(e.live);partial.complete=false;
+  const r=checks(e,partial).rows[0];
+  for(const field of ['definition','effectiveValues','exactSupport'])assert.equal(r[field],'unchecked','R05_F4B_COMPLETE_NATIVE_REQUIRED:'+field);
+  const missing=clone(partial);missing.nodes=missing.nodes.filter(n=>n.key!=='timber:0');
+  const m=checks(e,missing).rows[0];assert.equal(m.definition,'missing','R05_F4B_MISSING_ROOT');
+  assert.equal(m.effectiveValues,'missing');assert.equal(m.localIncarnationComparison[0].status,'unknown','R05_F4B_PARTIAL_NOT_ABSENT');
+  const completeMissing=clone(e.live);completeMissing.nodes=completeMissing.nodes.filter(n=>n.key!=='timber:0');
+  completeMissing.timberSupports.entries=[];
+  assert.equal(checks(e,completeMissing).rows[0].localIncarnationComparison[0].status,'absent','R05_F4B_ABSENT_REQUIRES_COMPLETE_READ');
+});
+test('R05_F4B_NO_MERGE_AUTHORITY: repeated saved representations remain independent',()=>{
+  const a=sourceSample(),b=clone(a);b.record.id='separate-saved-view';b.record.name='Another view';
+  const x=derive(a,a.live),y=derive(b,b.live);checks(a);checks(b);
+  assert.equal(x.rows.length+y.rows.length,2,'R05_F4B_REPRESENTATIONS_NOT_AUTO_MERGED');
+  for(const s of [x,y]){assert.equal(s.sourceChecks.physicalSameness,'unverified');
+    assert.equal(Object.hasOwn(s,'itemKey'),false);assert.equal(Object.hasOwn(s,'takeoffSet'),false);}
+});
+
 test('actual native saved models include only explicit roots, with zero and real placement identities',()=>{
   for(const e of fixtures.ordinary){const before=JSON.stringify(e),s=derive(e);assert.deepEqual(s.ids,e.record.input.timbers.map(t=>t.id));assert.equal(s.rows.length,1);assert.equal(s.rows[0].A,27);assert.equal(s.rows[0].B,33);assert.equal(s.rows[0].L,4000);assert.equal(s.rows[0].surface,e.record.input.placement_id);assert.equal(s.identityContinuity,'unknown');assert.equal(JSON.stringify(e),before);}
   assert.deepEqual(derive(fixtures.ordinary[0]).ids,[0]);assert.deepEqual(derive(fixtures.ordinary[2]).ids,[4]);
