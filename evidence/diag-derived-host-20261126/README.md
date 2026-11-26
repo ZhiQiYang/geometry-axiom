@@ -5,6 +5,8 @@
 
 **T19 證據界線**（#455 留言 7175170874）：腳本修正後未重跑，既有收據由修正前的腳本產生。本次只測啟停邏輯、以既有檔案核對數據，沒有重走 T6 的 bridge／瀏覽器診斷。下文的 PID、截圖、`PASS` 和結束碼都是 T6 紀錄，不是 T19 的執行結果。
 
+**T31 證據界線**（#455 留言 7192147482）：原 PR 說明的「27 檔、沒有改測試」描述 T6 初版；到第二輪受審的 `03a84844` 是 29 檔，多出 T19 的 `owned_server.py` 與 `test_serve_wt.py`。T31 改診斷腳本並新增走查身分隔離測試，沒有改產品或產品測試。兩支走查已對本次啟動的服務重跑，結果見下方「如何安全啟停與走查」；未重跑整套三場景診斷。庫內 T6 收據、日誌與截圖都未覆寫。
+
 ## 結論（先看這裡）
 
 #449 列的六個症狀**不是同一個根因**。共有三個根因，另有兩項跟派生宿主無關，是一般畫面本來就沒有的呈現功能：
@@ -158,22 +160,35 @@ demo-two-timbers.scene（對照）  readOnly true
 3. **B（S3、S6）**：這不是一行修得好的 bug。前端需要知道「面 1 的鋪排 1 產生了派生宿主 2」：`surfaces`（或 `objects`）帶出派生宿主的 `derivedFillId` 與來源 boundary id；面 1 面內至少要能列出／切換到派生宿主上的角材與主格，或提供以 placement id 開的唯讀派生宿主工作區。不可以把角材搬回 placement 1、不可以把 placement 2 改成普通 rect、不可以讓 `feSurf` 把兩個 id 當同一個（D4／R41 的 typed 宿主語意要保留）。這需要畫面設計，適合放在 A2。
 4. **D（S4、S7）**：不屬於派生宿主修正。若需求要求「物件畫布看得到角材」，那是新的呈現功能；三視圖說明可以直接用 `references.timbers[].geometry` 的 length／A／B。建議在需求帳把這兩項和派生宿主缺口分開記，以免修了 A 之後仍被當成同一缺口未修。
 
-## T19：如何安全啟停診斷服務
+## T19／T31：如何安全啟停與走查
 
-舊啟動腳本在建置前依命令列片段停服務，可能誤停同帳號的其他工作；沒有證據可判定 T6 當時是否誤停。修正版不用名稱或埠號找行程，也不沿用已占用的埠。啟停範例（從 repo 根目錄、非 root、Node 24、支援 pidfd 的 Linux 執行）：
+舊啟動腳本在建置前依命令列片段停服務，可能誤停同帳號的其他工作；沒有證據可判定 T6 當時是否誤停。修正版不用名稱或埠號找行程，也不沿用已占用的埠。從 repo 根目錄執行；需要非 root、Node 24、可載入的 `playwright`、Chrome 與支援 pidfd 的 Linux。`WT` 指向要走查的工作樹，`TMPDIR` 指向暫存目錄。
 
 ```sh
-run=$(mktemp -d "${TMPDIR:?}/t6.XXXXXX")
-launcher=evidence/diag-derived-host-20261126/scripts/serve-wt.sh
-"$launcher" "$WT" 18891 "$run/fb"         # fb 必須還不存在；--probe 成功且 PID 相符才可開始 UI 走查
-# 走查結束後，用原來的三個參數明確停止
-"$launcher" --stop "$WT" 18891 "$run/fb"
+(
+  set -eu
+  run=$(mktemp -d "${TMPDIR:?}/t6.XXXXXX")
+  scripts=evidence/diag-derived-host-20261126/scripts
+  export GEOMETRY_FEEDBACK_DIR="$run/fb"   # 必須是本次啟動的新目錄
+  "$scripts/serve-wt.sh" "$WT" 18891 "$GEOMETRY_FEEDBACK_DIR"
+  trap '"$scripts/serve-wt.sh" --stop "$WT" 18891 "$GEOMETRY_FEEDBACK_DIR"' EXIT
+  OUT="$run/repro" node "$scripts/walk_repro.js"
+  OUT="$run/control" SCENE="$WT/demo-two-timbers.scene" node "$scripts/walk_control.js"
+)
 ```
 
 `scripts/owned_server.py` 從自己啟動的子行程取得 PID 和 `/proc` 啟動時間，記在私有的 `fb/server-pid.json`；`start_local.py` 會以同一 PID 換成 `serve.py`。停止時核對該次目錄、開機識別、工作樹、PID 的啟動時間與完整命令列，訊號只送給核對過的 pidfd。紀錄不在、PID 不在或身分不符都報錯，不改找別支行程。重跑請用新的回報目錄。
 
+兩支走查共用 `lib.js` 的 `start()`。`APP_URL` 省略時取紀錄內的埠；若指定，只接受該埠的 `http://127.0.0.1` 或 `http://localhost` 首頁。分兩步核對：
+
+1. 啟動器在 `--probe` 成功且 PID 符合子行程後，才把探測到的 `version` 與 `session` 寫回同一份私有紀錄。走查載入 App 前，只對目標做 `GET /runtime`（不跟隨重新導向）；要求 `geometry-runtime/1`、`fresh:true`，且 PID、根目錄、版本與 session 逐項相符。`/runtime` 不回報 Linux 啟動時間；同一 PID、同一工作樹重啟也會有新的服務 session。停止行程仍用原本的 `/proc` 啟動時間與 pidfd 核對。
+2. 載入 App 後，再核對首頁沒有重新導向、網址正確，且實際文件回應的 `X-Geometry-Session`、`X-Geometry-Version` 與紀錄相符。任何一步缺件、失敗或不符即非 0 結束，不執行新專案或開場景。不可拿 T6 的 `runtime-probe.json` 或 T19 的舊行程紀錄代替本次啟動。
+
+**T31 驗證範圍**：`test_serve_wt.py` 驗證啟動器留下識別欄位；`node --test scripts/test_walk_identity.js`（在本診斷目錄執行）用只有 `/runtime` 與空頁的本機服務區分「探測不符」和「探測相符、頁面不符」。兩支實際入口指定錯埠都以 2 結束。另以 `d21047a4` 的工作樹啟動專用服務，兩支走查輸出到全新暫存目錄：主組 `SUMMARY 5 / 5 ALL PASS`；對照組面 1 有 5 支、5 個命中點，`readOnly:true`。這是本次走查，不是 T6 歷史檔的來源證明。
+
 ## 未驗項
 
+- **第二輪審查其餘界線**：未修改 PR #459 的線上說明。`--stop` 成功只驗到已核對的服務 PID 退出，未驗其 bridge 與暫存檔是否全數清理。三場景診斷的 `--ui-scene` 仍按路徑選擇、未用 `exportSceneSha256` 守住收據與輸入的配對；本次未測錯配。兩項都不表示 T6 實際有殘留或配錯。
 - **T19 啟停／走查**：啟停的隔離測試用暫存子行程模擬 `exec`，未啟動真實 T6 服務。未以新版腳本重建 bridge、重走三個場景或 Chrome UI，也未驗目前 main 或 CI。瀏覽器預設開／存檔路徑與末筆歷史改變的原因未驗。
 - **三組場景的守門**：舊 `diag-output.json` 的總 `ok` 包含載入與前後 dump 相等，但 UI 比對只針對完整匯出場景。舊 `ok` 本身不保證最小場景仍有 1 支或對照組仍有 5 支。新版上述命令以 `--t6-cases` 要求完整／最小的派生宿主都是 2，各承載 53／1 支角材與 1 個網格；一般宿主是 1，承載 5 支、0 個網格、沒有派生宿主。任一不符則 `t6CasesMatch` 和總 `ok` 都為 false。本次僅拿舊數據核對這項判定，不是新的 bridge 查詢。
 - **產物來源（審查 F，無法判定）**：T19 重算了庫內 `.gcanvas` 整包及場景 bytes；整包吻合走查收據，內含 `world.scene` 也與 `manifest.json` 的 `sceneHash` 相符。內容相符不證明歷史產物未被手改。9 張 JPEG 和封裝都在庫內，但沒有當次逐圖雜湊或另一份獨立原件；本次未解碼逐圖核畫面、未在 App 冷開封裝，也沒有第二份 bridge／UI 動態輸出佐證來源。
