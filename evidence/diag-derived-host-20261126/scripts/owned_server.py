@@ -47,6 +47,12 @@ def stop_owned(record, wt, port, fb):
     print(f'已停止本次測試服務 PID {pid}')
 
 
+def write_record(state, record):
+    partial = state.with_suffix('.tmp')
+    partial.write_text(json.dumps(record))
+    partial.replace(state)
+
+
 def start(wt, port, fb, state):
     # 建置前先拒絕占用；start_local 本身會在 exec 前重查，最後仍以服務 bind 為準。
     with socket.socket() as sock:
@@ -64,17 +70,18 @@ def start(wt, port, fb, state):
     record = {'pid': child.pid, 'startTicks': start_ticks(Path('/proc') / str(child.pid)),
               'boot': BOOT_ID.read_text().strip(), 'worktree': str(wt), 'port': port, 'feedback': str(fb)}
     try:
-        partial = state.with_suffix('.tmp')
-        partial.write_text(json.dumps(record))
-        partial.rename(state)
+        write_record(state, record)  # 先可安全停止；尚不能用來走查。
         for _ in range(180):
             if child.poll() is not None:
                 raise RuntimeError(f'自己的服務 PID {child.pid} 已退出；見 {fb}/server.log')
             probe = subprocess.run([sys.executable, 'geometry-web/runtime_version.py', '--probe', str(port)],
                                    cwd=wt, capture_output=True, text=True)
             if probe.returncode == 0:
-                if json.loads(probe.stdout)['pid'] != child.pid or child.poll() is not None:
+                runtime = json.loads(probe.stdout)
+                if runtime['pid'] != child.pid or child.poll() is not None:
                     raise RuntimeError('探測到的服務不是本次子行程，拒絕沿用')
+                # --probe 已核對工作樹、版本與新鮮度；session 識別此次服務生命期。
+                write_record(state, dict(record, session=runtime['session'], version=runtime['version']))
                 print(probe.stdout, end='')
                 return
             time.sleep(1)

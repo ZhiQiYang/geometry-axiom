@@ -1,6 +1,6 @@
 // 對照組：一般承載面（placement 1 on boundary 1）上的角材，在同一版 App 的物件畫布與面內是否看得到。
 // 只經 UI：檔案 → 開啟場景檔…（demo-two-timbers.scene）→ 物件畫布 → 面 1「進入面內工作區」。唯讀量測。
-// 用法：APP_URL=http://localhost:18891/ OUT=<輸出目錄> SCENE=<repo>/demo-two-timbers.scene node walk_control.js
+// 用法：GEOMETRY_FEEDBACK_DIR=<本次啟動的 fb> OUT=<輸出目錄> SCENE=<repo>/demo-two-timbers.scene node walk_control.js
 const L = require('./lib.js'), U = require('./ui.js');
 const fs = require('fs'), path = require('path');
 const O = process.env.OUT;

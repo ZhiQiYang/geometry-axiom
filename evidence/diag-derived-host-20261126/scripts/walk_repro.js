@@ -1,7 +1,7 @@
 // T6 根因診斷：R03 第二片（flat-ceiling/2 固定治具）只經 UI 重現「確認後角材在物件畫布與面內看不到」等症狀，
 // 並在確認後只讀蒐集各畫面的資料來源（原生唯讀查詢回覆＋前端狀態），另存 .gcanvas 與匯出 .scene。
 // 改自 evidence/l4-cloud-20261122r03a/scripts/walk_r03a.js 的第一階段（只留：建面 → 板材 → X → 配方 → 明選 → 預覽 → 確認 → 一般畫面 → 存檔）。
-// 用法：APP_URL=http://localhost:18891/ OUT=<輸出目錄> node walk_repro.js
+// 用法：GEOMETRY_FEEDBACK_DIR=<本次啟動的 fb> OUT=<輸出目錄> node walk_repro.js
 // 場景變更經 UI；noPickers 會停用瀏覽器的開存檔 picker，強制走後備路徑。其餘 evaluate 讀畫面、換算座標、送唯讀查詢（dump、objects、surfaces、references、
 // panel-fill-read、engineering-read、identity-read、newid）與讀前端變數（oc.*、feSid、ParameterUI.usage）。
 const L = require('./lib.js'), U = require('./ui.js');
@@ -115,8 +115,8 @@ async function generalView(p, label) {
 }
 
 (async () => {
-  const { b, p, errs, version } = await L.start(); R.browser = version; R.url = process.env.APP_URL;
-  R.runtime = await p.evaluate(() => fetch('/runtime').then(r => r.json()).catch(e => String(e)));
+  const { b, p, errs, version, runtime } = await L.start();
+  R.browser = version; R.url = p.url(); R.runtime = runtime;
   await L.newProject(p);
   // 1. 矩形面 3740×3301 → 放置原點 0,0,2500、u +x、v +y
   await drawRect(p, 700, 300, 3740, 3301, 2500);

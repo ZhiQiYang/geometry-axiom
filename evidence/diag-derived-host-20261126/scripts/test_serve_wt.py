@@ -24,7 +24,7 @@ class OwnedServiceTest(unittest.TestCase):
             (web / 'serve.py').write_text(
                 "import os, time\nfrom pathlib import Path\nPath('ready').write_text(str(os.getpid()))\ntime.sleep(30)\n")
             (web / 'runtime_version.py').write_text(
-                "import json\nfrom pathlib import Path\nprint(json.dumps({'pid': int(Path('ready').read_text())}))\n")
+                "import json\nfrom pathlib import Path\nprint(json.dumps({'pid': int(Path('ready').read_text()), 'session': 'test-session', 'version': 'test-version'}))\n")
 
             def run(*opts, port, ok, contains=''):
                 r = subprocess.run([SCRIPT, *opts, wt, str(port), fb], text=True, capture_output=True,
@@ -45,6 +45,7 @@ class OwnedServiceTest(unittest.TestCase):
             original = json.loads(state.read_text())
             self.assertEqual(pid, original['pid'])
             try:
+                self.assertEqual((original['session'], original['version']), ('test-session', 'test-version'))
                 for bad in [dict(original, startTicks=original['startTicks'] + 1),
                             dict(original, port=1024 if port != 1024 else 1025)]:
                     state.write_text(json.dumps(bad))
