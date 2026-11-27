@@ -152,17 +152,17 @@ async function realHost(options={}){
   const requests=[],receipts=new Map();let allowReceipts=false;
   env.fetch=async(route,request)=>{
     const body=JSON.parse(request.body);requests.push({route,body:clone(body),headers:clone(request.headers)});
-    const answer=value=>({ok:true,headers:{get:name=>name==='X-Geometry-Session'?'origin-service':null},json:async()=>clone(value)});
+    const answer=(value,stale=false)=>({ok:!stale,headers:{get:name=>name==='X-Geometry-Session'?'origin-service':name==='X-Geometry-Stale'&&stale?'1':null},json:async()=>clone(value)});
     if(body.receipt){if(!allowReceipts)throw Error('receipt temporarily unavailable');return answer({ok:true,result:receipts.get(body.receipt)});}
     let result;if(route.endsWith('/suggest'))result=suggestion();else if(route.endsWith('/select'))result=preview(7);
-    else if(body.cmd.startsWith('pf6-confirm '))result={ok:true,history_changed:true,revision:'13'};
+    else if(body.cmd.startsWith('pf6-confirm '))result=options.confirmResult||{ok:true,history_changed:true,revision:'13'};
     else if(body.cmd.startsWith('pf6-cancel '))result={ok:true,cancelled:true,history_changed:false,revision:'12'};
     else if(body.cmd.startsWith('line canvas-pos '))result={ok:true,history_changed:false,revision:'12'};
     else throw Error('unexpected '+body.cmd);
     const id=body.requestId||request.headers['X-Geometry-Request-Id'];receipts.set(id,result);
     if(options.selectGate&&route.endsWith('/select'))await options.selectGate;
     if(options.lost==='confirm'&&body.cmd?.startsWith('pf6-confirm ')||options.lost==='select'&&route.endsWith('/select'))throw Error('response lost after native result');
-    return answer(result);
+    return answer(result,options.stale&&body.cmd?.startsWith('pf6-confirm '));
   };
   require('node:vm').runInNewContext(code+'\nglobalThis.shipping={apiRequest,panelFillBuilderPost,recoverApiResults};',env);
   const s=new M.Session({host:w,transport:{post:(...args)=>env.shipping.panelFillBuilderPost(...args),command:cmd=>env.shipping.apiRequest(cmd)},boundaryId:1,fillId:1,revision:'12',snapshot:state(),sources:{}});
@@ -267,5 +267,37 @@ test('T36_D28_EXISTING_TIMBER',async()=>{
     {...row.A.source,id:''},{...row.A.source,extra:1}]){
     const bad=clone(row);bad.A.source=source;const projected=view();projected.timbers=[{id:99,before:row,after:bad}];
     assert.throws(()=>M.validateView(projected,{revision:'12',setKey,generation:'1',phase:'ANALYSIS',input,selected:[]}),/角材尺寸/);
+  }
+});
+
+// 實際的 apiRequest 會把 preview owner 移交給 confirmation；session.pending 不等於仍持有共享鎖。
+for(const kind of ['stale','sealed','recovered-sealed'])test('T39_CONFIRM_NOT_DELIVERED '+kind,async()=>{
+  const recovered=kind==='recovered-sealed',stale=kind==='stale';
+  const h=await mountedBuilder({lost:recovered?'confirm':null,stale,
+    confirmResult:{ok:false,error:stale?'版本不符':'操作未送達，場景未變更；請重新操作。'}});
+  const before=h.w.history.undo.length;await selected(h);await h.s.confirm();
+  if(recovered){
+    assert.equal(h.s.phase,'unknown');assert.equal(h.env.pendingApiResults.size,1);
+    await assert.rejects(h.s.cancel(),/回執/);h.env.connection.phase='loading';h.allowReceipts();await h.recover();
+  }
+  assert.equal(h.s.phase,'cleanup-required','T39_CONFIRM_REJECTION_LOST_CANDIDATE '+kind);
+  assert.equal(h.ui.pending,true);assert.equal(h.s.cleanupToken,'7');assert.equal(h.s.pendingCommand,null);
+  assert.equal(h.s.confirmable,false);await assert.rejects(h.s.confirm(),/候選/);
+  assert.throws(()=>h.w.beginTimberPreview(),/候選/,'T39_SHARED_OWNER_RELEASED_EARLY');
+  assert.throws(()=>h.w.assertTimberPreviewToken(7,'pf6'),/失效/,'T39_STILL_CONFIRMABLE_AT_HOST');
+  h.s.invalidate();await assert.rejects(h.s.edit(),/請先完成/,'T39_ONLY_CANCEL_AFTER_INVALIDATION');
+  h.env.connection.session='different-service';await assert.rejects(h.s.cancel(),/工作階段/);
+  h.env.connection.session='origin-service';await h.ui.retireContext();
+  assert.deepEqual(h.requests.filter(r=>/^pf6-(confirm|cancel) /.test(r.body.cmd)).map(r=>[r.body.cmd,r.body.session]),
+    [['pf6-confirm 7','origin-service'],['pf6-cancel 7','origin-service']],'T39_ONLY_EXACT_CLEANUP');
+  assert.equal(h.ui.pending,false);assert.equal(h.env.pendingApiResults.size,0);
+  assert.equal(h.w.history.undo.length,before);const next=h.w.beginTimberPreview();h.w.finishTimberPreview(next);
+});
+
+// 對照：這些拒絕在原生 cmd_pf6_confirm 內已 pf6_pending_clear，不留假的待清理候選。
+test('T39_NATIVE_CLEARED_CONFIRM',async()=>{
+  for(const code of ['EXPIRED','INVALID','CAPACITY']){
+    const h=await selected(await realHost({confirmResult:{ok:false,code,error:'World unchanged'}}));
+    await h.s.confirm();assert.equal(h.s.phase,'rejected');assert.equal(h.s.pending,false);h.w.assertAssemblyIdle();
   }
 });

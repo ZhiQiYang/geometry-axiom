@@ -33,7 +33,7 @@ async function withOwnService(port,visit){
 }
 async function run(url,width,mode){
   const {port}=new URL(url);assert.ok(port&&url===`http://127.0.0.1:${port}/`);assert.ok([390,1400].includes(width));
-  assert.ok(['suggested','selected','d28','details'].includes(mode));
+  assert.ok(['suggested','selected','d28','details','stale-confirm','sealed-confirm'].includes(mode));
   await withOwnService(port,runtime=>exercise(url,width,mode,runtime));
 }
 async function exercise(url,width,mode,runtime){
@@ -101,7 +101,28 @@ async function exercise(url,width,mode,runtime){
         for(const [name,v] of [['fragment',after.panelFills[0].derived.tiles[0].fragments[0].key],['edge',after.derivedPlacements[0].derived.components[0].edges[0].key]])assert.ok(text.includes(JSON.stringify(v)),'T36_DOM_SELECTED_DETAILS '+name);
       }
     }
-    if(mode==='suggested'||mode==='selected'){
+    if(mode==='stale-confirm'||mode==='sealed-confirm'){
+      // 只改確認的送達條件；不偽造服務拒絕、封存回執或原生取消結果。
+      const confirms=[];
+      await page.route('**/api',route=>{
+        const req=route.request(),cmd=req.postDataJSON()?.cmd;
+        if(!cmd?.startsWith('pf6-confirm '))return route.continue();
+        confirms.push(cmd);
+        return mode==='sealed-confirm'?route.abort():route.continue({headers:{...req.headers(),'x-geometry-version':'outdated-test-page'}});
+      });
+      const rejection=page.waitForResponse(r=>r.url().endsWith('/api')&&(mode==='stale-confirm'?
+        r.request().postDataJSON()?.cmd==='pf6-confirm '+token:!!r.request().postDataJSON()?.receipt));
+      await action('confirm').click();const rejected=await rejection;
+      if(mode==='stale-confirm')assert.equal(rejected.headers()['x-geometry-stale'],'1');
+      else assert.equal((await rejected.json()).result.error,'操作未送達，場景未變更；請重新操作。');
+      await page.waitForFunction(()=>['rejected','cleanup-required'].includes(document.querySelector('[data-pf6-status]')?.dataset.pf6Status));
+      assert.equal(await page.locator('[data-pf6-status]').getAttribute('data-pf6-status'),'cleanup-required','T39_BROWSER_LOST_CANDIDATE');
+      assert.ok(await action('confirm').isDisabled()&&await action('suggest').isDisabled()&&await action('preview').isDisabled());
+      const cancelled=page.waitForResponse(r=>r.url().endsWith('/api')&&r.request().postDataJSON()?.cmd==='pf6-cancel '+token);
+      await action('cancel').click();assert.equal((await (await cancelled).json()).cancelled,true,'T39_NATIVE_CANDIDATE_NOT_RELEASED');
+      assert.deepEqual(confirms,['pf6-confirm '+token]);
+      console.log(`T39_BROWSER ${width}px ${mode}: confirm=1; native cancelled=true`);
+    }else if(mode==='suggested'||mode==='selected'){
       // 保存和開檔在持租約時原本就必須拒絕；不能只把 pending 改成 false。
       await assert.rejects(page.evaluate(()=>ReferenceWorkspace.exportBytes()),/角材建議/);
       await assert.rejects(page.evaluate(()=>ReferenceWorkspace.openProject(()=>{throw Error('不應進入讀檔');})),/角材候選尚未結束，請先確認或取消。/);
