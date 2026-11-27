@@ -82,7 +82,7 @@ WITHDRAWALS = [
           'return false; // PF6_APP_CANVAS_POS_EXPIRES')]),
     ('PF6_APP_OMIT_WORLD_GEOMETRY_GUARD', 'PF6_APP_MISSING_WORLD_GEOMETRY_IS_NOT_COMPLETE',
      'PF6_APP_COMPLETE_GEOMETRY origin', [
-         ("check(view.timbers.every(row=>timberState(row.before)&&timberState(row.after)&&!(row.before===null&&row.after===null)),'完整投影缺少角材尺寸、中線或世界幾何。'); // PF6_APP_COMPLETE_GEOMETRY",
+         ("check(view.timbers.every(row=>timberState(row.before,true)&&timberState(row.after,row.before!==null)&&!(row.before===null&&row.after===null)),'完整投影缺少角材尺寸、中線或世界幾何。'); // PF6_APP_COMPLETE_GEOMETRY",
           '/* PF6_APP_COMPLETE_GEOMETRY withdrawn */')]),
     ('PF6_APP_CANCEL_UNSENT_AS_UNKNOWN', 'PF6_APP_REAL_UNSENT_CANCEL_WAITS_FOR_CONNECTION_NOT_A_PHANTOM_RECEIPT',
      'PF6_APP_CANCEL_UNSENT_IS_NOT_UNKNOWN', [

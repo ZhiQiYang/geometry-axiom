@@ -21,10 +21,14 @@
     check(keys(input,['fillId','A','B','roles'])&&input.fillId===fillId&&source(input.A,'A')&&source(input.B,'B')&&
       keys(input.roles,['u','v'])&&['primary','secondary'].includes(input.roles.u)&&['primary','secondary'].includes(input.roles.v)&&input.roles.u!==input.roles.v,'請明選正式鋪排、A／B 來源與主副支方向。');
   }
-  function dimension(d,field){return d&&source(d.source,field)&&exact(d.effective)&&BigInt(d.effective)>0n&&d.unit==='mm'&&typeof d.name==='string';}
-  function timberState(row){
-    if(row===null)return true;const g=row?.geometry;
-    return ['boundary','primary','secondary'].includes(row?.role)&&dimension(row.A,'A')&&dimension(row.B,'B')&&g&&uint(g.surface)&&
+  // D28 的本面套用是既有角材的讀取格式，不是 D45 表單可選的新輸入。
+  function dimension(d,field,existingRole){
+    const value=d?.source,application=existingRole&&keys(value,['kind','id','field'])&&value.kind==='application'&&
+      typeof value.id==='string'&&value.id.length>0&&value.field===existingRole+'.'+field;
+    return d&&(source(value,field)||application)&&exact(d.effective)&&BigInt(d.effective)>0n&&d.unit==='mm'&&typeof d.name==='string';}
+  function timberState(row,existing){
+    if(row===null)return true;const g=row?.geometry,role=existing&&row?.role;
+    return ['boundary','primary','secondary'].includes(row?.role)&&dimension(row.A,'A',role)&&dimension(row.B,'B',role)&&g&&uint(g.surface)&&
       ['centerline','length','u','v','A','B'].every(name=>exact(g[name]))&&BigInt(g.length)>0n&&['+u','-u','+v','-v'].includes(g.dir)&&['+n','-n'].includes(g.side)&&
       Array.isArray(g.origin)&&g.origin.length===3&&g.origin.every(exact)&&Array.isArray(g.axes)&&g.axes.length===3&&g.axes.every(axis=>Array.isArray(axis)&&axis.length===3&&axis.every(exact));
   }
@@ -52,7 +56,7 @@
     check(Array.isArray(view.timbers)&&new Set(view.timbers.map(row=>row?.id)).size===view.timbers.length&&view.timbers.every(row=>row&&uint(row.id)&&'before' in row&&'after' in row),'缺少新舊角材完整影響。');
     if(view.completeForScope){
       check(c.completeForScope&&c.errors.length===0&&['A','B'].every(field=>dimension(view.input[field],field)),'完整性旗標與來源／承接結果矛盾。');
-      check(view.timbers.every(row=>timberState(row.before)&&timberState(row.after)&&!(row.before===null&&row.after===null)),'完整投影缺少角材尺寸、中線或世界幾何。'); // PF6_APP_COMPLETE_GEOMETRY
+      check(view.timbers.every(row=>timberState(row.before,true)&&timberState(row.after,row.before!==null)&&!(row.before===null&&row.after===null)),'完整投影缺少角材尺寸、中線或世界幾何。'); // PF6_APP_COMPLETE_GEOMETRY
       if(view.host.id!==null){const h=c.after.derivedPlacements.find(r=>r.id===view.host.id);check(h?.definition.fillId===input.fillId&&dimension(view.host.h,'B')&&same(h.definition.h,view.host.h.source)&&h.derived.h===view.host.h.effective,'宿主來源與候選有效值不符。');}
       if(view.grid.id!==null){const g=c.after.fillGrids.find(r=>r.id===view.grid.id);check(g?.definition.hostId===view.host.id&&g.definition.fillId===input.fillId&&g.definition.mainAlong===view.grid.mainAlong,'主格來源與候選不符。');}
     }
