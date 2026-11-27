@@ -57,7 +57,9 @@ async function run(url,width,mode){
       await page.waitForFunction(()=>!document.querySelector('[data-pf6-action="confirm"]').disabled);
       if(mode==='details'){
         const after=preview.appView.uiContract.after,area=page.locator('.pf6-results');
-        const text=await area.textContent();
+        const summary=area.locator('summary').filter({hasText:'裁片與來源明細'});
+        assert.equal(await summary.count(),1,'T36_DOM_SELECTED_DETAILS disclosure');await summary.click();
+        const text=await summary.locator('..').innerText();
         for(const [name,v] of [['fragment',after.panelFills[0].derived.tiles[0].fragments[0].key],['edge',after.derivedPlacements[0].derived.components[0].edges[0].key]])assert.ok(text.includes(JSON.stringify(v)),'T36_DOM_SELECTED_DETAILS '+name);
       }
     }
