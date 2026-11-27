@@ -98,6 +98,26 @@ test('R05_F4B_INCOMPLETE_READ: incomplete or missing facts never certify equal s
   const completeMissing=clone(e.live);completeMissing.nodes=completeMissing.nodes.filter(n=>n.key!=='timber:0');
   completeMissing.timberSupports.entries=[];
   assert.equal(checks(e,completeMissing).rows[0].localIncarnationComparison[0].status,'absent','R05_F4B_ABSENT_REQUIRES_COMPLETE_READ');
+
+  // 模擬兩端均為角材面的回覆形狀（不是新原生夾具）。先確認有根時一致，
+  // 再只移除 live placement；兩端支承及其目標角材仍在。
+  const faces=clone(sourceFixtures.independent);
+  for(const entry of faces.snapshot.timberSupports.entries){
+    for(const [end,face,normal] of [['start','START',1],['finish','END',-1]]){
+      const {surface,stop}=entry[end].relation;
+      entry[end].relation={kind:'timber-face',source:{kind:'timber',id:entry.id===0?4:0},
+        localFace:face,normalWorld:[normal,0,0],owner:null,surface,stop};
+    }
+  }
+  faces.snapshot.timberReferences.timberSupports=clone(faces.snapshot.timberSupports);
+  const withoutPlacement=faces.live;
+  withoutPlacement.timberSupports=clone(faces.snapshot.timberSupports);
+  assert.equal(withoutPlacement.complete,true);
+  assert.equal(checks(faces,withoutPlacement).rows[0].exactSupport,'consistent');
+  withoutPlacement.nodes=withoutPlacement.nodes.filter(n=>n.key!=='placement:0');
+  const row=checks(faces,withoutPlacement).rows[0];
+  assert.equal(row.definition,'missing');
+  assert.equal(row.exactSupport,'unchecked','R05_F4B_EXACT_SUPPORT_REQUIRES_PLACEMENT');
 });
 test('R05_F4B_NO_MERGE_AUTHORITY: repeated saved representations remain independent',()=>{
   const a=sourceSample(),b=clone(a);b.record.id='separate-saved-view';b.record.name='Another view';
