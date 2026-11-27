@@ -255,6 +255,18 @@ window.PanelFillWorkspace = (() => {
     }).join('');
     return `<svg class="pf-layout" role="img" aria-label="原生裁片與有效板縫；支撐狀態另列文字" viewBox="${x} ${y} ${width||1} ${height||1}" preserveAspectRatio="xMidYMid meet"><g class="pf-tiles">${paths}</g><g class="pf-seams">${seams}</g></svg>`;
   }
+  // 供 PF-6 子表單使用：只讀呼叫方的 selected after，不從父表單取正式世界。
+  function projectionDetails(state,fillId){
+    const fill=list(state?.panelFills).find(r=>r.definition.id===fillId),d=fill?.derived;
+    const host=list(state?.derivedPlacements).find(r=>r.definition.fillId===fillId);
+    const grid=list(state?.fillGrids).find(r=>r.definition.fillId===fillId&&r.definition.hostId===host?.id);
+    return `<details><summary>本次候選：裁片與來源明細</summary>
+      ${d&&!d.error?table(['裁片完整鍵','面積 mm²'],list(d.tiles).flatMap(t=>list(t.fragments).map(f=>[f.key,f.area]))):'<p>裁片資料未提供。</p>'}
+      ${table(['有效板縫完整鍵'],list(d?.effectiveSeams).map(seam=>[seam]))}
+      ${host?readableTable('派生宿主：來源與框架',[{definition:host.definition,frame:host.derived?.frame}]):'<p>未提供宿主。</p>'}
+      ${table(['宿主邊完整鍵','起點','終點','固定狀態'],list(host?.derived?.components).flatMap(c=>list(c.edges).map(e=>[e.key,e.start,e.end,e.fixity])))}
+      ${grid?readableTable('來源主格：定義與原生有效值',[{definition:grid.definition,derived:grid.derived}]):'<p>未提供來源主格。</p>'}</details>`;
+  }
   function results(s) {
     if(s.phase==='committed'&&!s.snapshotFresh)return '<p>確認回執已取得；請重新開啟讀取正式來源。本視圖不沿用舊結果。</p>';
     if(s.phase==='editing'&&s.dirty)return '<p>輸入已變更；尚無目前輸入的原生結果。</p>';
@@ -437,7 +449,7 @@ window.PanelFillWorkspace = (() => {
     if(active)invalidate('定義來源已變更；舊候選已失效，請重新開啟。');
   });
   window.addEventListener('space-models-changed',()=>{if(active&&!['confirming','unknown'].includes(active.phase)&&!A.isCurrent(active.owner))invalidate('專案或歷史身分已變更，請重新開啟。');});
-  return {open,render,close,resumeBuilder,invalidate,retireContext,activeFor:bid=>!!active&&active.boundaryId===Number(bid),
+  return {open,render,close,resumeBuilder,projectionDetails,invalidate,retireContext,activeFor:bid=>!!active&&active.boundaryId===Number(bid),
     async reconcileReceipt(result,command){
       const candidates=[...(active?[active]:[]),...retiredSessions];
       for(const session of candidates)if(await session.reconcileReceipt(result,command)){retiredSessions.delete(session);ReferenceWorkspace.present?.();return true;}
