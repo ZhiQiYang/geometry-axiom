@@ -60,9 +60,10 @@ def request(body, ask_bridge, *, mode):
         if version_two:
             template = value['template']
             if (type(template) is not dict or set(template) != {'id', 'version', 'policyFingerprint'}
-                    or template['id'] != 'flat-ceiling' or type(template['version']) is not int
-                    or template['version'] != 2 or not _key(template['policyFingerprint'])):
-                raise ValueError('read/2 需明選完整的 flat-ceiling/2 版本與政策指紋')
+                    or type(template['id']) is not str or type(template['version']) is not int
+                    or (template['id'], template['version']) not in (('flat-ceiling', 2), ('flat-ceiling-rbutt', 1))
+                    or not _key(template['policyFingerprint'])):
+                raise ValueError('read/2 需明選完整的 flat-ceiling/2 或 flat-ceiling-rbutt/1 版本與政策指紋')
         if mode == 'preview':
             revision = value['expectedRevision']
             if (not _u32(value['on']) or not _key(value['contextKey']) or not _key(value['definitionFingerprint'])
