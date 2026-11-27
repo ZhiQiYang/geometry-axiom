@@ -630,6 +630,7 @@ async function recoverApiResults() {
     if (!result.ok) throw new Error("尚未能回復未完成操作，請重試。");
     apiRecoveryNeedsAbort = false;
   }
+  await window.PanelFillBuilderWorkspace?.recoverRetired?.();
   if (recoveringRoom) await window.RoomCollectionWorkspace.settleRecoveredTransaction();
 }
 // 離線只保留物件畫布右鍵的檢視入口；主工作區始終維持原 inert 保護。

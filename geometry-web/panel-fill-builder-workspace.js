@@ -118,7 +118,7 @@ window.PanelFillBuilderWorkspace=(()=>{
       if(key){if(event.type!=='change')return;const selected=v.session.selected.filter(k=>k!==key);if(el.checked)selected.push(key);await v.session.select(selected);return;}
       const pending=v.session.edit();if(field==='primaryAlong')v.draft.primaryAlong=el.value;else{const [slot,name]=field.split('.');v.draft[slot][name]=el.value;if(name==='kind')v.draft[slot].value='';}
       await pending;if(active===v)display();
-    }catch(error){if(active===v){v.session.reason=error.message;display();}}
+    }catch(error){if(active===v){v.session.reason=error.message;display();}}finally{if(v.session.retired)await finishRetirement(v.session);}
   }
   async function back(v){
     if(active!==v)return;active=null;await window.PanelFillWorkspace.resumeBuilder(v.session.boundaryId,v.session.fillId,v.trigger);document.querySelector(`[data-pf-action="suggest-timbers"][data-pf-fill-id="${v.session.fillId}"]`)?.focus({preventScroll:true});ReferenceWorkspace.present?.();
@@ -139,7 +139,7 @@ window.PanelFillBuilderWorkspace=(()=>{
         }
       }
       if(active===v)display();ReferenceWorkspace.present?.();
-    }catch(error){if(active===v){s.reason=(s.phase==='committed'?'已確認，畫面重讀未完成：':'')+error.message;display();}}
+    }catch(error){if(active===v){s.reason=(s.phase==='committed'?'已確認，畫面重讀未完成：':'')+error.message;display();}}finally{if(s.retired)await finishRetirement(s);}
   }
   function open(parent,fillId,trigger){
     if(active)return false;const s=new M.Session({host:ReferenceWorkspace,transport:{post:(path,body,origin)=>panelFillBuilderPost(path,body,origin),command:cmd=>apiRequest(cmd)},boundaryId:parent.boundaryId,fillId,revision:parent.contract.revision,snapshot:parent.snapshot,sources:parent.sources,onChange:display});
@@ -147,12 +147,27 @@ window.PanelFillBuilderWorkspace=(()=>{
   }
   function close(){if(!active)return true;if(active.session.pending){active.session.reason='請先取消或確認角材建議；結果待查時只核對原回執。';display();return false;}active=null;return true;}
   function invalidate(reason){if(active){active.session.invalidate(reason);display();}}
-  function retireContext(){if(!active)return;const s=active.session;active=null;s.retire();if(s.pending)retired.add(s);}
+  async function cleanRetired(s){
+    if(!retired.has(s)||s.busy)return; // 在途及 unknown 只由原操作／原回執結算。
+    if(s.pending){
+      if(s.cleanupToken!==null&&connection.phase==='error')return; // 復連後才送精確取消。
+      await s.cancel();
+    }
+    retired.delete(s);ReferenceWorkspace.present?.();
+  }
+  async function finishRetirement(s){
+    try{await cleanRetired(s);}catch(error){connectionFailed(error.message);}
+  }
+  async function recoverRetired(){for(const s of retired)await cleanRetired(s);}
+  function retireContext(){
+    if(!active)return;const s=active.session;active=null;s.retire();
+    if(s.pending){retired.add(s);return finishRetirement(s);}
+  }
   async function settleRecovered(command,result,origin){
     for(const s of [...(active?[active.session]:[]),...retired]){const handled=/^pf6-(suggest|select) /.test(command)?await s.settlePreviewReceipt(command,result,origin):s.settleRecovered(command,result,origin);if(handled){if(!s.pending)retired.delete(s);display();ReferenceWorkspace.present?.();return true;}}return false;
   }
   function isRecoveryCancel(command){return [...(active?[active.session]:[]),...retired].some(s=>s.owner.session===connection.session&&s.cleanupToken!==null&&command==='pf6-cancel '+s.cleanupToken);}
   window.addEventListener('geometry-definition-changed',event=>{if(active?.session.pendingCommand===event.detail?.command)return;invalidate('幾何定義已改變；舊候選不能確認，請取消並重新明選。');});
   window.addEventListener('space-models-changed',()=>{if(active&&!active.session.busy&&!active.session.current()&&active.session.phase!=='committed')invalidate('原專案、面或來源已改變；請取消並重新開啟。');});
-  return {open,render,close,invalidate,retireContext,settleRecovered,isRecoveryCancel,activeFor:bid=>active?.session.boundaryId===Number(bid),get pending(){return !!active&&(active.session.pending||active.session.phase==='editing')||[...retired].some(s=>s.pending);},get isOpen(){return !!active;},_test:{sourceValue,dimensionText,markup}};
+  return {open,render,close,invalidate,retireContext,recoverRetired,settleRecovered,isRecoveryCancel,activeFor:bid=>active?.session.boundaryId===Number(bid),get pending(){return !!active&&(active.session.pending||active.session.phase==='editing')||[...retired].some(s=>s.pending);},get isOpen(){return !!active;},_test:{sourceValue,dimensionText,markup}};
 })();

@@ -92,7 +92,7 @@
     idle(){if(this.busy||['cleanup-required','confirm-not-sent'].includes(this.phase))throw fail('PF6_PENDING','請先完成本次取消或確認；結果待查時只能核對原回執。');}
     async edit(){this.idle();this.revoke();if(this.cleanupToken!==null)await this.cancelToken();this.release();this.input=null;this.suggestions=null;this.committedDefinitions=[];this.receipt=null;this.selected=[];this.phase='editing';this.reason='輸入已變更；請重新取得建議並明選集合。';this.emit();}
     async suggest(input){
-      this.idle();this.assertCurrent();validateInput(input,this.fillId);this.revoke();if(this.cleanupToken!==null)await this.cancelToken();this.acquire();
+      this.idle();this.assertCurrent();validateInput(input,this.fillId);this.revoke();if(this.cleanupToken!==null){await this.cancelToken();this.assertCurrent();}this.acquire();
       this.input=clone(input);this.suggestions=null;this.committedDefinitions=[];this.receipt=null;this.selected=[];this.phase='suggesting';this.reason='正在取得原生建議；尚未建立任何角材。';this.cancelRequested=false;this.emit();
       const run=(async()=>{try{
         const r=await this.transport.post('/panel-fill/builder/suggest',{schema:'panel-fill-builder-suggest/1',expectedRevision:this.revision,input:clone(input),pre:[],post:[]},this.owner.session);
@@ -126,7 +126,7 @@
       return p;
     }
     async preview(){
-      this.idle();this.assertCurrent();check(this.suggestions?.valid&&this.suggestions.appView.completeForScope,'請先取得完整、有效的建議。');this.revoke();if(this.cleanupToken!==null)await this.cancelToken();this.acquire();
+      this.idle();this.assertCurrent();check(this.suggestions?.valid&&this.suggestions.appView.completeForScope,'請先取得完整、有效的建議。');this.revoke();if(this.cleanupToken!==null){await this.cancelToken();this.assertCurrent();}this.acquire();
       const r=this.suggestions;this.phase='selecting';this.cancelRequested=false;this.reason='正在 fresh 候選重新求值明選集合；尚未寫入。';this.emit();
       const run=(async()=>{try{
         const reply=await this.transport.post('/panel-fill/builder/select',{schema:'panel-fill-builder-select/1',expectedRevision:this.revision,setKey:r.setKey,generation:r.generation,selected:this.selected.slice()},this.owner.session);
