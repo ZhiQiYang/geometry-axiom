@@ -1259,6 +1259,8 @@ int GEOMETRY_BRIDGE_ENTRYPOINT(void)
             cmd_grid_preview(arg);
         } else if (strcmp(line, "grid-rule-query") == 0) {
             cmd_grid_rule_query(arg);
+        } else if (strcmp(line, "grid-rule-candidate-query") == 0) {
+            cmd_grid_rule_candidate_query(arg);
         } else if (strcmp(line, "grid-query") == 0) {
             cmd_grid_query(arg);
         } else if (strcmp(line, "grid-trial-query") == 0) {

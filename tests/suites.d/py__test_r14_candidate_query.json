@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_r14_candidate_query.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_r14_candidate_query.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r14_candidate_query.py"
+  ],
+  "name": "py:test_r14_candidate_query",
+  "order": "new/py__test_r14_candidate_query",
+  "schema": "geometry-native-suite/1"
+}

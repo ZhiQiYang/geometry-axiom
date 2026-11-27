@@ -12,6 +12,23 @@ The original R14 native slice implemented source, query, transaction and `.scene
 
 H1 keeps the existing `geometry-canvas/11` envelope (or a later envelope required by other project content), with capability versioning independent of the container format. The archive scanner tracks only source kinds and keyed-rule presence to require /2 through replay deletion/reset/source conversion; geometry and closure validation remain native. A saved scenario containing /2 also propagates /2 to its enclosing project. Manifest stripping, downgraded scene markers, an older service or mismatched canonical receipt must reject before confirmation, cancelling any prepared token without changing the active project, drafts or history. The model adapter still explicitly refuses both rule versions; unrelated existing models may coexist in the project.
 
+## R14 下一片：確認前候選子線查詢（工作包 P）
+
+本片承接 #57 設計 6436060391 §5.4，提供橋接器的只讀入口；尚未接到 App 預覽畫面，不構成 L4。原有 `grid-rule-query` 的輸出、錯誤、容量與正式場景語意保持不變。
+
+```text
+grid-rule-candidate-query reference|engineering TOKEN side before|after system|binding|grid ID rule K cell I J
+grid-rule-candidate-query reference|engineering TOKEN side before|after system|binding|grid ID rule K rect U0 V0 U1 V1 mode exact|sample limit N
+```
+
+`reference` 只接受目前普通 `line preview` 的有效令牌；`engineering` 只接受 `engineering-preview` 的令牌。組構、斷面、完成面、角材、互頂、PF-6、骨架及匯入候選不代用這兩種令牌。未知種類或目前令牌的種類不符回 `CANDIDATE_KIND`；令牌不符、候選未就緒／無效／已取消／已確認、來源修訂或候選封印失效，以及群組編輯尚未結束，回 `CANDIDATE_STALE`。這些拒絕也不取消或消耗原候選。
+
+成功回覆只有 `ok`、`candidate`、`source`、`metrics`、`query` 五個頂層欄位。`candidate` 是 `{kind,token,side,revision}`，token 為 uint32 JSON 整數，revision 為十進位字串。`source` 使用該側原生 `objects.gridSystems[]` 的完整 DTO，保留卡片、逐欄參數、規則、highwater、配置與套用。`metrics` 是 `{u:{pitch,divisions,innerStep},v:{pitch,divisions,innerStep}}`，由該側已求值的原生軸完整 pitch 與規則計算，並非另一份可編輯來源。`query` 是既有 cell／rect DTO，signed cell 仍傳十進位字串。
+
+查詢借用已封印交易的 `before` 或 `after` World，使用同一 `grid_rule_query_cell/rect` 求值器；不重放 DSL、不建新交易、不改 live World、修訂、歷史、候選令牌或候選內容。兩側獨立查找：新增規則的 before、已刪規則的 after，或該側不存在的目標，回 `QUERY_NOT_FOUND`，不改查 live 或另一側。其他語法、selector、數值與容量錯誤沿用原查詢錯誤及已知 required counts；失敗回覆不夾帶成功幾何。零可見段的合法來源規則仍可查詢。
+
+system／binding 的線 `ref` 仍為 null。候選 applied-grid 的 tuple 只作該候選內的差異識別；不因 tuple 在回覆內就成為正式 World 的可用引用。App 後續接線須保留候選 envelope 並禁止候選線建立正式依賴；確認後再查 live exact query 取得正式引用。此 transport 不增加幾何能力或保存格式，候選、令牌、指標與展開線不寫進場景。
+
 ## Frozen native interface
 
 All CRUD goes through existing `line` / `preview` / `confirm TOKEN` / `cancel-preview` and the same candidate World, revision and history. No second solver, token or history.
