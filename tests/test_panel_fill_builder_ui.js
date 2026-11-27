@@ -308,3 +308,16 @@ test('PF6_UI14_LEGACY_HIDDEN: an exact old five-action service stays usable and 
   await env.dispatch({disabled:false,dataset:{pfAction:'suggest-timbers',pfFillId:'1'}});
   assert.equal(env.opened.length,0,'PF6_UI14_LEGACY_CANNOT_DISPATCH');
 });
+
+test('T36_SELECTED_DETAILS 逐片、宿主邊及來源主格來自明選候選',()=>{
+  const v=candidate(),after=v.session.candidate.appView.uiContract.after,d=after.panelFills[0].derived;
+  const loop=[['0','0'],['1','0'],['1','1'],['0','1']];
+  d.tiles=[{i:'-2',j:'1',key:[1,'-2','1'],body:['0','0','1','1'],whole:true,
+    fragments:[{key:[1,'-2','1',0],outer:loop,holes:[],area:'1'}]}];d.tileCount=d.wholeCount=d.fragmentCount=1;
+  after.derivedPlacements[0].derived.components=[{outline:loop,holes:[],edges:[{
+    key:[['boundary',8,71],['boundary',8,72]],start:loop[0],end:loop[1],fixity:'FIXED'}]}];
+  after.fillGrids[0].derived.axes.v.baseIndex='-312';
+  const html=text(workspace().markup(v)).replaceAll('&quot;','"');
+  for(const [name,value] of [['fragment', '[1,"-2","1",0]'],['edge','[["boundary",8,71],["boundary",8,72]]'],['grid','-312']])
+    assert.ok(html.includes(value),'T36_SELECTED_DETAILS_MISSING '+name);
+});
