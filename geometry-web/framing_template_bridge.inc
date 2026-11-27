@@ -3,10 +3,13 @@
  * Private IDs are chosen against the candidate, never consumed by preview. */
 #include "../geometry-templates/woodworking/native/flat_ceiling.h"
 #include "../geometry-templates/woodworking/native/flat_ceiling_jig.h"
+#include "../geometry-templates/woodworking/native/flat_ceiling_notch.h"
 typedef struct {
     WoodFlatParameters parameters;WoodFlatPlan plan;
+    WoodNotchPlan notch;
     uint32_t version;char candidate_fingerprint[65];
     uint32_t boundary,on,finish,fill,host,grid,ids[WOOD_FLAT_MEMBERS],guides[WOOD_FLAT_LINES];
+    bool notch_placed[WOOD_FLAT_MEMBERS];
     EngVersionRef panel;ParameterRef threshold;
     const World *before;const char *failure_code;
 } FramingTemplateCall;
@@ -37,16 +40,19 @@ static void framing_template_defaults(void)
 static void cmd_framing_template_read(const char *path)
 {
     GeoJson j;char *text;if(!framing_template_document(path,&j,&text))return;
-    uint32_t boundary,version=1;char hash[65];const SpaceBoundarySurface *surface;
+    uint32_t boundary,version=1;char hash[65];SpaceBoundarySurface read_surface;const SpaceBoundarySurface *surface;
     bool jig=framing_template_word(&j,0,"schema","framing-template-read/2");
+    bool notch=framing_template_word(&j,0,"schema","framing-template-read/3");
     int tpl=geo_json_member(&j,0,"template");
-    bool valid_schema=jig?geo_json_keys(&j,0,"schema,boundaryId,template","")&&
+    bool valid_schema=(jig||notch)?geo_json_keys(&j,0,"schema,boundaryId,template","")&&
         geo_json_keys(&j,tpl,"id,version,policyFingerprint","")&&framing_template_word(&j,tpl,"id","flat-ceiling")&&
-        eng_u32(&j,geo_json_member(&j,tpl,"version"),&version,false)&&version==2&&framing_template_word(&j,tpl,"policyFingerprint",WOOD_FLAT_JIG_POLICY):
+        eng_u32(&j,geo_json_member(&j,tpl,"version"),&version,false)&&
+        ((jig&&version==2&&framing_template_word(&j,tpl,"policyFingerprint",WOOD_FLAT_JIG_POLICY))||
+         (notch&&version==3&&framing_template_word(&j,tpl,"policyFingerprint",WOOD_FLAT_NOTCH_POLICY))):
         geo_json_keys(&j,0,"schema,boundaryId","")&&framing_template_word(&j,0,"schema","framing-template-read/1");
     if(!valid_schema||
-       !eng_u32(&j,geo_json_member(&j,0,"boundaryId"),&boundary,false)||!(surface=world_find_boundary(&g_world,boundary))){
-        eng_bridge_error("SCHEMA",jig?"需 framing-template-read/2、明選邊界與完整第二版政策身分":"需 framing-template-read/1 與明選的現有邊界");goto done;
+       !eng_u32(&j,geo_json_member(&j,0,"boundaryId"),&boundary,false)||!(surface=app_boundary_read(&g_world,boundary,&read_surface))){ /* R03B_READ_SURFACE_LIFETIME */
+        eng_bridge_error("SCHEMA",notch?"需 framing-template-read/3、明選邊界與完整第三版政策身分":jig?"需 framing-template-read/2、明選邊界與完整第二版政策身分":"需 framing-template-read/1 與明選的現有邊界");goto done;
     }
     if(!framing_template_context())goto done;
     if(!eng_definition_hash(&g_world,hash)){eng_bridge_error("IO","無法核對 World 定義指紋");goto done;}
@@ -58,7 +64,8 @@ static void cmd_framing_template_read(const char *path)
         printf("%s{\"id\":%u,\"frame\":{\"origin\":[%lld,%lld,%lld],\"u\":\"%s\",\"v\":\"%s\"}}",first?"":",",p->id,
             (long long)p->frame.origin.x,(long long)p->frame.origin.y,(long long)p->frame.origin.z,fs_axis_word(p->frame.axis_u),fs_axis_word(p->frame.axis_v));first=false;
     }
-    if(jig)fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":2,\"policyFingerprint\":\"" WOOD_FLAT_JIG_POLICY "\",\"scope\":\"rectangle-fixed-jig-no-retreat\",\"defaults\":",stdout);
+    if(notch)fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":3,\"policyFingerprint\":\"" WOOD_FLAT_NOTCH_POLICY "\",\"scope\":\"rectangle-or-single-notch-l-centered-no-retreat\",\"defaults\":",stdout);
+    else if(jig)fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":2,\"policyFingerprint\":\"" WOOD_FLAT_JIG_POLICY "\",\"scope\":\"rectangle-fixed-jig-no-retreat\",\"defaults\":",stdout);
     else fputs("]},\"generator\":{\"id\":\"flat-ceiling\",\"version\":1,\"policyFingerprint\":\"" WOOD_FLAT_POLICY "\",\"scope\":\"rectangle-common-policy\",\"defaults\":",stdout);
     framing_template_defaults();fputs("},\"sources\":{\"panels\":[",stdout);first=true;
     for(size_t i=0;i<g_world.wood.engineering.material_count;++i){const EngMaterialVersion *m=eng_material_at(&g_world,i);if(!m||m->kind!=0||!m->has_thickness)continue;
@@ -82,7 +89,8 @@ static bool framing_template_parse(GeoJson *j,FramingTemplateCall *c)
        !geo_json_keys(j,tpl,"id,version,policyFingerprint","")||!framing_template_word(j,tpl,"id","flat-ceiling")||
        !eng_u32(j,geo_json_member(j,tpl,"version"),&version,false)||
        !((version==1&&framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_POLICY))||
-         (version==2&&framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_JIG_POLICY)))||
+         (version==2&&framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_JIG_POLICY))||
+         (version==3&&framing_template_word(j,tpl,"policyFingerprint",WOOD_FLAT_NOTCH_POLICY)))||
        !geo_json_keys(j,p,"panelWidth,panelLength,gap,timberWidth,timberDepth,maxSecondarySpacing","")||
        !geo_json_keys(j,layout,"corner,lengthAlong","")||!geo_json_string(j,geo_json_member(j,layout,"corner"),corner,sizeof corner)||
        !geo_json_string(j,geo_json_member(j,layout,"lengthAlong"),axis,sizeof axis)||
@@ -115,19 +123,31 @@ static bool framing_template_scope(FramingTemplateCall *c)
     const SpaceBoundarySurface *b=world_find_boundary(&g_world,c->boundary);const PlacementSurface *p=world_find_placement(&g_world,c->on);
     c->failure_code="UNSUPPORTED_SCOPE";
     if(!b||!p||p->boundary_id!=c->boundary||p->derived_fill_id)return eng_fail("需明選此邊界的一個既有普通框架來源");
+    if(c->version!=3){
     if(b->hole_count||b->outline.count!=4||g_world.wood.column_count||g_world.wood.beam_count) /* R03_WHOLE_MAIN_SCOPE */
         return eng_fail("第一片只接受無孔矩形、且 World 無柱樑；主支不因障礙被切成多段");
+    }else if(b->hole_count||(b->outline.count!=4&&b->outline.count!=6)||g_world.wood.column_count||g_world.wood.beam_count)
+        return eng_fail("第三片只接受無孔矩形或單一角落凹口 L 形、且 World 無柱樑；U 形與多凹口尚未支援");
     if(p->frame.normal.z!=1||p->frame.axis_u.z||p->frame.axis_v.z)return eng_fail("平釘天花首片只接受結構側朝上的水平框架");
     int64_t bounds[4]={INT64_MAX,INT64_MAX,INT64_MIN,INT64_MIN};
-    for(size_t i=0;i<4;++i){SurfacePoint2 q=b->outline.v[i],r=b->outline.v[(i+1)%4];
-        if(b->outline.fixity[i]!=EDGE_FIXED||(q.u!=r.u&&q.v!=r.v)||(q.u==r.u&&q.v==r.v))return eng_fail("邊界需恰四個正長軸向 FIXED RC 邊");
+    for(size_t i=0;i<b->outline.count;++i){SurfacePoint2 q=b->outline.v[i],r=b->outline.v[(i+1)%b->outline.count];
+        if(b->outline.fixity[i]!=EDGE_FIXED||(q.u!=r.u&&q.v!=r.v)||(q.u==r.u&&q.v==r.v))return eng_fail(c->version==3?"每條輪廓邊都須為正長軸向 FIXED RC 邊":"邊界需恰四個正長軸向 FIXED RC 邊");
         if(q.u<bounds[0])bounds[0]=q.u;if(q.v<bounds[1])bounds[1]=q.v;if(q.u>bounds[2])bounds[2]=q.u;if(q.v>bounds[3])bounds[3]=q.v;
     }
-    for(size_t i=0;i<4;++i){SurfacePoint2 q=b->outline.v[i];if((q.u!=bounds[0]&&q.u!=bounds[2])||(q.v!=bounds[1]&&q.v!=bounds[3]))return eng_fail("不是完整軸向矩形");}
+    if(c->version!=3)for(size_t i=0;i<4;++i){SurfacePoint2 q=b->outline.v[i];if((q.u!=bounds[0]&&q.u!=bounds[2])||(q.v!=bounds[1]&&q.v!=bounds[3]))return eng_fail("不是完整軸向矩形");}
     for(size_t i=0;i<g_world.wood.grid_applications.count;++i)if(g_world.wood.grid_applications.items[i].placement_id==c->on)return eng_fail("來源面已有主格；不覆寫或猜測替換");
     for(size_t i=0;i<g_world.wood.timber_count;++i)if(g_world.wood.timbers[i].placed&&g_world.wood.anchors[i].placement_id==c->on)return eng_fail("來源面已有角材；第一片不重排既有正式物件");
     for(size_t i=0;i<g_world.wood.finish_surfaces.count;++i)if(g_world.wood.finish_surfaces.items[i].boundary_id==c->boundary)
         return eng_fail("邊界已有完成面或已生成骨架；第一片不在另一宿主重複排同一邊界");
+    if(c->version==3){
+        int64_t points[6][2];GeoQuantity threshold;
+        for(size_t i=0;i<b->outline.count;++i){points[i][0]=b->outline.v[i].u;points[i][1]=b->outline.v[i].v;}
+        if(!parameter_value(&g_world,c->threshold,&threshold))return eng_fail(g_parameter_error);
+        bool built=wood_notch_build(points,b->outline.count,&c->parameters,threshold.num,threshold.den,&c->notch);
+        c->plan=c->notch.base;
+        if(!built){c->failure_code=c->plan.code;return eng_fail(c->plan.reason);}
+        return true;
+    }
     bool built=c->version==2?wood_flat_jig_build(bounds,&c->parameters,&c->plan):wood_flat_build(bounds,&c->parameters,&c->plan);
     if(!built){c->failure_code=c->plan.code;return eng_fail(c->plan.reason);}
     /* Existing oracle's R-butt can relocate a near-wall center. That policy
@@ -176,6 +196,52 @@ static bool framing_template_edge_key(const World *w,uint32_t host,int edge,char
 }
 static int64_t framing_template_k(const FramingTemplateCall *c,int axis,Coord coordinate)
 {return (coordinate-c->plan.origin[axis]-c->parameters.panel[axis]-c->parameters.gap/2)/(c->parameters.panel[axis]+c->parameters.gap);}
+/* Derived rings may rotate their first vertex. Match the entire source edge,
+ * not its old array index or a supporting infinite line. */
+static bool framing_template_notch_edge(const World *w,uint32_t host,const SpaceBoundarySurface *boundary,int edge,char key[256],bool *positive)
+{
+    const PlacementSurface *p=world_find_placement(w,host);
+    if(!p||p->component_count!=1||edge<0||(size_t)edge>=boundary->outline.count)return false;
+    SurfacePoint2 a=boundary->outline.v[edge],b=boundary->outline.v[(edge+1)%boundary->outline.count];
+    const PolygonLoop2 *ring=&p->components[0].outline;int match=-1;
+    for(size_t i=0;i<ring->count;++i){SurfacePoint2 q=ring->v[i],r=ring->v[(i+1)%ring->count];
+        bool same=(a.u==q.u&&a.v==q.v&&b.u==r.u&&b.v==r.v)||(a.u==r.u&&a.v==r.v&&b.u==q.u&&b.v==q.v);
+        if(same){if(match>=0)return false;match=(int)i;}}
+    if(match<0||!framing_template_edge_key(w,host,match,key))return false;
+    if(positive){SurfacePoint2 q=ring->v[match],r=ring->v[(match+1)%ring->count];*positive=q.u==r.u?r.v>q.v:r.u>q.u;}
+    return true;
+}
+static bool framing_template_notch_member(World *w,FramingTemplateCall *c,size_t k,const SpaceBoundarySurface *boundary)
+{
+    const WoodFlatMember *m=&c->plan.members[k];const WoodNotchSource *s=&c->notch.source[k];
+    const char *roles[]={"boundary","primary","secondary","custom"};
+    char text[4096],anchor[256],stops[2][256];bool positive=true;int axis=m->axis,cross=1-axis;
+    if(s->role<0||s->role>3)return eng_fail("R03B: invalid candidate role");
+    WORLD_NEXT_ID(c->ids[k],w->wood.timbers,w->wood.timber_count,false);
+    if(s->role==3)snprintf(text,sizeof text,"timber %u %lld %lld role custom priority %d",c->ids[k],(long long)c->parameters.width,(long long)c->parameters.depth,s->priority);
+    else snprintf(text,sizeof text,"timber %u %lld %lld role %s",c->ids[k],(long long)c->parameters.width,(long long)c->parameters.depth,roles[s->role]);
+    if(!framing_template_line(w,text))return false;
+    if(s->anchor_edge>=0){
+        if((size_t)s->anchor_edge>=boundary->outline.count)return eng_fail("R03B: candidate edge is outside source ring");
+        char key[256];if(!framing_template_notch_edge(w,c->host,boundary,s->anchor_edge,key,&positive))return eng_fail("R03B: exact derived edge is unavailable");
+        snprintf(anchor,sizeof anchor,"at-face %.240s",key);
+    }else if(m->kind==3){
+        size_t mark=0;while(mark<c->plan.mark_count&&c->plan.marks[mark]!=m->center)++mark;
+        if(mark==c->plan.mark_count)return eng_fail("R03B: accepted jig mark has no source");
+        snprintf(anchor,sizeof anchor,"at-line guide %u",c->guides[mark]);
+    }else snprintf(anchor,sizeof anchor,"at-line grid %u %c %lld",c->grid,cross?'v':'u',(long long)framing_template_k(c,cross,m->center));
+    for(int end=0;end<2;++end){
+        int index=s->stop_index[end];
+        if(s->stop_kind[end]==0){
+            if(!framing_template_notch_edge(w,c->host,boundary,index,stops[end],NULL))return eng_fail("R03B: candidate wall stop has no exact edge source");
+        }else if(s->stop_kind[end]==1){
+            if(index<0||(size_t)index>=c->plan.count||!c->notch_placed[index])return eng_fail("R03B: candidate stops must precede their user");
+            snprintf(stops[end],sizeof stops[end],"t%u",c->ids[index]);
+        }else return eng_fail("R03B: candidate stop kind is invalid");
+    }
+    snprintf(text,sizeof text,"place %u on %u %s between %s %s %c%c +n",c->ids[k],c->host,anchor,stops[0],stops[1],positive?'+':'-',axis?'v':'u');
+    bool ok=framing_template_line(w,text);if(ok)c->notch_placed[k]=true;return ok;
+}
 static bool framing_template_evaluate(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;FramingTemplateCall *c=opaque;World *w=after;const PlacementSurface *source=world_find_placement(c->before,c->on);
@@ -213,7 +279,9 @@ static bool framing_template_evaluate(void *after,GeoEvalContext *sources,void *
         else snprintf(text,sizeof text,"guide %u %u %c spec:%s",c->guides[k],c->host,b?'u':'v',name);
         ok=framing_template_line(w,text);
     }
-    for(size_t k=0;k<c->plan.count&&ok;++k){
+    for(size_t position=0;position<c->plan.count&&ok;++position){
+        size_t k=c->version==3?c->notch.order[position]:position;
+        if(c->version==3){ok=framing_template_notch_member(w,c,k,boundary);continue;}
         const WoodFlatMember *m=&c->plan.members[k];int axis=m->axis,cross=1-axis;char anchor[256],stop0[256],stop1[256];
         WORLD_NEXT_ID(c->ids[k],w->wood.timbers,w->wood.timber_count,false);
         const char *role=m->kind==0?"boundary":m->kind<3?"primary":"secondary";
@@ -280,7 +348,9 @@ static void framing_template_json_preview(const FramingTemplateCall *c,const Wor
     for(size_t k=0;k<c->plan.count;++k){const WoodFlatMember *m=&c->plan.members[k];int i=reference_timber_index(w,c->ids[k]);
         printf("%s{\"handle\":\"new:%zu\",\"kind\":\"%s\",\"role\":\"%s\",\"rect\":[%lld,%lld,%lld,%lld],\"length\":%lld,\"A\":%lld,\"B\":%lld,\"geometry\":",k?",":"",k,kind[m->kind],timber_role_name(w->wood.timbers[i].role),
             (long long)m->rect[0],(long long)m->rect[1],(long long)m->rect[2],(long long)m->rect[3],(long long)w->wood.timbers[i].length,(long long)w->wood.timbers[i].size_a,(long long)w->wood.timbers[i].size_b);
-        json_reference_geometry(w,i);putchar('}');
+        json_reference_geometry(w,i);
+        if(c->version==3)printf(",\"priority\":%d",c->notch.source[k].priority);
+        putchar('}');
     }
     fputs("],\"seams\":{",stdout);
     for(int axis=0;axis<2;++axis){printf("%s\"%c\":[",axis?",":"",axis?'v':'u');for(size_t k=0;k<c->plan.seam_count[axis];++k)printf("%s%lld",k?",":"",(long long)c->plan.seams[axis][k]);putchar(']');}
@@ -293,6 +363,7 @@ static void framing_template_json_preview(const FramingTemplateCall *c,const Wor
         else fputs("null",stdout);pf_support_free(&support);pf_free(&layout);
     }else fputs("null",stdout);
     if(c->version==2)printf(",\"template\":{\"id\":\"flat-ceiling\",\"version\":2,\"policyFingerprint\":\"" WOOD_FLAT_JIG_POLICY "\"},\"definitionFingerprint\":\"%s\"",c->candidate_fingerprint);
+    if(c->version==3)printf(",\"template\":{\"id\":\"flat-ceiling\",\"version\":3,\"policyFingerprint\":\"" WOOD_FLAT_NOTCH_POLICY "\"},\"definitionFingerprint\":\"%s\"",c->candidate_fingerprint);
     putchar('}');
 }
 static void cmd_framing_template_preview(const char *path)
@@ -308,7 +379,7 @@ static void cmd_framing_template_preview(const char *path)
     c->before=&transaction->before;++g_framing_invocations;identity_drop_serials();
     bool valid=app_world_candidate_evaluate(transaction,framing_template_evaluate,c)==GEO_CANDIDATE_OK;
     if(valid)valid=app_world_candidate_seal(transaction);
-    if(valid&&c->version==2)valid=eng_definition_hash(&transaction->after,c->candidate_fingerprint);
+    if(valid&&(c->version==2||c->version==3))valid=eng_definition_hash(&transaction->after,c->candidate_fingerprint);
     if(!valid){eng_bridge_error("NATIVE_INVALID",g_engineering_error[0]?g_engineering_error:"原生完整候選封存失敗");app_world_candidate_destroy(transaction);identity_drop_serials();goto free_call;}
     char *label="framing-template-transaction";
     if(!reference_stage(transaction,&label,1,true)){
