@@ -1,5 +1,11 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-26 R16 v2 網格對比、焦點與頁尾（ChatGPT 候選）
+
+- 基底 `b3c4b981bb96b118c1c05b7a1bd98062d710c8b2`；#461 R5／#454 F。簡式 label 用既有 root muted、兩表單與複合框補 accent 焦點、固定頁尾依真捲軸寬內縮；保留原桌面密度、完整 label ink 及所有交易。
+- GEO-219 減項：去掉簡式 label 獨立色值，重用原 DOM／主鈕；不新增入口或常駐說明。v1 未採納的桌面 44 px／淡色 label 提案撤回並列待定選項，G2／X1 與 43 項全案仍未完成。
+- 契約、具名裁判遷移、七項撤回、官方 count／cost 交接及 L4 路徑見 [GRID-FORM-CONSISTENCY.md](geometry-web/docs/GRID-FORM-CONSISTENCY.md)。Chromium 尚未驗，不上調需求帳。
+
 ## 2026-11-15 R12／Q38j(a/b/c) App 接線（ChatGPT 實作候選）
 
 - 固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。承接 issue #43 的既定 Q38j 契約，補齊 plan 明選同源已定位拉伸件、獨立 `/3` 材料包、一般 App 預覽／取消／確認、完整 `/20` 保存重開及 F1b 整筆採用現行來源；沿既有 native 斷面指令與 R39，不新增幾何求解器。逐檔／函式、DOM、資料與操作路徑見 [Q38J-APP.md](geometry-web/docs/Q38J-APP.md)。

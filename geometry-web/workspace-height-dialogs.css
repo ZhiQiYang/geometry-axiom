@@ -195,8 +195,8 @@
   }
   #infiniteGridWorkspace .ig-inspector .ig-footer {
     position: fixed;
-    inset: auto 0 0 auto;
-    width: var(--r123h-dialog-dock);
+    inset: auto var(--r16-grid-scrollbar, 0px) 0 auto;
+    width: calc(var(--r123h-dialog-dock) - var(--r16-grid-scrollbar, 0px));
     max-height: calc(var(--r123h-layout-height, 100vh) - var(--r123h-dialog-header));
     box-sizing: border-box;
     padding: 8px;
