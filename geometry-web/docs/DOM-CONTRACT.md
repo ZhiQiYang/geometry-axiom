@@ -3,7 +3,7 @@
 ## R13 C／D 第一產品片 v2：人工房間高度（P4313，候選待真 Chrome）
 
 - 一般路徑：面內「底圖」→ `#rdSourceGroup`「來源與補資料」→ `#rdPanel`「房間高度補資料」。一般面原有可編輯的「來源紀錄與待補資訊」、D13 共用房間原有唯讀的「原頁歷史紀錄與核對」保持原義；有 `#refRecordDetails` 時保留其原節點，沒有歷史與 PDF 證據時不假造該節點。兩路都從 `feUnderlayPaneHTML`／`feBindUnderlayPane` 的共同外層接同一新編輯器；不增加主工具列或第二份保存鈕。
-- `#rdAdd` 只建立四欄空白、單位皆 null 的人工紀錄；`#rdSelect` 明選本次紀錄，冷開後不自動宣稱選中／核對。清單屬專案全域，不因進入哪個面而自動關聯或篩除紀錄。`#rdName` 是名稱；`#rdBottomRaw`、`#rdTopRaw`、`#rdHeightRaw`、`#rdWallThicknessRaw` 為 `type=text` 的原字串。各欄 `Unit` 初始「尚未選單位」，須明選 mm／cm；位置另有 `Basis`（unknown／world-z）及選填 `Note`。未完成原字串可保存，不把 type=number 的消毒結果當原件。
+- `#rdAdd` 只建立四欄空白、單位皆 null 的人工紀錄；`#rdSelect` 明選本次紀錄，冷開後不自動宣稱選中／核對。清單屬專案全域，不因進入哪個面而自動關聯或篩除紀錄。`#rdName` 是名稱；`#rdBottomRaw`、`#rdTopRaw`、`#rdHeightRaw`、`#rdWallThicknessRaw` 為可顯示換行的 `textarea`；回填到控制項時若換行被瀏覽器正規化，未改的文字仍以專案原文保存。各欄 `Unit` 初始「尚未選單位」，須明選 mm／cm；位置另有 `Basis`（unknown／world-z）及選填 `Note`。未完成原字串可保存，不把 type=number 的消毒結果當原件。
 - `#rdConfirmBottom/Top/Height/WallThickness` 逐欄確認。`#rdDerivation` 顯示唯一空白第三值候選，`#rdConfirmDerived` 是獨立確認。`#rdAdopt` 明選紀錄及目前已放置面，呼叫 `SpaceModelWorkspace.openReconstruction`；不能以圖面 z、舊手動草稿、3000 mm 或 100 mm 代填缺值。`#rdStatus` 解釋未確認、錯誤及未保存文字；IME 中可存 raw，但不能確認／帶入。
 - 直接確認只證明當下觀察原字、單位、基準及版本；unknown 基準的位置可先確認，但不能當 World 座標採用或推導。明選 world-z 後須重新確認；文字備註本身不建立轉換。推導的唯一空白目標也須明選單位。
 - `ReconstructionWorkspace.flush()` 由所有專案保存入口在取得保存 stamp 前收目前聚焦欄位；容量／舊 context／外部歷史衝突須傳出失敗。DOM 輸入事件缺最後一筆也要捕獲；不能因換頁後丟掉未保存的原字串。

@@ -17,7 +17,7 @@
       <div class="rd-actions"><button type="button" class="btn" id="rdAdd">新增房間高度資料</button></div>
       <label class="rd-label">本次明選資料<select id="rdSelect"><option value="">請選一筆資料</option>${value.records.map(item=>`<option value="${esc(item.id)}">${esc(item.name||item.id)}</option>`).join('')}${retained&&!selected(value)?`<option value="${esc(retained.id)}">${esc(retained.name)}（資料已不存在；未保存文字）</option>`:''}</select></label>
       <div id="rdEditor"${record?'':' hidden'}><label class="rd-label">名稱<input id="rdName" autocomplete="off"></label>
-      <div class="rd-fields">${fields.map(([key,stem,label])=>`<section class="rd-field"><label class="rd-label">${label}<input id="rd${stem}Raw" type="text" inputmode="decimal" autocomplete="off" aria-describedby="rd${stem}State" placeholder="尚未填寫"></label>
+      <div class="rd-fields">${fields.map(([key,stem,label])=>`<section class="rd-field"><label class="rd-label">${label}<textarea id="rd${stem}Raw" rows="1" inputmode="decimal" autocomplete="off" aria-describedby="rd${stem}State" placeholder="尚未填寫"></textarea></label>
         <label class="rd-label">單位<select id="rd${stem}Unit"><option value="">尚未選單位</option><option value="mm">mm</option><option value="cm">cm</option></select></label>
         ${['bottom','top'].includes(key)?`<label class="rd-label">位置基準<select id="rd${stem}Basis"><option value="unknown">基準未知，不能採用</option><option value="world-z">明確使用世界 Z</option></select></label><label class="rd-label">基準說明<input id="rd${stem}Note" autocomplete="off" placeholder="請說明這個世界 Z 零點"></label>`:''}
         <p id="rd${stem}State" class="rd-note"></p><button type="button" class="btn" id="rdConfirm${stem}">確認${label}</button></section>`).join('')}</div>
@@ -29,12 +29,26 @@
       <p id="rdStatus" class="rd-status" role="status" aria-live="polite"></p>`;
   }
   function paneHTML(){return `<details class="ref-section rd-panel" id="rdPanel"${state().open?' open':''}><summary>房間高度補資料</summary>${editorHTML(data())}</details>`;}
+  // Even textarea.value normalizes CR/CRLF to LF. Keep the exact source for
+  // controls whose displayed value differs; a save is not an input event.
+  const projectedText=new WeakMap();
+  function fillText(control,original){
+    control.value=original;
+    if(control.value!==original)projectedText.set(control,{original,display:control.value});
+    else projectedText.delete(control);
+  }
+  function readText(control){
+    const projection=projectedText.get(control);
+    if(projection&&projection.display===control.value)return projection.original;
+    projectedText.delete(control);
+    return control.value;
+  }
   function fillControls(record){
     const q=id=>binding.panel.querySelector('#'+id);
     q('rdSelect').value=record?.id||'';q('rdEditor').hidden=!record;if(!record)return;
-    q('rdName').value=record.name;
-    for(const [key,stem] of fields){const field=record.fields[key];q('rd'+stem+'Raw').value=field.raw;q('rd'+stem+'Unit').value=field.unit??'';
-      if(['bottom','top'].includes(key)){q('rd'+stem+'Basis').value=field.basis.kind;q('rd'+stem+'Note').value=field.basis.note;}}
+    fillText(q('rdName'),record.name);
+    for(const [key,stem] of fields){const field=record.fields[key];fillText(q('rd'+stem+'Raw'),field.raw);q('rd'+stem+'Unit').value=field.unit??'';
+      if(['bottom','top'].includes(key)){q('rd'+stem+'Basis').value=field.basis.kind;fillText(q('rd'+stem+'Note'),field.basis.note);}}
   }
   function render(){
     if(!binding||binding.context!==ReferenceWorkspace.context())return;
@@ -48,9 +62,9 @@
   function collect(){
     const q=id=>binding.panel.querySelector('#'+id),id=q('rdSelect')?.value;
     if(!id)return null;
-    const result={type:'edit',id,name:q('rdName').value,fields:{}};
-    for(const [key,stem] of fields)result.fields[key]={raw:q('rd'+stem+'Raw').value,unit:q('rd'+stem+'Unit').value||null,
-      basis:['bottom','top'].includes(key)?{kind:q('rd'+stem+'Basis').value,note:q('rd'+stem+'Note').value}:{kind:'distance',note:''}};
+    const result={type:'edit',id,name:readText(q('rdName')),fields:{}};
+    for(const [key,stem] of fields)result.fields[key]={raw:readText(q('rd'+stem+'Raw')),unit:q('rd'+stem+'Unit').value||null,
+      basis:['bottom','top'].includes(key)?{kind:q('rd'+stem+'Basis').value,note:readText(q('rd'+stem+'Note'))}:{kind:'distance',note:''}};
     return result;
   }
   function sameText(action,record){
