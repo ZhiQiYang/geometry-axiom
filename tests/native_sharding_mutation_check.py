@@ -206,9 +206,7 @@ if mode == 'r443-r396-baseline' or mode.startswith('R443F_R396_'):
         import inspect, textwrap, test_unittest_runner as checks
         original = checks.NativeShardCoverage.test_workspace_historical_budget
         source = textwrap.dedent(inspect.getsource(original))
-        # Withdraw the exact reviewed projection, not every new/ row.
-        projection = ('set(added) - PF6_ADDED_SUITES - R443_ADDED_SUITES'
-                      ' - R2054_ADDED_SUITES')
+        projection = 'set(added) - fragment_additions'
         assert source.count(projection) == 1, 'R443F_R396_WITHDRAWAL_SITE'
         namespace = dict(vars(checks))
         exec(compile(source.replace(projection, 'set(added)', 1),

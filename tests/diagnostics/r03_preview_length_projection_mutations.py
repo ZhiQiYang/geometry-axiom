@@ -3,8 +3,8 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import re
 import subprocess
+from r03_preview_length_withdrawals import judge_node
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tests/diagnostics/r03_preview_length_canvas_extension.cjs'
@@ -24,7 +24,7 @@ cases = {
         "  assert.deepEqual(plan.shards[1].sections.slice(at-1,at+2),['P1231',SECTION,'P359'],'R2054_CANVAS_EXACT_NEIGHBORS');\n",
         'R2054_CANVAS_ORDER_GUARD_REQUIRED'),
 }
-command = ['node', '--test', '--test-reporter=tap', 'tests/test_r03_preview_length.js']
+command = ['node', '--test', '--test-reporter=./tests/diagnostics/r03_preview_length_reporter.cjs', 'tests/test_r03_preview_length.js']
 records = []
 try:
     for name, (before, marker) in cases.items():
@@ -36,16 +36,12 @@ try:
             result = subprocess.run(command, cwd=ROOT, capture_output=True, timeout=60)
             for stream, raw in [('stdout', result.stdout), ('stderr', result.stderr)]:
                 (args.out / (name + '.' + phase + '.' + stream)).write_bytes(raw)
-            output = (result.stdout + result.stderr).decode('utf-8', 'replace')
-            assert result.returncode == expected, (name, phase, output)
-            for key, value in [('tests', 10), ('fail', expected), ('cancelled', 0), ('skipped', 0), ('todo', 0)]:
-                assert re.search(r'^# ' + key + ' ' + str(value) + r'$', output, re.M), (name, phase, output)
-            if expected:
-                assert marker in output and 'AssertionError' in output, (name, output)
+            summary = judge_node(result, phase, name)
             phases.append({'phase': phase, 'exit': result.returncode,
                            'source_sha256': hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
                            'stdout_sha256': hashlib.sha256(result.stdout).hexdigest(),
-                           'stderr_sha256': hashlib.sha256(result.stderr).hexdigest()})
+                           'stderr_sha256': hashlib.sha256(result.stderr).hexdigest(),
+                           'node_result': summary})
         records.append({'name': name, 'marker': marker, 'phases': phases})
         print(name + ' 0/1/0', flush=True)
 finally:

@@ -19,7 +19,6 @@ const r420Extension = require('./diagnostics/r420_canvas_extension.cjs');
 const train3Tail = require('./diagnostics/train3_canvas_tail.cjs');
 const workspaceExtension = require('./diagnostics/r396_canvas_extension.cjs');
 const touchExtension = require('./diagnostics/r433_canvas_touch_extension.cjs');
-const lengthExtension = require('./diagnostics/r03_preview_length_canvas_extension.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 // PF-4A (#128): P1284 is an independent measured section after P128 and before
@@ -33,8 +32,7 @@ const registeredIndependent = [...registered.extensions, ...(registered.drivers 
 const r16Base = {plan:r16Extension.projectPlan(r16View.plan), golden:r16Extension.projectGolden(r16View.golden)};
 // P1162 is checked before the historical projection chain. The CLI and current
 // complete-coverage tests below still use the unprojected plan and golden.
-const lengthInput = lengthExtension.project(golden, plan);
-const touchInput = r16Extension.beforeTouch(lengthInput.golden, lengthInput.plan);
+const touchInput = r16Extension.registeredBeforeTouch(registered);
 const touchBase = touchExtension.project(touchInput.golden, touchInput.plan);
 // R386: the retired aggregate files are judged through the current legacy
 // projection; its golden encoding is byte-identical to the former file.
