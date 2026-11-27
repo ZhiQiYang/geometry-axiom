@@ -722,6 +722,7 @@ jobs:
       push_state: ${{ steps.push.outputs.push_state }}
       push_rc: ${{ steps.push.outputs.push_rc }}
       push_outcome: ${{ steps.push.outputs.push_outcome }}
+      push_detail: ${{ steps.push.outputs.push_detail }}
       remote_sha: ${{ steps.push.outputs.remote_sha }}
     env:
       BASE_SHA: ${{ needs.prepare.outputs.base_sha }}
@@ -922,14 +923,22 @@ jobs:
               origin "$HEAD_SHA:refs/heads/$WORKER_BRANCH" > "$porcelain" || rc=$?
           cat "$porcelain"
           echo "push_rc=$rc" >> "$GITHUB_OUTPUT"
-          flag="$(awk -F '\t' -v want="$HEAD_SHA:refs/heads/$WORKER_BRANCH" '$2 == want { print substr($1, 1, 1); exit }' "$porcelain")"
-          case "$flag" in
-            '*') outcome=created ;;      # 伺服器接受並新建
-            '=') outcome=up_to_date ;;   # 遠端已指向同一 SHA，本次沒有新建
-            '!') outcome=rejected ;;     # 被拒（例如 ref 已存在）
-            *) outcome=unknown ;;        # 沒有可辨識的回應
+          line="$(awk -F '\t' -v want="$HEAD_SHA:refs/heads/$WORKER_BRANCH" '$2 == want { print; exit }' "$porcelain")"
+          flag="${line:0:1}"
+          # 第三欄是 Git 的摘要（例如「[rejected] (stale info)」「[remote rejected] (…)」「[remote failure] (…)」）；
+          # 只保留可安全放進 output 的字元。
+          detail="$(printf '%s' "$line" | cut -f3- | tr -cd '[:alnum:][:space:]()[]._:/-' | cut -c1-200)"
+          # 「!」不一定代表沒有寫入：[remote failure] 只表示伺服器沒有回報結果，ref 可能已經建立。
+          # 只有明確的拒絕才算 rejected；其餘一律 unknown（結果未確認）。
+          case "$flag:$detail" in
+            '*:'*) outcome=created ;;                         # 伺服器接受並新建
+            '=:'*) outcome=up_to_date ;;                      # 遠端已指向同一 SHA，本次沒有新建
+            '!:[remote rejected]'*) outcome=remote_rejected ;; # 伺服器明確拒絕
+            '!:[rejected]'*) outcome=rejected ;;              # Git 在送出更新前就拒絕（例如 stale info）
+            *) outcome=unknown ;;                             # remote failure、沒有回應或無法辨識
           esac
           echo "push_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "push_detail=$detail" >> "$GITHUB_OUTPUT"
           # 事後的遠端狀態另外記錄；讀不到就是「未確認」。
           lrc=0
           got="$(git -C "$repo" ls-remote origin "refs/heads/$WORKER_BRANCH")" || lrc=$?
@@ -991,6 +1000,7 @@ jobs:
           PUSH_STATE: ${{ needs.push.outputs.push_state }}
           PUSH_RC: ${{ needs.push.outputs.push_rc }}
           PUSH_OUTCOME: ${{ needs.push.outputs.push_outcome }}
+          PUSH_DETAIL: ${{ needs.push.outputs.push_detail }}
           REMOTE_SHA: ${{ needs.push.outputs.remote_sha }}
           HEAD_SHA: ${{ needs.push.outputs.head_sha }}
           COMMITS: ${{ needs.push.outputs.commits }}
@@ -1072,7 +1082,8 @@ jobs:
           # 本次 push 的結果（伺服器回應）與事後查到的遠端狀態分開判斷，不用後者反推前者。
           pushed = outcome == "created" and state == "confirmed"
           push_mismatch = outcome == "created" and state != "confirmed"
-          push_unknown = env.get("CHECK_OK") == "true" and outcome not in ("created", "up_to_date", "rejected")
+          detail = env.get("PUSH_DETAIL") or "無"
+          push_unknown = env.get("CHECK_OK") == "true" and outcome not in ("created", "up_to_date", "rejected", "remote_rejected")
           branch = env["WORKER_BRANCH"]
           cid = unmention(env.get("COMMENT_ID", ""))
 
@@ -1098,12 +1109,17 @@ jobs:
                             f"所以不是本次建立的；事後查到的遠端狀態：{remote_text}。"]
               elif outcome == "rejected":
                   lines += ["### 結論",
-                            f"**沒有推送**：伺服器拒絕建立 `{branch}`（以「ref 必須不存在」為條件，push 結束碼 {env.get('PUSH_RC') or '未記錄'}），"
-                            f"既有分支沒有被本次更動；事後查到的遠端狀態：{remote_text}。"]
+                            f"**沒有推送**：Git 在送出更新前就拒絕建立 `{branch}`（`{detail}`，push 結束碼 {env.get('PUSH_RC') or '未記錄'}），"
+                            f"例如遠端 ref 已存在、不符合「ref 必須不存在」的條件；事後查到的遠端狀態：{remote_text}。"]
+              elif outcome == "remote_rejected":
+                  lines += ["### 結論",
+                            f"**沒有推送**：伺服器明確拒絕建立 `{branch}`（`{detail}`，push 結束碼 {env.get('PUSH_RC') or '未記錄'}）；"
+                            f"事後查到的遠端狀態：{remote_text}。"]
               elif push_unknown:
                   lines += ["### 結論",
-                            f"**推送結果未確認**：固定檢查已通過，推送請求可能已送出，但沒有可辨識的伺服器回應"
-                            f"（push 結束碼 {env.get('PUSH_RC') or '未記錄'}；事後查到的遠端狀態：{remote_text}）。",
+                            f"**推送結果未確認**：固定檢查已通過，推送請求可能已送出，但沒有收到可確認的成功或拒絕"
+                            f"（Git 摘要 `{detail}`；push 結束碼 {env.get('PUSH_RC') or '未記錄'}；事後查到的遠端狀態：{remote_text}）。"
+                            "不能據此斷言本次沒有寫入。",
                             f"請以 `git ls-remote origin refs/heads/{branch}` 核對；預期 SHA `{env.get('HEAD_SHA')}`。"]
               else:
                   lines += ["### 結論", "**沒有推送**。"]
