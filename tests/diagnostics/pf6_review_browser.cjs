@@ -64,6 +64,9 @@ async function run(url,width,mode){
       }
     }
     if(mode==='suggested'||mode==='selected'){
+      // 保存和開檔在持租約時原本就必須拒絕；不能只把 pending 改成 false。
+      await assert.rejects(page.evaluate(()=>ReferenceWorkspace.exportBytes()),/角材建議/);
+      await assert.rejects(page.evaluate(()=>ReferenceWorkspace.openProject(()=>{throw Error('不應進入讀檔');})),/角材候選尚未結束，請先確認或取消。/);
       // 呼叫實際退役的場景焦點事件，不從測試代按已不存在的取消鈕。
       await page.evaluate(()=>resetSceneFocus());
       if(token!==null)await page.waitForFunction(()=>!window.PanelFillBuilderWorkspace.pending,{},{timeout:15000}).catch(()=>{});
@@ -71,6 +74,13 @@ async function run(url,width,mode){
     }else await action('cancel').click();
     await page.waitForFunction(()=>!window.PanelFillBuilderWorkspace.pending);
     assert.deepEqual(cancels,token===null?[]:['pf6-cancel '+token]);assert.deepEqual(await before(),pin);
+    if(mode==='suggested'||mode==='selected'){
+      const reopened=await page.evaluate(async()=>{
+        const bytes=await ReferenceWorkspace.exportBytes();await ReferenceWorkspace.openProject(()=>bytes,'退役後往返');
+        return {bytes:bytes.length,dump:(await apiRequest('dump')).text};
+      });
+      assert.ok(reopened.bytes>0);assert.equal(reopened.dump,pin.dump);console.log('T36_PROJECT_EXPORT_OPEN exact dump');
+    }
     console.log(`T36_BROWSER ${width}px ${mode} OK; exact cancellations=${cancels.length}; world/project/history unchanged`);
   }finally{await browser.close();}
 }
