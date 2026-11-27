@@ -220,3 +220,52 @@ test('PF6_APP_REAL_UNSENT_CONFIRM_CAN_RETRY_OR_CANCEL_WITHOUT_RESENDING_A_MUTATI
     assert.equal(h.requests.filter(r=>r.body.cmd==='pf6-confirm 7').length,action==='confirm'?1:0);h.w.assertAssemblyIdle();
   }
 });
+
+// 不建另一套租約模型：讓出貨的子表單在真 ReferenceWorkspace 上取得／退役 owner。
+async function mountedBuilder(options={}){
+  const h=await realHost(options),{env}=h;
+  env.document.querySelector=()=>null; // 本 suite 不算 DOM 驗收
+  env.window.PanelFillBuilderSession={Session:class extends M.Session{constructor(args){super(args);h.s=this;}}};
+  require('node:vm').runInNewContext(fs.readFileSync(require.resolve('../geometry-web/panel-fill-builder-workspace.js'),'utf8'),env);
+  const ui=env.window.PanelFillBuilderWorkspace;
+  ui.open({boundaryId:1,contract:{revision:'12'},snapshot:state(),sources:{}},1);
+  return {...h,ui};
+}
+for(const kind of ['suggested','selected','offline','unknown-confirm'])test('T36_RETIRE '+kind,async()=>{
+  const h=await mountedBuilder({lost:kind==='unknown-confirm'?'confirm':null});
+  const undo=h.w.history.undo.length;
+  await h.s.suggest(input);
+  if(kind!=='suggested'){await h.s.select([key]);await h.s.preview();}
+  if(kind==='unknown-confirm')await h.s.confirm();
+  if(kind==='offline')h.env.connection.phase='error';
+  await h.ui.retireContext();
+  assert.equal(h.ui.isOpen,false);
+  const cancels=()=>h.requests.filter(r=>r.body.cmd?.startsWith('pf6-cancel '));
+  if(kind==='unknown-confirm'||kind==='offline'){
+    assert.equal(h.ui.pending,true);assert.equal(cancels().length,0);
+    assert.equal(h.env.pendingApiResults.size,kind==='offline'?0:1);
+    h.env.connection.phase='loading';h.allowReceipts();await h.recover();
+  }
+  assert.equal(h.ui.pending,false,'T36_RETIRED_OWNER_BLOCKS_PROJECT '+kind);
+  h.w.assertAssemblyIdle();
+  assert.deepEqual(cancels().map(r=>[r.body.cmd,r.body.session]),['selected','offline'].includes(kind)?[['pf6-cancel 7','origin-service']]:[]);
+  assert.equal(h.w.history.undo.length,undo+(kind==='unknown-confirm'?1:0));
+});
+
+test('T36_D28_EXISTING_TIMBER',async()=>{
+  const row=clone(preview().preview.appView.timbers[0].after);row.geometry.surface=9;
+  for(const field of ['A','B'])row[field].source={kind:'application',id:'other-face',field:row.role+'.'+field};
+  const h=setup({post:route=>{
+    const r=route.endsWith('/suggest')?suggestion():preview();
+    (r.preview||r).appView.timbers.push({id:99,before:clone(row),after:clone(row)});return r;
+  }});
+  await assert.doesNotReject(()=>h.s.suggest(input),'T36_D28_FORMAL_TIMBER_REJECTED');
+  await h.s.select([key]);await h.s.preview();assert.equal(h.s.confirmable,true);
+  await h.s.cancel();
+  await assert.rejects(()=>h.s.suggest({...input,A:row.A.source}),/明選/,'T36_APPLICATION_IS_NOT_A_BUILDER_INPUT');
+  for(const source of [{...row.A.source,field:'primary.A'},{...row.A.source,field:'secondary.B'},
+    {...row.A.source,id:''},{...row.A.source,extra:1}]){
+    const bad=clone(row);bad.A.source=source;const projected=view();projected.timbers=[{id:99,before:row,after:bad}];
+    assert.throws(()=>M.validateView(projected,{revision:'12',setKey,generation:'1',phase:'ANALYSIS',input,selected:[]}),/角材尺寸/);
+  }
+});
