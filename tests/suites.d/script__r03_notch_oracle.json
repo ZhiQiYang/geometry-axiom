@@ -1,0 +1,23 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/diagnostics/r03_notch_oracle.py"
+    ],
+    "extra_env": {},
+    "kind": "python-script",
+    "label": "tests/diagnostics/r03_notch_oracle.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/diagnostics/r03_notch_oracle.py"
+  ],
+  "name": "script:r03_notch_oracle",
+  "order": "new/script__r03_notch_oracle",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_r03_notch_checker.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_r03_notch_checker.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r03_notch_checker.py"
+  ],
+  "name": "py:test_r03_notch_checker",
+  "order": "new/py__test_r03_notch_checker",
+  "schema": "geometry-native-suite/1"
+}

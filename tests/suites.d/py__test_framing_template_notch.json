@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_framing_template_notch.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_framing_template_notch.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": true,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_framing_template_notch.py"
+  ],
+  "name": "py:test_framing_template_notch",
+  "order": "new/py__test_framing_template_notch",
+  "schema": "geometry-native-suite/1"
+}

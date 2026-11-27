@@ -1,0 +1,23 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/r03_notch_checker_source_mutation_check.py"
+    ],
+    "extra_env": {},
+    "kind": "python-script",
+    "label": "tests/r03_notch_checker_source_mutation_check.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/r03_notch_checker_source_mutation_check.py"
+  ],
+  "name": "script:r03_notch_checker_source_mutations",
+  "order": "new/script__r03_notch_checker_source_mutations",
+  "schema": "geometry-native-suite/1"
+}
