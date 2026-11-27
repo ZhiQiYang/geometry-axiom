@@ -77,8 +77,17 @@
       throw Error('補資料編輯屬於另一個專案，未寫入。請重新開啟底圖頁。');
     if(!readOnly&&ReferenceWorkspace.getModelOperationState().blocked)throw Error('請先完成目前操作，再保存補資料文字。');
   }
+  function releaseForeignPane(){
+    // Preserve even a last edit that has not delivered an input event. Never
+    // flush it to the new project (record IDs may be identical there).
+    const action=collect(),before=JSON.parse(binding.snapshot);
+    if(action&&before&&!sameText(action,before))
+      states.get(binding.context).draft={id:action.id,action,base:binding.snapshot};
+    binding=null;
+  }
   function flush(){
     if(!binding)return;
+    if(!binding.panel.isConnected&&binding.context!==ReferenceWorkspace.context()){releaseForeignPane();return;}
     const action=collect();if(!action)return;
     const originalBinding=binding,ui=states.get(binding.context);
     binding.writing=true;
@@ -126,7 +135,7 @@
   function requireCommittedText(){if(binding.composing)throw Error('文字仍在組字，請先完成輸入再確認或帶入 3D。');flush();}
   function onEdit(){try{flush();message('原字串已記錄到目前專案；確認後才可採用。');}catch(error){message(error.message,true);}}
   async function onClick(event){
-    const button=event.target.closest('button');if(!button||!binding.panel.contains(button))return;
+    const button=event.target.closest('button');if(!button||!binding?.panel.contains(button))return;
     try {
       assertOwner();const id=button.id;
       if(id==='rdReload'){
@@ -155,7 +164,8 @@
   }
   function bindPane(pane,bid){
     const panel=pane.querySelector('#rdPanel');if(!panel)return;
-    if(binding?.context===ReferenceWorkspace.context()){try{flush();}catch(_){} }
+    if(binding&&binding.context!==ReferenceWorkspace.context())releaseForeignPane();
+    else if(binding){try{flush();}catch(_){} }
     binding={panel,bid,context:ReferenceWorkspace.context(),token:ReferenceWorkspace.getProjectState().contextToken,composing:false,snapshot:null,signature:null};
     render();
     panel.addEventListener('toggle',()=>{if(binding?.panel===panel)state().open=panel.open;});
@@ -192,8 +202,9 @@
     if(!binding.composing&&!ui.draft)render();else update();
   });
   window.addEventListener('project-info-changed',()=>{
-    if(!binding||!binding.panel.isConnected||binding.writing)return;
-    if(binding.context!==ReferenceWorkspace.context()){binding=null;return;}
+    if(!binding||binding.writing)return;
+    if(binding.context!==ReferenceWorkspace.context()){releaseForeignPane();return;}
+    if(!binding.panel.isConnected)return;
     if(JSON.stringify(data())!==binding.signature&&!binding.composing&&!state().draft)render();else update();
   });
   window.ReconstructionWorkspace={paneHTML,bindPane,flush,hasReview,reviewSummary};
