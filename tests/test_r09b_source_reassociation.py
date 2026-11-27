@@ -55,13 +55,23 @@ def js_judge(cases):
     script = """const fs=require('fs');
 const ledger=require(process.argv[1]);
 const cases=JSON.parse(fs.readFileSync(0,'utf8'));
-process.stdout.write(JSON.stringify(cases.map(c=>ledger.judgeRoots(c.identity,c.graph))));
+process.stdout.write(JSON.stringify(cases.map(c=>{
+  const before=JSON.parse(JSON.stringify(c));
+  const rows=ledger.judgeRoots(c.identity,c.graph);
+  return {before,after:c,rows};
+})));
 """
     completed = subprocess.run(["node", "-e", script, str(ROOT / "geometry-web/identity-ledger.js")],
                                input=json.dumps(cases), capture_output=True, text=True, timeout=60)
     if completed.returncode:
         raise AssertionError("R09B_EXISTING_K3_JUDGE_EXECUTION: " + completed.stderr)
-    return json.loads(completed.stdout)
+    observed = json.loads(completed.stdout)
+    if not isinstance(observed, list) or len(observed) != len(cases):
+        raise AssertionError("R09B_JS_OBSERVATION_SHAPE")
+    for case, observation in zip(cases, observed):
+        if observation["before"] != case or observation["after"] != case:
+            raise AssertionError("R09B_JS_INPUT_UNCHANGED")
+    return [observation["rows"] for observation in observed]
 
 
 def native_view(scene, bridge):

@@ -1,9 +1,10 @@
-# R09b D1 v2：無狀態來源比較與候選建構
+# R09b D1 v3：無狀態來源比較與候選建構
 
 規範來源是 `公理層.md` D59–D67、I70–I77、R56–R63。本文件是部分實作契約，
 不修改條文，也不宣稱已提供一般 App 的重新關聯。它取代 issue #44
 7169386952／7170683006 的 D1 Session、確認令牌、第二套 undo/redo 與獨立持久格式設計。
-前一版 T/P 尚未採入；套用本版不得再疊加前版。
+v2 已原樣採入 PR #466；v3 是對該 PR head `463f0b537617217d99e1acefffd9b40a004cb7a0`
+的增量修正，不是重新套用 v2，也不改過渡候選 schema。
 
 ## 1. 本片的邊界與信任來源
 
@@ -43,8 +44,10 @@ confirmation 為 false、carrierIds 為 caller-provisional。即使 caller 填�
   產生完整但未生效的候選。每列 `selection` 必須明示 carrierId、placement_id、
   orientation、purpose；`carrier_ids` 是 caller 提供的暫態標籤，必須唯一且逐列對上。
   不自動拿 placement id、陣列索引或雜湊當正式 carrierId。
-- `validate_candidate(candidate, record_raw, source_scene, ...)`：以完整外部輸入重新建構，
-  比對整個候選，不只比雜湊或 `verified` 旗標。成功僅表示可重播，不能作為發布權限。
+- `validate_candidate(candidate, record_raw, source_scene, selection=..., carrier_ids=..., ...)`：
+  呼叫者須獨立保留並傳入原先的明選清單與暫態列標籤；缺任一項即拒絕，不能從待驗候選
+  回填。由這些外部輸入重新建構並逐值比對整個候選，不只比雜湊或 `verified` 旗標。
+  成功只表示候選對應這份 caller 輸入且可重播，不能證明 caller 就代表使用者同意或發布權限。
 
 `geometry-reassociation-draft/2` 是計算輸出，不是 I77 完整專案保存格式，
 `candidateNotSaveable:true`、`committed:false` 不可省略或改成有效收據。
@@ -140,7 +143,7 @@ orientation/purpose 必須明示且保持原值，這是 F1b producer 的切片�
 只把旁側 receipt 刪掉後仍可冒充舊格式的設計不能交付為正式保存功能。
 
 需求帳的既有 F1b L4 核對是 plan 路徑；faces、柱樑與角材的改指／移除仍待實機核對。
-D1 不沿用那份 plan L4 為新 faces API 背書，也不改需求帳 R09b 列（由 PR #458 同步）。
+D1 不沿用那份 plan L4 為新 faces API 背書，也不改需求帳 R09b 列（其同步另由 #462 接續）。
 
 ## 6. Oracle、三方域與後續規格
 
@@ -151,8 +154,12 @@ D1 不沿用那份 plan L4 為新 faces API 背書，也不改需求帳 R09b 列
 
 三方逐值測試比較 oracle、新 Python judge_roots、現行 IdentityLedger.judgeRoots，
 共同域限同專案的普通 placement/boundary 根、完整合法 active/inactive 圖。
-比較完整回傳列與輸入零修改，不只比較五態字串。JS 自身不接 projectId，liveKey
-也不處理 parameter-field 複合鍵；跨專案與其他型別另測 oracle/新 API，不偷改 JS 輸入造綠。
+比較完整回傳列與輸入零修改，不只比較五態字串。Node 內在呼叫前複製輸入、呼叫後回傳
+實際輸入，Python 對兩者及原送入案例逐值核對；另以正確回覆後污染 identity/graph 的
+負控制證明觀測真的可見。普通 roots 的完整圖可以另有 parameter-field 複合鍵，oracle
+保留其完整 typed endpoint 及記號，不能把它丟掉而漏判 conflict。這不宣稱 JS 已支援
+parameter-field roots；JS 自身不接 projectId，跨專案仍另測 oracle/新 API。
+trace checker 另從每次預覽前的來源、舊綁定及目標獨立推導准駁，不以 outcome 自述建立合法候選。
 
 已知 main 範圍外差異：ordinary timber 刪除後，同數字 id 變成 assembly-owned/null，
 原 pin 依 R57(3) 應 absent；現行 judgeRoots 對 node/null 回 unknown。
@@ -162,7 +169,7 @@ D1 不沿用那份 plan L4 為新 faces API 背書，也不改需求帳 R09b 列
 
 | 片 | 交付責任 | 層級／驗收界線 |
 |---|---|---|
-| D1 v2 | 真原生支援的無狀態比較、完整候選、重播驗證 | 作者補丁候選，沒有 PR，不是 L2/L3/L4 |
+| D1 v3 | 真原生支援的無狀態比較、完整候選、外部明選綁定重驗 | v2 已在 PR #466（L2）；v3 增量待採入，沒有 L3/L4 宣稱 |
 | D2 | 正式模型版本、carrier 清單、不可改足跡、能力及 .gcanvas／方案相容 | 必須真跑舊檔不升版、新檔完整冷開、剝除拒絕 |
 | D3 | 宿主 owner/context/epoch/token、正式列鍵與單一歷史 | ABA、啟用後過期、取消零寫入、同候選不重送 |
 | D4 | 接回既有 K3-44 App、全部差異、人工 conflict、保留移除路徑 | 真 Chrome、390/1400、undo/redo、另存冷開及 L4 操作 |

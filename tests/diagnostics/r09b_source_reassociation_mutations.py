@@ -73,7 +73,38 @@ MUTATIONS = (('R09B_V2_MARK_CONTINUITY',
   'if len(value.encode("utf-8")) > MAX_CARRIER_LABEL_BYTES:',
   'if False:',
   'test_17_provisional_labels_have_exact_unique_bounded_mapping',
-  'R09B_V2_PROVISIONAL_LABEL_GUARD'))
+  'R09B_V2_PROVISIONAL_LABEL_GUARD'),
+ ('R09B_V3_CALLER_BINDING',
+  'expected = prepare_candidate(record_raw, source_scene, selection, project_id=project_id,\n'
+  '                                 record_project_id=record_project_id, carrier_ids=carrier_ids,',
+  'expected = prepare_candidate(record_raw, source_scene, candidate["selection"], project_id=project_id,\n'
+  '                                 record_project_id=record_project_id, carrier_ids=candidate["carrierIds"],',
+  'test_19_revalidation_binds_external_selection_and_carrier_labels',
+  'R09B_V3_CALLER_SELECTION_BINDING'),
+ ('R09B_V3_PREVIEW_CHECKER',
+  'assert outcome == expected_preview, "ORACLE_PREVIEW_EFFECT"',
+  'assert True, "ORACLE_PREVIEW_EFFECT"',
+  'test_18_preview_result_is_checked_from_before_source_and_target',
+  'R09B_V3_PREVIEW_LEGALITY'),
+ ('R09B_V3_JS_INPUT_OBSERVER',
+  'if observation["before"] != case or observation["after"] != case:',
+  'if False:',
+  'test_19_js_input_mutation_is_observed_inside_node',
+  'R09B_V3_JS_INPUT_MUTATION_DETECTED'),
+ ('R09B_V3_COMPOSITE_ENDPOINT',
+  'kind = typed.split(":", 1)[0]',
+  'kind, unused_identity = typed.split(":")',
+  'test_20_ordinary_roots_keep_unrelated_composite_identity_endpoints',
+  'R09B_V3_COMPOSITE_GRAPH_ACCEPTED'))
+
+TARGETS = {"R09B_V3_PREVIEW_CHECKER": (ORACLE, "tests.oracles.r09b_source_reassociation"),
+           "R09B_V3_JS_INPUT_OBSERVER": (TEST, "tests.test_r09b_source_reassociation"),
+           "R09B_V3_COMPOSITE_ENDPOINT": (ORACLE, "tests.oracles.r09b_source_reassociation")}
+
+
+def method_name(mutation):
+    group = "IndependentOracle" if mutation[0] in TARGETS else "SourceReassociation"
+    return "tests.test_r09b_source_reassociation." + group + "." + mutation[3]
 
 BY_NAME = {item[0]: item for item in MUTATIONS}
 
@@ -88,13 +119,14 @@ def variant(raw, mutation, withdrawn):
     if source.count(before) != 1:
         raise AssertionError((name, "exact source anchor must occur once", source.count(before)))
     proposed = source.replace(before, after, 1) if withdrawn else source
-    compile(proposed, str(PRODUCT), "exec")
+    compile(proposed, str(TARGETS.get(name, (PRODUCT,))[0]), "exec")
     return proposed.encode("utf-8")
 
 
 def child(args):
     """Load actual altered product bytes, not a replacement test double."""
-    original = PRODUCT.read_bytes()
+    target, module_name = TARGETS.get(args.case, (PRODUCT, "source_reassociation"))
+    original = target.read_bytes()
     if sha(original) != args.expect_source_sha or sha(TEST.read_bytes()) != args.expect_test_sha:
         raise AssertionError("R09B_MUTATION_SOURCE_CHANGED_DURING_RUN")
     mutation = BY_NAME[args.case]
@@ -102,20 +134,43 @@ def child(args):
     for directory in (ROOT, ROOT / "geometry-core", ROOT / "geometry-web"):
         sys.path.insert(0, str(directory))
     with tempfile.TemporaryDirectory(prefix="r09b-product-withdrawal-") as directory:
-        path = Path(directory) / "source_reassociation.py"
+        path = Path(directory) / target.name
         path.write_bytes(source)
-        spec = importlib.util.spec_from_file_location("source_reassociation", path)
+        spec = importlib.util.spec_from_file_location(module_name, path)
         module = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = module
         spec.loader.exec_module(module)
-        if module.LOADED_SHA != sha(source) or module.MODULE_PATH.read_bytes() != source:
+        if (path.read_bytes() != source or module.__file__ != str(path) or
+                target == PRODUCT and (module.LOADED_SHA != sha(source) or module.MODULE_PATH.read_bytes() != source)):
             raise AssertionError("R09B_MUTATION_ACTUAL_LOADED_BYTES")
+        if target == TEST:
+            module.ROOT = ROOT  # Relocate only test resources, not its loaded code.
+            import tests
+            tests.test_r09b_source_reassociation = module
+        if target == ORACLE:
+            import tests.oracles
+            tests.oracles.r09b_source_reassociation = module
         print(json.dumps({"kind": "author-source-mutated-module", "case": args.case,
-                          "phase": args.phase, "loaded_source_sha256": module.LOADED_SHA,
+                          "phase": args.phase, "loaded_source_sha256": sha(source),
+                          "loaded_module": module_name, "target": str(target.relative_to(ROOT)),
                           "disk_variant_sha256": sha(path.read_bytes()),
                           "original_product_sha256": sha(original), "test_sha256": args.expect_test_sha},
                          sort_keys=True), flush=True)
-        unittest.main(module=None, argv=[str(Path(__file__)), "-v", PREFIX + mutation[3]])
+        class NamedResult(unittest.TextTestResult):
+            def detail(self, test, error):
+                print("R09B_FAILURE_DETAIL " + json.dumps({"type": error[0].__name__,
+                      "message": str(error[1]), "test": test.id()}, ensure_ascii=False), flush=True)
+
+            def addFailure(self, test, error):
+                self.detail(test, error)
+                super().addFailure(test, error)
+
+            def addSubTest(self, test, subtest, error):
+                if error is not None:
+                    self.detail(subtest, error)
+                super().addSubTest(test, subtest, error)
+        runner = unittest.TextTestRunner(verbosity=2, resultclass=NamedResult)
+        unittest.main(module=None, argv=[str(Path(__file__)), "-v", method_name(mutation)], testRunner=runner)
 
 
 def save_bytes(path, raw):
@@ -132,7 +187,10 @@ def validate_run(record, output, mutation, phase):
     if method not in output or re.search(r"\nERROR:|\bskipped\b|\bSkipTest\b", output):
         raise AssertionError((name, phase, "error/skip is not behavioral evidence"))
     if phase == "withdrawal":
-        if ("AssertionError:" not in output or marker not in output or
+        failures = [json.loads(line.removeprefix("R09B_FAILURE_DETAIL "))
+                    for line in output.splitlines() if line.startswith("R09B_FAILURE_DETAIL ")]
+        if (not any(row["type"] == "AssertionError" and marker in row["message"] for row in failures) or
+                "AssertionError:" not in output or
                 not re.search(r"FAILED \(failures=[1-9][0-9]*\)\n", output)):
             raise AssertionError((name, "withdrawal did not reach its named behavioral assertion", marker))
         forbidden = ("TimeoutExpired", "BASE_TIMEOUT", "bridge closed", "R09B_NATIVE_ENVIRONMENT",
@@ -168,7 +226,7 @@ def main(argv=None):
     product_sha, test_sha = sha(original), sha(test_bytes)
     chosen = [BY_NAME[args.case]] if args.case else list(MUTATIONS)
     for mutation in chosen:
-        variant(original, mutation, True)
+        variant(TARGETS.get(mutation[0], (PRODUCT,))[0].read_bytes(), mutation, True)
     summary = {
         "schema": "r09b-author-source-module-withdrawals/2", "official_native_ledger": False,
         "execution": "fresh subprocess; actual variant file imported under canonical module name; unchanged unittest",
@@ -193,16 +251,19 @@ def main(argv=None):
     receipt()
     for mutation in chosen:
         name, before, after, method, marker = mutation
-        normalized = original.decode("utf-8").replace("\r\n", "\n").encode("utf-8")
+        target = TARGETS.get(name, (PRODUCT,))[0]
+        target_bytes = target.read_bytes()
+        normalized = target_bytes.decode("utf-8").replace("\r\n", "\n").encode("utf-8")
         anchor = before.encode("utf-8")
         replacement = after.encode("utf-8")
         offset = normalized.index(anchor)
-        row = {"name": name, "method": PREFIX + method, "assertion": marker,
+        row = {"name": name, "method": method_name(mutation), "assertion": marker,
+               "target": str(target.relative_to(ROOT)), "original_sha256": sha(target_bytes),
                "anchor": before, "withdrawal": after,
                "anchor_metadata": {"matches": normalized.count(anchor), "byte_offset": offset,
                    "line": normalized[:offset].count(b"\n") + 1, "bytes": len(anchor), "sha256": sha(anchor)},
                "withdrawal_metadata": {"bytes": len(replacement), "sha256": sha(replacement)},
-               "mutated_source": save_bytes(output / (name + ".py"), variant(original, mutation, True)),
+               "mutated_source": save_bytes(output / (name + ".py"), variant(target_bytes, mutation, True)),
                "runs": []}
         summary["mutations"].append(row)
         for phase in ("baseline", "withdrawal", "restore"):
@@ -210,7 +271,7 @@ def main(argv=None):
                     ORACLE.read_bytes() != oracle_bytes or K3.read_bytes() != k3_bytes):
                 raise AssertionError("R09B_MUTATION_SOURCE_CHANGED_DURING_RUN")
             command = [sys.executable, "-B", str(Path(__file__).resolve()), "--child", "--case", name,
-                       "--phase", phase, "--expect-source-sha", product_sha, "--expect-test-sha", test_sha]
+                       "--phase", phase, "--expect-source-sha", sha(target_bytes), "--expect-test-sha", test_sha]
             started = time.monotonic()
             result = subprocess.run(command, cwd=ROOT, env=environment, capture_output=True, timeout=300)
             elapsed = time.monotonic() - started

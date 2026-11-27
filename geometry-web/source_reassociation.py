@@ -375,7 +375,7 @@ def prepare_candidate(record_raw, source_scene, selection, *, project_id, carrie
 
 
 def validate_candidate(candidate, record_raw, source_scene, *, project_id, record_project_id=None,
-                       base_executable=None, bridge_executable=None):
+                       selection=None, carrier_ids=None, base_executable=None, bridge_executable=None):
     """Rebuild and compare all draft values against caller-supplied snapshots.
 
     This proves structural and native replay consistency, NOT current App
@@ -384,11 +384,13 @@ def validate_candidate(candidate, record_raw, source_scene, *, project_id, recor
     """
     if type(candidate) is not dict or len(canonical_bytes(candidate)) > MAX_DRAFT_BYTES:
         _fail("REASSOCIATION_DRAFT_SHAPE", "候選須完整且在宣告容量內。")
+    if selection is None or carrier_ids is None:
+        _fail("REASSOCIATION_CALLER_SELECTION", "重驗須另傳呼叫者原先的完整明選清單與暫態列標籤。", clause="I76")
     _keys(candidate, ("schema", "requiredCapabilities", "candidateNotSaveable", "committed", "authority",
                       "beforeRaw", "beforeSha256", "source", "carrierIds", "selection", "comparison", "frames",
                       "record", "currentReferences", "contract", "changed"))
-    expected = prepare_candidate(record_raw, source_scene, candidate["selection"], project_id=project_id,
-                                 record_project_id=record_project_id, carrier_ids=candidate["carrierIds"],
+    expected = prepare_candidate(record_raw, source_scene, selection, project_id=project_id,
+                                 record_project_id=record_project_id, carrier_ids=carrier_ids,
                                  base_executable=base_executable, bridge_executable=bridge_executable)
     if canonical_bytes(expected) != canonical_bytes(candidate):
         _fail("REASSOCIATION_DRAFT_REPLAY", "完整候選、歷史原件、來源見證或逐列新引用不能逐值重播。", clause="I77")

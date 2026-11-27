@@ -104,9 +104,19 @@ def judge_roots(identity, graph, *, same_project=True):
                and graph.get("data", {}).get("identityLedger", {}).get("active") is True)
     objects = []
     for typed, node in graph["nodes"].items():
-        kind, identity_id = typed.split(":")
-        objects.append({"kind": kind, "id": int(identity_id), "token": node.get("incarnation"),
-                        "covered": node.get("covered", True)})
+        kind = typed.split(":", 1)[0]
+        if kind not in KINDS:
+            if node.get("incarnation") is not None:
+                raise OracleError("I70_EXTRA_TOKEN")
+            continue
+        matched = re.fullmatch(r"([^:]+):(0|[1-9][0-9]*)(?::f(0|[1-9][0-9]*))?", typed)
+        if matched is None or (kind == "parameter-field") != (matched[3] is not None):
+            raise OracleError("I75_TYPED_ENDPOINT")
+        obj = {"kind": kind, "id": int(matched[2]), "token": node.get("incarnation"),
+               "covered": node.get("covered", True)}
+        if matched[3] is not None:
+            obj["fieldId"] = int(matched[3])
+        objects.append(obj)
     snapshot = {"project": "current", "enabled": enabled, "complete": True, "objects": objects}
     validate_snapshot(snapshot)
     rows = []
@@ -431,7 +441,25 @@ def check_trace(rows):
             assert after == take.pop(), "ORACLE_RESTORE_COMPLETE_RECORD"
             put.append(deepcopy(before))
         if event["op"] == "preview":
-            pending = (deepcopy(before), generation, event.get("id", 0)) if outcome == "prepared" else None
+            # Independently derive permission from the pre-state, not the
+            # constructor's outcome or the candidate's self-description.
+            source, binding = before["source"], before["binding"]
+            wanted = ("placement", event.get("id", 0))
+            endpoints = {key(obj): obj for obj in source["objects"]}
+            old = endpoints.get(key(binding))
+            continuous = (binding["project"] == source["project"] and source["enabled"]
+                          and binding.get("token") is not None and old is not None
+                          and old.get("token") == binding["token"])
+            if wanted not in endpoints:
+                expected_preview = "MISSING_ENDPOINT"
+            elif source["project"] != "p":
+                expected_preview = "I75_SOURCE_CONTEXT"
+            elif continuous and key(binding) != wanted:
+                expected_preview = "CARRIER_EDIT_REQUIRED"
+            else:
+                expected_preview = "prepared"
+            assert outcome == expected_preview, "ORACLE_PREVIEW_EFFECT"
+            pending = (deepcopy(before), generation, wanted[1]) if expected_preview == "prepared" else None
         if outcome == "association-committed":
             assert event["op"] == "confirm", "ORACLE_CONFIRM_ONLY"
             assert pending is not None and pending[:2] == (before, generation), "ORACLE_EXACT_GENERATION"
@@ -505,14 +533,17 @@ CONTROLS = {"ORACLE_SILENT_REBIND": "ORACLE_NO_SILENT_REBIND",
             "ORACLE_UNCONFIRMED_RECEIPT": "ORACLE_RECEIPT_ONLY_AFTER_CONFIRM",
             "ORACLE_RESTORED_SESSION_EPOCH": "ORACLE_SESSION_EPOCH",
             "ORACLE_SKIPPED_UNKNOWN_DECISION": "ORACLE_CONFIRM_EFFECT",
-            "ORACLE_NONCONFIRM_COMMIT": "ORACLE_CONFIRM_ONLY"}
+            "ORACLE_NONCONFIRM_COMMIT": "ORACLE_CONFIRM_ONLY",
+            "ORACLE_FORGED_PREVIEW": "ORACLE_PREVIEW_EFFECT"}
 
 
 def probe(name, corrupt=False):
     if name not in CONTROLS:
         raise ValueError(name)
     seed = None
-    if name in ("ORACLE_REWRITTEN_HISTORY", "ORACLE_INVENTED_NEW_TARGET", "ORACLE_NONCONFIRM_COMMIT"):
+    if name == "ORACLE_FORGED_PREVIEW":
+        events = [{"op": "preview", "id": 1}]
+    elif name in ("ORACLE_REWRITTEN_HISTORY", "ORACLE_INVENTED_NEW_TARGET", "ORACLE_NONCONFIRM_COMMIT"):
         events = [{"op": "replace"}, {"op": "preview", "id": 0}, {"op": "confirm"}]
     elif name == "ORACLE_REUSED_RETIRED_IDENTITY":
         events = [{"op": "delete"}, {"op": "create"}]
@@ -533,7 +564,9 @@ def probe(name, corrupt=False):
         events = [{"op": "rename", "name": "renamed"}]
     rows = run_sequence(events, seed)
     if corrupt:
-        if name == "ORACLE_SILENT_REBIND":
+        if name == "ORACLE_FORGED_PREVIEW":
+            rows[-1]["outcome"] = "prepared"
+        elif name == "ORACLE_SILENT_REBIND":
             rows[-1]["after"]["binding"]["token"] = EPOCH + ":99"
             rows[-1]["status"] = "replaced"
         elif name == "ORACLE_DUPLICATE_IDENTITY":
