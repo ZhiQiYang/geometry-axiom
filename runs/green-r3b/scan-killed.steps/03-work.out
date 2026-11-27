@@ -1,0 +1,3 @@
+/srv/replay/scripts/scan-killed-work-1854434324320905622.sh: line 9: 13800 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err"
+::error::全機掃描未完成（find 結束碼 137），不啟動模型
+find: '/tmp/vanished-during-scan': No such file or directory

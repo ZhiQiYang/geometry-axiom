@@ -1,0 +1,25 @@
+########## APIWORKER_PORCELAIN_SUMMARY_SPLIT_REMOVED（情境 push-status-lost）
+$ diff -u head-r3b.yml APIWORKER_PORCELAIN_SUMMARY_SPLIT_REMOVED.yml
+--- head-r3b.yml
++++ APIWORKER_PORCELAIN_SUMMARY_SPLIT_REMOVED.yml
+@@ -933,8 +933,7 @@
+           case "$flag:$detail" in
+             '*:'*) outcome=created ;;                         # 伺服器接受並新建
+             '=:'*) outcome=up_to_date ;;                      # 遠端已指向同一 SHA，本次沒有新建
+-            '!:[remote rejected]'*) outcome=remote_rejected ;; # 伺服器明確拒絕
+-            '!:[rejected]'*) outcome=rejected ;;              # Git 在送出更新前就拒絕（例如 stale info）
++            '!:'*) outcome=rejected ;;  # MUTANT
+             *) outcome=unknown ;;                             # remote failure、沒有回應或無法辨識
+           esac
+           echo "push_outcome=$outcome" >> "$GITHUB_OUTPUT"
+diff exit=1
+$ REPLAY_WF=APIWORKER_PORCELAIN_SUMMARY_SPLIT_REMOVED.yml python3 replay.py push-status-lost
+replay exit=0
+push-status-lost: jobs={'prepare': 'success', 'work': 'success', 'push': 'failure', 'report': 'failure'} pushed=confirmed remote_branch=ba572177b515c3f637075f2d62e17b82232fa6c0 sentinel=None reject=None reasons=[]
+（故障注入：receive-pack 照常更新 ref，但回給 client 的『ok refs/heads/…』被拿掉）
+  | !	ba572177b515c3f637075f2d62e17b82232fa6c0:refs/heads/apiworker/7001	[remote failure] (remote failed to report status)
+  | push rc=1 outcome=rejected ls-remote rc=0 state=confirmed remote=ba572177b515c3f637075f2d62e17b82232fa6c0 expected=ba572177b515c3f637075f2d62e17b82232fa6c0
+--- receive-pack 包裝紀錄：receive-pack exit=0 dropped_pkts=1
+--- 遠端分支 apiworker/7001：ba572177b515c3f637075f2d62e17b82232fa6c0；main：48e68e3d1536f680d770dc239bd90316534db69d
+**沒有推送**：Git 在送出更新前就拒絕建立 `apiworker/7001`（`[remote failure] (remote failed to report status)`，push 結束碼 1），例如遠端 ref 已存在、不符合「ref 必須不存在」的條件；事後查到的遠端狀態：指向成果 `ba572177b515c3f637075f2d62e17b82232fa6c0`。
+- 分支：`apiworker/7001`；head：`ba572177b515c3f637075f2d62e17b82232fa6c0`；推送：否

@@ -235,7 +235,8 @@ def remote_branch(branch):
 def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), report="### 做了什麼\n- 照任務修改。",
              hang_at=None, pre_branch=False, base_ref="main", model_timeout=None, refs=(), body=None,
              race_ref=False, break_after_push=False, drop_output=False,
-             find_shim=None, pgrep_error_at_stop=False, after_push_ref=None, grep_error_at_lockdown=False):
+             find_shim=None, pgrep_error_at_stop=False, after_push_ref=None, grep_error_at_lockdown=False,
+             drop_ref_ack=False, pre_receive_reject=False):
     log = open(f"{R}/out/{name}.log", "w", encoding="utf-8")
     run_id = 7000 + len(os.listdir(f"{R}/out"))
     run = Run(name, run_id, log)
@@ -352,6 +353,17 @@ def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), re
                     sh(["git", "-C", REMOTE_DIR, "update-ref", f"refs/heads/{branch}", main])
                     sh(["chown", "-R", "runner:runner", REMOTE_DIR])
                     run.p(f"（模擬競態：檢查通過後、推送前，另一方建立 {branch} → {main}（base，成果的祖先））")
+                if drop_ref_ack:
+                    shutil.copy(os.path.join(HERE, "drop_ref_ack.py"), f"{R}/bin/drop_ref_ack.py")
+                    os.chmod(f"{R}/bin/drop_ref_ack.py", 0o755)
+                    sh(["sudo", "-u", "runner", "git", "-C", f"{T['push']}/check-repo", "config",
+                        "remote.origin.receivepack", f"{R}/bin/drop_ref_ack.py"])
+                    run.p("（故障注入：receive-pack 照常更新 ref，但回給 client 的『ok refs/heads/…』被拿掉）")
+                prehook = f"{REMOTE_DIR}/hooks/pre-receive"
+                if pre_receive_reject:
+                    open(prehook, "w").write("#!/bin/sh\necho 'replay: pre-receive declines this push' >&2\nexit 1\n")
+                    os.chmod(prehook, 0o755); sh(["chown", "runner:runner", prehook])
+                    run.p("（模擬：遠端 pre-receive hook 拒絕這次推送）")
                 hook = f"{REMOTE_DIR}/hooks/post-receive"
                 if after_push_ref:
                     act = (f"git update-ref refs/heads/{branch} {main}" if after_push_ref == "move"
@@ -369,6 +381,11 @@ def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), re
                         os.rename(f"{REMOTE_DIR}.away", REMOTE_DIR)
                 if os.path.exists(hook):
                     os.remove(hook)
+                if os.path.exists(prehook):
+                    os.remove(prehook)
+                if drop_ref_ack and os.path.exists("/tmp/drop-ref-ack.log"):
+                    run.p("--- receive-pack 包裝紀錄：" + open("/tmp/drop-ref-ack.log").read().strip())
+                    os.remove("/tmp/drop-ref-ack.log")
                 rec = f"/tmp/{name}.received"
                 if os.path.exists(rec):
                     run.p("--- 遠端 post-receive 收到的更新：" + open(rec).read().strip())
@@ -486,6 +503,8 @@ SCENARIOS = {
         "git reset -q --soft $D && git log --oneline --graph -5"]),
     "scan-killed": dict(find_shim="killed", steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
     "scan-classifier-error": dict(find_shim="fail", grep_error_at_lockdown=True, steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
+    "push-status-lost": dict(drop_ref_ack=True, steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
+    "push-remote-rejected": dict(pre_receive_reject=True, steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
     "owner-ref-and-nonowner-ref": dict(
         steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"],
         body="請照 ref-comment: 900002 與 https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900003 做。",

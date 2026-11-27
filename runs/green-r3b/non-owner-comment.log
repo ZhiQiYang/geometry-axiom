@@ -1,0 +1,38 @@
+=== 情境 non-owner-comment（run_id 7004，分支 apiworker/7004，main 56b8df8a689785dde9d0425c324c8ca2b30c5767）===
+
+$ [prepare] Validate inputs, comment author and base (no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/non-owner-comment-prepare-7124257412002774825.sh
+  | ::error::任務留言 900001 的作者 mallory 不是 repo 擁有者，拒絕執行（未讀取內文）
+  結束碼：1
+  outputs：{"task_issue": "7", "reject_reason": "任務留言 900001 的作者 mallory 不是 repo 擁有者，拒絕執行（未讀取內文）"}
+
+$ [report] Post one 【API worker】 comment (no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/non-owner-comment-report-1779304764552362298.sh
+  | https://github.com/repos/ZhiQiYang/geometry-axiom/issues/7/comments#issuecomment-fake
+  結束碼：2
+
+$ [report] Delete this run's worker artifacts (they may hold refused content)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/non-owner-comment-report-1909181394341125684.sh
+  | deleted artifact 5550001
+  | deleted artifact 5550002
+  結束碼：0
+
+--- 貼出的留言 ---
+[POST repos/ZhiQiYang/geometry-axiom/issues/7/comments]
+【API worker】任務留言 900001（#7）
+
+### 結論
+任務**被拒絕，沒有執行**：任務留言 900001 的作者 mallory 不是 repo 擁有者，拒絕執行（未讀取內文）。
+模型沒有啟動，沒有用金鑰呼叫 API，沒有推送任何分支。
+
+---
+為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。
+模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 未知／花費 未知（成果收據取不到，無法確認 CLI 是否啟動，可能已產生費用；請到 Anthropic Console 核對）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7004)
+
+[DELETE repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001]
+[DELETE repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002]
+--- 植入程式的 sentinel（/tmp/apiworker-sentinel）：不存在（沒有被 runner 執行）
+
+--- 遠端分支 apiworker/7004：不存在；main：56b8df8a689785dde9d0425c324c8ca2b30c5767
+--- 假 API 收到 0 個請求；金鑰前 8 字：[]
+--- job 結果：{"prepare": "failure", "work": "skipped", "push": "skipped", "report": "failure"}
