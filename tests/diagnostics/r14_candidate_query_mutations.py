@@ -18,8 +18,8 @@ byte, binaries.py revalidates/reuses that original binary; the restored test is
 a new process. Each mutant has its own source tree and OUT_DIR. Raw subprocess
 stdout/stderr, machine reports, source hashes and patches are retained under
 --out. Every subprocess has its own TMPDIR under --out; this changes storage,
-not compiler flags or test bounds. A blocked build stops the current batch;
-remaining cases are marked not-run. This diagnostic does not register official
+not compiler flags or test bounds. Timed-out phases are blocked, never kills.
+After a blocked case, remaining batches are marked not-run. This diagnostic does not register official
 mutation evidence, modify the working product tree, or write a fingerprint
 sidecar itself.
 """
@@ -34,6 +34,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import signal
 import subprocess
 import sys
 import threading
@@ -41,6 +42,10 @@ import time
 import unittest
 
 
+# The seal judge can include a native build. Bound the whole phase by the
+# suite budget; the compiler (900 s) and smoke (30 s) keep their own limits.
+JUDGE_TIMEOUT = 1200
+BUILD_TIMEOUT = 1200
 SOURCE = "geometry-web/grid_subdivision_bridge.inc"
 TEST_MODULE = "tests.test_r14_candidate_query.R14CandidateQuery."
 TEST_01 = "test_01_create_rule_reads_after_before_missing_and_commits_same_candidate"
@@ -231,16 +236,43 @@ def process(root, label, directory, arguments):
     temporary = directory / (label + ".tmp")
     temporary.mkdir()
     environment = dict(os.environ, PYTHONDONTWRITEBYTECODE="1", TMPDIR=str(temporary))
+    is_judge = arguments[0] == "--_judge"
+    timeout = JUDGE_TIMEOUT if is_judge else BUILD_TIMEOUT
+    timeout_error = None
     start = time.monotonic()
     with (directory / (label + ".stdout.log")).open("wb") as stdout, \
             (directory / (label + ".stderr.log")).open("wb") as stderr:
-        # No extra compile/test timeout: the original binaries and bridge keep
-        # their own bounds, unchanged. Their failures remain non-kills.
-        child = subprocess.run(command, cwd=root, env=environment, stdout=stdout, stderr=stderr)
+        child = subprocess.Popen(command, cwd=root, env=environment, stdout=stdout, stderr=stderr,
+                                 start_new_session=os.name != "nt")
+        try:
+            child.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            tag = "R14CQ_JUDGE_TIMEOUT" if is_judge else "R14CQ_BUILD_TIMEOUT"
+            timeout_error = f"{tag}: {label} exceeded {timeout}s"
+            # The judge may itself be stuck reading a live bridge. Kill the
+            # phase tree, not just the Python parent, before restoring bytes.
+            try:
+                if os.name == "nt":
+                    subprocess.run(["taskkill", "/T", "/F", "/PID", str(child.pid)],
+                                   stdout=stdout, stderr=stderr, timeout=10, check=True)
+                else:
+                    os.killpg(child.pid, signal.SIGKILL)
+            except (OSError, subprocess.SubprocessError) as exc:
+                timeout_error += f"; tree cleanup: {exc}"
+                child.kill()
+            try:
+                child.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                timeout_error += "; child did not exit after kill"
+            stderr.write(("\n" + timeout_error + "\n").encode("utf-8"))
     result = dict(command=command, exit_code=child.returncode,
                   seconds=round(time.monotonic() - start, 3), tmpdir=str(temporary),
                   report=read_json(report_path))
+    if timeout_error:
+        result["timeout_error"] = timeout_error
     write_json(directory / (label + ".process.json"), result)
+    if timeout_error:
+        raise TimeoutError(timeout_error)
     return result
 
 
@@ -249,8 +281,15 @@ def build(root, out, directory, label):
 
 
 def judge(root, executable, case, directory, label):
-    return process(root, label, directory,
-                   ["--_judge", str(root), str(executable), case["test"]])
+    result = process(root, label, directory,
+                     ["--_judge", str(root), str(executable), case["test"]])
+    # A reply timeout inside the judge is an infrastructure error even during
+    # the mutant phase, not a wrong assertion or a surviving mutant.
+    if isinstance(result["report"], dict):
+        for error in result["report"].get("errors", []):
+            if error["type"] == "TimeoutError":
+                raise TimeoutError(f"{label}: {error['message']}")
+    return result
 
 
 def fresh(result):
@@ -380,7 +419,7 @@ def main(argv=None):
                 report["cases"].extend(results)
                 if any(case["status"] == "blocked" for case in results):
                     report["cases"].extend(dict(name=case["name"], passed=False, status="not-run",
-                                                reason="stopped after blocked build")
+                                                reason="stopped after blocked case")
                                            for case in selected[first + args.jobs:])
                     break
         report["baseline_closure_unchanged"] = copied_bytes_equal(source, records)

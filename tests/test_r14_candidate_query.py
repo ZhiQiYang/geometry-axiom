@@ -11,6 +11,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +34,8 @@ class SealProbeSession:
     is checked against its own Binary descriptor immediately before spawning,
     since its source and instrumentation are deliberately different.
     """
+    reply_timeout = 10  # seconds for one complete command/reply
+
     def __init__(self, binary):
         from tests import binaries
         info = binaries.inspect_one(binary)
@@ -49,9 +52,36 @@ class SealProbeSession:
         self.stopped = False
 
     def command(self, text):
-        self.process.stdin.write(text + "\n")
-        self.process.stdin.flush()
-        line = self.process.stdout.readline()
+        # Killing this single native probe unblocks pipe I/O on Windows too;
+        # a readable prefix without a newline must not cancel the deadline.
+        timed_out = False
+
+        def expire():
+            nonlocal timed_out
+            timed_out = True
+            self.process.kill()
+
+        timer = threading.Timer(self.reply_timeout, expire)
+        timer.start()
+        try:
+            self.process.stdin.write(text + "\n")
+            self.process.stdin.flush()
+            line = self.process.stdout.readline()
+        finally:
+            timer.cancel()
+            timer.join()
+            if timed_out:
+                self.process.wait(timeout=10)
+                self.stderr.seek(0)
+                detail = self.stderr.read().decode("utf-8", errors="replace")
+                self.stopped = True
+                try:
+                    self.process.stdin.close()
+                except OSError:
+                    pass  # the killed probe may already have broken the pipe
+                self.process.stdout.close()
+                self.stderr.close()
+                raise TimeoutError(f"R14CQ_SEAL_PROBE_REPLY_TIMEOUT: {text!r} ({self.reply_timeout}s); {detail}")
         if not line:
             self.stderr.seek(0)
             raise _bridge.BridgeClosed(self.stderr.read().decode("utf-8", errors="replace"),
@@ -67,7 +97,7 @@ class SealProbeSession:
             status = self.process.wait(timeout=10)
         except subprocess.TimeoutExpired:
             self.process.kill()
-            self.process.wait()
+            self.process.wait(timeout=10)
             raise RuntimeError("R14CQ_SEAL_PROBE_STOP_TIMEOUT")
         finally:
             self.process.stdout.close()
