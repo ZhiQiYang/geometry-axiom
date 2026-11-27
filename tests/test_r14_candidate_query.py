@@ -76,6 +76,93 @@ class SealProbeSession:
             raise _bridge.BridgeClosed("R14CQ_SEAL_PROBE_EXIT", status)
 
 
+class WithdrawalDeadlines(unittest.TestCase):
+    def test_partial_probe_reply_times_out_before_newline(self):
+        from unittest.mock import patch
+        from tests import binaries
+        # A real pipe: readable bytes are not a complete protocol reply. The
+        # fixture eventually supplies the newline so even a broken test ends.
+        with tempfile.TemporaryDirectory() as tmp, patch.object(binaries, "OUT_DIR", Path(tmp)):
+            src = Path(tmp) / "late.c"
+            src.write_text('''#include <stdio.h>
+#include <string.h>
+#ifdef _WIN32
+#include <windows.h>
+#define DELAY() Sleep(4000)
+#else
+#include <unistd.h>
+#define DELAY() sleep(4)
+#endif
+int main(void) {
+    char buf[32];
+    if (fgets(buf,sizeof buf,stdin) && !strcmp(buf,"partial\\n")) {
+        fputs("{",stdout); fflush(stdout);
+        fputs("partial sent\\n",stderr); fflush(stderr);
+        DELAY(); puts("}");
+    }
+    return 0;
+}
+''', encoding="utf-8")
+            binary = binaries.Binary("late", "late", str(src), ["/nologo"], [], [], [], smoke="bridge")
+            built = binaries.build_one(binary)
+            self.assertTrue(built.ok, ("R14CQ_TIMEOUT_FIXTURE_BUILD", built.detail))
+            probe = SealProbeSession(binary)
+            probe.reply_timeout = 1
+            try:
+                with self.assertRaisesRegex(TimeoutError, "R14CQ_SEAL_PROBE_REPLY_TIMEOUT.*partial",
+                                            msg="R14CQ_PARTIAL_REPLY_MUST_TIME_OUT") as caught:
+                    probe.command("partial")
+                self.assertIn("partial sent", str(caught.exception), "R14CQ_TIMEOUT_KEEPS_PROBE_STDERR")
+                self.assertIsNotNone(probe.process.poll(), "R14CQ_TIMEOUT_REAPS_PROBE")
+            finally:
+                probe.stop()
+
+    def test_late_mutant_assertion_is_blocked_with_logs(self):
+        self.check_blocked_mutant('time.sleep(4); self.fail("FIXTURE_ASSERT")', "R14CQ_JUDGE_TIMEOUT")
+
+    def test_probe_timeout_from_mutant_judge_is_blocked(self):
+        self.check_blocked_mutant('raise TimeoutError("R14CQ_SEAL_PROBE_REPLY_TIMEOUT: partial")',
+                                  "R14CQ_SEAL_PROBE_REPLY_TIMEOUT")
+
+    def check_blocked_mutant(self, mutant_action, reason):
+        import threading
+        from unittest.mock import patch
+        from tests.diagnostics import r14_candidate_query_mutations as runner
+        # Exercise the actual three judge processes, classification, restoration
+        # and receipts. Only the C builds are irrelevant to this timing fixture.
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            source = output / "original"
+            script = source / runner.RUNNER
+            script.parent.mkdir(parents=True)
+            script.write_bytes((ROOT / runner.RUNNER).read_bytes())
+            fixture = source / "fixture.py"
+            fixture.write_text('import sys, time, unittest\n'
+                               'class Judge(unittest.TestCase):\n'
+                               '    def test_one(self):\n'
+                               '        if False:\n'
+                               '            print("entered mutant", flush=True)\n'
+                               f'            {mutant_action}\n', encoding="utf-8")
+            case = dict(name="SLOW", source="fixture.py", before="if False:", after="if True:",
+                        test="fixture.Judge.test_one", tag="FIXTURE_ASSERT")
+            build = dict(exit_code=0, report=dict(exit_code=0, fresh=True, binary_sha256="fixture",
+                                                  info=dict(path=sys.executable)))
+            with patch.object(runner, "JUDGE_TIMEOUT", 2, create=True), patch.object(runner, "build", return_value=build):
+                runner.run_case(case, source, {"fixture.py": runner.sha(fixture.read_bytes())},
+                                build, output, output, threading.Lock())
+            directory = output / "SLOW"
+            receipt = runner.read_json(directory / "report.json")
+            self.assertEqual("blocked", receipt["status"], "R14CQ_TIMEOUT_MUST_BE_BLOCKED: " + reason)
+            self.assertFalse(receipt["passed"], "R14CQ_TIMEOUT_IS_NOT_A_KILL")
+            self.assertIn(reason, receipt["reason"], "R14CQ_NAMED_TIMEOUT_RECEIPT")
+            self.assertIn("mutant-test", receipt["reason"], "R14CQ_TIMEOUT_IDENTIFIES_PHASE")
+            self.assertIn(reason, (directory / "mutant-test.stderr.log").read_text(encoding="utf-8"))
+            self.assertIn("entered mutant", (directory / "mutant-test.stdout.log").read_text(encoding="utf-8"))
+            self.assertTrue((directory / "mutant-test.process.json").is_file(), "R14CQ_TIMEOUT_PROCESS_RECEIPT")
+            self.assertTrue(receipt["all_copied_bytes_restored"], "R14CQ_TIMEOUT_RESTORES_SOURCE")
+            self.assertEqual([0, 0], [receipt[key]["exit_code"] for key in ("baseline", "restored")])
+
+
 class R14CandidateQuery(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
