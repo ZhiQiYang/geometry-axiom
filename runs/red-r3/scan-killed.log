@@ -1,0 +1,129 @@
+=== 情境 scan-killed（run_id 7001，分支 apiworker/7001，main 02f2415728b1b8b2e4dd97b1a25d2cc841fc51d6）===
+（故障注入：/usr/local/sbin/find＝killed）
+
+$ [prepare] Validate inputs, comment author and base (no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-prepare-6576968211722943316.sh
+  | task comment 900001 by owner, 60 bytes, sha256 9a53c31c8ffb25d4b19dc6684a0d5fb08681a837b5477ca94f7d43ed4030d69a
+  | {
+  |   "task_issue": 7,
+  |   "comment_id": 900001,
+  |   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001",
+  |   "comment_author": "ZhiQiYang",
+  |   "comment_updated_at": "2026-11-25T00:00:00Z",
+  |   "comment_sha256": "9a53c31c8ffb25d4b19dc6684a0d5fb08681a837b5477ca94f7d43ed4030d69a",
+  |   "comment_bytes": 60,
+  |   "refs": [],
+  |   "base_ref": "main",
+  |   "base_sha": "02f2415728b1b8b2e4dd97b1a25d2cc841fc51d6",
+  |   "model": "claude-opus-5-5",
+  |   "max_budget_usd": "5"
+  | }
+  結束碼：0
+  outputs：{"task_issue": "7", "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001", "comment_updated_at": "2026-11-25T00:00:00Z", "comment_sha256": "9a53c31c8ffb25d4b19dc6684a0d5fb08681a837b5477ca94f7d43ed4030d69a", "base_ref": "main", "base_sha": "02f2415728b1b8b2e4dd97b1a25d2cc841fc51d6", "model": "claude-opus-5-5", "max_budget_usd": "5", "comment_id": "900001", "refs_summary": "無"}
+
+$ [work] Prepare the integration-test environment … — 本機跳過（apt／google-chrome；未驗）
+
+$ [work] Install pinned Claude Code CLI (checksum-verified, no API key in this step)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-work-7659930620602823946.sh
+  | 2.1.330 (Claude Code)
+  結束碼：0
+
+$ [work] Create the isolated worker user, its clone and launcher (no API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-work-5986697394430529519.sh
+  | /home/runner/work/_temp_scan-killed_work/zz-apiworker: parsed OK
+  結束碼：0
+
+$ [work] Close every world-writable path before the model runs (no API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-work-4308224820178563807.sh
+  | /srv/replay/scripts/scan-killed-work-4308224820178563807.sh: line 9:   432 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err"
+  | find 結束碼 137：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+  | world-writable entries before: 0
+  | /srv/replay/scripts/scan-killed-work-4308224820178563807.sh: line 9:   442 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err"
+  | find 結束碼 137：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+  | world-writable entries after: 0
+  結束碼：0
+
+$ [work] Verify the worker is isolated and the git remote has no credentials
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-work-1756314988161419220.sh
+  | ::error::apiworker 寫得進 /opt
+  結束碼：1
+
+$ [work] Stop every leftover worker process (no API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-work-6606043309697644133.sh
+  | no apiworker process left
+  結束碼：0
+--- Stop step 之後 apiworker 剩餘行程：無
+
+$ [work] Package the local branch as a git bundle (no API key; git runs as the worker user)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-work-1414519344439870823.sh
+  | no-commits
+  | commits=0 uncommitted=0
+  | total 20
+  | drwxrwxr-x 2 runner runner 4096 Nov 27 22:28 .
+  | drwxr-xr-x 5 runner runner 4096 Nov 27 22:28 ..
+  | -rw-rw-r-- 1 runner runner   24 Nov 27 22:28 bundle-log.txt
+  | -rw-rw-r-- 1 runner runner   11 Nov 27 22:28 bundle-status
+  | -rw-rw-r-- 1 runner runner    3 Nov 27 22:28 cleanup-ok
+  結束碼：0
+
+$ [push] Receive the worker result — 已取得
+
+$ [push] Refusal checks (no token, no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-push-2814944959193963561.sh
+  | {
+  |   "ok": false,
+  |   "head": "",
+  |   "commits": 0,
+  |   "files": 0,
+  |   "reasons": [
+  |     "CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）",
+  |     "相對 base 沒有任何 commit"
+  |   ]
+  | }
+  結束碼：0
+  outputs：{"ok": "false", "head_sha": "", "commits": "0", "files": "0", "reasons": "[\"CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）\", \"相對 base 沒有任何 commit\"]"}
+
+$ [push] Push the checked head … — 略過（if: steps.check.outputs.ok == 'true' 不成立）
+
+$ [report] Post one 【API worker】 comment (no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-report-7991369585043671643.sh
+  | https://github.com/repos/ZhiQiYang/geometry-axiom/issues/7/comments#issuecomment-fake
+  結束碼：2
+
+$ [report] Delete this run's worker artifacts (they may hold refused content)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/scan-killed-report-1909095756012776424.sh
+  | deleted artifact 5550001
+  | deleted artifact 5550002
+  結束碼：0
+
+--- 貼出的留言 ---
+[POST repos/ZhiQiYang/geometry-axiom/issues/7/comments]
+【API worker】任務留言 900001（#7）
+
+### 結論
+**沒有推送**。
+拒絕原因（固定檢查，不含模型）：
+- CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）
+- 相對 base 沒有任何 commit
+
+### 執行紀錄
+- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `9a53c31c8ffb25d4b19dc6684a0d5fb08681a837b5477ca94f7d43ed4030d69a`；讀取時 updated_at 2026-11-25T00:00:00Z）
+- 引用留言：無
+- base：`main` `02f2415728b1b8b2e4dd97b1a25d2cc841fc51d6`
+- 分支：`apiworker/7001`；head：`無`；推送：否
+- CLI 啟動：否；結束碼：無（CLI 未啟動）；可解析結果：否（輸出檔不存在）；subtype `None`；is_error `None`；work job：failure
+
+### 模型最終報告
+（沒有可用的最終報告）
+
+---
+為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。
+模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 未知／花費 無（CLI 未啟動）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7001)
+
+[DELETE repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001]
+[DELETE repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002]
+--- 植入程式的 sentinel（/tmp/apiworker-sentinel）：不存在（沒有被 runner 執行）
+
+--- 遠端分支 apiworker/7001：不存在；main：02f2415728b1b8b2e4dd97b1a25d2cc841fc51d6
+--- 假 API 收到 0 個請求；金鑰前 8 字：[]
+--- job 結果：{"prepare": "success", "work": "failure", "push": "success", "report": "failure"}

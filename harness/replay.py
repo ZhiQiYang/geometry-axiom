@@ -106,7 +106,14 @@ class Run:
             os.killpg(proc.pid, signal.SIGKILL)
             data, _ = proc.communicate()
         text = data.decode("utf-8", "replace")
-        for line in text.rstrip("\n").split("\n")[-60:]:
+        self.nstep = getattr(self, "nstep", 0) + 1
+        full = f"{R}/out/{self.name}.steps/{self.nstep:02d}-{job}.out"
+        os.makedirs(os.path.dirname(full), exist_ok=True)
+        open(full, "w", encoding="utf-8").write(text)
+        lines = text.rstrip("\n").split("\n")
+        if len(lines) > 60:
+            self.p(f"  （以下只列最後 60 行；完整 {len(lines)} 行輸出見 {os.path.basename(os.path.dirname(full))}/{os.path.basename(full)}）")
+        for line in lines[-60:]:
             self.p("  | " + line)
         rc = "killed（模擬 step 逾時／中斷）" if killed else proc.returncode
         self.p(f"  結束碼：{rc}")
@@ -149,6 +156,11 @@ def seed_remote():
     open(f"{seed}/README.txt", "a").write("second\n")
     open(f"{seed}/.github/workflows/integration-tests.yml", "a").write("# v2\n")
     sh(g + ["commit", "-qam", "second (workflow v2)"])
+    os.makedirs(f"{seed}/archive", exist_ok=True)
+    open(f"{seed}/archive/公理層.md", "w", encoding="utf-8").write("# 舊版公理層（封存）\nv1\n")
+    sh(g + ["add", "-A"]); sh(g + ["commit", "-qm", "archive v1"])
+    open(f"{seed}/archive/公理層.md", "a", encoding="utf-8").write("v2\n")
+    sh(g + ["commit", "-qam", "archive v2 (only nested SSOT changes)"])
     sh(["git", "clone", "-q", "--bare", seed, REMOTE_DIR])
     for k, v in (("uploadpack.allowFilter", "true"), ("uploadpack.allowAnySHA1InWant", "true")):
         sh(["git", "-C", REMOTE_DIR, "config", k, v])
@@ -223,7 +235,7 @@ def remote_branch(branch):
 def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), report="### 做了什麼\n- 照任務修改。",
              hang_at=None, pre_branch=False, base_ref="main", model_timeout=None, refs=(), body=None,
              race_ref=False, break_after_push=False, drop_output=False,
-             find_shim=None, pgrep_error_at_stop=False, after_push_ref=None):
+             find_shim=None, pgrep_error_at_stop=False, after_push_ref=None, grep_error_at_lockdown=False):
     log = open(f"{R}/out/{name}.log", "w", encoding="utf-8")
     run_id = 7000 + len(os.listdir(f"{R}/out"))
     run = Run(name, run_id, log)
@@ -253,6 +265,8 @@ def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), re
     if os.path.exists(shim): os.remove(shim)
     if find_shim == "fail":
         open(shim, "w").write("#!/bin/sh\necho \"find: '/srv/replay/disk': Input/output error\" >&2\nexit 1\n")
+    elif find_shim == "killed":
+        open(shim, "w").write("#!/bin/sh\necho \"find: '/tmp/vanished-during-scan': No such file or directory\" >&2\nkill -9 $$\n")
     elif find_shim == "vanished":
         open(shim, "w").write("#!/bin/sh\n/usr/bin/find \"$@\"\necho \"find: '/tmp/vanished-during-scan': No such file or directory\" >&2\nexit 1\n")
     if find_shim:
@@ -292,7 +306,14 @@ def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), re
             pres += ["Verify the worker is isolated", "Build prompt from the trusted", "Preflight the tool list"]
             for pre in pres:
                 if work_ok:
+                    gshim = grep_error_at_lockdown and pre.startswith("Close every")
+                    if gshim:
+                        open("/usr/sbin/grep", "w").write("#!/bin/sh\necho 'grep: injected classifier failure' >&2\nexit 2\n")
+                        os.chmod("/usr/sbin/grep", 0o755)
+                        run.p("（故障注入：Close step 期間 /usr/sbin/grep 一律結束碼 2）")
                     work_ok, _ = run.run_step("work", pre, T["work"])
+                    if gshim:
+                        os.remove("/usr/sbin/grep")
             if work_ok:
                 work_ok, _ = run.run_step("work", "Run the worker", T["work"], timeout=model_timeout)
             # always() 的兩步與上傳
@@ -300,12 +321,14 @@ def scenario(name, *, comment_user=OWNER, comment_user_id=OWNER_ID, steps=(), re
                 open("/usr/sbin/pgrep", "w").write("#!/bin/sh\necho 'pgrep: cannot allocate memory' >&2\nexit 3\n")
                 os.chmod("/usr/sbin/pgrep", 0o755)
                 run.p("（故障注入：Stop step 期間 /usr/sbin/pgrep 一律結束碼 3）")
-            run.run_step("work", "Stop every leftover worker process", T["work"])
+            stop_ok, _ = run.run_step("work", "Stop every leftover worker process", T["work"])
             if pgrep_error_at_stop:
                 os.remove("/usr/sbin/pgrep")
             left = subprocess.run(["/usr/bin/pgrep", "-a", "-u", "apiworker"], capture_output=True, text=True).stdout.strip()
             run.p(f"--- Stop step 之後 apiworker 剩餘行程：{left or '無'}")
-            run.run_step("work", "Package the local branch", T["work"])
+            pkg_ok, _ = run.run_step("work", "Package the local branch", T["work"])
+            # 真 Actions：always() 步驟失敗也會讓 job 失敗。
+            work_ok = work_ok and stop_ok and pkg_ok
             copy_art(f"{T['work']}/worker-out", f"{run.art}/api-worker-output")
             if drop_output:
                 shutil.rmtree(f"{run.art}/api-worker-output", ignore_errors=True)
@@ -447,7 +470,7 @@ SCENARIOS = {
     "root-entry-symlink": dict(steps=[f"ln -s ../README.txt .github/scripts && git add .github/scripts && {COMMIT} commit -qm root-symlink"]),
     "root-entry-gitlink": dict(steps=[f"git update-index --add --cacheinfo 160000,$(git rev-parse HEAD),.github/actions && {COMMIT} commit -qm root-gitlink"]),
     "merge-history": dict(steps=[
-        "A=$(git rev-parse HEAD~1); B=$(git rev-parse HEAD); "
+        "A=$(git rev-parse HEAD~3); B=$(git rev-parse HEAD); "
         f"C=$({COMMIT} commit-tree \"$A^{{tree}}\" -p $A -p $B -m 'c: merge with ancestor tree'); "
         f"echo ok > allowed.txt && git add allowed.txt && T=$(git write-tree) && D=$({COMMIT} commit-tree $T -p $B -p $C -m 'd: merge'); "
         "git reset -q --soft $D && git log --oneline --graph -5"]),
@@ -456,6 +479,13 @@ SCENARIOS = {
     "pgrep-error": dict(pgrep_error_at_stop=True, steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
     "push-then-moved": dict(after_push_ref="move", steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
     "push-then-deleted": dict(after_push_ref="delete", steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
+    "nested-axiom-merge": dict(steps=[
+        "A=$(git rev-parse HEAD~1); B=$(git rev-parse HEAD); git diff --stat $A $B; "
+        f"C=$({COMMIT} commit-tree \"$A^{{tree}}\" -p $A -p $B -m 'c: merge with ancestor tree (archive v1)'); "
+        f"echo ok > allowed.txt && git add allowed.txt && T=$(git write-tree) && D=$({COMMIT} commit-tree $T -p $B -p $C -m 'd: merge'); "
+        "git reset -q --soft $D && git log --oneline --graph -5"]),
+    "scan-killed": dict(find_shim="killed", steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
+    "scan-classifier-error": dict(find_shim="fail", grep_error_at_lockdown=True, steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"]),
     "owner-ref-and-nonowner-ref": dict(
         steps=[f"echo ok >> README.txt && {COMMIT} commit -qam ok"],
         body="請照 ref-comment: 900002 與 https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900003 做。",

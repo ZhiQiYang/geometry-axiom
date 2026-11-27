@@ -1,0 +1,149 @@
+=== 情境 pgrep-error（run_id 7076，分支 apiworker/7076，main 54a556b34c5e7b457f02539bd9fa8d712a73b121）===
+
+$ [prepare] Validate inputs, comment author and base (no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-prepare-816799583959095405.sh
+  | task comment 900001 by owner, 60 bytes, sha256 26b9710500043fd563199602559ee91203c6a3dc6ecddd5bd3503e84a9202b33
+  | {
+  |   "task_issue": 7,
+  |   "comment_id": 900001,
+  |   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001",
+  |   "comment_author": "ZhiQiYang",
+  |   "comment_updated_at": "2026-11-25T00:00:00Z",
+  |   "comment_sha256": "26b9710500043fd563199602559ee91203c6a3dc6ecddd5bd3503e84a9202b33",
+  |   "comment_bytes": 60,
+  |   "refs": [],
+  |   "base_ref": "main",
+  |   "base_sha": "54a556b34c5e7b457f02539bd9fa8d712a73b121",
+  |   "model": "claude-opus-5-5",
+  |   "max_budget_usd": "5"
+  | }
+  結束碼：0
+  outputs：{"task_issue": "7", "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001", "comment_updated_at": "2026-11-25T00:00:00Z", "comment_sha256": "26b9710500043fd563199602559ee91203c6a3dc6ecddd5bd3503e84a9202b33", "base_ref": "main", "base_sha": "54a556b34c5e7b457f02539bd9fa8d712a73b121", "model": "claude-opus-5-5", "max_budget_usd": "5", "comment_id": "900001", "refs_summary": "無"}
+
+$ [work] Prepare the integration-test environment … — 本機跳過（apt／google-chrome；未驗）
+
+$ [work] Create the isolated worker user, its clone and launcher (no API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-5375541460859265088.sh
+  | /home/runner/work/_temp_pgrep-error_work/zz-apiworker: parsed OK
+  結束碼：0
+
+$ [work] Close every world-writable path before the model runs (no API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-5675687959383118432.sh
+  | world-writable entries before: 7
+  | world-writable entries after: 0
+  結束碼：0
+
+$ [work] Verify the worker is isolated and the git remote has no credentials
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-3335925973518438142.sh
+  | apiworker cannot write or rename: 20 paths checked
+  | User apiworker is not allowed to run sudo on vm.
+  | isolation ok
+  結束碼：0
+
+$ [work] Build prompt from the trusted main copy and the validated task
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-5838322948637791260.sh
+  | 8253 /home/runner/work/_temp_pgrep-error_work/worker-prompt.md
+  結束碼：0
+
+$ [work] Preflight the tool list without the API key
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-8716988715524964913.sh
+  | {"tools":["Bash","Edit","Glob","Grep","Read","Write"],"mcp_servers":[],"permissionMode":"dontAsk","slash_commands":[]}
+  結束碼：0
+
+$ [work] Run the worker (the only step that receives the API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-1810969260558789496.sh
+  | claude exit status: 0
+  | {
+  |   "is_error": false,
+  |   "subtype": "success",
+  |   "terminal_reason": "completed",
+  |   "num_turns": 2,
+  |   "total_cost_usd": 0.0016,
+  |   "permission_denials": 0
+  | }
+  結束碼：0
+（故障注入：Stop step 期間 /usr/sbin/pgrep 一律結束碼 3）
+
+$ [work] Stop every leftover worker process (no API key)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-5802981489401998651.sh
+  | pgrep: cannot allocate memory
+  | ::error::pgrep 結束碼 3，無法確認 apiworker 行程已清除
+  | ::error::apiworker 仍有行程，清理未確認
+  結束碼：1
+--- Stop step 之後 apiworker 剩餘行程：無
+
+$ [work] Package the local branch as a git bundle (no API key; git runs as the worker user)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-work-8808199302520741390.sh
+  | ok
+  | commits=1 uncommitted=0
+  | total 32
+  | drwxrwxr-x 2 runner runner 4096 Nov 27 22:31 .
+  | drwxr-xr-x 4 runner runner 4096 Nov 27 22:31 ..
+  | -rw-rw-r-- 1 runner runner   24 Nov 27 22:31 bundle-log.txt
+  | -rw-rw-r-- 1 runner runner    3 Nov 27 22:31 bundle-status
+  | -rw-rw-r-- 1 runner runner    2 Nov 27 22:31 cli-exit
+  | -rw-rw-r-- 1 runner runner   21 Nov 27 22:31 cli-started
+  | -rw-rw-r-- 1 runner runner 1685 Nov 27 22:31 result.json
+  | -rw-rw-r-- 1 runner runner  442 Nov 27 22:31 worker.bundle
+  結束碼：0
+
+$ [push] Receive the worker result — 已取得
+
+$ [push] Refusal checks (no token, no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-push-2086324185286094293.sh
+  | {
+  |   "ok": false,
+  |   "head": "8592a353f9ddf5daabe177aac0746f0c27fdd9e2",
+  |   "commits": 1,
+  |   "files": 1,
+  |   "reasons": [
+  |     "模型行程清理未確認（work job 沒有留下 cleanup-ok）"
+  |   ]
+  | }
+  結束碼：0
+  outputs：{"ok": "false", "head_sha": "8592a353f9ddf5daabe177aac0746f0c27fdd9e2", "commits": "1", "files": "1", "reasons": "[\"模型行程清理未確認（work job 沒有留下 cleanup-ok）\"]"}
+
+$ [push] Push the checked head … — 略過（if: steps.check.outputs.ok == 'true' 不成立）
+
+$ [report] Post one 【API worker】 comment (no API key, no model)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-report-8483594111636642293.sh
+  | https://github.com/repos/ZhiQiYang/geometry-axiom/issues/7/comments#issuecomment-fake
+  結束碼：2
+
+$ [report] Delete this run's worker artifacts (they may hold refused content)
+  命令：sudo -u runner env -i <step env> bash --noprofile --norc -eo pipefail /srv/replay/scripts/pgrep-error-report-5948921697214784862.sh
+  | deleted artifact 5550001
+  | deleted artifact 5550002
+  結束碼：0
+
+--- 貼出的留言 ---
+[POST repos/ZhiQiYang/geometry-axiom/issues/7/comments]
+【API worker】任務留言 900001（#7）
+
+### 結論
+**沒有推送**。
+拒絕原因（固定檢查，不含模型）：
+- 模型行程清理未確認（work job 沒有留下 cleanup-ok）
+
+### 執行紀錄
+- 任務留言：https://github.com/ZhiQiYang/geometry-axiom/issues/7#issuecomment-900001（內文 SHA-256 `26b9710500043fd563199602559ee91203c6a3dc6ecddd5bd3503e84a9202b33`；讀取時 updated_at 2026-11-25T00:00:00Z）
+- 引用留言：無
+- base：`main` `54a556b34c5e7b457f02539bd9fa8d712a73b121`
+- 分支：`apiworker/7076`；head：`8592a353f9ddf5daabe177aac0746f0c27fdd9e2`；推送：否
+- CLI 啟動：是；結束碼：0；可解析結果：是；subtype `success`；is_error `False`；work job：failure
+
+### 模型最終報告
+### 做了什麼
+- 照任務修改。
+
+---
+為了不提及任何帳號，留言中「@」後接英數字時都插了零寬字元（U+200B）；複製程式碼片段前要先移除。
+模型 `claude-opus-5-5`（effort high）／Claude Code 2.1.330／輪數 2／花費 US$0.0016（CLI 自報）／[run](file:///srv/replay/gh/ZhiQiYang/geometry-axiom/actions/runs/7076)
+
+[DELETE repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550001]
+[DELETE repos/ZhiQiYang/geometry-axiom/actions/artifacts/5550002]
+--- 植入程式的 sentinel（/tmp/apiworker-sentinel）：不存在（沒有被 runner 執行）
+
+--- 遠端分支 apiworker/7076：不存在；main：54a556b34c5e7b457f02539bd9fa8d712a73b121
+--- 假 API 收到 2 個請求；金鑰前 8 字：['fake-stu']
+--- job 結果：{"prepare": "success", "work": "failure", "push": "success", "report": "failure"}

@@ -1,0 +1,96 @@
+########## APIWORKER_SCAN_RC_EXACT_REMOVED（情境 scan-killed）
+$ diff -u head-r3.yml APIWORKER_SCAN_RC_EXACT_REMOVED.yml
+--- head-r3.yml
++++ APIWORKER_SCAN_RC_EXACT_REMOVED.yml
+@@ -443,7 +443,7 @@
+               # 例外只有一種：find 正常結束且結束碼恰好是 1，錯誤檔非空，而且分類器「成功」確認每一行都是
+               # 「No such file or directory」。被訊號終止（>128）、無法執行（126／127）、其他結束碼，
+               # 或分類器本身出錯，一律視為掃描未完成。
+-              if [ "$rc" -ne 1 ] || [ ! -s "$err" ]; then
++              if [ ! -s "$err" ]; then  # MUTANT
+                 echo "::error::全機掃描未完成（find 結束碼 $rc），不啟動模型" >&2
+                 sed -n 1,20p "$err" >&2
+                 return 1
+diff exit=1
+$ REPLAY_WF=APIWORKER_SCAN_RC_EXACT_REMOVED.yml python3 replay.py scan-killed
+replay exit=0
+scan-killed: jobs={'prepare': 'success', 'work': 'failure', 'push': 'success', 'report': 'failure'} pushed=None remote_branch=None sentinel=None reject=None reasons=["CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）", "相對 base 沒有任何 commit"]
+$ [work] Close every world-writable path before the model runs (no API key)
+  | /srv/replay/scripts/scan-killed-work-5784526133197038995.sh: line 9: 13741 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm
+  | find 結束碼 137：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+  | world-writable entries before: 0
+  | /srv/replay/scripts/scan-killed-work-5784526133197038995.sh: line 9: 13751 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm
+  | find 結束碼 137：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+  | world-writable entries after: 0
+  結束碼：0
+
+  | ::error::apiworker 寫得進 /opt
+  結束碼：1
+（故障注入：/usr/local/sbin/find＝killed）
+--- 遠端分支 apiworker/7001：不存在；main：cf69e07f1591b60b6f71844bacb0ed8e488ee000
+--- 假 API 收到 0 個請求；金鑰前 8 字：[]
+**沒有推送**。
+- 分支：`apiworker/7001`；head：`無`；推送：否
+
+########## APIWORKER_SCAN_CLASSIFIER_RC_REMOVED（情境 scan-classifier-error）
+$ diff -u head-r3.yml APIWORKER_SCAN_CLASSIFIER_RC_REMOVED.yml
+--- head-r3.yml
++++ APIWORKER_SCAN_CLASSIFIER_RC_REMOVED.yml
+@@ -451,7 +451,7 @@
+               local bad crc=0
+               bad="$(grep -c -v -E ': No such file or directory$' "$err")" || crc=$?
+               # grep -c：結束碼 1＝沒有不符的行（印出 0）；0＝有不符的行；其他＝分類器失敗。
+-              if [ "$crc" -ne 1 ] || [ "$bad" != 0 ]; then
++              if [ "$crc" -eq 0 ]; then  # MUTANT
+                 echo "::error::全機掃描未完成（find 結束碼 $rc；錯誤分類結束碼 $crc、非 ENOENT 行數 ${bad:-未知}），不啟動模型" >&2
+                 sed -n 1,20p "$err" >&2
+                 return 1
+diff exit=1
+$ REPLAY_WF=APIWORKER_SCAN_CLASSIFIER_RC_REMOVED.yml python3 replay.py scan-classifier-error
+replay exit=0
+scan-classifier-error: jobs={'prepare': 'success', 'work': 'failure', 'push': 'success', 'report': 'failure'} pushed=None remote_branch=None sentinel=None reject=None reasons=["CLI 未正常結束或沒有可解析的最終報告（啟動：否；結束碼：未記錄）", "相對 base 沒有任何 commit"]
+$ [work] Close every world-writable path before the model runs (no API key)
+  | grep: injected classifier failure
+  | find 結束碼 1：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+  | world-writable entries before: 0
+  | grep: injected classifier failure
+  | find 結束碼 1：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+  | world-writable entries after: 0
+  結束碼：0
+
+  | ::error::apiworker 寫得進 /opt
+  結束碼：1
+（故障注入：/usr/local/sbin/find＝fail）
+（故障注入：Close step 期間 /usr/sbin/grep 一律結束碼 2）
+--- 遠端分支 apiworker/7001：不存在；main：d1e3ce56c6910435991e9a5a24696c9c3f2f3ad8
+--- 假 API 收到 0 個請求；金鑰前 8 字：[]
+**沒有推送**。
+- 分支：`apiworker/7001`；head：`無`；推送：否
+
+########## APIWORKER_NESTED_SSOT_REMOVED（情境 nested-axiom-merge）
+$ diff -u head-r3.yml APIWORKER_NESTED_SSOT_REMOVED.yml
+--- head-r3.yml
++++ APIWORKER_NESTED_SSOT_REMOVED.yml
+@@ -856,7 +856,7 @@
+                           # 任何層級的 公理層.md（例如 archive/公理層.md）也逐 commit 比對：取遞迴 tree 中所有同名 entry。
+                           def nested_ssot(c):
+                               entries = git("ls-tree", "-r", "-z", "--full-tree", c).stdout.split(b"\0")
+-                              return sorted(e for e in entries if e and e.rsplit(b"\t", 1)[-1].split(b"/")[-1] == "公理層.md".encode())
++                              return []  # MUTANT
+                           base_tree = (git("ls-tree", base, "--", *protected).stdout, nested_ssot(base))
+                           drift = [c[:12] for c in git("rev-list", f"{base}..{head}").stdout.decode().split()
+                                    if (git("ls-tree", c, "--", *protected).stdout, nested_ssot(c)) != base_tree]
+diff exit=1
+$ REPLAY_WF=APIWORKER_NESTED_SSOT_REMOVED.yml python3 replay.py nested-axiom-merge
+replay exit=0
+nested-axiom-merge: jobs={'prepare': 'success', 'work': 'success', 'push': 'success', 'report': 'success'} pushed=confirmed remote_branch=973ac1ddc4697dfebd6f59d9df98572025992e49 sentinel=None reject=None reasons=[]
+$ [work] Close every world-writable path before the model runs (no API key)
+  | world-writable entries before: 17
+  | world-writable entries after: 0
+  結束碼：0
+
+  | push rc=0 outcome=created ls-remote rc=0 state=confirmed remote=973ac1ddc4697dfebd6f59d9df98572025992e49 expected=973ac1ddc4697dfebd6f59d9df98572025992e49
+--- 遠端分支 apiworker/7001：973ac1ddc4697dfebd6f59d9df98572025992e49；main：2e73bcec3d847cc21d97834a5e00ba6252541c85
+--- 假 API 收到 2 個請求；金鑰前 8 字：['fake-stu']
+- 分支：`apiworker/7001`；head：`973ac1ddc4697dfebd6f59d9df98572025992e49`；推送：是
+

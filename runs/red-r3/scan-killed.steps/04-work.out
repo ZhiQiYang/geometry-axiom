@@ -1,0 +1,6 @@
+/srv/replay/scripts/scan-killed-work-4308224820178563807.sh: line 9:   432 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err"
+find 結束碼 137：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+world-writable entries before: 0
+/srv/replay/scripts/scan-killed-work-4308224820178563807.sh: line 9:   442 Killed                  sudo find / \( -path /proc -o -path /sys -o -path "$WORKER_HOME" \) -prune -o \( \( -type d -perm -0002 ! -perm -1000 \) -o \( -type f -perm -0002 \) \) -print0 > "$list" 2> "$err"
+find 結束碼 137：只有掃描途中消失的檔案（1 行 No such file or directory），掃描視為完整
+world-writable entries after: 0
