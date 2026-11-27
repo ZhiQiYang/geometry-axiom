@@ -158,14 +158,15 @@
     const result=rows.map(row=>{
       const timberRoot={kind:'timber',id:row.id},placementRoot={kind:'placement',id:row.surface};
       const roots=[key('timber',row.id),key('placement',row.surface)];
+      const haveRoots=roots.every(k=>baseline.nodes.has(k)&&current.nodes.has(k));
       const axis=field=>{
-        if(roots.some(k=>!baseline.nodes.has(k)||!current.nodes.has(k)))return 'missing';
+        if(!haveRoots)return 'missing';
         if(!complete)return 'unchecked';
         return roots.every(k=>baseline.nodes.get(k)[field]===current.nodes.get(k)[field])?'consistent':'changed';
       };
       const a=baseline.supportEntries.get(roots[0]),b=current.supportEntries.get(roots[0]);
       const exact=entry=>entry&&entry.start?.status==='exact'&&entry.finish?.status==='exact';
-      const exactSupport=!complete||!exact(a)||!exact(b)?'unchecked':equal(a,b)?'consistent':'changed';
+      const exactSupport=!haveRoots||!complete||!exact(a)||!exact(b)?'unchecked':equal(a,b)?'consistent':'changed';
       return {timberRoot,placementRoot,localIncarnationComparison:[local(timberRoot),local(placementRoot)],
         definition:axis('definitionFingerprint'),effectiveValues:axis('valueFingerprint'),exactSupport,
         // The two root axes above do not certify the referenced source closure.
