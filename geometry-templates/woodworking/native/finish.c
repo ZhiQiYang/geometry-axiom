@@ -318,6 +318,30 @@ bool wood_pf_values_direct(const WoodFinishContext *w,const PanelFill *p,WoodFin
     return true;
 }
 
+bool wood_pf_grid_snapshot(const WoodFinishContext *w,const PanelFill *p,WoodPanelGridSnapshot *out)
+{
+    /* This native slice accepts only the complete periodic D42 definition it
+     * understands. A future seam-override reader must add R44's ALL-centers
+     * representability check here; it cannot silently export a periodic base. */
+    GeoJson definition;bool supported=geo_json_parse(&definition,p->definition)&&
+        geo_json_keys(&definition,0,"id,finishSurfaceId,panel,lengthAlong,origin,gap,pattern,threshold","stagger");
+    geo_json_free(&definition);
+    if(!supported)return wood_fs_error(w,"R44 SOURCE_FORMAT: snapshot requires the supported complete periodic panel-fill definition; no fields may be ignored");
+    WoodFinishLayout d={0};
+    if(!wood_pf_values(w,p,&d))return false;
+    memset(out,0,sizeof *out);out->gap=d.layout.gap;out->stagger_axis=p->stagger_axis;
+    for(int a=0;a<2;++a){out->size[a]=d.layout.size[a];out->anchor[a]=p->origin[a];}
+    if(p->stagger_axis>=0){
+        /* D43 board band p = D29 cell + 1. Therefore opposite parity uses
+         * anchor a+delta and stagger -delta, including negative signed cells. */
+        if(!geo_i64_add(p->origin[p->stagger_axis],d.layout.stagger,&out->anchor[p->stagger_axis])||
+           !geo_coord_in_range(out->anchor[p->stagger_axis]))
+            return wood_fs_error(w,"R44 D1: shifted snapshot anchor is outside D1");
+        out->stagger=-d.layout.stagger;
+    }
+    return true;
+}
+
 GeoRegionView wood_pf_region_view(const WoodBoundaryRegion *b,GeoLoop2View *holes)
 {for(size_t i=0;i<b->hole_count;++i)holes[i]=(GeoLoop2View){b->holes[i].v,b->holes[i].count};return (GeoRegionView){{b->outline.v,b->outline.count},holes,b->hole_count};}
 

@@ -33,9 +33,11 @@ static WoodEngineeringOperations app_eng_operations(World *w)
     o.member_created=app_eng_operation_member_created;return o;
 }
 #include "card_reference.inc"
+static bool app_panel_fill_snapshot(World *,GeoJson *,int);
 static bool eng_operation(World *w,GeoJson *j,int t)
 {
     char op[40]; if (!geo_json_string(j,geo_json_member(j,t,"op"),op,sizeof op)) return eng_fail("I35: operation requires an op name");
+    if(!strcmp(op,"export-fill-grid-snapshot"))return app_panel_fill_snapshot(w,j,t);
     if(!strcmp(op,"put-grid-system")||!strcmp(op,"set-grid-card-reference")||!strcmp(op,"swap-grid-card-reference")||!strcmp(op,"unbind-grid-card-reference"))return grid_card_operation(w,j,t,op);
     if(!strcmp(op,"parameter-package")){
         int ops=geo_json_member(j,t,"operations");if(!geo_json_keys(j,t,"op,operations","")||!geo_json_is_array(j,ops))return eng_fail("R60 PARAMETER_PACKAGE_BOUNDARY: invalid parameter package");
