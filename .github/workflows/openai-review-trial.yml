@@ -21,12 +21,12 @@ on:
 permissions: {}
 
 concurrency:
-  group: openai-adversarial-review-pr-473
+  group: openai-adversarial-review-pr-474
   cancel-in-progress: false
 
 jobs:
   review:
-    name: 'OpenAI adversarial review of PR #473'
+    name: 'OpenAI adversarial review of PR #474'
     # 只准 repo 擁有者本人、從 main 上的這份 workflow 觸發。
     if: >-
       github.event_name == 'push' &&
@@ -53,7 +53,7 @@ jobs:
         id: pr
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: 473
+          PR_NUMBER: 474
           MAX_BUDGET_USD: 12
         run: |
           set -euo pipefail
@@ -103,7 +103,7 @@ jobs:
       - name: Collect read-only git and GitHub data (no API key in this step)
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: 473
+          PR_NUMBER: 474
           HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
         run: |
           set -euo pipefail
@@ -229,7 +229,7 @@ jobs:
 
       - name: Build prompt from trusted main copy
         env:
-          PR_NUMBER: 473
+          PR_NUMBER: 474
           HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
           MAX_BUDGET_USD: ${{ steps.pr.outputs.max_budget_usd }}
         run: |
@@ -294,7 +294,7 @@ jobs:
         if: always() && steps.pr.outputs.head_sha != ''
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: 473
+          PR_NUMBER: 474
           HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
           SHORT_SHA: ${{ steps.pr.outputs.short_sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
