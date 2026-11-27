@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import io
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -28,14 +29,19 @@ def check(bundle):
         # 原腳本自建 detached worktree。在臨時的本地 repo 內登記、隨它清除。
         repo = tmp / 'repo.git'
         subprocess.run(['git', 'clone', '--quiet', '--bare', '--shared', str(ROOT), str(repo)], check=True)
+        inputs = tmp / 'original-inputs'
+        inputs.mkdir()
         with tarfile.open(fileobj=io.BytesIO(raw), mode='r:xz') as archive:
             for name in ('reproduce.py', 'consume.js', 'extend_fixture.py'):
                 (tmp / name).write_bytes(archive.extractfile(PREFIX + name).read())
+            for name in ('native.commands.txt', 'extend-native.commands.txt'):
+                (inputs / name).write_bytes(archive.extractfile(PREFIX + name).read())
         # 不解出交付包內的 fixture 或任何 bridge/producer 輸出。
-        import os
         env = dict(os.environ, TMPDIR=str(tmp))
-        for script, args in [('reproduce.py', [repo, tmp]), ('extend_fixture.py', [tmp])]:
-            subprocess.run([sys.executable, '-B', tmp / script, *args], cwd=tmp, env=env, check=True)
+        for script, log, args in [('reproduce.py', 'native.commands.txt', [repo, tmp]),
+                                  ('extend_fixture.py', 'extend-native.commands.txt', [tmp])]:
+            subprocess.run([sys.executable, '-B', HERE / 'r05_replay_epochs.py', inputs / log,
+                            tmp / script, *args], cwd=tmp, env=env, check=True)
         expected = (HERE / 'r05_source_checks.json').read_bytes()
         actual = (tmp / 'r05_source_checks.json').read_bytes()
         if signature(expected) != (79573, FIXTURE_SHA):

@@ -12,8 +12,8 @@ const derive=(e,current)=>S.deriveModelSchedule(e.record,result(e,current),T,P);
 const gate=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 const until=async predicate=>{for(let n=0;n<200&&!predicate();n++)await new Promise(r=>setTimeout(r,1));assert.ok(predicate(),'asynchronous native snapshot cycle must finish');};
 
-// Real bridge reads and ordinary-plan producer output. See the delivery's
-// reproduce.py/extend_fixture.py and raw logs; no synthetic positive receipt.
+// 真 bridge／ordinary-plan producer：來源、重建與逐 byte 比對命令見
+// fixtures/r05_source_checks.provenance.md。
 const sourceFixtures=require('./fixtures/r05_source_checks.json');
 const sourceSample=()=>clone(sourceFixtures.single);
 const checks=(e,current=e.live)=>{
