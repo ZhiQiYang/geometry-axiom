@@ -10,6 +10,7 @@ from copy import deepcopy
 import hashlib
 import importlib
 import importlib.util
+import inspect
 import json
 import os
 from pathlib import Path
@@ -18,6 +19,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -302,6 +304,61 @@ class IndependentOracle(unittest.TestCase):
         else:
             self.fail("R09B_ORACLE_NONCONFIRM_COMMIT_ACCEPTED")
 
+    def test_18_preview_result_is_checked_from_before_source_and_target(self):
+        cases = (([{"op": "preview", "id": 1}], "CARRIER_EDIT_REQUIRED"),
+                 ([{"op": "delete", "id": 1}, {"op": "preview", "id": 1}], "MISSING_ENDPOINT"),
+                 ([{"op": "context", "project": "q"}, {"op": "preview"}], "I75_SOURCE_CONTEXT"),
+                 ([{"op": "preview"}], "prepared"))
+        for events, expected in cases:
+            with self.subTest(expected=expected):
+                rows = self.trace(events)
+                self.assertEqual(rows[-1]["outcome"], expected, "R09B_V3_PREVIEW_CONSTRUCTOR")
+                rows[-1]["outcome"] = "prepared" if expected != "prepared" else "CARRIER_EDIT_REQUIRED"
+                with self.assertRaisesRegex(AssertionError, "ORACLE_PREVIEW_EFFECT",
+                                            msg="R09B_V3_PREVIEW_LEGALITY"):
+                    oracle.check_trace(rows)
+
+    def test_19_js_input_mutation_is_observed_inside_node(self):
+        case = next(oracle.matrix_cases())
+        actual_module = ROOT / "geometry-web" / "identity-ledger.js"
+        changes = ("identity.roots[0].id = 99;", "graph.nodes.injected = {incarnation:null};")
+        for change in changes:
+            with self.subTest(change=change), tempfile.TemporaryDirectory(prefix="r09b-js-input-") as directory:
+                root = Path(directory)
+                (root / "geometry-web").mkdir()
+                code = ("const original = require(" + json.dumps(str(actual_module)) + ");\n"
+                        "module.exports = {...original, judgeRoots(identity,graph) {\n"
+                        "const rows=original.judgeRoots(identity,graph);\n" + change + "\nreturn rows;\n}};\n")
+                (root / "geometry-web" / "identity-ledger.js").write_text(code, encoding="utf-8")
+                with patch.object(sys.modules[__name__], "ROOT", root):
+                    with self.assertRaisesRegex(AssertionError, "R09B_JS_INPUT_UNCHANGED",
+                                                msg="R09B_V3_JS_INPUT_MUTATION_DETECTED"):
+                        js_judge([deepcopy(case)])
+
+    def test_20_ordinary_roots_keep_unrelated_composite_identity_endpoints(self):
+        engine = product_or_baseline()
+        cases = list(oracle.matrix_cases())
+        for case in cases:
+            active = case["graph"]["data"]["identityLedger"]["active"]
+            case["graph"]["nodes"]["parameter-field:0:f0"] = {
+                "incarnation": oracle.EPOCH + ":99" if active else None,
+                "definitionFingerprint": "field-definition"}
+        existing = js_judge(cases)
+        try:
+            expected = [oracle.judge_roots(case["identity"], case["graph"]) for case in cases]
+        except (ValueError, oracle.OracleError) as error:
+            self.fail("R09B_V3_COMPOSITE_GRAPH_ACCEPTED: " + str(error))
+        actual = [engine.judge_roots(case["identity"], case["graph"]) for case in cases]
+        self.assertEqual(expected, existing, "R09B_V3_COMPOSITE_GRAPH_K3_ORACLE")
+        self.assertEqual(actual, expected, "R09B_V3_COMPOSITE_GRAPH_THREE_WAY")
+        # A root's old mark may be present only on that unrelated typed endpoint.
+        collision = deepcopy(cases[-1])
+        collision["identity"]["roots"][0]["incarnation"] = oracle.EPOCH + ":99"
+        expected = oracle.judge_roots(collision["identity"], collision["graph"])
+        self.assertEqual(expected[0]["status"], "conflict", "R09B_V3_COMPOSITE_MARK_CONFLICT")
+        self.assertEqual(js_judge([collision])[0], expected)
+        self.assertEqual(engine.judge_roots(collision["identity"], collision["graph"]), expected)
+
 
 class SourceReassociation(unittest.TestCase):
     @classmethod
@@ -387,9 +444,17 @@ class SourceReassociation(unittest.TestCase):
                 project_id=project, record_project_id=record_project, carrier_ids=list(CARRIERS), **self.native)
         return deepcopy(self.candidate_cache[cache_key])
 
-    def validate(self, candidate, *, scene=None, record=None, record_project=PROJECT, project=PROJECT):
+    def validate(self, candidate, *, scene=None, record=None, record_project=PROJECT, project=PROJECT,
+                 identities=(1, 2), carrier_ids=None, selection=None):
+        external = {}
+        # T-only calls the actual v2 method; absence of the new keywords must
+        # reach the behavioral assertion, never a TypeError/import failure.
+        if "selection" in inspect.signature(self.engine.validate_candidate).parameters:
+            external = {"selection": self.choices(identities, record) if selection is None else selection,
+                        "carrier_ids": list(CARRIERS) if carrier_ids is None else carrier_ids}
         return self.engine.validate_candidate(candidate, raw_record(self.identified if record is None else record),
-            self.replaced if scene is None else scene, project_id=project, record_project_id=record_project, **self.native)
+            self.replaced if scene is None else scene, project_id=project, record_project_id=record_project,
+            **external, **self.native)
 
     def test_00_original_f1b_and_real_native_fixture_already_pass(self):
         self.assertEqual(self.f1b["record"]["result"], self.legacy["result"], "R09B_REAL_F1B_BASELINE")
@@ -466,7 +531,8 @@ class SourceReassociation(unittest.TestCase):
         self.assertNotIn("sourceIdentity", candidate["record"])
         self.assertEqual([row["status"] for row in candidate["comparison"]], ["unknown", "unknown"])
         self.assertNotIn("identity ", candidate["record"]["input"]["base_scene"])
-        self.assertTrue(self.validate(candidate, scene=self.bare, record=self.legacy, record_project=None))
+        self.assertTrue(self.validate(candidate, scene=self.bare, record=self.legacy, record_project=None,
+                                      identities=(0, 2)))
 
     def test_08_continuous_same_target_true_noop_keeps_complete_record(self):
         candidate = self.candidate(scene=self.active, identities=(0, 2))
@@ -591,6 +657,28 @@ class SourceReassociation(unittest.TestCase):
                          "R09B_PROJECT_SCOPE_ORACLE_AND_PYTHON_ONLY")
         with self.assertRaisesRegex(AssertionError, "R09B_JS_SHARED_DOMAIN_ONLY"):
             js_judge([{"identity": identity, "graph": graph, "same_project": False}])
+
+    def test_19_revalidation_binds_external_selection_and_carrier_labels(self):
+        baseline = self.candidate()
+        choices = self.choices()
+        labels = list(CARRIERS)
+        inputs = deepcopy((choices, labels))
+        self.assertTrue(self.validate(baseline, selection=choices, carrier_ids=labels))
+        alternative = self.candidate(identities=(0, 2))
+        with self.assertRaises(ModelError, msg="R09B_V3_CALLER_SELECTION_BINDING"):
+            self.validate(alternative, selection=choices, carrier_ids=labels)
+        alternate_labels = ["different-west", "different-north"]
+        alternate_choices = deepcopy(choices)
+        for row, label in zip(alternate_choices, alternate_labels):
+            row["carrierId"] = label
+        renamed = self.engine.prepare_candidate(raw_record(self.identified), self.replaced, alternate_choices,
+            project_id=PROJECT, record_project_id=PROJECT, carrier_ids=alternate_labels, **self.native)
+        with self.assertRaises(ModelError, msg="R09B_V3_CALLER_LABEL_BINDING"):
+            self.validate(renamed, selection=choices, carrier_ids=labels)
+        with self.assertRaises(ModelError, msg="R09B_V3_CALLER_INPUT_REQUIRED"):
+            self.engine.validate_candidate(baseline, raw_record(self.identified), self.replaced,
+                project_id=PROJECT, record_project_id=PROJECT, **self.native)
+        self.assertEqual((choices, labels), inputs, "R09B_V3_EXTERNAL_INPUTS_UNCHANGED")
 
 
 if __name__ == "__main__":
