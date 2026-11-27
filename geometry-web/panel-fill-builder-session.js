@@ -151,7 +151,7 @@
       const r=await this.transport.command(command,this.owner.session);
       if(r?.transport&&r.sent===false){this.phase='cleanup-required';this.pendingCommand=null;this.reason='取消尚未送出，沒有待查回執；連線恢復後請取消這一個候選。';throw Object.assign(fail('PF6_NOT_SENT',this.reason),{transport:true,sent:false});} // PF6_APP_CANCEL_UNSENT_IS_NOT_UNKNOWN
       if(r?.transport){this.phase='unknown';this.reason='取消結果待查；只核對原回執。';throw Object.assign(fail('PF6_UNKNOWN',this.reason),{transport:true,command});}
-      if(!r?.ok){this.phase='rejected';throw fail(r?.code||'PF6_CANCEL',r?.error||'尚未核對取消結果。');}
+      if(!r?.ok){this.phase='cleanup-required';this.pendingCommand=null;throw fail(r?.code||'PF6_CANCEL',r?.error||'尚未核對取消結果。');}
       this.cleanupToken=null;this.pendingCommand=null;this.phase='suggested';return r;
     }
     async cancel(){
@@ -168,11 +168,23 @@
       if(r?.transport){this.phase='unknown';this.reason='確認結果待查；禁止重送或宣稱取消成功。';this.emit();return r;}
       this.finishConfirmation(r);return r;
     }
-    finishConfirmation(r){this.committedDefinitions=r?.ok?clone(this.candidate?.createdDefinitions||[]):[];this.release();this.receipt=clone(r);this.phase=r?.ok?'committed':'rejected';this.reason=r?.ok?'已整筆確認為普通角材；一次復原／重做恢復整包。':r?.error||'確認遭拒，沒有提交本次候選。';this.emit();} // PF6_APP_CONFIRM_RECEIPT_KEYS
+    finishConfirmation(r){
+      this.committedDefinitions=r?.ok?clone(this.candidate?.createdDefinitions||[]):[]; // PF6_APP_CONFIRM_RECEIPT_KEYS
+      this.receipt=clone(r);
+      // cmd_pf6_confirm 只有這三種失敗會明確銷毀候選。版本守門、封存回執等拒絕都不算取消。
+      if(!r.ok&&this.cleanupToken!==null&&!['EXPIRED','INVALID','CAPACITY'].includes(r.code)){
+        this.revoke();this.pendingCommand=null;this.phase='cleanup-required';
+        this.reason=(r.error||'確認遭拒。')+' 請取消原候選，不會重送確認。';
+      }else{
+        this.release();this.phase=r.ok?'committed':'rejected';
+        this.reason=r.ok?'已整筆確認為普通角材；一次復原／重做恢復整包。':r.error||'確認遭拒，沒有提交本次候選。';
+      }
+      this.emit();
+    }
     settleRecovered(command,result,originSession){
       if(this.phase!=='unknown'||command!==this.pendingCommand||originSession!==this.owner.session)return false; // PF6_APP_RECEIPT_CURRENT_SESSION
       if(command.startsWith('pf6-confirm ')){this.finishConfirmation(result);return true;}
-      if(command.startsWith('pf6-cancel ')){if(result?.ok){this.release();this.phase='cancelled';this.reason='原取消回執已核對，沒有重新送出。';}else{this.phase='rejected';this.reason=result?.error||'原取消未成功，仍須處理候選。';}this.emit();return true;}
+      if(command.startsWith('pf6-cancel ')){if(result?.ok){this.release();this.phase='cancelled';this.reason='原取消回執已核對，沒有重新送出。';}else{this.phase='cleanup-required';this.pendingCommand=null;this.reason=result?.error||'原取消未成功，仍須處理候選。';}this.emit();return true;}
       return false;
     }
     async settlePreviewReceipt(command,result,originSession){
@@ -180,7 +192,7 @@
       if(command.startsWith('pf6-select ')&&result?.ok)this.cleanupToken=token(result.preview?.token);
       if(this.cleanupToken!==null)await this.cancelToken();this.release();this.phase='cancelled';this.reason='原預覽回執已核對並清理；請重新明選，沒有復活舊候選。';this.emit();return true;
     }
-    invalidate(reason='幾何來源已變更，舊候選不能確認。'){this.reason=reason;const confirming=this.phase==='confirming'||this.phase==='unknown'&&this.pendingCommand?.startsWith('pf6-confirm ');if(this.lease&&!confirming)this.host.clearTimberPreviewToken(this.lease);if(!this.busy)this.phase='stale';this.emit();} // PF6_APP_CONFIRM_DISCONNECT_KEEPS_RECEIPT
+    invalidate(reason='幾何來源已變更，舊候選不能確認。'){this.reason=reason;const confirming=this.phase==='confirming'||this.phase==='unknown'&&this.pendingCommand?.startsWith('pf6-confirm ');if(this.lease&&!confirming)this.host.clearTimberPreviewToken(this.lease);if(!this.busy&&this.phase!=='cleanup-required')this.phase='stale';this.emit();} // PF6_APP_CONFIRM_DISCONNECT_KEEPS_RECEIPT
     retire(){this.retired=true;this.invalidate('原面或專案已退出；候選已退役，只核對既有回執。');}
   }
   return Object.freeze({Session,uint64,token,validateInput,validateView,validateEntries,source});

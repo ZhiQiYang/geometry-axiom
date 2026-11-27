@@ -130,6 +130,7 @@ const ReferenceWorkspace = (() => {
     const kind=command.startsWith('pf6-confirm ')?'pf6':'timber';
     assertTimberPreviewToken(token,kind);
     assemblyConfirmation={...timberPreview,timberCommand:command};
+    if(kind==='pf6')assemblyConfirmation.pf6Preview=timberPreview;
     timberPreview=null;schedulePresentation();return assemblyConfirmation;
   }
   function finishTimberPreview(owner){if(owner&&timberPreview===owner){timberPreview=null;schedulePresentation();}}
@@ -203,7 +204,12 @@ const ReferenceWorkspace = (() => {
     assemblyConfirmation={...prepared,evidenceCommand:"engineering-confirm "+key};schedulePresentation();return assemblyConfirmation;
   }
   function cancelEvidenceConfirmation(token){evidenceConfirmations.delete(featureTokenKey(token));}
-  function finishAssemblyConfirmation(stamp){if(assemblyConfirmation===stamp){assemblyConfirmation=null;schedulePresentation();scheduleRecovery();}}
+  function finishAssemblyConfirmation(stamp,result){
+    if(assemblyConfirmation!==stamp)return;
+    // 未提交不代表原生預覽已釋放。把原租約交還 Session，但不交還確認權。
+    if(stamp?.pf6Preview&&result?.ok===false){timberPreview=stamp.pf6Preview;timberPreview.token=null;}
+    assemblyConfirmation=null;schedulePresentation();scheduleRecovery();
+  }
   const safe = fn => async (...args) => { try { return await fn(...args); } catch (e) { toast(e.message || "參考資料操作失敗"); } };
   function group(bid, create = false) {
     if(create)assertEditable();

@@ -591,7 +591,7 @@ async function recoverApiResults() {
       else apiRecoveryNeedsAbort ||= !!ReferenceWorkspace.history.group;
     }
     pendingApiResults.delete(requestId); pendingApiSessions.delete(requestId); acknowledgedApiResults.add(requestId);
-    if (stamp) { ReferenceWorkspace.finishAssemblyConfirmation(stamp); pendingAssemblyConfirmations.delete(requestId); }
+    if (stamp) { ReferenceWorkspace.finishAssemblyConfirmation(stamp,result); pendingAssemblyConfirmations.delete(requestId); }
     if (current && cmd.startsWith('timber-edit-confirm ')) {
       if (result.ok && result.history_changed !== false) window.dispatchEvent(new CustomEvent('geometry-definition-changed',{detail:{command:cmd}}));
       await window.TimberEdit?.settleRecovered(cmd,result);
@@ -840,17 +840,17 @@ async function apiRequest(cmd, roomLease = null) {
       method: "POST", headers: { "Content-Type": "application/json", "X-Geometry-Version": pageRuntimeVersion },
       body: JSON.stringify({ cmd, ...(requestId ? {requestId,session:originSession,ack} : {}) }), signal: AbortSignal.timeout(15000)
     });
-    if (r.headers.get('X-Geometry-Stale') === '1') {
-      // This rejection did not reach the core. Keep saving available and do
-      // not create an uncertain receipt or leave an assembly lease pending.
-      if (confirmation) {
-        ReferenceWorkspace.finishAssemblyConfirmation(confirmation);
-        pendingAssemblyConfirmations.delete(requestId);
-      }
-      return { ...(await r.json()), stale: true };
-    }
     if (/^pf6-(confirm|cancel) /.test(cmd) && r.headers.get('X-Geometry-Session') !== originSession)
       throw new Error('角材確認／取消的回覆缺少原服務工作階段；僅能核對原請求回執。');
+    if (r.headers.get('X-Geometry-Stale') === '1') {
+      // 此拒絕未到核心。結束確認，但 PF-6 的原候選仍須精確取消。
+      const rejected={...(await r.json()),stale:true};
+      if (confirmation) {
+        ReferenceWorkspace.finishAssemblyConfirmation(confirmation,rejected);
+        pendingAssemblyConfirmations.delete(requestId);
+      }
+      return rejected;
+    }
     checkApiSession(r);
     if (!r.ok) throw new Error(r.status === 403
       ? "此網址未獲服務允許（403）。請使用啟動服務時顯示的本機網址。"
@@ -881,7 +881,7 @@ async function apiRequest(cmd, roomLease = null) {
   const bootstrapRead = !originSession && /^(objects|surfaces|boundary|references|obstacles|render|pick|bhit|dump-deidentified|identity-read|dump)(\s|$)/.test(cmd);
   const current = (bootstrapRead || originSession === connection.session) && (!confirmation || ReferenceWorkspace.assemblyConfirmationCurrent(confirmation));
   if (current) ReferenceWorkspace.observe(cmd, res);
-  if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation); pendingAssemblyConfirmations.delete(requestId); }
+  if (confirmation) { ReferenceWorkspace.finishAssemblyConfirmation(confirmation,res); pendingAssemblyConfirmations.delete(requestId); }
   if (current && res.ok && !res.preview && res.history_changed !== false &&
       /^(line |drag |reset$|default$|loadfile |engineering-confirm |assembly-confirm |section-profile-confirm |panel-fill-confirm |definition-import-confirm |timber-edit-confirm |boundary-pair-confirm |framing-template-confirm |pf6-confirm )/.test(cmd) &&
       !/^line\s+(?:$|#|preview\b|cancel-preview\b|history-(?:begin|end)\b|canvas\b)/.test(cmd))
