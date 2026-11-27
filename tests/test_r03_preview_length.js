@@ -98,3 +98,66 @@ test('R2054_CANVAS_PROJECTION rejects changed neighbors while preserving the uni
   const input=canvasUnion(),sections=input.plan.shards[1].sections;sections.splice(3,1);sections.splice(2,0,'P2054');
   assert.throws(()=>lengthExtension.project(input.golden,input.plan),/R2054_CANVAS_EXACT_NEIGHBORS/,'R2054_CANVAS_ORDER_GUARD_REQUIRED');
 });
+function withdrawalJudge(caseName){
+  const python=process.env.GEOMETRY_PYTHON||(process.platform==='win32'?'python':'python3');
+  const run=require('node:child_process').spawnSync(python,['-B','tests/diagnostics/r03_preview_length_judge_contract.py',caseName],{cwd:root,encoding:'utf8',timeout:60000});
+  assert.equal(run.status,0,'R2054_WITHDRAWAL_JUDGE_'+caseName+'\n'+run.stdout+run.stderr);
+}
+test('R2054_WITHDRAWAL_JUDGE rejects a passed marker plus an unrelated AssertionError',()=>withdrawalJudge('wrong-failure'));
+test('R2054_WITHDRAWAL_JUDGE rejects a skipped test',()=>withdrawalJudge('skip'));
+test('R2054_WITHDRAWAL_JUDGE rejects cancellation',()=>withdrawalJudge('cancel'));
+test('R2054_WITHDRAWAL_JUDGE accepts only the exact failing test and assertion',()=>withdrawalJudge('valid'));
+function touchInputFromCurrentCaller(file,current){
+  const text=fs.readFileSync(path.join(root,file),'utf8');
+  const lines=text.split('\n').filter(line=>/^\s*const (lengthInput|touchInput)\s*=/.test(line));
+  assert.ok(lines.length===1||lines.length===2,'R2054_HISTORY_CALL_SITE');
+  const sandbox={registered:current,golden:current.golden,plan:current.plan,lengthExtension,r16Extension:require('./diagnostics/r16_canvas_extension.cjs'),
+    shards:{loadGolden:()=>current.golden,loadPlan:()=>current.plan},
+    require:name=>{assert.equal(name,'../geometry-web/canvas_registry.js');return {load:()=>current};}};
+  vm.runInNewContext(lines.join('\n')+'\nresult=touchInput;',sandbox);
+  return sandbox.result;
+}
+test('R2054_HISTORICAL_CANVAS_VIEW validates the complete registry then keeps the unchanged historical scope',()=>{
+  // Synthetic accepted-registry records exercise only the view. Actual cost
+  // admission stays in the original loader and is tested separately below.
+  const current=require('../geometry-web/canvas_registry.js').load(root,{allowCandidates:true});
+  const own=current.extensions.find(row=>row.id==='P2054');current.golden.total+=15-own.assertions;own.assertions=15;current.golden.sections.P2054=15;
+  const independent=structuredClone(own);independent.id='P9998';independent.assertions=2;
+  current.extensions.push(independent);current.golden.sections.P9998=2;current.golden.total+=2;
+  const tail=current.plan.shards[1].sections;tail.splice(tail.length-1,0,'P9998');
+  const driver=structuredClone(independent);driver.id='P9997';current.drivers.push(driver);
+  current.golden.sections.P9997=2;current.golden.total+=2;tail.splice(tail.length-1,0,'P9997');
+  const before=JSON.stringify(current);
+  for(const file of ['tests/test_canvas_shards.js','tests/test_boundary_pair_browser_scope.js']){
+    let view;
+    assert.doesNotThrow(()=>{view=touchInputFromCurrentCaller(file,current);},'R2054_HISTORY_NO_PER_PR_EXCEPTION');
+    const expected=structuredClone(current.golden);
+    for(const id of ['P2054','P9998','P9997','P1231']){expected.total-=expected.sections[id];delete expected.sections[id];}
+    assert.deepEqual(view.golden,expected,'R2054_HISTORY_EXACT_COUNTS');
+    assert.deepEqual(view.plan.shards,current.plan.shards.map(row=>({...row,sections:row.sections.filter(id=>!['P2054','P9998','P9997','P1231'].includes(id))})),'R2054_HISTORY_EXACT_ORDER');
+    assert.deepEqual(view.plan.boundaries,current.plan.boundaries,'R2054_HISTORY_HANDOFF');
+    assert.equal(JSON.stringify(current),before,'R2054_HISTORY_INPUT_UNCHANGED');
+    for(const corrupt of [r=>{r.golden.sections.P9998=1;r.golden.total--;},r=>r.plan.shards[0].sections.push('P9998'),r=>{r.golden.sections.P8888=1;r.golden.total++;}]){
+      const bad=structuredClone(current);corrupt(bad);
+      assert.throws(()=>touchInputFromCurrentCaller(file,bad),/R16_REGISTRY_|R16_REGISTERED_COUNT/,'R2054_HISTORY_COMPLETE_UNION_GUARD');
+    }
+  }
+});
+test('R2054_NATIVE_HISTORY rejects a fabricated new row with matching cost but no original receipt',()=>{
+  const python=process.env.GEOMETRY_PYTHON||(process.platform==='win32'?'python':'python3');
+  const run=require('node:child_process').spawnSync(python,['-B','tests/diagnostics/r03_preview_length_registry_probe.py','baseline'],{cwd:root,encoding:'utf8',timeout:60000});
+  assert.equal(run.status,1,'R2054_FAKE_COST_MUST_NOT_EXEMPT\n'+run.stdout+run.stderr);
+  assert.match(run.stderr,/ValueError: R386_NATIVE_(?:EXACT_COST_COVERAGE|STALE_SUITE_SOURCE_OR_EXECUTION)|R396_CURRENT_COSTS_MATCH_VERIFIED_REGISTRY/,'R2054_FAKE_COST_REJECTED_BY_ORIGINAL_LOADER\n'+run.stderr);
+});
+test('R2054_CANDIDATE_GATE still rejects pending count and missing canvas receipt',()=>{
+  const declaration=JSON.parse(fs.readFileSync(path.join(root,'geometry-web/cdp_sections.d/P2054.json'),'utf8'));
+  const registry=require('../geometry-web/canvas_registry.js');
+  if(declaration.provenance.kind==='candidate')
+    assert.throws(()=>registry.load(root),/R386_CANVAS_COST_RECEIPT_REQUIRED: P2054/);
+  else assert.equal(registry.load(root).acceptance,true,'R2054_ADOPTED_RECEIPT_STILL_VALIDATED');
+});
+test('R2054_BROWSER_OWNERSHIP uses a new checked service per phase and never the caller URL',()=>{
+  const python=process.env.GEOMETRY_PYTHON||(process.platform==='win32'?'python':'python3');
+  const run=require('node:child_process').spawnSync(python,['-B','tests/diagnostics/r03_preview_length_service_contract.py'],{cwd:root,encoding:'utf8',timeout:60000});
+  assert.equal(run.status,0,'R2054_BROWSER_OWNERSHIP\n'+run.stdout+run.stderr);
+});
