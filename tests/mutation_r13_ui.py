@@ -119,8 +119,9 @@ def main() -> int:
             target = work / Path(name).name;target.write_bytes(original[name]);env[variable] = str(target)
         baseline, _ = run(["node", "--test", "--test-reporter=tap", UI_TEST, SPACE_TEST], env, out / "full-baseline")
         summary["baseline"] = baseline
-        if not green(baseline, 31):
-            raise RuntimeError("baseline must complete exactly 31/31; no mutation credit")
+        baseline_count = 19 + 14  # UI（含 T24 的 undo／redo）+ space entry
+        if not green(baseline, baseline_count):
+            raise RuntimeError(f"baseline must complete exactly {baseline_count}/{baseline_count}; no mutation credit")
         for name, source, before, after, test, case, assertion in FAULTS:
             if args.only and name != args.only:
                 continue
