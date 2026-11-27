@@ -2,13 +2,51 @@
 // T36 局部回歸；只對自有的空白測試服務執行，不是 canvas 量測或冷開驗收。
 const {chromium}=require('playwright-core');
 const assert=require('node:assert/strict');
+const {spawn,execFile}=require('node:child_process');
+const {createInterface}=require('node:readline');
+const {mkdtemp,rm}=require('node:fs/promises');
+const {tmpdir}=require('node:os');
+const path=require('node:path');
+const exec=require('node:util').promisify(execFile);
+const root=path.resolve(__dirname,'../..');
+
+// URL 只指定要綁定的空埠，絕不沿用現有服務。start_local 以 exec 換成 serve，PID 不變。
+async function withOwnService(port,visit){
+  const feedback=await mkdtemp(path.join(tmpdir(),'pf6-review-'));
+  const child=spawn('python3',['-Bu','geometry-web/start_local.py','--port',port],{cwd:root,
+    env:{...process.env,GEOMETRY_FEEDBACK_DIR:feedback},stdio:['ignore','pipe','inherit']});
+  const closed=new Promise(resolve=>child.once('close',resolve));
+  const output=createInterface({input:child.stdout});
+  try{
+    await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(Error('專用服務未就緒')),60000);
+      output.on('line',line=>{if(line.startsWith(`http://localhost:${port} `)){clearTimeout(timer);resolve();}});
+      child.once('error',reject);closed.then(()=>{clearTimeout(timer);reject(Error('專用服務已退出'));});
+    });
+    const {stdout}=await exec('python3',['-B','geometry-web/runtime_version.py','--probe',port],{cwd:root});
+    const runtime=JSON.parse(stdout);
+    assert.ok(child.exitCode===null&&child.signalCode===null&&runtime.pid===child.pid&&typeof runtime.session==='string'&&runtime.session,'T39_DIAGNOSTIC_SERVICE_OWNER');
+    await visit(runtime);
+  }finally{
+    child.kill('SIGINT');await closed;output.close();await rm(feedback,{recursive:true,force:true});
+  }
+}
 async function run(url,width,mode){
-  assert.equal(new URL(url).hostname,'127.0.0.1');assert.ok([390,1400].includes(width));
-  assert.ok(['suggested','selected','d28','details'].includes(mode));
+  const {port}=new URL(url);assert.ok(port&&url===`http://127.0.0.1:${port}/`);assert.ok([390,1400].includes(width));
+  assert.ok(['suggested','selected','d28','details','stale-confirm','sealed-confirm'].includes(mode));
+  await withOwnService(port,runtime=>exercise(url,width,mode,runtime));
+}
+async function exercise(url,width,mode,runtime){
   const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROME||'/usr/bin/google-chrome',headless:true});
   try{
     const page=await browser.newPage({viewport:{width,height:width===390?844:900}});
     page.setDefaultTimeout(15000);await page.goto(url);await page.waitForFunction(()=>connection.phase==='ready');
+    assert.equal(page.url(),url);
+    assert.ok(await page.evaluate(async expected=>{
+      const response=await fetch('/runtime',{redirect:'error'}),current=await response.json();
+      return response.ok&&current.fresh===true&&current.pid===expected.pid&&current.version===expected.version&&
+        current.session===expected.session&&connection.session===expected.session;
+    },runtime),'T39_DIAGNOSTIC_PAGE_OWNER');
     await page.evaluate(async d28=>{
       const cmd=async text=>{const r=await apiRequest(text);if(!r.ok)throw Error(text+': '+r.error);return r;};
       async function apply(route,schema,command,operations){
@@ -63,7 +101,28 @@ async function run(url,width,mode){
         for(const [name,v] of [['fragment',after.panelFills[0].derived.tiles[0].fragments[0].key],['edge',after.derivedPlacements[0].derived.components[0].edges[0].key]])assert.ok(text.includes(JSON.stringify(v)),'T36_DOM_SELECTED_DETAILS '+name);
       }
     }
-    if(mode==='suggested'||mode==='selected'){
+    if(mode==='stale-confirm'||mode==='sealed-confirm'){
+      // 只改確認的送達條件；不偽造服務拒絕、封存回執或原生取消結果。
+      const confirms=[];
+      await page.route('**/api',route=>{
+        const req=route.request(),cmd=req.postDataJSON()?.cmd;
+        if(!cmd?.startsWith('pf6-confirm '))return route.continue();
+        confirms.push(cmd);
+        return mode==='sealed-confirm'?route.abort():route.continue({headers:{...req.headers(),'x-geometry-version':'outdated-test-page'}});
+      });
+      const rejection=page.waitForResponse(r=>r.url().endsWith('/api')&&(mode==='stale-confirm'?
+        r.request().postDataJSON()?.cmd==='pf6-confirm '+token:!!r.request().postDataJSON()?.receipt));
+      await action('confirm').click();const rejected=await rejection;
+      if(mode==='stale-confirm')assert.equal(rejected.headers()['x-geometry-stale'],'1');
+      else assert.equal((await rejected.json()).result.error,'操作未送達，場景未變更；請重新操作。');
+      await page.waitForFunction(()=>['rejected','cleanup-required'].includes(document.querySelector('[data-pf6-status]')?.dataset.pf6Status));
+      assert.equal(await page.locator('[data-pf6-status]').getAttribute('data-pf6-status'),'cleanup-required','T39_BROWSER_LOST_CANDIDATE');
+      assert.ok(await action('confirm').isDisabled()&&await action('suggest').isDisabled()&&await action('preview').isDisabled());
+      const cancelled=page.waitForResponse(r=>r.url().endsWith('/api')&&r.request().postDataJSON()?.cmd==='pf6-cancel '+token);
+      await action('cancel').click();assert.equal((await (await cancelled).json()).cancelled,true,'T39_NATIVE_CANDIDATE_NOT_RELEASED');
+      assert.deepEqual(confirms,['pf6-confirm '+token]);
+      console.log(`T39_BROWSER ${width}px ${mode}: confirm=1; native cancelled=true`);
+    }else if(mode==='suggested'||mode==='selected'){
       // 保存和開檔在持租約時原本就必須拒絕；不能只把 pending 改成 false。
       await assert.rejects(page.evaluate(()=>ReferenceWorkspace.exportBytes()),/角材建議/);
       await assert.rejects(page.evaluate(()=>ReferenceWorkspace.openProject(()=>{throw Error('不應進入讀檔');})),/角材候選尚未結束，請先確認或取消。/);
