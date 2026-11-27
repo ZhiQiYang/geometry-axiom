@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_sections/P4549.js",
+    "reason": "D09 P4549 strict independent canvas module: real App preview/cancel/confirm and 390/1400 override-discovery paint checks; dispatched only by canvas_registry.js, never a product runtime dependency.",
+    "sha256": "c31f24524144d6bf2b6f14e669bfd644b96cd9e54f37a40d91955e8f861fb9bf"
+  },
+  "schema": "geometry-architecture-entry/1"
+}
