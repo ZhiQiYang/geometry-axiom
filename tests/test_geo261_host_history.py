@@ -123,7 +123,7 @@ class HostHistory(unittest.TestCase):
             ("wrap-clear-keeps-undo", "app_history_clear",
              "history->undo_count = 0;", "/* stale undo */", "wrap-clear", "wrap-clear-counts"),
             ("wrap-unrecord-keeps-head", "app_history_unrecord",
-             "history->undo_head = (history->undo_head + history->capacity - 1) % history->capacity;",
+             "history->undo_head = (history->undo_head + history->capacity) % (history->capacity + 1);",
              "/* no ring rewind */", "wrap-unrecord", "wrap-unrecord-undo-order"),
         )
         for name, function, before, after, case, assertion in controls:
@@ -150,10 +150,10 @@ class HostHistory(unittest.TestCase):
     def test_removing_real_history_guards_fails_named_byte_oracles(self):
         controls = (
             ("record-bytes", "app_history_record", "document, history->snapshot_size);", "history->evicted, history->snapshot_size);", "record", "record-full-snapshot"),
-            ("eviction-shift", "app_history_record", "history->undo_head = (history->undo_head + 1) % history->capacity;", "/* keep oldest slot */", "eviction", "eviction-keeps-latest-thirty-two"),
+            ("eviction-shift", "app_history_record", "history->undo_head = (history->undo_head + 1) % (history->capacity + 1);", "/* keep oldest slot */", "eviction", "eviction-keeps-latest-thirty-two"),
             ("eviction-limit", "app_history_record", "history->undo_count >= history->capacity", "history->undo_count + 1 >= history->capacity", "eviction", "capacity-thirty-two"),
             ("record-redo", "app_history_record", "history->redo_count = 0;", "/* preserve incorrectly */", "unrecord", "successful-record-clears-redo"),
-            ("unrecord-oldest", "app_history_unrecord", "memcpy(app_history_slot(history, history->undo, history->undo_head, 0), history->evicted, history->snapshot_size);", "/* omit restored oldest */", "unrecord", "unrecord-restores-evicted-oldest"),
+            ("unrecord-oldest", "app_history_unrecord", "history->undo_head = (history->undo_head + history->capacity) % (history->capacity + 1);", "/* omit restored oldest */", "unrecord", "unrecord-restores-evicted-oldest"),
             ("unrecord-redo", "app_history_unrecord", "history->redo_count = history->record_redo_count;", "history->redo_count = 0;", "unrecord", "unrecord-restores-redo-count"),
             ("unrecord-marker", "app_history_unrecord", "history->record_evicted = false;", "/* stale marker */", "unrecord", "unrecord-clears-eviction-marker"),
             ("undo-restore", "app_history_undo", "restore(document, app_history_slot(history, history->undo, history->undo_head, --history->undo_count), opaque);", "--history->undo_count;", "callback", "undo-delegates-presentation"),
@@ -259,7 +259,7 @@ class HostHistory(unittest.TestCase):
         build = native()
         self.wrapped_rejection_workflow(build.bridge())
         _, changed = self.mutant("product-wrap-unrecord-keeps-head", "app_history_unrecord",
-            "history->undo_head = (history->undo_head + history->capacity - 1) % history->capacity;",
+            "history->undo_head = (history->undo_head + history->capacity) % (history->capacity + 1);",
             "/* no ring rewind */")
         objects = build.product_objects()
         self.assertEqual(1, objects.count(build.host_history_object), "Real product must link one H history object")
@@ -282,15 +282,18 @@ class HistoryRecordWork(unittest.TestCase):
     printed at its end, and app_history_record calls no other copying function.
     The bound is a work count, not wall-clock time."""
     MARKER = b"GEO381-HISTORY-RECORD "
-    # Ring eviction: one backup of the oldest snapshot and one new snapshot.
-    RING_EVICTION = (b"        memcpy(history->evicted, app_history_slot(history, history->undo, history->undo_head, 0), history->snapshot_size);\n"
-                     b"        history->undo_head = (history->undo_head + 1) % history->capacity;\n")
-    # Named withdrawal: move every remaining snapshot down one logical slot
-    # (the pre-GEO-381 shift) while keeping the same head; same history.
-    SHIFT_EVICTION = (b"        memcpy(history->evicted, app_history_slot(history, history->undo, history->undo_head, 0), history->snapshot_size);\n"
-                      b"        for (size_t k = 1; k < history->capacity; ++k)\n"
-                      b"            memmove(app_history_slot(history, history->undo, history->undo_head, k - 1),\n"
-                      b"                app_history_slot(history, history->undo, history->undo_head, k), history->snapshot_size);\n")
+    # Ring eviction uses the existing spare slot; the original <= 2 bound stays.
+    RING_EVICTION = (b"    if (history->record_evicted) {\n"
+                     b"        history->undo_head = (history->undo_head + 1) % (history->capacity + 1);\n")
+    # Named withdrawal restores a full-stack shift within the capacity+1 ring.
+    # Move every active snapshot one physical slot forward, then advance head
+    # twice. Logical entries are unchanged, including the evicted oldest at
+    # head-1 for a matching unrecord; only the full-stack copy work returns.
+    SHIFT_EVICTION = (b"    if (history->record_evicted) {\n"
+                      b"        for (size_t k = history->capacity; k > 0; --k)\n"
+                      b"            memmove(app_history_slot(history, history->undo, history->undo_head, k),\n"
+                      b"                app_history_slot(history, history->undo, history->undo_head, k - 1), history->snapshot_size);\n"
+                      b"        history->undo_head = (history->undo_head + 2) % (history->capacity + 1);\n")
 
     @classmethod
     def setUpClass(cls):

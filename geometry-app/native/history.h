@@ -10,9 +10,15 @@
  * snapshots, and each backup has one. Initialization is a trusted host step.
  * No allocation, geometry, template policy, revision or presentation rules
  * live here. The product keeps its existing 32-entry static World buffers.
- * Each stack is a ring: its k-th oldest entry is slot (head + k) % capacity,
- * so dropping the oldest entry advances head instead of moving every
- * snapshot (GEO-381). Zero heads are the initial state.
+ * Both stacks are rings (GEO-381), with unchanged logical capacity. Undo's
+ * physical ring has capacity+1 slots: slots [0,capacity) are in undo and the
+ * last is the existing evicted buffer. At full record the oldest stays in
+ * the spare slot before the new head; the new snapshot is the only copy.
+ * A matching unrecord rewinds head without copying. Redo has capacity slots.
+ * Zero heads are the initial state. Physical buffer contents/locations are
+ * private; read the latest undo snapshot through app_history_peek_undo.
+ * unrecord must match record, before another mutating history operation;
+ * peek_undo may read that record to restore a failed command's document.
  * Invariant: every public operation keeps undo_count + redo_count <= capacity
  * (record empties redo; undo and redo move one entry between the stacks;
  * unrecord restores the counts from before the matching record; clear empties
