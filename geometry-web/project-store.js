@@ -1048,6 +1048,13 @@
     return Object.fromEntries(keys.map(k => [k, copy(p[k])]));
   }
   async function pack(scene, manifest, sources, zip) {
+    // An explicit version must be readable before normalization can select an
+    // output format. Inspect the descriptor without invoking an input getter.
+    const declaredFormat = Object.getOwnPropertyDescriptor(manifest, "format");
+    if (declaredFormat) {
+      if (!Object.hasOwn(declaredFormat, "value")) fail("專案資料欄位不合法。");
+      formatPolicy(declaredFormat.value);
+    }
     const sceneBytes = new TextEncoder().encode(scene);
     assertManifestCapacity(manifest,scene,true);
     for (const model of manifest.models || []) validateSpaceModel(model);
