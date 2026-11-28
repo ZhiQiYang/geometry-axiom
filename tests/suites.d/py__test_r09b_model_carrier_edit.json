@@ -1,0 +1,27 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_r09b_model_carrier_edit.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_r09b_model_carrier_edit.py",
+    "needs": [
+      "bridge",
+      "model-base"
+    ],
+    "needs_node": true,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r09b_model_carrier_edit.py"
+  ],
+  "name": "py:test_r09b_model_carrier_edit",
+  "order": "new/py__test_r09b_model_carrier_edit",
+  "schema": "geometry-native-suite/1"
+}
