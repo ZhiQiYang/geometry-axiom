@@ -1,0 +1,289 @@
+{
+ "item": "recipes",
+ "phase": "2",
+ "config": {
+  "w": 3740,
+  "h": 3301,
+  "corner": "max-max",
+  "along": "v",
+  "n": 53,
+  "crud": true
+ },
+ "checks": [
+  {
+   "code": "FRESH_PROCESS_AND_PROFILE",
+   "pass": true,
+   "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c",
+    "fresh": true,
+    "root": "/tmp/l4w/wt2",
+    "pid": 21200,
+    "session": "62115ba6467c4eb4a28cb80a14f9f9a1"
+   },
+   "prevSession": "9c7a98ff3b00439d8fb52cd2ce99a016",
+   "prevPid": 18685
+  },
+  {
+   "code": "COLD_FILE_IS_SAVED_FILE",
+   "pass": true,
+   "open": "f91cbdf0cd3132d348b77a883d5981bb482b2df760b8af1869439fe1c1b2ede1",
+   "saved": "f91cbdf0cd3132d348b77a883d5981bb482b2df760b8af1869439fe1c1b2ede1"
+  },
+  {
+   "code": "COLD_SCENE_EXACT",
+   "pass": true,
+   "before": "0aa541c954fcdf5480b4a204cd105c6a55433a8faa6f1f175d1c5fb99d116b25",
+   "cold": "0aa541c954fcdf5480b4a204cd105c6a55433a8faa6f1f175d1c5fb99d116b25"
+  },
+  {
+   "code": "COLD_RECIPE_EXACT",
+   "pass": true,
+   "recipes": [
+    [
+     "5490f340-a869-4cee-b3a9-e961eae627e3",
+     "L4 R03B 配方 B",
+     {
+      "corner": "max-max",
+      "lengthAlong": "v"
+     }
+    ],
+    [
+     "43f466a8-5f6e-43b1-a66a-7d0d1824eb3d",
+     "L4 R03B 配方 B 副本",
+     {
+      "corner": "max-max",
+      "lengthAlong": "v"
+     }
+    ]
+   ]
+  },
+  {
+   "code": "COLD_NO_SEARCH",
+   "pass": true,
+   "openReqs": [],
+   "generatorInvocations": 0
+  },
+  {
+   "code": "COLD_THREE_VIEW_SHOWS_ALL",
+   "pass": true,
+   "cold": 53,
+   "afterRedo": 53
+  },
+  {
+   "code": "COLD_FORM_RECIPE_SOURCES_BLANK_ZERO_WRITE",
+   "pass": true,
+   "form": {
+    "mode": "framing-fixed",
+    "recipe": "L4 R03B 配方 B · flat-ceiling/2",
+    "recipeValue": "5490f340-a869-4cee-b3a9-e961eae627e3",
+    "recipeOptions": [
+     "請明選",
+     "L4 R03B 配方 B · flat-ceiling/2",
+     "L4 R03B 配方 B 副本 · flat-ceiling/2"
+    ],
+    "name": "L4 R03B 配方 B",
+    "corner": "max-max",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "status": "政策 A 固定治具：先保存配方，再明選本次框架與材料語意；需退縫或貼邊移主支的排法仍拒絕。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false,
+    "previewDisabled": false
+   },
+   "diff": {}
+  },
+  {
+   "0": {
+    "path": "/framing-template/read",
+    "cmd": null,
+    "schema": "framing-template-read/1",
+    "template": null,
+    "layout": null,
+    "t": 1795634595676
+   },
+   "1": {
+    "path": "/framing-template/read",
+    "cmd": null,
+    "schema": "framing-template-read/1",
+    "template": null,
+    "layout": null,
+    "t": 1795634607117
+   },
+   "2": {
+    "path": "/framing-template/read",
+    "cmd": null,
+    "schema": "framing-template-read/2",
+    "template": {
+     "id": "flat-ceiling",
+     "version": 2,
+     "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+    },
+    "layout": null,
+    "t": 1795634609563
+   },
+   "code": "COLD_FORM_NO_GENERATION",
+   "pass": true
+  }
+ ],
+ "steps": [],
+ "browser": "157.0.8103.78",
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c",
+  "fresh": true,
+  "root": "/tmp/l4w/wt2",
+  "pid": 21200,
+  "session": "62115ba6467c4eb4a28cb80a14f9f9a1"
+ },
+ "fileSha256AtOpen": "f91cbdf0cd3132d348b77a883d5981bb482b2df760b8af1869439fe1c1b2ede1",
+ "coldGeneratorInvocations": 0,
+ "coldThreeView": 53,
+ "modePath": [
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ]
+ ],
+ "coldForm": {
+  "mode": "framing-fixed",
+  "recipe": "L4 R03B 配方 B · flat-ceiling/2",
+  "recipeValue": "5490f340-a869-4cee-b3a9-e961eae627e3",
+  "recipeOptions": [
+   "請明選",
+   "L4 R03B 配方 B · flat-ceiling/2",
+   "L4 R03B 配方 B 副本 · flat-ceiling/2"
+  ],
+  "name": "L4 R03B 配方 B",
+  "corner": "max-max",
+  "lengthAlong": "v",
+  "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+  "status": "政策 A 固定治具：先保存配方，再明選本次框架與材料語意；需退縫或貼邊移主支的排法仍拒絕。",
+  "sources": [
+   "",
+   "",
+   ""
+  ],
+  "materials": false,
+  "previewDisabled": false
+ },
+ "checkpoints": {
+  "fresh": {
+   "sceneSha": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+   "revision": "10",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 0,
+   "redo": 0,
+   "lastUndoSha": null,
+   "lastKind": null,
+   "dirty": false,
+   "recipeSha": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+   "pfRevision": 10,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 4
+   },
+   "idsSha": "f74bdd0783b5300dc44a3a0d2d62ae83c862c364b67c1d5a596f91c84606569a",
+   "sceneLines": 13
+  },
+  "cold": {
+   "sceneSha": "0aa541c954fcdf5480b4a204cd105c6a55433a8faa6f1f175d1c5fb99d116b25",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "lastUndoSha": "e78948cf7c3604c32a33ab308e63ad51502608fd0efe25c5915a1c10707f03f7",
+   "lastKind": "core",
+   "dirty": false,
+   "recipeSha": "ee235be61289cab1c2637ddf0399fbaa8eab64b0de414db9dbba7748f3cc58e4",
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  },
+  "coldForm": {
+   "sceneSha": "0aa541c954fcdf5480b4a204cd105c6a55433a8faa6f1f175d1c5fb99d116b25",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "lastUndoSha": "e78948cf7c3604c32a33ab308e63ad51502608fd0efe25c5915a1c10707f03f7",
+   "lastKind": "core",
+   "dirty": false,
+   "recipeSha": "ee235be61289cab1c2637ddf0399fbaa8eab64b0de414db9dbba7748f3cc58e4",
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  }
+ },
+ "network": [
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795634595676
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795634607117
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": null,
+   "t": 1795634609563
+  }
+ ],
+ "errs": [],
+ "screens": [
+  {
+   "file": "screens/R03B-recipes-C1-cold-open.jpg",
+   "sha256": "101a8ee1868324659705a643883675f3bccc7ad541aee3ea399c0a28f27c36d9"
+  },
+  {
+   "file": "screens/R03B-recipes-C2-cold-three-view.jpg",
+   "sha256": "88e1b50d7399eaf8d7d9683de4a831d247fd94bf98d19c81afe79a7f9765ddd6"
+  },
+  {
+   "file": "screens/R03B-recipes-C3-cold-framing-form.jpg",
+   "sha256": "35208278ddd021b6e3b3d75895bdd83712e0fe485c8cfc2f98a6c7043ee9df79"
+  }
+ ],
+ "passed": "8/8"
+}

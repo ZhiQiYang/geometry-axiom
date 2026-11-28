@@ -1,0 +1,6 @@
+CHECK-FAIL r16/walk_r16_height.result.json: R16_CONTROLS_CENTER_full-grid_teaching-open_390
+CHECK-FAIL r16/walk_r16_height.result.json: R16_CONTROLS_CENTER_full-grid_normal_390
+CHECK-FAIL r16/walk_r16_height.result.json: R16_CONTROLS_CENTER_full-grid_teaching-open_320
+CHECK-FAIL r16/walk_r16_height.result.json: R16_CONTROLS_CENTER_full-grid_normal_320
+{"integrityOk": 224, "integrityFail": 0, "checkFail": 4, "runtimeVersion": ["b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c"]}
+verify exit=2

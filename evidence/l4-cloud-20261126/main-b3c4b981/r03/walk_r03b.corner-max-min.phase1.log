@@ -1,0 +1,20 @@
+PASS RECT_PLACED {"lines":["boundary 1 outline 150,150 3890,150 3890,3451 150,3451","placement 1 on boundary 1 origin 0 0 2500 u +x v +y"],"dims":[3740,3301]}
+PASS SOURCES_READY_V2 {"form":{"mode":"framing-fixed","recipe":"請明選","recipeValue":"","recipeOptions":["請明選"],"name":"平釘天花（固定治具）","corner":"min-min","lengthAlong":"v","note":"固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。","status":"已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。","sources":["","",""],"materials":false,"previewDisable
+PASS SAVE_RECIPE_V2_ONE_HISTORY {"diff":{"undo":[7,8],"lastUndoSha":["dc3a64dae66ccc7bd4375c50dda840fa895d54bac370945298bef7733efdabc8","d99b57c347b9e69334c40916dd41b066f766d82a1f36b4df2ab4be4cf101824a"],"recipeSha":["74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","95bc2019a58accf552ac42d834a0faa19d3a8b8798c4510
+STEP preview {"head":"候選 53 支 · 確認前未寫入","n":53,"requests":[{"path":"/framing-template/preview","cmd":null,"schema":"framing-template-generate/1","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"layout":{"corner":"max-min","length
+PASS PREVIEW_MEMBER_COUNT {"n":53,"head":"候選 53 支 · 確認前未寫入"}
+PASS PREVIEW_REQUEST_LAYOUT [{"path":"/framing-template/preview","cmd":null,"schema":"framing-template-generate/1","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"layout":{"corner":"max-min","lengthAlong":"v"},"t":1795633630257}]
+PASS PREVIEW_TABLE_MATCHES_DIAGRAM {"rows":53,"rects":53}
+PASS PREVIEW_ZERO_WRITE {}
+PASS CANCEL_ZERO_WRITE {}
+PASS CANCEL_SENT_NO_CONFIRM [{"path":"/framing-template/preview","cmd":null,"schema":"framing-template-generate/1","template":{"id":"flat-ceiling","version":2,"policyFingerprint":"3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"},"layout":{"corner":"max-min","lengthAlong":"v"},"t":1795633630257},{"path":"/api"
+PASS PREVIEW2_SAME_AND_ZERO_WRITE {"n2":53,"diff":{}}
+PASS CONFIRM_ONE_HISTORY {"diff":{"sceneSha":["01357bf68156e3e291a90f48c6aa8ab49964edb91ae7ea19029aeb89afd753ec","26b7b6b4e06ac4880ca5e083c4e58087085a9aee347780b554a172577a15d07d"],"revision":["17","18"],"undo":[8,9],"lastUndoSha":["d99b57c347b9e69334c40916dd41b066f766d82a1f36b4df2ab4be4cf101824a","88ccaff8f1c556d9148ddb295
+PASS CONFIRM_LIVE_DEFINITIONS {"spec":8,"requires":1,"finish-surface":1,"panel-fill":1,"derived-placement":1,"grid":1,"timber":53,"guide":8,"place":53,"#":53,"canvas-pos":1}
+PASS UNDO_ONE_STEP {"diff":{"revision":["17","19"],"redo":[0,1],"pfRevision":[17,19]}}
+PASS UNDO_GENERAL_VIEW_EQUALS_BEFORE_PREVIEW {"before":{"rows":[{"kind":"parameter","id":"1","text":"鋪排承接門檻1 個欄位 · 0 處使用"},{"kind":"boundary","id":"1","text":"面 1一般面 · 用途未指定 · 放置 #1"}],"cards":[{"kind":"boundary","id":"1","text":"面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"},{"kind":"parameter","id":"1","text":"ƒ 鋪排承接門檻ƒ 鋪排
+PASS UNDO_GENERAL_VIEW_ZERO_WRITE {}
+PASS REDO_SAME_COMMIT_NO_SEARCH {"diff":{"revision":["18","20"],"pfRevision":[18,20]}}
+PASS REDO_THREE_VIEW_SHOWS_ALL {"threeView":53,"before":0}
+PASS SAVE_IS_COMMITTED_STATE {"diff":{"revision":["18","20"],"lastUndoSha":["88ccaff8f1c556d9148ddb295a61116621424507ee722161212331d37e2a1bae","bef614638cfb9c2d1370dc0e0cc70b46096c0833bb134b87880d341c4a7380d0"],"pfRevision":[18,20]},"saved":{"suggested":"未命名專案.gcanvas","sha256":"2be7b5b2247ffcc9749129798acd0055b72675618ae0f37aa
+SUMMARY corner-max-min 1 18/18

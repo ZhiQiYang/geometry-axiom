@@ -1,0 +1,278 @@
+{
+ "item": "size-2500x3000",
+ "phase": "2",
+ "config": {
+  "w": 2500,
+  "h": 3000,
+  "corner": "min-min",
+  "along": "v",
+  "n": 30
+ },
+ "checks": [
+  {
+   "code": "FRESH_PROCESS_AND_PROFILE",
+   "pass": true,
+   "runtime": {
+    "schema": "geometry-runtime/1",
+    "version": "b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c",
+    "fresh": true,
+    "root": "/tmp/l4w/wt2",
+    "pid": 20850,
+    "session": "7135139956214de0a433c96e6f53d4ec"
+   },
+   "prevSession": "699ed15ff2444a139e9e9e6fcc8124fa",
+   "prevPid": 18001
+  },
+  {
+   "code": "COLD_FILE_IS_SAVED_FILE",
+   "pass": true,
+   "open": "4b9908ea0169d9df0b20946022a71f40b8dfd75c4e4bc76b9ae24ba135fe4764",
+   "saved": "4b9908ea0169d9df0b20946022a71f40b8dfd75c4e4bc76b9ae24ba135fe4764"
+  },
+  {
+   "code": "COLD_SCENE_EXACT",
+   "pass": true,
+   "before": "74f5780f26cbac1d9445bff114b3fd7333f36e69e0eab2af974848a44cc589ba",
+   "cold": "74f5780f26cbac1d9445bff114b3fd7333f36e69e0eab2af974848a44cc589ba"
+  },
+  {
+   "code": "COLD_RECIPE_EXACT",
+   "pass": true,
+   "recipes": [
+    [
+     "bea5d052-f7dd-45cb-b82d-d0c6526f3ca8",
+     "L4 R03B size-2500x3000",
+     {
+      "corner": "min-min",
+      "lengthAlong": "v"
+     }
+    ]
+   ]
+  },
+  {
+   "code": "COLD_NO_SEARCH",
+   "pass": true,
+   "openReqs": [],
+   "generatorInvocations": 0
+  },
+  {
+   "code": "COLD_THREE_VIEW_SHOWS_ALL",
+   "pass": true,
+   "cold": 30,
+   "afterRedo": 30
+  },
+  {
+   "code": "COLD_FORM_RECIPE_SOURCES_BLANK_ZERO_WRITE",
+   "pass": true,
+   "form": {
+    "mode": "framing-fixed",
+    "recipe": "L4 R03B size-2500x3000 · flat-ceiling/2",
+    "recipeValue": "bea5d052-f7dd-45cb-b82d-d0c6526f3ca8",
+    "recipeOptions": [
+     "請明選",
+     "L4 R03B size-2500x3000 · flat-ceiling/2"
+    ],
+    "name": "L4 R03B size-2500x3000",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "status": "政策 A 固定治具：先保存配方，再明選本次框架與材料語意；需退縫或貼邊移主支的排法仍拒絕。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false,
+    "previewDisabled": false
+   },
+   "diff": {}
+  },
+  {
+   "0": {
+    "path": "/framing-template/read",
+    "cmd": null,
+    "schema": "framing-template-read/1",
+    "template": null,
+    "layout": null,
+    "t": 1795634565795
+   },
+   "1": {
+    "path": "/framing-template/read",
+    "cmd": null,
+    "schema": "framing-template-read/1",
+    "template": null,
+    "layout": null,
+    "t": 1795634577228
+   },
+   "2": {
+    "path": "/framing-template/read",
+    "cmd": null,
+    "schema": "framing-template-read/2",
+    "template": {
+     "id": "flat-ceiling",
+     "version": 2,
+     "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+    },
+    "layout": null,
+    "t": 1795634579676
+   },
+   "code": "COLD_FORM_NO_GENERATION",
+   "pass": true
+  }
+ ],
+ "steps": [],
+ "browser": "157.0.8103.78",
+ "runtime": {
+  "schema": "geometry-runtime/1",
+  "version": "b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c",
+  "fresh": true,
+  "root": "/tmp/l4w/wt2",
+  "pid": 20850,
+  "session": "7135139956214de0a433c96e6f53d4ec"
+ },
+ "fileSha256AtOpen": "4b9908ea0169d9df0b20946022a71f40b8dfd75c4e4bc76b9ae24ba135fe4764",
+ "coldGeneratorInvocations": 0,
+ "coldThreeView": 30,
+ "modePath": [
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ]
+ ],
+ "coldForm": {
+  "mode": "framing-fixed",
+  "recipe": "L4 R03B size-2500x3000 · flat-ceiling/2",
+  "recipeValue": "bea5d052-f7dd-45cb-b82d-d0c6526f3ca8",
+  "recipeOptions": [
+   "請明選",
+   "L4 R03B size-2500x3000 · flat-ceiling/2"
+  ],
+  "name": "L4 R03B size-2500x3000",
+  "corner": "min-min",
+  "lengthAlong": "v",
+  "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+  "status": "政策 A 固定治具：先保存配方，再明選本次框架與材料語意；需退縫或貼邊移主支的排法仍拒絕。",
+  "sources": [
+   "",
+   "",
+   ""
+  ],
+  "materials": false,
+  "previewDisabled": false
+ },
+ "checkpoints": {
+  "fresh": {
+   "sceneSha": "7bac37329c29ad5d74f05ba941abac43f8aca618a9c150d6b4094a4f7a7b2385",
+   "revision": "10",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 0,
+   "redo": 0,
+   "lastUndoSha": null,
+   "lastKind": null,
+   "dirty": false,
+   "recipeSha": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+   "pfRevision": 10,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 4
+   },
+   "idsSha": "f74bdd0783b5300dc44a3a0d2d62ae83c862c364b67c1d5a596f91c84606569a",
+   "sceneLines": 13
+  },
+  "cold": {
+   "sceneSha": "74f5780f26cbac1d9445bff114b3fd7333f36e69e0eab2af974848a44cc589ba",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "lastUndoSha": "997733ac9697421f079c4f9be2612085758417ec2d47beefd06b2a461a0923b3",
+   "lastKind": "core",
+   "dirty": false,
+   "recipeSha": "1cf01b9b684d8bc5ea647de6213c5b9fb3ee9dbb183d3dbc6438449ca93c189a",
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 31
+   },
+   "idsSha": "a8ec2e2e2e953187f67e99a27debc35f0a8077c3e03e759357b4a61687b38e2a",
+   "sceneLines": 121
+  },
+  "coldForm": {
+   "sceneSha": "74f5780f26cbac1d9445bff114b3fd7333f36e69e0eab2af974848a44cc589ba",
+   "revision": "11",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 1,
+   "redo": 0,
+   "lastUndoSha": "997733ac9697421f079c4f9be2612085758417ec2d47beefd06b2a461a0923b3",
+   "lastKind": "core",
+   "dirty": false,
+   "recipeSha": "1cf01b9b684d8bc5ea647de6213c5b9fb3ee9dbb183d3dbc6438449ca93c189a",
+   "pfRevision": 11,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 31
+   },
+   "idsSha": "a8ec2e2e2e953187f67e99a27debc35f0a8077c3e03e759357b4a61687b38e2a",
+   "sceneLines": 121
+  }
+ },
+ "network": [
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795634565795
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795634577228
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": null,
+   "t": 1795634579676
+  }
+ ],
+ "errs": [],
+ "screens": [
+  {
+   "file": "screens/R03B-size-2500x3000-C1-cold-open.jpg",
+   "sha256": "5b5fb34e28e4854aad81556a35d3d3498cbf5af9583ec0f9e89d52589aea7cfa"
+  },
+  {
+   "file": "screens/R03B-size-2500x3000-C2-cold-three-view.jpg",
+   "sha256": "ea3654a52c74ea9d9ccd83c7910829ea9ee34135ccfc72c30b51b08b4418ca9e"
+  },
+  {
+   "file": "screens/R03B-size-2500x3000-C3-cold-framing-form.jpg",
+   "sha256": "56228bdc8df79018d2a4c2508ef76610a75210f6ac3696c8575219f5323b613a"
+  }
+ ],
+ "passed": "8/8"
+}

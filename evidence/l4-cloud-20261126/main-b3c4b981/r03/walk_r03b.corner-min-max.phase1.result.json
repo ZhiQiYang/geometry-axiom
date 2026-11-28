@@ -1,0 +1,1762 @@
+{
+ "item": "corner-min-max",
+ "phase": "1",
+ "config": {
+  "w": 3740,
+  "h": 3301,
+  "corner": "min-max",
+  "along": "v",
+  "n": 53
+ },
+ "checks": [
+  {
+   "code": "RECT_PLACED",
+   "pass": true,
+   "lines": [
+    "boundary 1 outline 150,150 3890,150 3890,3451 150,3451",
+    "placement 1 on boundary 1 origin 0 0 2500 u +x v +y"
+   ],
+   "dims": [
+    3740,
+    3301
+   ]
+  },
+  {
+   "code": "SOURCES_READY_V2",
+   "pass": true,
+   "form": {
+    "mode": "framing-fixed",
+    "recipe": "請明選",
+    "recipeValue": "",
+    "recipeOptions": [
+     "請明選"
+    ],
+    "name": "平釘天花（固定治具）",
+    "corner": "min-min",
+    "lengthAlong": "v",
+    "note": "固定模板 flat-ceiling/2；保存配方不生成骨架。保存重開不升版，也不重新搜尋。",
+    "status": "已返回骨架並重讀來源；配方輸入保留，請重新明選本次框架、板材與 X。",
+    "sources": [
+     "",
+     "",
+     ""
+    ],
+    "materials": false,
+    "previewDisabled": true
+   },
+   "opts": {
+    "panel": [
+     "請明選",
+     "L4 R03B 面材 915×1830 · v1 · 915 × 1830 × 6 mm"
+    ],
+    "threshold": [
+     "請明選",
+     "鋪排承接門檻／X · 8/1 mm"
+    ]
+   }
+  },
+  {
+   "code": "SAVE_RECIPE_V2_ONE_HISTORY",
+   "pass": true,
+   "diff": {
+    "undo": [
+     7,
+     8
+    ],
+    "lastUndoSha": [
+     "c7e8d95e9db851fb524c0240be07b52ec6e64914aa8f0452d68e2be22ae82c5f",
+     "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c"
+    ],
+    "recipeSha": [
+     "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+     "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca"
+    ]
+   },
+   "rec": {
+    "id": "23870b8b-c519-4cfb-8bfd-dd94b3c1f4f2",
+    "name": "L4 R03B corner-min-max",
+    "template": {
+     "id": "flat-ceiling",
+     "version": 2,
+     "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+    },
+    "defaults": {
+     "panelWidth": 915,
+     "panelLength": 1830,
+     "gap": 2,
+     "timberWidth": 27,
+     "timberDepth": 33,
+     "maxSecondarySpacing": 367
+    },
+    "preference": {
+     "corner": "min-max",
+     "lengthAlong": "v"
+    },
+    "sourceSlots": [
+     "boundary",
+     "frame",
+     "material-semantics",
+     "panel-version",
+     "support-threshold"
+    ],
+    "sourceHints": []
+   }
+  },
+  {
+   "code": "PREVIEW_MEMBER_COUNT",
+   "pass": true,
+   "n": 53,
+   "head": "候選 53 支 · 確認前未寫入"
+  },
+  {
+   "0": {
+    "path": "/framing-template/preview",
+    "cmd": null,
+    "schema": "framing-template-generate/1",
+    "template": {
+     "id": "flat-ceiling",
+     "version": 2,
+     "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+    },
+    "layout": {
+     "corner": "min-max",
+     "lengthAlong": "v"
+    },
+    "t": 1795633778851
+   },
+   "code": "PREVIEW_REQUEST_LAYOUT",
+   "pass": true
+  },
+  {
+   "code": "PREVIEW_TABLE_MATCHES_DIAGRAM",
+   "pass": true,
+   "rows": 53,
+   "rects": 53
+  },
+  {
+   "code": "PREVIEW_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "CANCEL_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "0": {
+    "path": "/framing-template/preview",
+    "cmd": null,
+    "schema": "framing-template-generate/1",
+    "template": {
+     "id": "flat-ceiling",
+     "version": 2,
+     "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+    },
+    "layout": {
+     "corner": "min-max",
+     "lengthAlong": "v"
+    },
+    "t": 1795633778851
+   },
+   "1": {
+    "path": "/api",
+    "cmd": "framing-template-cancel",
+    "schema": null,
+    "template": null,
+    "layout": null,
+    "t": 1795633783218
+   },
+   "code": "CANCEL_SENT_NO_CONFIRM",
+   "pass": true
+  },
+  {
+   "code": "PREVIEW2_SAME_AND_ZERO_WRITE",
+   "pass": true,
+   "n2": 53,
+   "diff": {}
+  },
+  {
+   "code": "CONFIRM_ONE_HISTORY",
+   "pass": true,
+   "diff": {
+    "sceneSha": [
+     "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+     "f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354"
+    ],
+    "revision": [
+     "17",
+     "18"
+    ],
+    "undo": [
+     8,
+     9
+    ],
+    "lastUndoSha": [
+     "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+     "10300148d89a8f62ffd8fac943e14230102e88c68faf6a58774e7e66d6d8431c"
+    ],
+    "pfRevision": [
+     17,
+     18
+    ],
+    "idsSha": [
+     "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+     "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846"
+    ]
+   },
+   "req2": [
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "layout": {
+      "corner": "min-max",
+      "lengthAlong": "v"
+     },
+     "t": 1795633786079
+    },
+    {
+     "path": "/api",
+     "cmd": "framing-template-confirm",
+     "schema": null,
+     "template": null,
+     "layout": null,
+     "t": 1795633790260
+    }
+   ]
+  },
+  {
+   "code": "CONFIRM_LIVE_DEFINITIONS",
+   "pass": true,
+   "spec": 8,
+   "requires": 1,
+   "finish-surface": 1,
+   "panel-fill": 1,
+   "derived-placement": 1,
+   "grid": 1,
+   "timber": 53,
+   "guide": 8,
+   "place": 53,
+   "#": 53,
+   "canvas-pos": 1
+  },
+  {
+   "code": "UNDO_ONE_STEP",
+   "pass": true,
+   "diff": {
+    "revision": [
+     "17",
+     "19"
+    ],
+    "redo": [
+     0,
+     1
+    ],
+    "pfRevision": [
+     17,
+     19
+    ]
+   }
+  },
+  {
+   "code": "UNDO_GENERAL_VIEW_EQUALS_BEFORE_PREVIEW",
+   "pass": true,
+   "before": {
+    "rows": [
+     {
+      "kind": "parameter",
+      "id": "1",
+      "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+     },
+     {
+      "kind": "boundary",
+      "id": "1",
+      "text": "面 1一般面 · 用途未指定 · 放置 #1"
+     }
+    ],
+    "cards": [
+     {
+      "kind": "boundary",
+      "id": "1",
+      "text": "面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"
+     },
+     {
+      "kind": "parameter",
+      "id": "1",
+      "text": "ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+     }
+    ],
+    "face1Layers": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+    "face1TimberHits": [],
+    "threeView": {
+     "timberIds": 0
+    }
+   },
+   "after": {
+    "rows": [
+     {
+      "kind": "parameter",
+      "id": "1",
+      "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+     },
+     {
+      "kind": "boundary",
+      "id": "1",
+      "text": "面 1一般面 · 用途未指定 · 放置 #1"
+     }
+    ],
+    "cards": [
+     {
+      "kind": "boundary",
+      "id": "1",
+      "text": "面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"
+     },
+     {
+      "kind": "parameter",
+      "id": "1",
+      "text": "ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+     }
+    ],
+    "face1Layers": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+    "face1TimberHits": [],
+    "threeView": {
+     "timberIds": 0
+    }
+   }
+  },
+  {
+   "code": "UNDO_GENERAL_VIEW_ZERO_WRITE",
+   "pass": true
+  },
+  {
+   "code": "REDO_SAME_COMMIT_NO_SEARCH",
+   "pass": true,
+   "diff": {
+    "revision": [
+     "18",
+     "20"
+    ],
+    "pfRevision": [
+     18,
+     20
+    ]
+   }
+  },
+  {
+   "code": "REDO_THREE_VIEW_SHOWS_ALL",
+   "pass": true,
+   "threeView": 53,
+   "before": 0
+  },
+  {
+   "code": "SAVE_IS_COMMITTED_STATE",
+   "pass": true,
+   "diff": {
+    "revision": [
+     "18",
+     "20"
+    ],
+    "lastUndoSha": [
+     "10300148d89a8f62ffd8fac943e14230102e88c68faf6a58774e7e66d6d8431c",
+     "aee07ac33a7e759b8eb77cbab123b3f613a6c23d3c9153de4a4c472a00b5871e"
+    ],
+    "pfRevision": [
+     18,
+     20
+    ]
+   },
+   "saved": {
+    "suggested": "未命名專案.gcanvas",
+    "sha256": "dcec7c58dd0c3679b03610a6244e64659e888ab69cfae1e1de96c61b8186a3ea",
+    "bytes": 12200
+   }
+  }
+ ],
+ "steps": [
+  {
+   "name": "preview",
+   "head": "候選 53 支 · 確認前未寫入",
+   "n": 53,
+   "requests": [
+    {
+     "path": "/framing-template/preview",
+     "cmd": null,
+     "schema": "framing-template-generate/1",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "layout": {
+      "corner": "min-max",
+      "lengthAlong": "v"
+     },
+     "t": 1795633778851
+    }
+   ]
+  }
+ ],
+ "browser": "157.0.8103.78",
+ "runtimeAtStart": {
+  "schema": "geometry-runtime/1",
+  "version": "b4814c2e8615c27db57cd73005e0020192a0ea64c6f2c01989f3c6bd984a1f5c",
+  "fresh": true,
+  "root": "/tmp/l4w/wt2",
+  "pid": 15926,
+  "session": "db2ab3ad5a1a46f7b168c7150076cc16"
+ },
+ "outline": [
+  [
+   150,
+   150
+  ],
+  [
+   3890,
+   150
+  ],
+  [
+   3890,
+   3451
+  ],
+  [
+   150,
+   3451
+  ]
+ ],
+ "faceLines": [
+  "boundary 1 outline 150,150 3890,150 3890,3451 150,3451",
+  "placement 1 on boundary 1 origin 0 0 2500 u +x v +y"
+ ],
+ "modePath": [
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ],
+  [
+   "finish",
+   "framing",
+   "framing-fixed"
+  ]
+ ],
+ "viewBefore": {
+  "label": "before",
+  "rows": [
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+   },
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定 · 放置 #1"
+   }
+  ],
+  "cards": [
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"
+   },
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+   }
+  ],
+  "shotCanvas": {
+   "file": "screens/R03B-corner-min-max-V-before-1-object-canvas.jpg",
+   "sha256": "3bdbc866309fdc1cdbcb37074fb67f49b6e456fe102405b7aaed4db84f58a438"
+  },
+  "face1Layers": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+  "face1TimberHits": [],
+  "shotFace": {
+   "file": "screens/R03B-corner-min-max-V-before-2-face1.jpg",
+   "sha256": "20bd9be25f46243e06f537f53910981de337065d20ca5a3b4bc396dbb924cd32"
+  },
+  "threeView": {
+   "timberIds": 0
+  },
+  "shotThree": {
+   "file": "screens/R03B-corner-min-max-V-before-3-three-view.jpg",
+   "sha256": "9a9ec59cb715b07b2403c6628591784d04b2e0756b204a7c749eadb2b4fb01ec"
+  }
+ },
+ "recipeSaved": {
+  "schema": "framing-template-recipes/1",
+  "recipes": [
+   {
+    "id": "23870b8b-c519-4cfb-8bfd-dd94b3c1f4f2",
+    "name": "L4 R03B corner-min-max",
+    "template": {
+     "id": "flat-ceiling",
+     "version": 2,
+     "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+    },
+    "defaults": {
+     "panelWidth": 915,
+     "panelLength": 1830,
+     "gap": 2,
+     "timberWidth": 27,
+     "timberDepth": 33,
+     "maxSecondarySpacing": 367
+    },
+    "preference": {
+     "corner": "min-max",
+     "lengthAlong": "v"
+    },
+    "sourceSlots": [
+     "boundary",
+     "frame",
+     "material-semantics",
+     "panel-version",
+     "support-threshold"
+    ],
+    "sourceHints": []
+   }
+  ]
+ },
+ "recipeUsed": {
+  "id": "23870b8b-c519-4cfb-8bfd-dd94b3c1f4f2",
+  "name": "L4 R03B corner-min-max",
+  "template": {
+   "id": "flat-ceiling",
+   "version": 2,
+   "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+  },
+  "defaults": {
+   "panelWidth": 915,
+   "panelLength": 1830,
+   "gap": 2,
+   "timberWidth": 27,
+   "timberDepth": 33,
+   "maxSecondarySpacing": 367
+  },
+  "preference": {
+   "corner": "min-max",
+   "lengthAlong": "v"
+  },
+  "sourceSlots": [
+   "boundary",
+   "frame",
+   "material-semantics",
+   "panel-version",
+   "support-threshold"
+  ],
+  "sourceHints": []
+ },
+ "preview1": [
+  {
+   "i": 0,
+   "role": "邊界材",
+   "rect": [
+    150,
+    150,
+    3890,
+    177
+   ],
+   "length": 3740,
+   "AxB": "27 × 33",
+   "kind": "boundary"
+  },
+  {
+   "i": 1,
+   "role": "邊界材",
+   "rect": [
+    150,
+    3424,
+    3890,
+    3451
+   ],
+   "length": 3740,
+   "AxB": "27 × 33",
+   "kind": "boundary"
+  },
+  {
+   "i": 2,
+   "role": "主支",
+   "rect": [
+    1053,
+    177,
+    1080,
+    3424
+   ],
+   "length": 3247,
+   "AxB": "27 × 33",
+   "kind": "main"
+  },
+  {
+   "i": 3,
+   "role": "主支",
+   "rect": [
+    1970,
+    177,
+    1997,
+    3424
+   ],
+   "length": 3247,
+   "AxB": "27 × 33",
+   "kind": "main"
+  },
+  {
+   "i": 4,
+   "role": "主支",
+   "rect": [
+    2887,
+    177,
+    2914,
+    3424
+   ],
+   "length": 3247,
+   "AxB": "27 × 33",
+   "kind": "main"
+  },
+  {
+   "i": 5,
+   "role": "主支",
+   "rect": [
+    3804,
+    177,
+    3831,
+    3424
+   ],
+   "length": 3247,
+   "AxB": "27 × 33",
+   "kind": "main"
+  },
+  {
+   "i": 6,
+   "role": "平行邊界材",
+   "rect": [
+    150,
+    177,
+    177,
+    3424
+   ],
+   "length": 3247,
+   "AxB": "27 × 33",
+   "kind": "rc_parallel"
+  },
+  {
+   "i": 7,
+   "role": "平行邊界材",
+   "rect": [
+    3863,
+    177,
+    3890,
+    3424
+   ],
+   "length": 3247,
+   "AxB": "27 × 33",
+   "kind": "rc_parallel"
+  },
+  {
+   "i": 8,
+   "role": "記號副支",
+   "rect": [
+    177,
+    321,
+    1053,
+    348
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 9,
+   "role": "記號副支",
+   "rect": [
+    177,
+    506,
+    1053,
+    533
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 10,
+   "role": "記號副支",
+   "rect": [
+    177,
+    873,
+    1053,
+    900
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 11,
+   "role": "記號副支",
+   "rect": [
+    177,
+    1240,
+    1053,
+    1267
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 12,
+   "role": "記號副支",
+   "rect": [
+    177,
+    1974,
+    1053,
+    2001
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 13,
+   "role": "記號副支",
+   "rect": [
+    177,
+    2341,
+    1053,
+    2368
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 14,
+   "role": "記號副支",
+   "rect": [
+    177,
+    2708,
+    1053,
+    2735
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 15,
+   "role": "記號副支",
+   "rect": [
+    177,
+    3075,
+    1053,
+    3102
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 16,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    321,
+    1970,
+    348
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 17,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    506,
+    1970,
+    533
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 18,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    873,
+    1970,
+    900
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 19,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    1240,
+    1970,
+    1267
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 20,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    1974,
+    1970,
+    2001
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 21,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    2341,
+    1970,
+    2368
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 22,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    2708,
+    1970,
+    2735
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 23,
+   "role": "記號副支",
+   "rect": [
+    1080,
+    3075,
+    1970,
+    3102
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 24,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    321,
+    2887,
+    348
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 25,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    506,
+    2887,
+    533
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 26,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    873,
+    2887,
+    900
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 27,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    1240,
+    2887,
+    1267
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 28,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    1974,
+    2887,
+    2001
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 29,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    2341,
+    2887,
+    2368
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 30,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    2708,
+    2887,
+    2735
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 31,
+   "role": "記號副支",
+   "rect": [
+    1997,
+    3075,
+    2887,
+    3102
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 32,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    321,
+    3804,
+    348
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 33,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    506,
+    3804,
+    533
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 34,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    873,
+    3804,
+    900
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 35,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    1240,
+    3804,
+    1267
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 36,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    1974,
+    3804,
+    2001
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 37,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    2341,
+    3804,
+    2368
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 38,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    2708,
+    3804,
+    2735
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 39,
+   "role": "記號副支",
+   "rect": [
+    2914,
+    3075,
+    3804,
+    3102
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 40,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    321,
+    3863,
+    348
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 41,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    506,
+    3863,
+    533
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 42,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    873,
+    3863,
+    900
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 43,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    1240,
+    3863,
+    1267
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 44,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    1974,
+    3863,
+    2001
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 45,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    2341,
+    3863,
+    2368
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 46,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    2708,
+    3863,
+    2735
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 47,
+   "role": "記號副支",
+   "rect": [
+    3831,
+    3075,
+    3863,
+    3102
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:mark"
+  },
+  {
+   "i": 48,
+   "role": "板縫副支",
+   "rect": [
+    177,
+    1607,
+    1053,
+    1634
+   ],
+   "length": 876,
+   "AxB": "27 × 33",
+   "kind": "secondary:seam"
+  },
+  {
+   "i": 49,
+   "role": "板縫副支",
+   "rect": [
+    1080,
+    1607,
+    1970,
+    1634
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:seam"
+  },
+  {
+   "i": 50,
+   "role": "板縫副支",
+   "rect": [
+    1997,
+    1607,
+    2887,
+    1634
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:seam"
+  },
+  {
+   "i": 51,
+   "role": "板縫副支",
+   "rect": [
+    2914,
+    1607,
+    3804,
+    1634
+   ],
+   "length": 890,
+   "AxB": "27 × 33",
+   "kind": "secondary:seam"
+  },
+  {
+   "i": 52,
+   "role": "板縫副支",
+   "rect": [
+    3831,
+    1607,
+    3863,
+    1634
+   ],
+   "length": 32,
+   "AxB": "27 × 33",
+   "kind": "secondary:seam"
+  }
+ ],
+ "preview1Head": "候選 53 支 · 確認前未寫入",
+ "committedAddedKinds": {
+  "spec": 8,
+  "requires": 1,
+  "finish-surface": 1,
+  "panel-fill": 1,
+  "derived-placement": 1,
+  "grid": 1,
+  "timber": 53,
+  "guide": 8,
+  "place": 53,
+  "#": 53,
+  "canvas-pos": 1
+ },
+ "viewAfterUndo": {
+  "label": "after-undo",
+  "rows": [
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "鋪排承接門檻1 個欄位 · 0 處使用"
+   },
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定 · 放置 #1"
+   }
+  ],
+  "cards": [
+   {
+    "kind": "boundary",
+    "id": "1",
+    "text": "面 1一般面 · 用途未指定一般面，尚未指定用途。放置 #1：天花 z=25003740×3301 mm · 4 頂點進入 ›"
+   },
+   {
+    "kind": "parameter",
+    "id": "1",
+    "text": "ƒ 鋪排承接門檻ƒ 鋪排承接門檻XX8 mm8 mm1 個欄位 · 0 處使用檢查 ›"
+   }
+  ],
+  "shotCanvas": {
+   "file": "screens/R03B-corner-min-max-V-after-undo-1-object-canvas.jpg",
+   "sha256": "34d1656d9480a73b6b5d47aa30b8e739f0fc991aeae7655d519da6ed34ba555e"
+  },
+  "face1Layers": "邊界\n外環\n4 頂點 · 4/4 邊 F\n參考線\n尚無參考線 · 開啟建立表單\n角材\n尚無角材 · 設定並放置\n網格\n尚無網格 · 開啟建立表單\n柱樑投影\n尚無投影 · 加入有柱樑的空間後顯示",
+  "face1TimberHits": [],
+  "shotFace": {
+   "file": "screens/R03B-corner-min-max-V-after-undo-2-face1.jpg",
+   "sha256": "40aef16f5469a742c64d8c850a9ebe08e57c4a569446879459c649d5d70f4583"
+  },
+  "threeView": {
+   "timberIds": 0
+  },
+  "shotThree": {
+   "file": "screens/R03B-corner-min-max-V-after-undo-3-three-view.jpg",
+   "sha256": "16ddede3e54842a9f0fe2309c0533f77c50b504f18c9f5e01d26bdd63df73e0a"
+  }
+ },
+ "threeViewAfterRedo": 53,
+ "saved": {
+  "suggested": "未命名專案.gcanvas",
+  "sha256": "dcec7c58dd0c3679b03610a6244e64659e888ab69cfae1e1de96c61b8186a3ea",
+  "bytes": 12200
+ },
+ "beforeCold": {
+  "scene": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6Ijc1YjA3NDUzZmZhODE5MzFmYTAyZWViNGViYzM0OTFkNjQ2MGRkNDc3YTExNGIyZTUwYjU2MjNiODU2ZGRkZDgiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC02OGFhNzc2ZC1iZTNjLTQ0NjgtYjBhNy1hNWZiNmVmYjUwZjciLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoiTDQgUjAzQiDpnaLmnZAgOTE1w5cxODMwIiwibm90ZXMiOm51bGwsInRoaWNrbmVzcyI6IjYiLCJ2ZXJzaW9uIjoxLCJ3aWR0aCI6OTE1fX0=\nboundary 1 outline 150,150 3890,150 3890,3451 150,3451\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec r03_mark_1_0 -1286\nspec r03_mark_2_0 -1101\nspec r03_mark_3_0 -734\nspec r03_mark_4_0 -367\nspec r03_mark_5_0 367\nspec r03_mark_6_0 734\nspec r03_mark_7_0 1101\nspec r03_mark_8_0 1468\nrequires panel-fill/1\nfinish-surface 1 on boundary 1 origin 0 0 2500 u +x v +y n +z side +n name-hex 523033206365696c696e67\npanel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a322c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b3135302c313632315d2c2270616e656c223a7b226964223a226d6174657269616c2d36386161373736642d626533632d343436382d623061372d613566623665666235306637222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a317d7d\nderived-placement 2 definition-hex 7b2266696c6c4964223a312c2268223a33332c226964223a327d\ngrid 1 on 2 from-fill 1 main-along v\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\ntimber 4 27 33 role primary\ntimber 5 27 33 role primary\ntimber 6 27 33 role primary\ntimber 7 27 33 role primary\ntimber 8 27 33 role primary\ntimber 9 27 33 role secondary\ntimber 10 27 33 role secondary\ntimber 11 27 33 role secondary\ntimber 12 27 33 role secondary\ntimber 13 27 33 role secondary\ntimber 14 27 33 role secondary\ntimber 15 27 33 role secondary\ntimber 16 27 33 role secondary\ntimber 17 27 33 role secondary\ntimber 18 27 33 role secondary\ntimber 19 27 33 role secondary\ntimber 20 27 33 role secondary\ntimber 21 27 33 role secondary\ntimber 22 27 33 role secondary\ntimber 23 27 33 role secondary\ntimber 24 27 33 role secondary\ntimber 25 27 33 role secondary\ntimber 26 27 33 role secondary\ntimber 27 27 33 role secondary\ntimber 28 27 33 role secondary\ntimber 29 27 33 role secondary\ntimber 30 27 33 role secondary\ntimber 31 27 33 role secondary\ntimber 32 27 33 role secondary\ntimber 33 27 33 role secondary\ntimber 34 27 33 role secondary\ntimber 35 27 33 role secondary\ntimber 36 27 33 role secondary\ntimber 37 27 33 role secondary\ntimber 38 27 33 role secondary\ntimber 39 27 33 role secondary\ntimber 40 27 33 role secondary\ntimber 41 27 33 role secondary\ntimber 42 27 33 role secondary\ntimber 43 27 33 role secondary\ntimber 44 27 33 role secondary\ntimber 45 27 33 role secondary\ntimber 46 27 33 role secondary\ntimber 47 27 33 role secondary\ntimber 48 27 33 role secondary\ntimber 49 27 33 role secondary\ntimber 50 27 33 role secondary\ntimber 51 27 33 role secondary\ntimber 52 27 33 role secondary\ntimber 53 27 33 role secondary\nguide 1 2 u grid:1:v:-1+spec:r03_mark_1_0\nguide 2 2 u grid:1:v:-1+spec:r03_mark_2_0\nguide 3 2 u grid:1:v:-1+spec:r03_mark_3_0\nguide 4 2 u grid:1:v:-1+spec:r03_mark_4_0\nguide 5 2 u grid:1:v:-1+spec:r03_mark_5_0\nguide 6 2 u grid:1:v:-1+spec:r03_mark_6_0\nguide 7 2 u grid:1:v:-1+spec:r03_mark_7_0\nguide 8 2 u grid:1:v:-1+spec:r03_mark_8_0\nplace 1 on 2 at-face key-hex:5b5b226530222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[[\"e0\",0,1]]\nplace 2 on 2 at-face key-hex:5b5b226532222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d -u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=[[\"e2\",0,1]]\nplace 3 on 2 at-line grid 1 u 0 between t1 t2 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=null\nplace 4 on 2 at-line grid 1 u 1 between t1 t2 +v +n\n# R18 角材 4: onBoundary=false coversEdge=false boundaryEdge=null\nplace 5 on 2 at-line grid 1 u 2 between t1 t2 +v +n\n# R18 角材 5: onBoundary=false coversEdge=false boundaryEdge=null\nplace 6 on 2 at-line grid 1 u 3 between t1 t2 +v +n\n# R18 角材 6: onBoundary=false coversEdge=false boundaryEdge=null\nplace 7 on 2 at-face key-hex:5b5b226533222c302c315d5d between t1 t2 -v +n\n# R18 角材 7: onBoundary=true coversEdge=false boundaryEdge=[[\"e3\",0,1]]\nplace 8 on 2 at-face key-hex:5b5b226531222c302c315d5d between t1 t2 +v +n\n# R18 角材 8: onBoundary=true coversEdge=false boundaryEdge=[[\"e1\",0,1]]\nplace 9 on 2 at-line guide 1 between t7 t3 +u +n\n# R18 角材 9: onBoundary=false coversEdge=false boundaryEdge=null\nplace 10 on 2 at-line guide 2 between t7 t3 +u +n\n# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=null\nplace 11 on 2 at-line guide 3 between t7 t3 +u +n\n# R18 角材 11: onBoundary=false coversEdge=false boundaryEdge=null\nplace 12 on 2 at-line guide 4 between t7 t3 +u +n\n# R18 角材 12: onBoundary=false coversEdge=false boundaryEdge=null\nplace 13 on 2 at-line guide 5 between t7 t3 +u +n\n# R18 角材 13: onBoundary=false coversEdge=false boundaryEdge=null\nplace 14 on 2 at-line guide 6 between t7 t3 +u +n\n# R18 角材 14: onBoundary=false coversEdge=false boundaryEdge=null\nplace 15 on 2 at-line guide 7 between t7 t3 +u +n\n# R18 角材 15: onBoundary=false coversEdge=false boundaryEdge=null\nplace 16 on 2 at-line guide 8 between t7 t3 +u +n\n# R18 角材 16: onBoundary=false coversEdge=false boundaryEdge=null\nplace 17 on 2 at-line guide 1 between t3 t4 +u +n\n# R18 角材 17: onBoundary=false coversEdge=false boundaryEdge=null\nplace 18 on 2 at-line guide 2 between t3 t4 +u +n\n# R18 角材 18: onBoundary=false coversEdge=false boundaryEdge=null\nplace 19 on 2 at-line guide 3 between t3 t4 +u +n\n# R18 角材 19: onBoundary=false coversEdge=false boundaryEdge=null\nplace 20 on 2 at-line guide 4 between t3 t4 +u +n\n# R18 角材 20: onBoundary=false coversEdge=false boundaryEdge=null\nplace 21 on 2 at-line guide 5 between t3 t4 +u +n\n# R18 角材 21: onBoundary=false coversEdge=false boundaryEdge=null\nplace 22 on 2 at-line guide 6 between t3 t4 +u +n\n# R18 角材 22: onBoundary=false coversEdge=false boundaryEdge=null\nplace 23 on 2 at-line guide 7 between t3 t4 +u +n\n# R18 角材 23: onBoundary=false coversEdge=false boundaryEdge=null\nplace 24 on 2 at-line guide 8 between t3 t4 +u +n\n# R18 角材 24: onBoundary=false coversEdge=false boundaryEdge=null\nplace 25 on 2 at-line guide 1 between t4 t5 +u +n\n# R18 角材 25: onBoundary=false coversEdge=false boundaryEdge=null\nplace 26 on 2 at-line guide 2 between t4 t5 +u +n\n# R18 角材 26: onBoundary=false coversEdge=false boundaryEdge=null\nplace 27 on 2 at-line guide 3 between t4 t5 +u +n\n# R18 角材 27: onBoundary=false coversEdge=false boundaryEdge=null\nplace 28 on 2 at-line guide 4 between t4 t5 +u +n\n# R18 角材 28: onBoundary=false coversEdge=false boundaryEdge=null\nplace 29 on 2 at-line guide 5 between t4 t5 +u +n\n# R18 角材 29: onBoundary=false coversEdge=false boundaryEdge=null\nplace 30 on 2 at-line guide 6 between t4 t5 +u +n\n# R18 角材 30: onBoundary=false coversEdge=false boundaryEdge=null\nplace 31 on 2 at-line guide 7 between t4 t5 +u +n\n# R18 角材 31: onBoundary=false coversEdge=false boundaryEdge=null\nplace 32 on 2 at-line guide 8 between t4 t5 +u +n\n# R18 角材 32: onBoundary=false coversEdge=false boundaryEdge=null\nplace 33 on 2 at-line guide 1 between t5 t6 +u +n\n# R18 角材 33: onBoundary=false coversEdge=false boundaryEdge=null\nplace 34 on 2 at-line guide 2 between t5 t6 +u +n\n# R18 角材 34: onBoundary=false coversEdge=false boundaryEdge=null\nplace 35 on 2 at-line guide 3 between t5 t6 +u +n\n# R18 角材 35: onBoundary=false coversEdge=false boundaryEdge=null\nplace 36 on 2 at-line guide 4 between t5 t6 +u +n\n# R18 角材 36: onBoundary=false coversEdge=false boundaryEdge=null\nplace 37 on 2 at-line guide 5 between t5 t6 +u +n\n# R18 角材 37: onBoundary=false coversEdge=false boundaryEdge=null\nplace 38 on 2 at-line guide 6 between t5 t6 +u +n\n# R18 角材 38: onBoundary=false coversEdge=false boundaryEdge=null\nplace 39 on 2 at-line guide 7 between t5 t6 +u +n\n# R18 角材 39: onBoundary=false coversEdge=false boundaryEdge=null\nplace 40 on 2 at-line guide 8 between t5 t6 +u +n\n# R18 角材 40: onBoundary=false coversEdge=false boundaryEdge=null\nplace 41 on 2 at-line guide 1 between t6 t8 +u +n\n# R18 角材 41: onBoundary=false coversEdge=false boundaryEdge=null\nplace 42 on 2 at-line guide 2 between t6 t8 +u +n\n# R18 角材 42: onBoundary=false coversEdge=false boundaryEdge=null\nplace 43 on 2 at-line guide 3 between t6 t8 +u +n\n# R18 角材 43: onBoundary=false coversEdge=false boundaryEdge=null\nplace 44 on 2 at-line guide 4 between t6 t8 +u +n\n# R18 角材 44: onBoundary=false coversEdge=false boundaryEdge=null\nplace 45 on 2 at-line guide 5 between t6 t8 +u +n\n# R18 角材 45: onBoundary=false coversEdge=false boundaryEdge=null\nplace 46 on 2 at-line guide 6 between t6 t8 +u +n\n# R18 角材 46: onBoundary=false coversEdge=false boundaryEdge=null\nplace 47 on 2 at-line guide 7 between t6 t8 +u +n\n# R18 角材 47: onBoundary=false coversEdge=false boundaryEdge=null\nplace 48 on 2 at-line guide 8 between t6 t8 +u +n\n# R18 角材 48: onBoundary=false coversEdge=false boundaryEdge=null\nplace 49 on 2 at-line grid 1 v -1 between t7 t3 +u +n\n# R18 角材 49: onBoundary=false coversEdge=false boundaryEdge=null\nplace 50 on 2 at-line grid 1 v -1 between t3 t4 +u +n\n# R18 角材 50: onBoundary=false coversEdge=false boundaryEdge=null\nplace 51 on 2 at-line grid 1 v -1 between t4 t5 +u +n\n# R18 角材 51: onBoundary=false coversEdge=false boundaryEdge=null\nplace 52 on 2 at-line grid 1 v -1 between t5 t6 +u +n\n# R18 角材 52: onBoundary=false coversEdge=false boundaryEdge=null\nplace 53 on 2 at-line grid 1 v -1 between t6 t8 +u +n\n# R18 角材 53: onBoundary=false coversEdge=false boundaryEdge=null\ncanvas-pos boundary 1 150 150\ncanvas-pos parameter 1 60 660\ncanvas-pos placement 2 440 60\n",
+  "sceneSha": "f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354",
+  "recipe": {
+   "schema": "framing-template-recipes/1",
+   "recipes": [
+    {
+     "id": "23870b8b-c519-4cfb-8bfd-dd94b3c1f4f2",
+     "name": "L4 R03B corner-min-max",
+     "template": {
+      "id": "flat-ceiling",
+      "version": 2,
+      "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+     },
+     "defaults": {
+      "panelWidth": 915,
+      "panelLength": 1830,
+      "gap": 2,
+      "timberWidth": 27,
+      "timberDepth": 33,
+      "maxSecondarySpacing": 367
+     },
+     "preference": {
+      "corner": "min-max",
+      "lengthAlong": "v"
+     },
+     "sourceSlots": [
+      "boundary",
+      "frame",
+      "material-semantics",
+      "panel-version",
+      "support-threshold"
+     ],
+     "sourceHints": []
+    }
+   ]
+  },
+  "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca"
+ },
+ "generatorInvocationsBeforeRestart": 2,
+ "checkpoints": {
+  "s0": {
+   "sceneSha": "41f38c70cb9cb3deb344d3d9a32e1f3beeba1ad53af6f3102c1dc627e65b68e0",
+   "revision": "15",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 5,
+   "redo": 0,
+   "lastUndoSha": "bd733a0c2275af78dd5189fb8e2f1f29d5bdae17b7615e92eb70fcd1f268a51c",
+   "lastKind": "core",
+   "dirty": true,
+   "recipeSha": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+   "pfRevision": 15,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 3
+  },
+  "sBefore": {
+   "sceneSha": "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+   "revision": "17",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 8,
+   "redo": 0,
+   "lastUndoSha": "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+   "lastKind": "local",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 17,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 11
+  },
+  "sPrev": {
+   "sceneSha": "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+   "revision": "17",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 8,
+   "redo": 0,
+   "lastUndoSha": "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+   "lastKind": "local",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 17,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 11
+  },
+  "sCancel": {
+   "sceneSha": "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+   "revision": "17",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 8,
+   "redo": 0,
+   "lastUndoSha": "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+   "lastKind": "local",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 17,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 11
+  },
+  "sPrev2": {
+   "sceneSha": "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+   "revision": "17",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 8,
+   "redo": 0,
+   "lastUndoSha": "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+   "lastKind": "local",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 17,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 11
+  },
+  "sCommit": {
+   "sceneSha": "f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354",
+   "revision": "18",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 9,
+   "redo": 0,
+   "lastUndoSha": "10300148d89a8f62ffd8fac943e14230102e88c68faf6a58774e7e66d6d8431c",
+   "lastKind": "core",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 18,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  },
+  "sUndo": {
+   "sceneSha": "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+   "revision": "19",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 8,
+   "redo": 1,
+   "lastUndoSha": "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+   "lastKind": "local",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 19,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 11
+  },
+  "sUndoView": {
+   "sceneSha": "88e18b828ff39e0e9983076a28b613859e3f4d24f5406d8f341f796f911f6168",
+   "revision": "19",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 8,
+   "redo": 1,
+   "lastUndoSha": "11062b1762c8cb98a4b7cb740b52346c74cf38c074fc24f6dc80d43b99bb221c",
+   "lastKind": "local",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 19,
+   "ids": {
+    "boundary": 2,
+    "placement": 2,
+    "surfaces": [
+     2
+    ],
+    "timber": 1
+   },
+   "idsSha": "b6a367b296ea9323f7387820b096f994cf2181ce112e0a61e931c9467a0735ab",
+   "sceneLines": 11
+  },
+  "sRedo": {
+   "sceneSha": "f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354",
+   "revision": "20",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 9,
+   "redo": 0,
+   "lastUndoSha": "10300148d89a8f62ffd8fac943e14230102e88c68faf6a58774e7e66d6d8431c",
+   "lastKind": "core",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 20,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  },
+  "sSave": {
+   "sceneSha": "f263b1703dc3c097965778e21ac21b7972a4a8a6b64fe338e0e8c772c2ede354",
+   "revision": "20",
+   "identitySha": "02571ca714b64b97c77d71b79275bab06e089ad9c99d89ee6fa972b7cbb6febe",
+   "undo": 9,
+   "redo": 0,
+   "lastUndoSha": "aee07ac33a7e759b8eb77cbab123b3f613a6c23d3c9153de4a4c472a00b5871e",
+   "lastKind": "core",
+   "dirty": true,
+   "recipeSha": "539d67b1b80a1cca4374d0f4a1980ac28e2bf4b699c75cd9b040aa3d8785a3ca",
+   "pfRevision": 20,
+   "ids": {
+    "boundary": 2,
+    "placement": 3,
+    "surfaces": [
+     3
+    ],
+    "timber": 54
+   },
+   "idsSha": "c8bfdc90d8ceaf0781486ab231f92d4f34fa60d0780ae216ba4437b8db8aa846",
+   "sceneLines": 192
+  }
+ },
+ "sceneBeforePreview": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6Ijc1YjA3NDUzZmZhODE5MzFmYTAyZWViNGViYzM0OTFkNjQ2MGRkNDc3YTExNGIyZTUwYjU2MjNiODU2ZGRkZDgiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC02OGFhNzc2ZC1iZTNjLTQ0NjgtYjBhNy1hNWZiNmVmYjUwZjciLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoiTDQgUjAzQiDpnaLmnZAgOTE1w5cxODMwIiwibm90ZXMiOm51bGwsInRoaWNrbmVzcyI6IjYiLCJ2ZXJzaW9uIjoxLCJ3aWR0aCI6OTE1fX0=\nboundary 1 outline 150,150 3890,150 3890,3451 150,3451\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\ncanvas-pos boundary 1 150 150\ncanvas-pos parameter 1 60 660\n",
+ "sceneCommitted": "requires parameters/1\nparameters begin\nparameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==\nparameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==\nparameters end\nrequires engineering-spec/1\nengineering material eyJmaW5nZXJwcmludCI6Ijc1YjA3NDUzZmZhODE5MzFmYTAyZWViNGViYzM0OTFkNjQ2MGRkNDc3YTExNGIyZTUwYjU2MjNiODU2ZGRkZDgiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC02OGFhNzc2ZC1iZTNjLTQ0NjgtYjBhNy1hNWZiNmVmYjUwZjciLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoiTDQgUjAzQiDpnaLmnZAgOTE1w5cxODMwIiwibm90ZXMiOm51bGwsInRoaWNrbmVzcyI6IjYiLCJ2ZXJzaW9uIjoxLCJ3aWR0aCI6OTE1fX0=\nboundary 1 outline 150,150 3890,150 3890,3451 150,3451\nplacement 1 on boundary 1 origin 0 0 2500 u +x v +y\nspec r03_mark_1_0 -1286\nspec r03_mark_2_0 -1101\nspec r03_mark_3_0 -734\nspec r03_mark_4_0 -367\nspec r03_mark_5_0 367\nspec r03_mark_6_0 734\nspec r03_mark_7_0 1101\nspec r03_mark_8_0 1468\nrequires panel-fill/1\nfinish-surface 1 on boundary 1 origin 0 0 2500 u +x v +y n +z side +n name-hex 523033206365696c696e67\npanel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a322c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b3135302c313632315d2c2270616e656c223a7b226964223a226d6174657269616c2d36386161373736642d626533632d343436382d623061372d613566623665666235306637222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a317d7d\nderived-placement 2 definition-hex 7b2266696c6c4964223a312c2268223a33332c226964223a327d\ngrid 1 on 2 from-fill 1 main-along v\ntimber 1 27 33 role boundary\ntimber 2 27 33 role boundary\ntimber 3 27 33 role primary\ntimber 4 27 33 role primary\ntimber 5 27 33 role primary\ntimber 6 27 33 role primary\ntimber 7 27 33 role primary\ntimber 8 27 33 role primary\ntimber 9 27 33 role secondary\ntimber 10 27 33 role secondary\ntimber 11 27 33 role secondary\ntimber 12 27 33 role secondary\ntimber 13 27 33 role secondary\ntimber 14 27 33 role secondary\ntimber 15 27 33 role secondary\ntimber 16 27 33 role secondary\ntimber 17 27 33 role secondary\ntimber 18 27 33 role secondary\ntimber 19 27 33 role secondary\ntimber 20 27 33 role secondary\ntimber 21 27 33 role secondary\ntimber 22 27 33 role secondary\ntimber 23 27 33 role secondary\ntimber 24 27 33 role secondary\ntimber 25 27 33 role secondary\ntimber 26 27 33 role secondary\ntimber 27 27 33 role secondary\ntimber 28 27 33 role secondary\ntimber 29 27 33 role secondary\ntimber 30 27 33 role secondary\ntimber 31 27 33 role secondary\ntimber 32 27 33 role secondary\ntimber 33 27 33 role secondary\ntimber 34 27 33 role secondary\ntimber 35 27 33 role secondary\ntimber 36 27 33 role secondary\ntimber 37 27 33 role secondary\ntimber 38 27 33 role secondary\ntimber 39 27 33 role secondary\ntimber 40 27 33 role secondary\ntimber 41 27 33 role secondary\ntimber 42 27 33 role secondary\ntimber 43 27 33 role secondary\ntimber 44 27 33 role secondary\ntimber 45 27 33 role secondary\ntimber 46 27 33 role secondary\ntimber 47 27 33 role secondary\ntimber 48 27 33 role secondary\ntimber 49 27 33 role secondary\ntimber 50 27 33 role secondary\ntimber 51 27 33 role secondary\ntimber 52 27 33 role secondary\ntimber 53 27 33 role secondary\nguide 1 2 u grid:1:v:-1+spec:r03_mark_1_0\nguide 2 2 u grid:1:v:-1+spec:r03_mark_2_0\nguide 3 2 u grid:1:v:-1+spec:r03_mark_3_0\nguide 4 2 u grid:1:v:-1+spec:r03_mark_4_0\nguide 5 2 u grid:1:v:-1+spec:r03_mark_5_0\nguide 6 2 u grid:1:v:-1+spec:r03_mark_6_0\nguide 7 2 u grid:1:v:-1+spec:r03_mark_7_0\nguide 8 2 u grid:1:v:-1+spec:r03_mark_8_0\nplace 1 on 2 at-face key-hex:5b5b226530222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d +u +n\n# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[[\"e0\",0,1]]\nplace 2 on 2 at-face key-hex:5b5b226532222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d -u +n\n# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=[[\"e2\",0,1]]\nplace 3 on 2 at-line grid 1 u 0 between t1 t2 +v +n\n# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=null\nplace 4 on 2 at-line grid 1 u 1 between t1 t2 +v +n\n# R18 角材 4: onBoundary=false coversEdge=false boundaryEdge=null\nplace 5 on 2 at-line grid 1 u 2 between t1 t2 +v +n\n# R18 角材 5: onBoundary=false coversEdge=false boundaryEdge=null\nplace 6 on 2 at-line grid 1 u 3 between t1 t2 +v +n\n# R18 角材 6: onBoundary=false coversEdge=false boundaryEdge=null\nplace 7 on 2 at-face key-hex:5b5b226533222c302c315d5d between t1 t2 -v +n\n# R18 角材 7: onBoundary=true coversEdge=false boundaryEdge=[[\"e3\",0,1]]\nplace 8 on 2 at-face key-hex:5b5b226531222c302c315d5d between t1 t2 +v +n\n# R18 角材 8: onBoundary=true coversEdge=false boundaryEdge=[[\"e1\",0,1]]\nplace 9 on 2 at-line guide 1 between t7 t3 +u +n\n# R18 角材 9: onBoundary=false coversEdge=false boundaryEdge=null\nplace 10 on 2 at-line guide 2 between t7 t3 +u +n\n# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=null\nplace 11 on 2 at-line guide 3 between t7 t3 +u +n\n# R18 角材 11: onBoundary=false coversEdge=false boundaryEdge=null\nplace 12 on 2 at-line guide 4 between t7 t3 +u +n\n# R18 角材 12: onBoundary=false coversEdge=false boundaryEdge=null\nplace 13 on 2 at-line guide 5 between t7 t3 +u +n\n# R18 角材 13: onBoundary=false coversEdge=false boundaryEdge=null\nplace 14 on 2 at-line guide 6 between t7 t3 +u +n\n# R18 角材 14: onBoundary=false coversEdge=false boundaryEdge=null\nplace 15 on 2 at-line guide 7 between t7 t3 +u +n\n# R18 角材 15: onBoundary=false coversEdge=false boundaryEdge=null\nplace 16 on 2 at-line guide 8 between t7 t3 +u +n\n# R18 角材 16: onBoundary=false coversEdge=false boundaryEdge=null\nplace 17 on 2 at-line guide 1 between t3 t4 +u +n\n# R18 角材 17: onBoundary=false coversEdge=false boundaryEdge=null\nplace 18 on 2 at-line guide 2 between t3 t4 +u +n\n# R18 角材 18: onBoundary=false coversEdge=false boundaryEdge=null\nplace 19 on 2 at-line guide 3 between t3 t4 +u +n\n# R18 角材 19: onBoundary=false coversEdge=false boundaryEdge=null\nplace 20 on 2 at-line guide 4 between t3 t4 +u +n\n# R18 角材 20: onBoundary=false coversEdge=false boundaryEdge=null\nplace 21 on 2 at-line guide 5 between t3 t4 +u +n\n# R18 角材 21: onBoundary=false coversEdge=false boundaryEdge=null\nplace 22 on 2 at-line guide 6 between t3 t4 +u +n\n# R18 角材 22: onBoundary=false coversEdge=false boundaryEdge=null\nplace 23 on 2 at-line guide 7 between t3 t4 +u +n\n# R18 角材 23: onBoundary=false coversEdge=false boundaryEdge=null\nplace 24 on 2 at-line guide 8 between t3 t4 +u +n\n# R18 角材 24: onBoundary=false coversEdge=false boundaryEdge=null\nplace 25 on 2 at-line guide 1 between t4 t5 +u +n\n# R18 角材 25: onBoundary=false coversEdge=false boundaryEdge=null\nplace 26 on 2 at-line guide 2 between t4 t5 +u +n\n# R18 角材 26: onBoundary=false coversEdge=false boundaryEdge=null\nplace 27 on 2 at-line guide 3 between t4 t5 +u +n\n# R18 角材 27: onBoundary=false coversEdge=false boundaryEdge=null\nplace 28 on 2 at-line guide 4 between t4 t5 +u +n\n# R18 角材 28: onBoundary=false coversEdge=false boundaryEdge=null\nplace 29 on 2 at-line guide 5 between t4 t5 +u +n\n# R18 角材 29: onBoundary=false coversEdge=false boundaryEdge=null\nplace 30 on 2 at-line guide 6 between t4 t5 +u +n\n# R18 角材 30: onBoundary=false coversEdge=false boundaryEdge=null\nplace 31 on 2 at-line guide 7 between t4 t5 +u +n\n# R18 角材 31: onBoundary=false coversEdge=false boundaryEdge=null\nplace 32 on 2 at-line guide 8 between t4 t5 +u +n\n# R18 角材 32: onBoundary=false coversEdge=false boundaryEdge=null\nplace 33 on 2 at-line guide 1 between t5 t6 +u +n\n# R18 角材 33: onBoundary=false coversEdge=false boundaryEdge=null\nplace 34 on 2 at-line guide 2 between t5 t6 +u +n\n# R18 角材 34: onBoundary=false coversEdge=false boundaryEdge=null\nplace 35 on 2 at-line guide 3 between t5 t6 +u +n\n# R18 角材 35: onBoundary=false coversEdge=false boundaryEdge=null\nplace 36 on 2 at-line guide 4 between t5 t6 +u +n\n# R18 角材 36: onBoundary=false coversEdge=false boundaryEdge=null\nplace 37 on 2 at-line guide 5 between t5 t6 +u +n\n# R18 角材 37: onBoundary=false coversEdge=false boundaryEdge=null\nplace 38 on 2 at-line guide 6 between t5 t6 +u +n\n# R18 角材 38: onBoundary=false coversEdge=false boundaryEdge=null\nplace 39 on 2 at-line guide 7 between t5 t6 +u +n\n# R18 角材 39: onBoundary=false coversEdge=false boundaryEdge=null\nplace 40 on 2 at-line guide 8 between t5 t6 +u +n\n# R18 角材 40: onBoundary=false coversEdge=false boundaryEdge=null\nplace 41 on 2 at-line guide 1 between t6 t8 +u +n\n# R18 角材 41: onBoundary=false coversEdge=false boundaryEdge=null\nplace 42 on 2 at-line guide 2 between t6 t8 +u +n\n# R18 角材 42: onBoundary=false coversEdge=false boundaryEdge=null\nplace 43 on 2 at-line guide 3 between t6 t8 +u +n\n# R18 角材 43: onBoundary=false coversEdge=false boundaryEdge=null\nplace 44 on 2 at-line guide 4 between t6 t8 +u +n\n# R18 角材 44: onBoundary=false coversEdge=false boundaryEdge=null\nplace 45 on 2 at-line guide 5 between t6 t8 +u +n\n# R18 角材 45: onBoundary=false coversEdge=false boundaryEdge=null\nplace 46 on 2 at-line guide 6 between t6 t8 +u +n\n# R18 角材 46: onBoundary=false coversEdge=false boundaryEdge=null\nplace 47 on 2 at-line guide 7 between t6 t8 +u +n\n# R18 角材 47: onBoundary=false coversEdge=false boundaryEdge=null\nplace 48 on 2 at-line guide 8 between t6 t8 +u +n\n# R18 角材 48: onBoundary=false coversEdge=false boundaryEdge=null\nplace 49 on 2 at-line grid 1 v -1 between t7 t3 +u +n\n# R18 角材 49: onBoundary=false coversEdge=false boundaryEdge=null\nplace 50 on 2 at-line grid 1 v -1 between t3 t4 +u +n\n# R18 角材 50: onBoundary=false coversEdge=false boundaryEdge=null\nplace 51 on 2 at-line grid 1 v -1 between t4 t5 +u +n\n# R18 角材 51: onBoundary=false coversEdge=false boundaryEdge=null\nplace 52 on 2 at-line grid 1 v -1 between t5 t6 +u +n\n# R18 角材 52: onBoundary=false coversEdge=false boundaryEdge=null\nplace 53 on 2 at-line grid 1 v -1 between t6 t8 +u +n\n# R18 角材 53: onBoundary=false coversEdge=false boundaryEdge=null\ncanvas-pos boundary 1 150 150\ncanvas-pos parameter 1 60 660\ncanvas-pos placement 2 440 60\n",
+ "network": [
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795633707503
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": null,
+   "t": 1795633709943
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": null,
+   "t": 1795633727248
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": null,
+   "t": 1795633737342
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795633769089
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/2",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": null,
+   "t": 1795633771523
+  },
+  {
+   "path": "/framing-template/preview",
+   "cmd": null,
+   "schema": "framing-template-generate/1",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": {
+    "corner": "min-max",
+    "lengthAlong": "v"
+   },
+   "t": 1795633778851
+  },
+  {
+   "path": "/api",
+   "cmd": "framing-template-cancel",
+   "schema": null,
+   "template": null,
+   "layout": null,
+   "t": 1795633783218
+  },
+  {
+   "path": "/framing-template/preview",
+   "cmd": null,
+   "schema": "framing-template-generate/1",
+   "template": {
+    "id": "flat-ceiling",
+    "version": 2,
+    "policyFingerprint": "3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58"
+   },
+   "layout": {
+    "corner": "min-max",
+    "lengthAlong": "v"
+   },
+   "t": 1795633786079
+  },
+  {
+   "path": "/api",
+   "cmd": "framing-template-confirm",
+   "schema": null,
+   "template": null,
+   "layout": null,
+   "t": 1795633790260
+  },
+  {
+   "path": "/framing-template/read",
+   "cmd": null,
+   "schema": "framing-template-read/1",
+   "template": null,
+   "layout": null,
+   "t": 1795633825674
+  }
+ ],
+ "errs": [
+  "DIALOG 建立一份空白新專案，切換為新的專案識別及「未命名專案」。本次切換可一步復原；僅保存在本頁的形狀特徵參數不會恢復。確定繼續嗎？"
+ ],
+ "screens": [
+  {
+   "file": "screens/R03B-corner-min-max-01-rect-sized.jpg",
+   "sha256": "06d2b33b5444f4712dc14b2817184563a0f6dda6c9639742fa6b179576c0b387"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-02-placed.jpg",
+   "sha256": "dbbd073b9e589aacd271a8992619ab29e27d8b0ef3d6a90996ef72b855389ece"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-03-framing-fixed.jpg",
+   "sha256": "1c3acddca0ef01ba2604898e9672ec943daf1c6794d4b750f92d08ec7568db2e"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-03-recipe-saved.jpg",
+   "sha256": "777b23012b50723ab4f84cfdb486c03d607656744ce0a516d31950a6c7509e04"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-V-before-1-object-canvas.jpg",
+   "sha256": "3bdbc866309fdc1cdbcb37074fb67f49b6e456fe102405b7aaed4db84f58a438"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-V-before-2-face1.jpg",
+   "sha256": "20bd9be25f46243e06f537f53910981de337065d20ca5a3b4bc396dbb924cd32"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-V-before-3-three-view.jpg",
+   "sha256": "9a9ec59cb715b07b2403c6628591784d04b2e0756b204a7c749eadb2b4fb01ec"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-04-preview.jpg",
+   "sha256": "873f07b14f8432992084666211950174bab41abc1aa29e8300f2f2a92557878e"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-05-cancelled.jpg",
+   "sha256": "4530745229adde25ae8150d43e1cb9c682764bd85f2482ab2e1fb09cd90e8f03"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-06-committed.jpg",
+   "sha256": "ce15ed6990ca61fb50964b8c6ae7d86ff0fefd03f4363b05647dde4ba9315af0"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-07-undo.jpg",
+   "sha256": "b0f98eea9b06039f16dfc45bebf6d34b70839d998e79e85067cd60c430b9d817"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-V-after-undo-1-object-canvas.jpg",
+   "sha256": "34d1656d9480a73b6b5d47aa30b8e739f0fc991aeae7655d519da6ed34ba555e"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-V-after-undo-2-face1.jpg",
+   "sha256": "40aef16f5469a742c64d8c850a9ebe08e57c4a569446879459c649d5d70f4583"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-V-after-undo-3-three-view.jpg",
+   "sha256": "16ddede3e54842a9f0fe2309c0533f77c50b504f18c9f5e01d26bdd63df73e0a"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-08-redo.jpg",
+   "sha256": "7085bba0bc8247cd77959f876b3ab83d245eb63a41f574c7914044584ae4fa70"
+  },
+  {
+   "file": "screens/R03B-corner-min-max-09-redo-three-view.jpg",
+   "sha256": "e1968c73c93a875c02b54578efe79a46c08b9f743d73412536345c2540cf360b"
+  }
+ ],
+ "passed": "18/18"
+}
