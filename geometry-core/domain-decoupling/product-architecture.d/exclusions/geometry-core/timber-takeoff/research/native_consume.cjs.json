@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/native_consume.cjs",
+    "reason": "U476 isolated executable research reference and acceptance tooling: native_consume.cjs. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "91e70af5b1db41cf8f7044bf0a8bc8b10e12a9b0c1184fe6c5fdbd2b751805bc"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

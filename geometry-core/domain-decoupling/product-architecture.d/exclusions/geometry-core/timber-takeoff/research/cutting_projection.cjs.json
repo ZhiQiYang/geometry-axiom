@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/cutting_projection.cjs",
+    "reason": "U476 isolated executable research reference and acceptance tooling: cutting_projection.cjs. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "1d4a99460f981e2fbfc6f800be81bc60415d34f86ea9ac6c6b3f4d56ce828c96"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

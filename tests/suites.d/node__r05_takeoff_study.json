@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r05_takeoff_study.cjs"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r05_takeoff_study.cjs",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r05_takeoff_study.cjs"
+  ],
+  "name": "node:r05_takeoff_study",
+  "order": "new/node__r05_takeoff_study",
+  "schema": "geometry-native-suite/1"
+}
