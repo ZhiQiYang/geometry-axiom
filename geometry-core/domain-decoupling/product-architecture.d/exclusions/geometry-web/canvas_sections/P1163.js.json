@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/canvas_sections/P1163.js",
+    "reason": "R11 T1 P1163 strict independent canvas acceptance module; real CDP input and native read-only comparison, dispatched only by canvas_registry.js, never a product runtime dependency.",
+    "sha256": "9c5f9b70a2179329767460acb84163c3d1387d2c5efb2d0b68f804130960887f"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

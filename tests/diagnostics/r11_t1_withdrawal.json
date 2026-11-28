@@ -1,0 +1,138 @@
+[
+  {
+    "name": "M_T476_FACE_KEY_ENTRY",
+    "case": "T476_FACE_KEYBOARD_SELECTION",
+    "before": "    openKeyboard();\n  },true);",
+    "after": "    /* withdrawn: no keyboard entry */\n  },true);",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_SELECTION_REPICK",
+    "case": "T476_FACE_KEYBOARD_SELECTION",
+    "before": "  function openKeyboard() {\n",
+    "after": "  function openKeyboard() {\n    feClickSelectBlank({x:0,y:0});\n",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_INVENTED_ANCHOR",
+    "case": "T476_FACE_NO_INVENTED_ANCHOR",
+    "before": "(fe.sel?.kind==='point' ? {x:fe.sel.x,y:fe.sel.y} : null)",
+    "after": "feSnap(fePoint({clientX:x,clientY:y}))",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_NATIVE_REENTRY",
+    "case": "T476_FACE_NATIVE_EVENT_ONCE",
+    "before": "if(event.button===2 && !keyboardEntry)return;",
+    "after": "if(event.button===2)return;",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_IME_NATIVE",
+    "case": "T476_FACE_IME_NATIVE_FALLBACK",
+    "before": "    if(composing || event.isComposing || event.keyCode===229){\n      event.preventDefault();event.stopImmediatePropagation();return;\n    }\n",
+    "after": "    /* withdrawn: composing native event falls through */\n",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_BLOCKED_KEY_FALLBACK",
+    "case": "T476_FACE_SUPPRESSED_KEY_NATIVE_FALLBACK",
+    "before": "    if(composing || event.isComposing || event.keyCode===229 || event.repeat)return;",
+    "after": "    if(composing || event.isComposing || event.keyCode===229 || event.repeat){keyboardEntry=null;return;}",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_NATIVE_GENERATION",
+    "case": "T476_FACE_SAME_ID_NEW_GENERATION",
+    "before": "      s.nativeRevision === ReferenceWorkspace.getEvidenceState().nativeRevision &&\n",
+    "after": "      /* withdrawn: same numeric ID masks a new native generation */\n",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_HISTORY_STAMP",
+    "case": "T476_FACE_STALE_CONTEXT_HISTORY",
+    "before": "      s.undo === h.undo.at(-1) && s.redo === h.redo.at(-1) && s.group === h.group &&\n",
+    "after": "      /* withdrawn: ordinary history push does not change frame */\n",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_FACE_BLUR",
+    "case": "T476_FACE_BLUR_RETIRE",
+    "before": "window.addEventListener('blur',()=>{keyboardEntry=null;composing=false;shell.hide();});",
+    "after": "window.addEventListener('blur',()=>{keyboardEntry=null;composing=false;});",
+    "path": "geometry-web/face-context-menu.js",
+    "suite": "tests/test_r11_face_keyboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_STALE_CLIPBOARD",
+    "case": "T476_SPACE_STALE_CLIPBOARD_REASON",
+    "before": "if (!current(clipboard.pin))",
+    "after": "if (false)",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_SOURCE_PIN",
+    "case": "T476_SPACE_PASTE_OWNS_SOURCE",
+    "before": "startPlacement(clipboard.kind,clipboard.pin,clipboard.definition);",
+    "after": "startPlacement(clipboard.kind,pin,clipboard.definition);",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_FRESH_POSITION",
+    "case": "T476_SPACE_PASTE_NEW_POSITION_CANCEL",
+    "before": "if (kind === 'column') { definition.x = null; definition.y = null; }",
+    "after": "if (kind === 'column') { /* withdrawn: old position reused */ }",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_COPY_WRITES",
+    "case": "T476_SPACE_COPY_ZERO_WORLD",
+    "before": "clipboard = {kind:target.kind,definition,pin:stamp(target)};",
+    "after": "clipboard = {kind:target.kind,definition,pin:stamp(target)}; api(\"newid\");",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_STALE_REVIVAL",
+    "case": "T476_SPACE_UNDO_CANNOT_REVIVE_CLIPBOARD",
+    "before": "if (clipboard && !current(clipboard.pin)) clipboard.stale = true;",
+    "after": "/* withdrawn: observed stale recipe may revive after Undo */",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_IME_229",
+    "case": "T476_SPACE_IME_229",
+    "before": "if (event.isComposing || event.keyCode === 229 || composing || event.repeat) return;",
+    "after": "if (event.isComposing || composing || event.repeat) return;",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_IME_CONTEXTMENU",
+    "case": "T476_SPACE_IME_CONTEXTMENU_ALL_BUTTONS",
+    "before": "if (composing || event.isComposing || event.keyCode === 229) return;",
+    "after": "if (event.button !== 2 && (composing || event.isComposing || event.keyCode === 229)) return;",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  },
+  {
+    "name": "M_T476_SPACE_REPEAT_FALLBACK",
+    "case": "T476_SPACE_REPEAT_NATIVE_FALLBACK",
+    "before": "if (keyboardEntry) return;",
+    "after": "if (keyboardEntry && event.button !== 2) return;",
+    "path": "geometry-web/space-context-menu.js",
+    "suite": "tests/test_r11_space_clipboard.js"
+  }
+]
