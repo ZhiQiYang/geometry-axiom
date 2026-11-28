@@ -5,15 +5,20 @@ module.exports=s=>{
   async function planClick(x,y){const p=await planPoint(x,y);
     pre('PLAN_LOCATION_REACHABLE',await read(`$('spacePlanSvg').contains(document.elementFromPoint(${p.x},${p.y}))`),{x,y,point:p});
     await s.click(p.x,p.y);await settle();}
+  // Navigate the new grouping without adding a successful assertion to P1161.
+  // The existing ctl(duplicate) still checks the actual command's reachability.
+  async function openReuse(){const p=await read(`(()=>{const e=$('spaceCtxMenu').querySelector('[data-sp-act="reuse"]');
+    if(!e)throw Error('R11_REUSE_ENTRY_MISSING');const r=e.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};})()`);
+    await s.click(p.x,p.y);await settle();}
   const unique=items=>[...new Set(items)].sort();
   return [
     {id:'W01',run:async()=>{
       await fixture();const before=await checkpoint();await rightPlan(650,700);
-      check('SPACE_COLUMN_ACTIONS',same(unique(await actions('spaceCtxMenu','data-sp-act')),['delete','duplicate','size']));
+      check('SPACE_COLUMN_ACTIONS',same(unique(await actions('spaceCtxMenu','data-sp-act')),['delete','reuse','size']));
       check('SPACE_COLUMN_TYPED_TARGET',await read(`$('spaceCtxMenu').textContent.includes('71')`));
       await unchanged(before);await snap('space-column-desktop');await key('Escape','Escape',27);
       await rightPlan(3500,800);
-      check('SPACE_BLANK_ACTIONS',same(unique(await actions('spaceCtxMenu','data-sp-act')),['beam','column','view']));
+      check('SPACE_BLANK_ACTIONS',same(unique(await actions('spaceCtxMenu','data-sp-act')),['beam','column','reuse','view']));
       await unchanged(before);
     }},
     {id:'W02',run:async()=>{
@@ -48,9 +53,9 @@ module.exports=s=>{
       await ctl('#faceUndoButton');check('DELETE_UNDO_RESTORES_BEAM',await dump()===after);
     }},
     {id:'W04',run:async()=>{
-      await fixture();const before=await checkpoint();await rightPlan(650,700);await ctl(sp('duplicate'));
+      await fixture();const before=await checkpoint();await rightPlan(650,700);await openReuse();await ctl(sp('duplicate'));
       await unchanged(before);await key('Escape','Escape',27);await unchanged(before);
-      await rightPlan(650,700);await ctl(sp('duplicate'));
+      await rightPlan(650,700);await openReuse();await ctl(sp('duplicate'));
       const a=await planPoint(1000,2000),b=await planPoint(1100,2100);
       await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:2});
       try{
@@ -59,7 +64,7 @@ module.exports=s=>{
         await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
       }finally{await send('Emulation.setTouchEmulationEnabled',{enabled:false});}
       await settle();check('SECOND_POINTER_CANCELS_DUPLICATE_DRAFT',await read(`$('rcDialog').hidden`));await unchanged(before);
-      await rightPlan(650,700);await ctl(sp('duplicate'));await planClick(1000,2000);
+      await rightPlan(650,700);await openReuse();await ctl(sp('duplicate'));await planClick(1000,2000);
       await wait('DUPLICATE_POSITION_FORM',`!$('rcDialog').hidden&&$('rcX').value==='1000'&&$('rcY').value==='2000'`);
       check('DUPLICATE_PRESERVES_DIRECT_DEFINITION',await read(`$('rcW').value==='300'&&$('rcD').value==='400'&&$('rcZ0').value==='0'&&$('rcZ1').value==='2500'&&$('rcSpace').value==='9'`));
       await unchanged(before);const commit=await checkpoint();await ctl('#rcSubmit');await settle();

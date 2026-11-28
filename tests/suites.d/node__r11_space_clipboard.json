@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r11_space_clipboard.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r11_space_clipboard.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r11_space_clipboard.js"
+  ],
+  "name": "node:r11_space_clipboard",
+  "order": "new/node__r11_space_clipboard",
+  "schema": "geometry-native-suite/1"
+}

@@ -16,6 +16,9 @@
   planPane.setAttribute('tabindex', '0'); planPane.setAttribute('aria-label', '空間平面圖舞台');
   let connectionGeneration = 0, lastSession = connection.session, lastPhase = connection.phase;
   let formGeneration = 0, formOwner = null, pending = null, transferring = false;
+  // A short-lived same-space recipe, never a saved project object or OS clipboard.
+  // The source's exact stamp survives a later right-click on the blank plan.
+  let clipboard = null;
   const name = kind => kind === 'column' ? '柱' : '樑';
   const object = target => (target.kind === 'column' ? oc.columns : target.kind === 'beam' ? oc.beams : [])
     .find(o => o.id === target.id && o.space === oc.focus?.id);
@@ -57,6 +60,12 @@
     try { rcDefinition(target.kind, object(target)); return ''; }
     catch (error) { return error.message; }
   }
+  function clipboardReason() {
+    if (!clipboard) return '請先複製同一空間的柱或樑';
+    if (!current(clipboard.pin)) clipboard.stale = true;
+    if (clipboard.stale) return '複製時的工作區或來源已改變，請重新複製';
+    return directReason(clipboard.pin.target);
+  }
   /* Reuse mutate's transaction lease. Own revision changes inside this group
      are allowed; navigation, context, form replacement and raw-input changes
      retire the operation before confirmation or force the group to roll back. */
@@ -85,15 +94,21 @@
   }
   const item = (act, label, iconName, reason = '', extra = {}) => ({act,label,iconName,reason,...extra});
   const view = (act, label, iconName, extra = {}) => item(act,label,iconName,'',{level:'view',...extra});
+  function reuseItems(target, blocked) {
+    const reason = blocked || (target.kind ? directReason(target) : '請先對單一柱或樑開啟選單');
+    return [item('copy','複製定義',null,reason),item('paste','貼上…',null,blocked || clipboardReason()),
+      item('duplicate','重複',null,reason)];
+  }
   function model(target) {
     const blocked = writable();
+    const reuse = item('reuse','重用柱樑',null,'',{sub:true});
     if (target.kind) {
       const o = object(target), reason = blocked || directReason(target);
       const size = item('size','改尺寸…',target.kind,reason);
       const del = item('delete','刪除','trash',blocked,{danger:true});
       return {title:`${name(target.kind)} ${target.id}`, meta:o ? `${o.box[3]-o.box[0]} × ${o.box[4]-o.box[1]} · 空間 ${o.space}` : '物件已不存在',
         chip:'', typeIcon:target.kind, tiles:[size,del],
-        groups:[[size],[item('duplicate','重複',null,reason)],[del]], submenus:{}};
+        groups:[[size],[reuse],[del]], submenus:{reuse:reuseItems(target,blocked)}};
     }
     const anchor = target.invocation === 'pointer' && Number.isFinite(target.clientX) && Number.isFinite(target.clientY);
     const unavailable = blocked || ($('spacePlaceColumn').disabled ? $('spacePlaceColumn').title : '') ||
@@ -101,8 +116,9 @@
     const col = item('column','在此放柱','column',unavailable), beam = item('beam','從此拖樑','beam',unavailable);
     return {title:'空間平面圖', meta:anchor ? '右鍵位置 · 執行時依目前視圖定位' : '鍵盤選單 · 尚未指定位置',
       chip:'', typeIcon:'space', tiles:[col,beam],
-      groups:[[col,beam],[view('view','檢視','fit',{sub:true})]],
-      submenus:{view:[view('fit','顯示全部','fit'),item('projection','切至三視圖','layers','',{level:'nav'})]}};
+      groups:[[col,beam],[reuse],[view('view','檢視','fit',{sub:true})]],
+      submenus:{reuse:reuseItems(target,blocked),
+        view:[view('fit','顯示全部','fit'),item('projection','切至三視圖','layers','',{level:'nav'})]}};
   }
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(n, Math.max(lo, hi)));
   function positionForm(info) {
@@ -223,6 +239,20 @@
   }
   async function execute(action, node, state) {
     const target = state.target, pin = state.stamp;
+    if (action.act === 'copy' || action.act === 'paste') {
+      if (!current(pin)) throw new Error('選單的工作區已改變，請重新開啟');
+      const blocked = writable(); if (blocked) throw new Error(blocked);
+      if (action.act === 'copy') {
+        if (!target.kind) throw new Error('請先對單一柱或樑開啟選單');
+        // Read the native definition, retaining the existing source/owner/group refusal.
+        const definition = rcDefinition(target.kind,object(target));
+        clipboard = {kind:target.kind,definition,pin:stamp(target)};
+        shell.hide(); toast(`${name(target.kind)}已複製；貼上時請指定新位置`); return;
+      }
+      const reason = clipboardReason(); if (reason) throw new Error(reason);
+      // Keep the source pin through form confirmation, not only the blank-menu pin.
+      startPlacement(clipboard.kind,clipboard.pin,clipboard.definition); return;
+    }
     if (action.act === 'size') {
       const definition = rcDefinition(target.kind,object(target));
       pinForm(target.kind,definition,pin,{mode:'size',title:target.kind === 'column' ? '柱尺寸' : '樑截面',
@@ -264,7 +294,9 @@
     onEscape() { if (formOwner) { cancelPlacement(); return true; } return false; },
     restoreFocus:()=>(svg.hasAttribute('hidden')?planPane:svg).focus({preventScroll:true}),onError:error=>toast(error.message)});
   const textTarget = node => !!node?.isContentEditable || !!node?.closest?.('input,textarea,select');
-  let keyboardEntry = null;
+  let keyboardEntry = null, composing = false;
+  planPane.addEventListener('compositionstart',()=>{composing=true;keyboardEntry=null;shell.hide();});
+  planPane.addEventListener('compositionend',()=>{composing=false;});
   function entry(event, invocation) {
     connectionChanged();
     if (!inPlan() || textTarget(event.target)) return;
@@ -278,14 +310,18 @@
   vp.addEventListener('contextmenu',event=>{
     if (textTarget(event.target) || !inPlan() || !planPane.contains(event.target)) return;
     event.preventDefault(); event.stopImmediatePropagation(); svg.cancelSpaceGesture?.();
-    if (event.button === 2) keyboardEntry = null;
+    if (composing || event.isComposing || event.keyCode === 229) return;
     if (keyboardEntry) return;
     entry(event,!event.clientX&&!event.clientY&&event.button!==2?'keyboard':'pointer');
   });
+  // Native keyboard contextmenu may carry button=2 and nonzero coordinates.
+  // Only an actual right-pointer sequence may retire the keyboard entry early.
+  vp.addEventListener('pointerdown',event=>{if(event.button===2)keyboardEntry=null;},true);
   planPane.addEventListener('keydown',event=>{
-    if (event.isComposing || event.repeat || textTarget(event.target)) return;
+    if (!inPlan() || textTarget(event.target)) return;
     if (event.key === 'ContextMenu' || (event.key === 'F10' && event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey)) {
       keyboardEntry = {key:event.key};
+      if (event.isComposing || event.keyCode === 229 || composing || event.repeat) return;
       event.preventDefault(); event.stopImmediatePropagation(); entry(event,'keyboard');
     }
   });
@@ -306,6 +342,8 @@
   },true);
   function sync() {
     connectionChanged();
+    // Once observed, a stale source stays retired even if Undo later restores its bytes.
+    if (clipboard && !current(clipboard.pin)) clipboard.stale = true;
     if (rcSubmitting && oc.busy && formOwner) return;
     shell.sync();
     if (formOwner && !current(formOwner.pin)) cancelPlacement();
@@ -315,7 +353,7 @@
   new MutationObserver(sync).observe($('spaceWorkspaceLayout'),{attributes:true,attributeFilter:['hidden']});
   for (const tab of document.querySelectorAll('#spaceStageTabs [data-ss-tab]'))
     tab.addEventListener('click',()=>{shell.hide();cancelPlacement();});
-  window.addEventListener('blur',()=>{keyboardEntry=null;shell.hide();cancelPlacement();});
+  window.addEventListener('blur',()=>{keyboardEntry=null;composing=false;shell.hide();cancelPlacement();});
   window.addEventListener('resize',()=>{if(formOwner)positionForm(shell.isOpen?{left:menu.offsetLeft,top:menu.offsetTop,mw:menu.offsetWidth}:null);});
   window.SpaceContextMenu = {show:(x,y,target={})=>shell.open(x,y,target),hide:shell.hide,sync,stamp,current,
     connectionChanged,startTool,pointerDown,pointerMove,pointerUp,cancelPlacement,get open(){return shell.isOpen;}};
