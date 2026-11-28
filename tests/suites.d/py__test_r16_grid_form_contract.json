@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_r16_grid_form_contract.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_r16_grid_form_contract.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r16_grid_form_contract.py"
+  ],
+  "name": "py:test_r16_grid_form_contract",
+  "order": "new/py__test_r16_grid_form_contract",
+  "schema": "geometry-native-suite/1"
+}

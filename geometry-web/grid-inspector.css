@@ -19,7 +19,7 @@
 .gi-section+.gi-section{border-left:1px solid #e8edf4}
 .gi-inspector h3{font-size:13px;line-height:1.4;font-weight:500;margin:0 0 7px;color:#58687e}
 .gi-inspector h3 span{float:right;color:#61738a;font-size:11px}
-.gi-inspector label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:13px;line-height:1.3;color:#69788d}
+.gi-inspector label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:13px;line-height:1.3;color:var(--form-label-color)}
 .gi-inspector input,.gi-inspector select{width:100%;min-width:0;min-height:34px;padding:6px 9px;border:1px solid #dce3ec;border-radius:5px;background:#fff;color:#27364b;font:inherit;font-size:14px;outline:none}
 .gi-inspector input:focus,.gi-inspector select:focus{border-color:var(--accent,#3d57ff);box-shadow:0 0 0 3px #ecefff}
 .gi-inspector input[disabled],.gi-inspector select[disabled]{background:#f4f7fb;color:#8290a2}
@@ -62,3 +62,6 @@
 .gi-busy .gi-vertex-point,.gi-busy .gi-anchor-point{pointer-events:none;opacity:.65}
 @media(max-width:1050px){.gi-section{padding:0 14px}.gi-header{padding-left:14px;padding-right:14px}.gi-binding-content{grid-template-columns:minmax(150px,1fr) minmax(260px,1.5fr) minmax(145px,.85fr)}.gi-alignment{grid-template-columns:minmax(125px,1fr) 82px;gap:7px}.gi-source-content{grid-template-columns:minmax(150px,1fr) minmax(250px,1.4fr) minmax(140px,.8fr)}.gi-spacing{gap:10px}}
 @media(max-width:760px){.gi-header{padding:12px 14px;gap:8px;flex-wrap:wrap}.gi-heading h2{font-size:16px}.gi-actions{gap:6px}.gi-actions .btn{min-height:36px}.gi-content{display:flex;flex-wrap:wrap;gap:14px;padding:14px 0}.gi-section{width:100%;padding:0 14px}.gi-section+.gi-section{border-left:0;border-top:1px solid #edf0f5;padding-top:14px}.gi-references{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gi-references label+label{margin-top:0}.gi-references .gi-help{grid-column:1/-1}.gi-alignment{grid-template-columns:minmax(150px,1fr) 110px}.gi-inspector input,.gi-inspector select,.gi-inspector .primary-button{min-height:40px;font-size:14px}#giBoundaryView{height:110px}#giAnchorView{width:100px;height:100px}.gi-cell-fields{max-width:none}.gi-cell .primary-button{margin-top:10px}.gi-footer{padding:0 14px 12px}}
+
+/* R16: share the existing accent without changing desktop density. */
+.gi-inspector input:focus-visible,.gi-inspector select:focus-visible,.gi-inspector button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}

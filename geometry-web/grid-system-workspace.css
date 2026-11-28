@@ -244,3 +244,7 @@
 .ig-settings .ig-card-locked input { background: var(--panel-muted, #f2f4f7); }
 .ig-settings #igCardUnbind summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-size: 12px; }
 .ig-settings #igCardUnbind .ig-rule-actions { padding-bottom: 6px; }
+
+/* R16: keyboard focus; keep existing field sizes and dark labels. */
+.ig-settings input:focus-visible, .ig-settings select:focus-visible, .ig-settings button:focus-visible, .ig-footer-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ig-pf-box:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }

@@ -947,6 +947,14 @@
   }
   function cameraPoint(s, event) { const view=$('igGridView'),k=1/fitCamera(s,box(view)),p=gridViewPoint(event),c=s.camera;return [c[0]+(p.x-RL)*k, c[1]+(p.y-RT)*k]; }
   function inPlot(event) { const p=gridViewPoint(event);return p.x>=RL&&p.y>=RT; }
+  function syncFooterLane() {
+    const layout=dialog.querySelector('.ig-layout'),footer=dialog.querySelector('.ig-footer');
+    // A classic scrollbar occupies part of the mobile right-hand lane.
+    // Measure it; preserve the lane's left edge and reserve the real footer height.
+    const gutter=Math.max(0,layout.offsetWidth-layout.clientWidth);
+    dialog.style.setProperty('--r16-grid-scrollbar',gutter+'px');
+    dialog.style.setProperty('--r123h-grid-footer-height',footer.getBoundingClientRect().height+'px');
+  }
   function bindCamera(s) {
     const view=$('igGridView');let drag=null;
     view.addEventListener('pointerdown',e=>{if(!canEdit(s)||e.button!==0&&e.button!==1)return;fitCamera(s,box(view));s.hover=null;drag={x:e.clientX,y:e.clientY,point:gridViewPoint(e),c:s.camera.slice(),scale:(s.camera[2]-s.camera[0])/box(view).pw,moved:false,id:e.pointerId};view.setPointerCapture(e.pointerId);});
@@ -961,10 +969,10 @@
       resizeWatch=new ResizeObserver(()=>{
         // The mobile primary remains first-screen in the right-hand lane.
         // Reserve its actual height for scrolling; never cover the canvas.
-        dialog.style.setProperty('--r123h-grid-footer-height',footer.getBoundingClientRect().height+'px');
+        syncFooterLane();
         drawGrid(s);
       });
-      resizeWatch.observe(view);resizeWatch.observe(footer);
+      resizeWatch.observe(view);resizeWatch.observe(footer);resizeWatch.observe(dialog.querySelector('.ig-layout'));
     }
     view.addEventListener('wheel',e=>{e.preventDefault();zoom(s,e.deltaY<0?.8:1.25,cameraPoint(s,e));},{passive:false});
   }

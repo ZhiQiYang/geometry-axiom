@@ -309,6 +309,8 @@ P73 `uiux_review_test.js` 透過 `cdp_test.js` 驗證本節，也可用 `GEOMETR
 
 `grid-inspector.js` 擴充既有 `InfiniteGridWorkspace.renderInspector/disposeInspector`，不另存一份來源或配置。來源／邊界／專案已變更、選取被切換或較舊的讀取回應返回時，不能提交舊草稿。來源與配置卡片的畫布位置仍只是顯示資料；移動卡片不改幾何對齊。
 
+R16 v2 的 label／keyboard focus、實測捲軸頁尾與保留原密度契約見 [GRID-FORM-CONSISTENCY.md](GRID-FORM-CONSISTENCY.md)。新 P4541 核 390／680／1400 px，區分 navigation 五點可達與表單完整裁切；唯讀歷史零步，真編輯／捨棄草稿各一個 local step，World 不變。既有 P72／P1231、所有歷史段計數與 pin 不變；本輪 Chromium 待實跑。
+
 回歸入口為 `cdp_test.js` P72 的 `composition_canvas_test.js`，可用 `GEOMETRY_COMPOSITION_ONLY=1` 單跑，也納入完整 CDP。它以實際指標／鍵盤操作檢查入口、分組、連線、就地編輯與窄螢幕；此處列測試契約，通過狀態以實際執行紀錄為準。
 
 ## GEO-208 角材結構建模（目前合約）
