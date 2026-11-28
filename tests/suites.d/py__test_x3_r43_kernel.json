@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_x3_r43_kernel.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_x3_r43_kernel.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_x3_r43_kernel.py"
+  ],
+  "name": "py:test_x3_r43_kernel",
+  "order": "new/py__test_x3_r43_kernel",
+  "schema": "geometry-native-suite/1"
+}
