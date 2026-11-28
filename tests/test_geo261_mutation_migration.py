@@ -207,6 +207,10 @@ class RecursiveMutationInjection(unittest.TestCase):
 
 class LiveMutationAnchorMigration(unittest.TestCase):
     def test_all_fifty_definitions_keep_live_or_retired_targets(self):
+        # Preserve the exact historical migration census. New fragment union,
+        # all 152 original bytes/order and appended judges are independently
+        # pinned by test_mutation_fragments, without an ID-prefix exemption.
+        legacy = mutate.LEGACY_MUTANTS
         groups = {
             "geometry-core/kernel/geometry.c": ["M%02d" % n for n in range(1, 13)] + ["M39", "M40", "M59", "M60"],
             "geometry-core/kernel/grid.c": ["M31", "M32", "M53", "M54"],
@@ -286,7 +290,7 @@ class LiveMutationAnchorMigration(unittest.TestCase):
             "PF6_OWNER_PREVIEW_COUNTER_CAPACITY": "geometry-core/transactions.inc",
             "PF6_OWNER_LOAD_CAPACITY_RETAINS_CANDIDATE": "geometry-web/scene-import-bridge.inc",
         }
-        self.assertEqual(list(pf6), [m["id"] for m in mutate.MUTANTS if m["id"].startswith("PF6_")],
+        self.assertEqual(list(pf6), [m["id"] for m in legacy if m["id"].startswith("PF6_")],
                          "PF6_NATIVE_IDS_IN_DECLARATION_ORDER")
         added.update(pf6)
         # #360 / D59-D61, I70-I72: the original 123 owners remain exact.
@@ -324,12 +328,12 @@ class LiveMutationAnchorMigration(unittest.TestCase):
                  "test_undo_of_import_does_not_reuse_its_serials_on_a_new_branch")),
         }
         self.assertEqual(15, len(identity), "R360_NATIVE_IDENTITY_EXACT_INVENTORY")
-        self.assertEqual(len(mutate.MUTANTS), len({m["id"] for m in mutate.MUTANTS}),
+        self.assertEqual(len(legacy), len({m["id"] for m in legacy}),
                          "R360_NATIVE_NO_DUPLICATE_IDS")
         self.assertEqual({**expected, **added},
-                         {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS if m["id"] not in identity},
+                         {m["id"]: mutate.mutant_file(m) for m in legacy if m["id"] not in identity},
                          "R360_ORIGINAL_123_OWNERS_UNCHANGED")
-        additions = {m["id"]: m for m in mutate.MUTANTS if m["id"] in identity}
+        additions = {m["id"]: m for m in legacy if m["id"] in identity}
         self.assertEqual(set(identity), set(additions), "R360_NATIVE_IDENTITY_NO_MISSING_IDS")
         for mid, (owner, judges) in identity.items():
             row = additions[mid]
@@ -338,19 +342,19 @@ class LiveMutationAnchorMigration(unittest.TestCase):
             self.assertEqual(judges, tuple(row.get("tests", ())), mid + " exact behavioral judges")
             self.assertFalse(row.get("retired") or row.get("equivalent"), mid + " must execute, not be exempted")
         self.assertEqual({**expected, **added, **{mid: owner for mid, (owner, _) in identity.items()}},
-                         {m["id"]: mutate.mutant_file(m) for m in mutate.MUTANTS},
+                         {m["id"]: mutate.mutant_file(m) for m in legacy},
                          "R360_NATIVE_COMPLETE_UNION")
         # The ten P-135/P-141 preview-only guards and the eight GEO-262 P-142
         # guards (M78-M85) run on the actual bridge.
         self.assertEqual({"M%02d" % n for n in [*range(61, 71), *range(78, 86)]} | set(stagger) | set(reading_a) | set(identity) | set(pf6),
-                         {m["id"] for m in mutate.MUTANTS if m.get("binary") == "bridge"},
+                         {m["id"] for m in legacy if m.get("binary") == "bridge"},
                          "NATIVE_BRIDGE_IDS_EXACT")
-        self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in mutate.MUTANTS if m.get("retired")})
-        self.assertEqual({"M09", "M23", "M36", "M56", "M110"}, {m["id"] for m in mutate.MUTANTS if m.get("equivalent")})
+        self.assertEqual({"M35", "M51", "M55"}, {m["id"] for m in legacy if m.get("retired")})
+        self.assertEqual({"M09", "M23", "M36", "M56", "M110"}, {m["id"] for m in legacy if m.get("equivalent")})
         src = mutate.Sources(mutate.ROOT)
         snapshot = (dict(src.texts), dict(src.hashes), src.closure)
         with mock.patch.object(mutate, "run_cmd", side_effect=AssertionError("native commands forbidden")):
-            for m in mutate.MUTANTS:
+            for m in legacy:
                 with self.subTest(mid=m["id"]):
                     kind, _ = mutate.definition_kind(m, src)
                     if m.get("retired"):

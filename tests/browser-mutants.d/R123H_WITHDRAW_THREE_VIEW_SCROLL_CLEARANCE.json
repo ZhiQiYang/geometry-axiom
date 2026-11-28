@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_THREE_VIEW_SCROLL_CLEARANCE",
+  "case": "P1231",
+  "assertions": [
+    "R123H_CONTROLS"
+  ],
+  "meaning": "Restore the old three-view toolbar row that also has to contain its horizontal scrollbar.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_THREE_VIEW_SCROLL_CLEARANCE_BEGIN: 44px buttons plus the thin\n * horizontal scrollbar need 52px inside the same adopted 56px header.\n * Narrow headers already use scrollbar-width:none and retain two 44px rows.\n */\n@media (min-width: 561px) {\n  body.v3-mode .topbar { grid-template-rows: 52px; padding-block: 2px; }\n  body.v3-mode .topbar > #viewToolbar { height: 52px; min-height: 52px; }\n}\n/* R123H_THREE_VIEW_SCROLL_CLEARANCE_END */",
+      "after": "/* R123H_WITHDRAW_THREE_VIEW_SCROLL_CLEARANCE: old 44px clipped row applies. */"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18583,
+  "afterSha256": "b5edba411ab8005f2f16244ef32dda1b87215595b09bd03fc0427eba53e821a2"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "PF6_O_RECEIPT_FINAL_HASH",
+  "desc": "確認回執的 definition_sha256 必須等於實際提交後 canonical dump 的獨立 SHA-256，不能回報提交前雜湊。",
+  "binary": "bridge",
+  "file": "geometry-web/panel_fill_builder_bridge.inc",
+  "old": "if(eng_definition_hash(&g_world,hash))js_string(hash);else fputs(\"null\",stdout);",
+  "new": "if(eng_definition_hash(&candidate->before,hash))js_string(hash);else fputs(\"null\",stdout);",
+  "tests": [
+    "tests.test_panel_fill_builder.PanelFillBuilder.test_PF6_save_and_fresh_process_reopen_ordinary_live_sources"
+  ],
+  "expected_assertion": "PF6_O_RECEIPT_FINAL_HASH",
+  "reason": "確認回執的 definition_sha256 必須等於實際提交後 canonical dump 的獨立 SHA-256，不能回報提交前雜湊。"
+}

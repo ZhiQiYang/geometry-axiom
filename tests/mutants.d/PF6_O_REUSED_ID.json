@@ -1,0 +1,13 @@
+{
+  "id": "PF6_O_REUSED_ID",
+  "desc": "既有零號 host 是合法明示來源；預覽與確認的 reusedDefinitions 必須都回報同一精確 ID。",
+  "binary": "bridge",
+  "file": "geometry-web/panel_fill_builder_bridge.inc",
+  "old": "printf(\"%s{\\\"tempKey\\\":\\\"r45:%s\\\",\\\"kind\\\":\\\"%s\\\",\\\"id\\\":%u}\",first?\"\":\",\",k?\"grid\":\"host\",k?\"grid\":\"placement\",id);first=false;",
+  "new": "printf(\"%s{\\\"tempKey\\\":\\\"r45:%s\\\",\\\"kind\\\":\\\"%s\\\",\\\"id\\\":%u}\",first?\"\":\",\",k?\"grid\":\"host\",k?\"grid\":\"placement\",id+1);first=false;",
+  "tests": [
+    "tests.test_panel_fill_builder.PanelFillBuilder.test_PF6_existing_zero_id_host_is_an_explicit_valid_source"
+  ],
+  "expected_assertion": "PF6_O_REUSED_ID",
+  "reason": "既有零號 host 是合法明示來源；預覽與確認的 reusedDefinitions 必須都回報同一精確 ID。"
+}

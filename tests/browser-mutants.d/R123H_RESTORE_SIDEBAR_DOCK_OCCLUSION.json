@@ -1,0 +1,19 @@
+{
+  "id": "R123H_RESTORE_SIDEBAR_DOCK_OCCLUSION",
+  "case": "P1231",
+  "assertions": [
+    "R123H_ENTRY_CONTROL_REACH"
+  ],
+  "meaning": "Restore the sidebar's painted padding over the dock; the initial 1400px five-point audit must fail before any fit click.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_SIDEBAR_CLEARANCE_BEGIN: padding is still painted by the z=10\n * sidebar over the z=7 dock. A margin reserves the same lane outside its\n * border box; the library's content width and the canvas rectangle stay put.\n */\nbody:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {\n  margin-inline-end: var(--r123h-dock);\n}\n/* R123H_SIDEBAR_CLEARANCE_END */",
+      "after": "/* R123H_SIDEBAR_CLEARANCE_BEGIN: padding is still painted by the z=10\n * sidebar over the z=7 dock. A margin reserves the same lane outside its\n * border box; the library's content width and the canvas rectangle stay put.\n */\nbody:is(.canvas-composition, .v3-mode) #app > .workspace > .sidebar-left {\n  padding-inline-end: var(--r123h-dock);\n}\n/* R123H_SIDEBAR_CLEARANCE_END */"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18948,
+  "afterSha256": "2ecc5a8f4e40711b6d7c9e66de0362eba0d294d72dc57ea53a21b73dfa677365"
+}

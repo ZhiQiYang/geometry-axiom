@@ -1,0 +1,13 @@
+{
+  "id": "R03_MAIN_CONTINUOUS",
+  "desc": "production C generation: a main ends midway instead of reaching the opposite boundary member",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/flat_ceiling.h",
+  "old": "wood_flat_add_ab(p,1,b,a,low,B0+w,high,B1-w,c)",
+  "new": "wood_flat_add_ab(p,1,b,a,low,B0+w,high,(B0+B1)/2,c)",
+  "tests": [
+    "tests.test_r03_mutation_coverage.R03MutationCoverage.test_mark_guides_follow_live_fill_sources_axes_starts_versions_and_cold_replay"
+  ],
+  "expected_assertion": "R03_MAIN_CONTINUOUS",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

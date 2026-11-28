@@ -1,0 +1,13 @@
+{
+  "id": "R03_ONLY_OPPOSITE_WALL_TRIM",
+  "desc": "production C generation: adopt historical last-seam retreat, cutting the penultimate panel",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/flat_ceiling.h",
+  "old": "return wood_flat_fail(p,\"POLICY_RULE_CONFLICT\",\"此起鋪需要退最後板縫，會裁切不在對牆的板；未套用舊 oracle 退縫\");",
+  "new": "distance=(2*D-3*w)/2;",
+  "tests": [
+    "tests.test_framing_template.FramingTemplateNative.test_N08_3700_oracle_retreat_is_not_silently_adopted"
+  ],
+  "expected_assertion": "R03_ONLY_OPPOSITE_WALL_TRIM",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

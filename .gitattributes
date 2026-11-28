@@ -24,6 +24,9 @@ geometry-core/domain-decoupling/product-architecture-scan.json -text diff
 # turn every fragment into CRLF and make run_all.py refuse the whole registry.
 # Authored fragments: normalized text, always LF in the work tree.
 tests/suites.d/** text eol=lf
+tests/mutants.d/** text eol=lf
+tests/node-mutants.d/** text eol=lf
+tests/browser-mutants.d/** text eol=lf
 tests/native-costs.d/** text eol=lf
 tests/registry-layout.json text eol=lf
 tests/registry-evidence/*.json text eol=lf

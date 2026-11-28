@@ -275,3 +275,21 @@ apply 先在完整來源副本覆蓋候選並驗原守門，再核來源未變�
 尚未合併的 PR 各適配一次：保留本 PR 真正新增的測試，把 suite/段落/架構路徑轉成其自己的片段；去掉對退休表和共享投影的機械追加，不能丟產品修改、舊斷言、原 CI 證據。缺新格式來源綁定時只補該 suite/module 真量測。之後不同新增項目可直接合流，合併全集仍跑 CI。
 
 這消除登錄表引起的反覆合流，不保證所有產品 PR 免重測。產品來源、執行器、成本或 assertion 真正變動時仍要更新證據；不可變原件重用沿 #214／#418，不能為省突變時間放寬來源適用範圍。
+
+## O467 / O1 v3 的候選與成本邊界
+
+O1 以原 `native_registry.py --init-suite` 產生三份候選：
+`py:test_mutation_fragments`、`py:test_r03_mutation_coverage`、
+`node:o467_touch_controller`。它們仍是待正式成本的候選，沒有手填可接受計數或
+耗時。本機的 13／1／6 計數與定向撤回原件不能冒充正式成本；正式量測採入後才可
+使用原守門。本片不改 `test_unittest_runner.py`，不為這三個名稱新增歷史預算例外。
+
+既有 `test_panel_fill_builder.py`、`test_panel_fill_grid_ui.js`、`test_framing_template.py`、
+`test_framing_template_session.js`、`test_geo261_mutation_migration.py` 的方法數未變，
+但來源內容有變；仍須依原 source binding／amendment 規則審查與真量測，不能沿用
+不再對應來源的成本。所有既有 expected、golden、byte pin 與時限維持原值。
+
+新增的 `tests/mutants.d/`、`tests/node-mutants.d/`、`tests/browser-mutants.d/`
+是分開的來源定義，不是 suite 成本，也不是突變帳本。作者原件固定 LF；其工具只讀
+來源／輸出本機診斷，不手寫任何衍生證據。原生 ME、Node 定向測試與 Chromium 操作
+必須分別記錄實跑範圍，不能把 source preflight 或受控 VM 當成真瀏覽器綠燈。

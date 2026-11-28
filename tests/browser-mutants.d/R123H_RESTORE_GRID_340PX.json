@@ -1,0 +1,19 @@
+{
+  "id": "R123H_RESTORE_GRID_340PX",
+  "case": "P1231",
+  "assertions": [
+    "R123H_HEIGHT"
+  ],
+  "meaning": "Restore the pre-slice mobile grid drawing height; retain the real flex-item resize stimulus.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height-dialogs.css",
+      "before": "  flex: 1 0 calc(var(--r123h-layout-height, 100vh) - var(--r123h-dialog-header));",
+      "after": "  flex: 0 0 340px;"
+    }
+  ],
+  "beforeBytes": 7743,
+  "beforeSha256": "827a3f4b7e75198e5a3406d7b8b8bd8ecfc0586d1e0b0b4ced3c61ba6178081d",
+  "afterBytes": 7680,
+  "afterSha256": "8bd8f9a5b607d5020b2bc7f7eff807746df2eba6a4bf131dae1e9ac3605c9d44"
+}

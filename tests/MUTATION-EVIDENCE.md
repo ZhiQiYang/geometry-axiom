@@ -122,3 +122,38 @@ python .github/scripts/mutation_evidence.py verify --artifacts <下載目錄> --
 同平台保留原編譯指令／指紋的嚴格檢查；跨平台核對已下載的原執行檔 bytes 及原平台收據，不宣稱在接收平台執行了不相容的二進位。需要證明接收平台的行為時，須在該平台另跑原 runner，產生另一份執行收據。
 
 artifact 保留 30 天。若要重新核對原執行檔而 artifact 已到期，須重新執行 `Mutation evidence`，不可宣稱舊 binary bytes 仍已驗；repo 中原收據則仍依原 `--check` 的完整來源／裁判／工具條件判定是否 fresh。來源、裁判或工具真的改變仍須真重跑。完整工作流程可手動啟動；更動此工作流程、監督腳本、儲存工具或本文的 PR 也會自動產生當前 head 的完整證據。
+
+## O467 / O1 v3：追加定義與分開的證明範圍
+
+本片基底為 `48d5f3887e8cb8d222307db62dbdea287fda8442`。上文的 138、68、55
+是當時版本的歷史數字；本基底原表為 152 筆（core 74、bridge 78），bridge 還原
+基準為 67 個方法。`LEGACY_MUTANTS` 與 `LEGACY_RESTORED` 保留原內容和順序，
+新測試另外釘住原表的完整 canonical SHA-256。新增 16 個 JSON 定義後，聚合集合
+為 168 筆（core 74、bridge 94）；原 67 個方法保留，去重追加 13 個方法，合計 80。
+這修正舊設計的 81：本片實際追加 8 個 R03 與 5 個 PF-6 方法，不能為湊數增加空測試。
+
+`tests/mutants.d/<ID>.json` 是作者編寫的定義，不是執行結果。每片恰有
+`id`、`desc`、`binary`、`file`、`old`、`new`、`tests`、`expected_assertion`、`reason`
+九欄；目前只接受 bridge、非空且不同的 old/new 與明確的方法名。讀取器拒絕重複
+JSON key、未知欄、大小寫碰撞、錯誤檔名、目錄雜物、symlink 與越界目標。片段目錄
+不能缺失，LF 原件與排序後的檔名一併進入工具／裁判閉包。既有來源閉包不縮小。
+原證據讀取器也驗證此新依賴來自指定 checkout，不能匯入另一工作樹的同名模組。
+
+新增 R03 與 PF-6 定義、既有正式 PF-6 原件及仍未覆蓋的邊界見
+`O467-NATIVE-INVENTORY.md`。Node 的 12 片與 browser 的 19 片分別列在
+`O467-NODE-INVENTORY.md`、`O467-BROWSER-INVENTORY.md`，不混入原生 168 的分母。
+Node 每一階段跑完整指定測試檔，逐案事件的名稱與ordinal、summary及exit必須一致，
+無 error／skip／cancel／todo；失敗case集合及真正assertion message首行須逐一等於片段定義。
+name／code／failureType從實際error record取值，stack／expected／actual不能借marker或code；工具錯誤不能算killed。
+Browser 的 16 片 R16 定義沿用既有完整 P1231 driver 與原時限；另外 3 片為獨立
+P1284／P2052 的可重算來源計畫，尚未冒稱已接入 R16 runner 或已經 Chromium 驗證。
+
+`diagnostics/o467_native_withdrawals.py` 是本機定向 0／1／0 重驗，不是正式 ME。
+它以官方建置與分類器在同一來源快照執行裁判；freshness 不得指向另一個未撤回的根。
+每階段保留原始輸出與各自的請求目錄，還原後重新驗證原二進位的官方 sidecar，並
+真的再跑裁判。它不寫 execution.head、seed、ref 或 object，也不替代正式全基準。
+
+這次改了工具、裁判與 RESTORED，舊正式收據仍須照原規則判 stale；新增 ID 在正式
+Mutation evidence 採入前是 unrun。不得手改投影或 seed 把它們填綠。現行 workflow
+的 path filter 未單列 `tests/mutants.d/**`；本次的本文變更會觸發原 workflow，日後
+只改片段時必須明確啟動現有 workflow。本片沒有放寬 filter 或另造正式證據入口。

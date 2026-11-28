@@ -1,0 +1,13 @@
+{
+  "id": "PF6_O_SELECTED_SET_ONLY",
+  "desc": "重算只能使用明示 selected 集合；未選支不得偷渡為縮短次支跨距的支承。",
+  "binary": "bridge",
+  "file": "geometry-app/native/panel_fill_builder.inc",
+  "old": "if(!item->selectable||(!suggestions&&!item->selected))continue; /* PF6_ONLY_EXPLICIT_SELECTED */",
+  "new": "if(!item->selectable)continue; /* PF6_ONLY_EXPLICIT_SELECTED */",
+  "tests": [
+    "tests.test_panel_fill_builder.PanelFillBuilder.test_PF6_subset_rebuilds_longer_legal_span_without_unselected_support"
+  ],
+  "expected_assertion": "PF6_SELECTED_PREFIX_RECOMPUTES_SPAN",
+  "reason": "重算只能使用明示 selected 集合；未選支不得偷渡為縮短次支跨距的支承。"
+}

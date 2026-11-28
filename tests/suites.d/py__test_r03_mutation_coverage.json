@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_r03_mutation_coverage.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_r03_mutation_coverage.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r03_mutation_coverage.py"
+  ],
+  "name": "py:test_r03_mutation_coverage",
+  "order": "new/py__test_r03_mutation_coverage",
+  "schema": "geometry-native-suite/1"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "O467_R16_RESIZE_FREEZES_HEIGHT",
+  "case": "P1231",
+  "assertions": [
+    "R123H_HEIGHT"
+  ],
+  "meaning": "Keep initial layout-height custom property after a real viewport resize.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.js",
+      "before": "window.addEventListener('resize', viewportHeight);",
+      "after": "window.addEventListener('resize', sync);"
+    }
+  ],
+  "beforeBytes": 4228,
+  "beforeSha256": "f010e04425f966a0dfcb9c006a0e60b2759262f90d9f5f9fde03915f897cb181",
+  "afterBytes": 4218,
+  "afterSha256": "2d9c39c560720a73c039ff525a83484350f87b6cb7f1ede6c9b40c7a75af32d3"
+}

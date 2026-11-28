@@ -1,0 +1,13 @@
+{
+  "id": "PF6_O_NUMERIC_EDGE_ORDER",
+  "desc": "邊來源數字鍵排序跨過 9 後仍須按數值；字典序不可變更候選的確定性次序。",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/r45_builder.h",
+  "old": "if(a->edge_key[0]||b->edge_key[0]){\n        size_t count=a->edge_order_count<b->edge_order_count?a->edge_order_count:b->edge_order_count;\n        for(size_t k=0;k<count;++k)if(a->edge_order[k]!=b->edge_order[k])return a->edge_order[k]<b->edge_order[k]?-1:1;\n        return a->edge_order_count<b->edge_order_count?-1:a->edge_order_count>b->edge_order_count;\n    }",
+  "new": "if(a->edge_key[0]||b->edge_key[0])return strcmp(a->edge_key,b->edge_key);",
+  "tests": [
+    "tests.test_panel_fill_builder.PanelFillBuilder.test_PF6_source_edge_order_uses_numeric_keys_past_single_digits"
+  ],
+  "expected_assertion": "PF6_R41_SOURCE_KEY_NUMERIC_ORDER",
+  "reason": "邊來源數字鍵排序跨過 9 後仍須按數值；字典序不可變更候選的確定性次序。"
+}

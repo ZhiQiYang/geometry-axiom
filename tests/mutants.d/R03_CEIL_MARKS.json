@@ -1,0 +1,13 @@
+{
+  "id": "R03_CEIL_MARKS",
+  "desc": "production C generation: floor cell count changes/removes required marks",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/flat_ceiling.h",
+  "old": "int64_t n=(L+v->maximum-1)/v->maximum; /* R03_CEIL_N */",
+  "new": "int64_t n=L/v->maximum; /* withdrawn ceil: floor_n */",
+  "tests": [
+    "tests.test_framing_template.FramingTemplateNative.test_N09_ceil_marks_and_policy_difference"
+  ],
+  "expected_assertion": "R03_CEIL_MARKS",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

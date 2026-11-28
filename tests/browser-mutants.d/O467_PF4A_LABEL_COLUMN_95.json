@@ -1,0 +1,25 @@
+{
+  "id": "O467_PF4A_LABEL_COLUMN_95",
+  "case": "P1284",
+  "assertions": [
+    "PF4A_DISPLAY_390_1400"
+  ],
+  "meaning": "Take nearly all comparison width for labels; inspect the unchanged P1284 readability/hit judges.",
+  "changes": [
+    {
+      "file": "geometry-web/panel-fill-workspace.css",
+      "before": ".pf-readable-table th:first-child{width:40%}",
+      "after": ".pf-readable-table th:first-child{width:95%}"
+    }
+  ],
+  "beforeBytes": 3873,
+  "beforeSha256": "0887de37d0cda28fffeab380a39c5af47d2ff72464d7b95d0b5cc9ac3fe4dc27",
+  "afterBytes": 3873,
+  "afterSha256": "463b369fb491ee8d1d5ade255c832352b0940d02c6d4ef696a77bf74ca092c73",
+  "legacyPlan": {
+    "selector": "GEOMETRY_PANEL_FILL_ONLY=1",
+    "test": "node geometry-web/cdp_test.js",
+    "status": "unrun-real-Chromium-required",
+    "resultContract": "original full section and golden; no generic per-case receipt exists"
+  }
+}

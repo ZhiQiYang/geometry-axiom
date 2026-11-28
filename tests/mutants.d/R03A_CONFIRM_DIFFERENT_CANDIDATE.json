@@ -1,0 +1,13 @@
+{
+  "id": "R03A_CONFIRM_DIFFERENT_CANDIDATE",
+  "desc": "Publish an unpreviewed ordinary definition during confirm; the preview/committed canonical fingerprints must differ.",
+  "binary": "bridge",
+  "file": "geometry-web/framing_template_bridge.inc",
+  "old": "identity_commit_serials();++g_definition_revision;g_preview.ready=false;g_framing_token=0;app_world_candidate_clear_stagger(g_preview.transaction);",
+  "new": "identity_commit_serials();++g_definition_revision;g_preview.ready=false;g_framing_token=0;app_world_candidate_clear_stagger(g_preview.transaction);\n    char unpreviewed[]=\"spec r03a_unpreviewed 9\";framing_template_line(&g_world,unpreviewed);",
+  "tests": [
+    "tests.test_framing_template.FramingTemplatePolicyA.test_A05_cancel_exact_commit_one_history_and_cold_load"
+  ],
+  "expected_assertion": "R03A_CONFIRM_DIFFERENT_CANDIDATE",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

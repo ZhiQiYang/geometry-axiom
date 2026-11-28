@@ -1,0 +1,13 @@
+{
+  "id": "PF6_O_LIVE_DIMENSION_BINDING",
+  "desc": "A 活來源須保留為 definition source，不得凍結為數值；形狀先驗證避免 TypeError 被誤當 assertion kill。",
+  "binary": "bridge",
+  "file": "geometry-app/native/panel_fill_builder.inc",
+  "old": "input->a.kind!=ENG_LITERAL&&!eng_bind(work,&a,&input->a)",
+  "new": "input->a.kind!=ENG_LITERAL&&false",
+  "tests": [
+    "tests.test_panel_fill_builder.PanelFillBuilder.test_PF6_save_and_fresh_process_reopen_ordinary_live_sources"
+  ],
+  "expected_assertion": "PF6_SAVE_LIVE_A_SOURCE",
+  "reason": "A 活來源須保留為 definition source，不得凍結為數值；形狀先驗證避免 TypeError 被誤當 assertion kill。"
+}

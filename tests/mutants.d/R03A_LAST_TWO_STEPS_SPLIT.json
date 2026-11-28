@@ -1,0 +1,13 @@
+{
+  "id": "R03A_LAST_TWO_STEPS_SPLIT",
+  "desc": "Omit the existing oracle merge/split when the last jig mark intersects the end member.",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/flat_ceiling_jig.h",
+  "old": "distance=v->maximum*(n-2)+(v->maximum+remainder+1)/2;",
+  "new": "distance=v->maximum*(n-1); /* withdrawn: keep colliding last mark */",
+  "tests": [
+    "tests.test_framing_template.FramingTemplatePolicyA.test_A03_same_jig_and_last_two_step_collision_split"
+  ],
+  "expected_assertion": "R03A_FIXED_JIG",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

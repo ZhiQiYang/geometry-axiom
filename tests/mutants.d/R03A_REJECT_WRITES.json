@@ -1,0 +1,13 @@
+{
+  "id": "R03A_REJECT_WRITES",
+  "desc": "Write an ordinary spec and a history frame after the full native candidate has been rejected.",
+  "binary": "bridge",
+  "file": "geometry-web/framing_template_bridge.inc",
+  "old": "if(!valid){eng_bridge_error(\"NATIVE_INVALID\",",
+  "new": "if(!valid){ /* withdrawn rejection isolation: real World write */\n        history_record(&g_world);char write[]=\"spec r03a_rejected_write 1\";\n        framing_template_line(&g_world,write);++g_definition_revision;\n        eng_bridge_error(\"NATIVE_INVALID\",",
+  "tests": [
+    "tests.test_framing_template.FramingTemplatePolicyA.test_A04_rejected_candidate_cannot_write_any_formal_state"
+  ],
+  "expected_assertion": "R03A_REJECT_WRITES",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

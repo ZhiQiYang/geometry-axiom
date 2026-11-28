@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_320_LESSON_CLIP",
+  "case": "P1231",
+  "assertions": [
+    "R123H_320_LESSON_CLIP"
+  ],
+  "meaning": "Restore the dock before the narrow lesson rule; verify the visible touch target, glyphs and real input at 320x844.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "@media (max-width: 360px) {\n  /* Keep the full 44px height. Double gutters around the control groups\n     would otherwise add a horizontal scrollbar to the narrowest dock. */\n  body.canvas-composition #mainCanvasDock {\n    padding-inline: 0;\n    border-inline-width: 0;\n    overflow-x: hidden;\n    overflow-y: auto;\n  }\n  body.canvas-composition #mainCanvasDock #ocSelectionSummary {\n    padding-inline: 0;\n    border-block-width: 0;\n  }\n  body.canvas-composition #ocSelectionSummary > .guidance-dismiss {\n    min-width: 44px;\n    padding-inline: 2px;\n  }\n}\n",
+      "after": ""
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18389,
+  "afterSha256": "f72e88665560e053c274f1b58695c3167bfe3721053d31e01b63cb92c7ee5888"
+}

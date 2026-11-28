@@ -133,7 +133,7 @@ class OriginalJudge:
     def __init__(self, root):
         self.root = Path(root).resolve()
         tests = self.root / "tests"
-        for name in ("binaries", "run_tests", "mutation_bridge"):
+        for name in ("binaries", "run_tests", "mutation_bridge", "mutation_fragments"):
             loaded = sys.modules.get(name)
             if loaded is not None:
                 _require(Path(loaded.__file__).resolve().parent == tests,
