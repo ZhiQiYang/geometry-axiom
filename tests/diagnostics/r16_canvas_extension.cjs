@@ -68,7 +68,7 @@ function projectRaw(rawSource) {
   assert.deepEqual(JSON.parse(projected), old, 'R16_ONLY_ADDED_SECTION_PROJECTED');
   return projected;
 }
-function registeredView(current) {
+function registeredView(current, retained = [SECTION]) {
   // Caller first uses the original registry loader: strict for formal tests,
   // explicitly allowCandidates only for Node diagnostics or measurement.
   // No unknown section is projected away. Every independently registered
@@ -80,11 +80,15 @@ function registeredView(current) {
   assert.deepEqual(current.plan.shards.flatMap(row => row.sections).sort(), [...ids].sort(), 'R16_REGISTRY_EXACT_PARTITION');
   assert.equal(current.golden.total, Object.values(current.golden.sections).reduce((a,b)=>a+b,0), 'R16_REGISTRY_EXACT_TOTAL');
   assert.equal(extensions.filter(row=>row.id===SECTION).length, 1, 'R16_REGISTERED_SECTION_REQUIRED');
+  assert.ok(Array.isArray(retained) && retained.includes(SECTION) && new Set(retained).size === retained.length,
+    'R16_REGISTERED_VIEW_SCOPE');
+  for (const id of retained)
+    assert.equal(extensions.filter(row=>row.id===id).length, 1, 'R16_REGISTERED_SCOPE_REQUIRED:' + id);
   for (const row of extensions) {
     assert.ok(Number.isSafeInteger(row.assertions) && row.assertions >= 0, 'R16_REGISTERED_COUNT');
     assert.equal(current.golden.sections[row.id], row.assertions, 'R16_REGISTERED_COUNT:' + row.id);
   }
-  const other = new Set(extensions.filter(row=>row.id!==SECTION).map(row=>row.id));
+  const other = new Set(extensions.filter(row=>!retained.includes(row.id)).map(row=>row.id));
   const plan = clone(current.plan), golden = clone(current.golden);
   for (const shard of plan.shards) shard.sections = shard.sections.filter(id=>!other.has(id));
   // A separately proven slot-1 extension may have moved the observed boundary
@@ -108,6 +112,14 @@ function beforeTouch(golden, plan) {
   delete projectedGolden.sections[SECTION];
   projectedGolden.total -= count;
   return {golden: projectedGolden, plan: projectedPlan};
+}
+function registeredBeforeTouch(current) {
+  // Formal callers have already loaded every current module and its original
+  // cost/source receipt. The historical R16/R433 judge keeps its original
+  // modules and the pre-existing R03A driver; later modules/drivers are checked by
+  // the same complete-union validation in registeredView, not a per-PR allowlist.
+  const view = registeredView(current, [SECTION, 'P1162', 'P2052']);
+  return beforeTouch(view.golden, view.plan);
 }
 function fromFullResult(baseRaw, basePlan, currentPlan, result) {
   assert.equal(sha256(baseRaw), REGISTRY_GOLDEN_SHA256, 'R16_TRUSTED_BASE_BYTES');
@@ -156,4 +168,4 @@ function fromRegisteredFullResult(baseRaw, basePlan, current, result) {
 }
 module.exports = {SECTION, BASE_SHA, BASE_GOLDEN_SHA256, REGISTRY_BASE_SHA,
   REGISTRY_GOLDEN_SHA256, encode, sha256, projectGolden, projectPlan, projectRaw,
-  projectP205Golden, projectP205Raw, registeredView, beforeTouch, fromFullResult, fromRegisteredFullResult};
+  projectP205Golden, projectP205Raw, registeredView, beforeTouch, registeredBeforeTouch, fromFullResult, fromRegisteredFullResult};

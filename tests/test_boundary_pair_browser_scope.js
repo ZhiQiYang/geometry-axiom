@@ -20,7 +20,7 @@ const train3Inputs=()=>{
   assert.deepEqual(shards.validatePlan(shards.loadPlan(),shards.loadGolden()),[],'R03_RAW_PLAN_COMPLETE');
   // Merge of main (R433 P1162) and R16 (P1231): keep main's exact P1162 projection
   // before R03A's checks, and keep R16's legacy-view input to the historical chain.
-  const touchInput=r16Extension.beforeTouch(shards.loadGolden(),shards.loadPlan());
+  const touchInput=r16Extension.registeredBeforeTouch(require('../geometry-web/canvas_registry.js').load());
   const touchBase=touchExtension.project(touchInput.golden,touchInput.plan);
   train3.checkPlan(r03aExtension.projectPlan(touchBase.plan));
   r03aExtension.projectGolden(touchBase.golden);

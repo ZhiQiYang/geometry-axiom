@@ -898,10 +898,16 @@ class NativeShardCoverage(unittest.TestCase):
         # 318-suite history and the current 324-suite/six-shard plan.
         profiles = native_shards.measured_profiles()
         added = native_shards.added_suite_costs()
-        # Only explicitly reviewed additions may leave the 321-suite history.
-        # A fabricated new/ row with a matching cost is never an exemption.
+        # New fragments must pass the original receipt/declaration/source
+        # validator before they leave this historical 321-suite scope.
+        # Merely inventing a new/ row and an added-cost dictionary is not proof.
+        verified = native_registry.timing_profile(run_all.ROOT)['added']
+        self.assertEqual(verified, added,
+                         'R396_CURRENT_COSTS_MATCH_VERIFIED_REGISTRY')
         rows = (native_registry.load_registry(run_all.ROOT)
                 if native_registry.active(run_all.ROOT) else [])
+        fragment_additions = {row['name'] for row in rows
+                              if row['order'].startswith('new/')}
         pf6_rows = [row for row in rows if row['name'] in PF6_ADDED_SUITES]
         self.assertEqual(len(PF6_ADDED_SUITES), len(pf6_rows),
                          'PF6_NEW_SUITES_REGISTERED_ONCE')
@@ -921,7 +927,7 @@ class NativeShardCoverage(unittest.TestCase):
                          'R443_REGISTERED_NEW_SUITES_HAVE_INDEPENDENT_COSTS')
         self.assertEqual(
             R396_ADDED_SUITES,
-            set(added) - PF6_ADDED_SUITES - R443_ADDED_SUITES
+            set(added) - fragment_additions
             - R380_ADDED_SUITES - R379_ADDED_SUITES - R17_ADDED_SUITES
             - R12_ADDED_SUITES - PF4A_ADDED_SUITES - R03_ADDED_SUITES,
             'R396_NEW_SUITES_HAVE_INDEPENDENT_CI_RECEIPTS')
