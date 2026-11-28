@@ -1,0 +1,23 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/oracles/r09b_source_reassociation.py"
+    ],
+    "extra_env": {},
+    "kind": "python-script",
+    "label": "tests/oracles/r09b_source_reassociation.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/oracles/r09b_source_reassociation.py"
+  ],
+  "name": "script:r09b_source_oracle",
+  "order": "new/script__r09b_source_oracle",
+  "schema": "geometry-native-suite/1"
+}
