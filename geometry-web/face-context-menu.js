@@ -14,15 +14,24 @@
   panel.before(panelHome);document.body.append(menu);
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(n, Math.max(lo, hi)));
   function stamp() {
+    const p=ReferenceWorkspace.getProjectState(),h=ReferenceWorkspace.history;
     return {edit:oc.edit, focus:oc.focus, context:ReferenceWorkspace.context(),
-      frame:ReferenceWorkspace.history.frame, session:connection.session,
+      projectId:p.id, contextToken:p.contextToken, revision:p.revision,
+      nativeRevision:ReferenceWorkspace.getEvidenceState().nativeRevision,
+      frame:h.frame, undo:h.undo.at(-1), redo:h.redo.at(-1), group:h.group,
+      session:connection.session, phase:connection.phase, navigation:oc.navigationSequence,
       loops:JSON.stringify(oc.bmap[oc.edit?.bid]), selection:JSON.stringify(fe.sel),
       timbers:[...fe.timberSelection].sort().join(','), tool:fe.tool};
   }
   function current(s) {
+    const p=ReferenceWorkspace.getProjectState(),h=ReferenceWorkspace.history;
     return !!s && s.edit === oc.edit && s.focus === oc.focus &&
-      s.context === ReferenceWorkspace.context() && s.frame === ReferenceWorkspace.history.frame &&
-      s.session === connection.session && s.loops === JSON.stringify(oc.bmap[oc.edit?.bid]) &&
+      s.context === ReferenceWorkspace.context() && s.frame === h.frame &&
+      s.projectId === p.id && s.contextToken === p.contextToken && s.revision === p.revision &&
+      s.nativeRevision === ReferenceWorkspace.getEvidenceState().nativeRevision &&
+      s.undo === h.undo.at(-1) && s.redo === h.redo.at(-1) && s.group === h.group &&
+      s.session === connection.session && s.phase === connection.phase && s.navigation === oc.navigationSequence &&
+      s.loops === JSON.stringify(oc.bmap[oc.edit?.bid]) &&
       s.selection === JSON.stringify(fe.sel) && s.timbers === [...fe.timberSelection].sort().join(',') &&
       s.tool === fe.tool && oc.focus?.t === 'face';
   }
@@ -42,8 +51,9 @@
   function model(target) {
     const sel = fe.sel, loops = feCurLoops();
     const blocked = writable();
-    const guideBlocked = blocked || guidePrerequisite();
-    let title = '畫布', meta = `面外 · u ${target.point.x} · v ${target.point.y}`, chip = '', typeIcon = 'fit';
+    const anchorReason = target.point ? '' : '請先在面內指定位置';
+    const guideBlocked = blocked || guidePrerequisite() || anchorReason;
+    let title = '畫布', meta = target.point ? `面外 · u ${target.point.x} · v ${target.point.y}` : '鍵盤選單 · 尚未指定位置', chip = '', typeIcon = 'fit';
     let tiles = [], groups = [];
     const acts = feActionsFor(sel).map(a => item(a.act, a.label, a.iconName, blocked));
     const reuseState = window.TimberEdit?.menuItems() || {copy:'角材服務尚未載入',paste:'角材服務尚未載入',repeat:'角材服務尚未載入',batch:'角材服務尚未載入'};
@@ -179,17 +189,58 @@
     prerequisite:a=>['guide-u','guide-v'].includes(a.act) && guidePrerequisite(),
     isOn:a=>!!fe.op && a.act === 'op:'+fe.op.type,
     begin(x,y,target){
-      if(!oc.edit || fe.tool!=='select' || oc.busy || fe.drag || connection.phase!=='ready')return null;
-      openPoint=feSnap(fePoint({clientX:x,clientY:y}));
-      return {x,y,point:{x:Math.round(openPoint.x),y:Math.round(openPoint.y)},...target};
+      if(!oc.edit || oc.focus?.t!=='face' || fe.tool!=='select' || oc.busy || fe.drag || connection.phase!=='ready')return null;
+      // A keyboard menu has a screen position, not a new geometric anchor.
+      // Only the already selected point may authorize a position-dependent action.
+      openPoint=target?.invocation==='keyboard'
+        ? (fe.sel?.kind==='point' ? {x:fe.sel.x,y:fe.sel.y} : null)
+        : feSnap(fePoint({clientX:x,clientY:y}));
+      return {x,y,...target,point:openPoint ? {x:Math.round(openPoint.x),y:Math.round(openPoint.y)} : null};
     },
     beforeShow(){document.body.append(panel);vp.classList.add('fcm-active');},
-    afterShow(){const p=cxFeSceneToVp(openPoint.x,openPoint.y);anchor.style.left=p.x+'px';anchor.style.top=p.y+'px';anchor.style.display='block';window.TimberEdit?.prepareMenu();},
+    afterShow(){if(openPoint){const p=cxFeSceneToVp(openPoint.x,openPoint.y);anchor.style.left=p.x+'px';anchor.style.top=p.y+'px';anchor.style.display='block';}window.TimberEdit?.prepareMenu();},
     onSync(){if(menu.hidden && !fe.op)menu.hidden=false;decoratePanel();},
     onEscape(){if(fe.op){cancelForm();return true;}return false;},
     related:node=>panel.contains(node),
     layout, onHide, execute, onError:error=>toast(error.message),
   });
+  // Capture keyboard-origin contextmenu before app.js's pointer-only bubble
+  // listener. Pointer button 2 keeps that original hit/selection path intact.
+  let keyboardEntry=null, composing=false;
+  const textOrControl=node=>!!node?.isContentEditable || !!node?.closest?.(
+    'input,textarea,select,button,a,[contenteditable],[role="textbox"],#feGuidePick,#feActionBar,#feOpPanel,#feCtxMenu');
+  const menuKey=event=>event.key==='ContextMenu' ||
+    (event.key==='F10' && event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey);
+  function openKeyboard() {
+    const r=vp.getBoundingClientRect();
+    return shell.open(r.left+r.width/2,r.top+r.height/2,{invocation:'keyboard'});
+  }
+  vp.addEventListener('compositionstart',()=>{composing=true;keyboardEntry=null;});
+  vp.addEventListener('compositionend',()=>{composing=false;});
+  vp.addEventListener('keydown',event=>{
+    if(!menuKey(event) || textOrControl(event.target))return;
+    event.preventDefault();event.stopImmediatePropagation();
+    keyboardEntry={key:event.key};
+    if(composing || event.isComposing || event.keyCode===229 || event.repeat)return;
+    openKeyboard();
+  },true);
+  vp.addEventListener('pointerdown',event=>{if(event.button===2)keyboardEntry=null;},true);
+  vp.addEventListener('contextmenu',event=>{
+    if(textOrControl(event.target))return;
+    if(composing || event.isComposing || event.keyCode===229){
+      event.preventDefault();event.stopImmediatePropagation();return;
+    }
+    if(event.button===2 && !keyboardEntry)return;
+    if(!keyboardEntry && (event.clientX || event.clientY))return;
+    event.preventDefault();event.stopImmediatePropagation();
+    if(!keyboardEntry)openKeyboard();
+  },true);
+  document.addEventListener('keyup',event=>{
+    if(!keyboardEntry || event.key!==keyboardEntry.key)return;
+    const pending=keyboardEntry;
+    setTimeout(()=>{if(keyboardEntry===pending)keyboardEntry=null;},0);
+  });
+  window.addEventListener('blur',()=>{keyboardEntry=null;composing=false;shell.hide();});
   function refreshEligibility() {
     if (!shell.state || !current(shell.state.stamp)) {shell.sync();return;}
     if(shell.state.composing){menu.querySelector('input')?.addEventListener('compositionend',refreshEligibility,{once:true});return;}
