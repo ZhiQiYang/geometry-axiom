@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_panel_fill_builder_host.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_panel_fill_builder_host.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_panel_fill_builder_host.js"
+  ],
+  "name": "node:panel_fill_builder_host",
+  "order": "new/node__panel_fill_builder_host",
+  "schema": "geometry-native-suite/1"
+}

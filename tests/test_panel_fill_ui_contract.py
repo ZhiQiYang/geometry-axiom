@@ -12,6 +12,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tests import test_panel_fill_layout as pf2
+from tests.pf6_app_contract import assert_supported_actions
 
 
 class PanelFillUiContract(unittest.TestCase):
@@ -28,8 +29,7 @@ class PanelFillUiContract(unittest.TestCase):
     def contract(self, response, complete=True):
         ui = response["uiContract"]
         self.assertEqual("panel-fill-workspace/1", ui["schema"], "UI_WIRE_SCHEMA")
-        self.assertEqual(["read", "edit-definitions", "read-layout", "read-support", "create-from-fill-grid"],
-                         ui["supportedActions"], "UI_WIRE_ACTIONS: PF4A live create only; no snapshot/PF-5/PF-6 promises")
+        assert_supported_actions(self, ui["supportedActions"])
         self.assertEqual(str(response["revision"]), ui["revision"], "UI_WIRE_REVISION_EXACT")
         self.assertIs(ui["completeForScope"], complete, "UI_WIRE_COMPLETENESS")
         if complete:

@@ -20,7 +20,7 @@ function environment(){
 }
 test('UI14 explicit contract permits global complete:false but rejects absent/unknown actions and scope loss',()=>{
   const {c,A}=environment();assert.equal(A.contract(c.reply()).completeForScope,true);
-  for(const change of [r=>delete r.uiContract,r=>r.uiContract.supportedActions.push('suggest-timbers'),r=>r.uiContract.scope.fillIds.push(8),r=>r.uiContract.revision='1']){
+  for(const change of [r=>delete r.uiContract,r=>r.uiContract.supportedActions.push('export-grid-snapshot'),r=>r.uiContract.scope.fillIds.push(8),r=>r.uiContract.revision='1']){
     const r=c.reply();change(r);assert.throws(()=>A.contract(r));
   }
 });

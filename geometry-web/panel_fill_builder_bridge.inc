@@ -312,6 +312,114 @@ static void pf6_json_reused(const Pf6Report *report)
     }
     putchar(']');
 }
+/* PF-6 App projection is read-only and tied to this candidate. It deliberately
+ * reuses the PF exact-state/R43 writer; a second geometry implementation in JS
+ * or a read of g_world here would describe a different proposal. */
+static bool pf6_ui_dimension(const World *world,const EngDimensionSource *source,const EngDimensionSource *override,
+    uint32_t id,uint32_t host,int role,int field)
+{
+    char encoded[640],over[640],name[640]="",card[97]="",label[97]="",path[400]="",error[512]="";
+    Coord effective=0;EngTarget target={1,id,0,field};
+    bool ok=eng_source_json(source,encoded,sizeof encoded);
+    if(!ok)snprintf(encoded,sizeof encoded,"null");
+    if(override&&!eng_source_json(override,over,sizeof over)){ok=false;snprintf(over,sizeof over,"null");}
+    if(source->kind==ENG_LITERAL)snprintf(name,sizeof name,"直接值");
+    else if(source->kind==ENG_SPEC)snprintf(name,sizeof name,"%s",source->ref);
+    else if(source->kind==ENG_PARAMETER){
+        const ParameterSet *p=parameter_find(world,source->parameter.parameter_id);
+        int i=parameter_field_index(world,source->parameter.parameter_id,source->parameter.field_id);
+        if(p&&i>=0){const ParameterField *f=&geo_parameters_fields(&world->geo.parameters)[i];
+            snprintf(card,sizeof card,"%s",p->name);snprintf(label,sizeof label,"%s",f->name);
+            snprintf(name,sizeof name,"%s／%s",card,label);
+        }else ok=false;
+    }else if(source->kind==ENG_MATERIAL){
+        const EngMaterialVersion *material=eng_material(world,source->ref,source->version);GeoJson parsed;
+        if(material){bool parsed_ok=app_json_parse(&parsed,material->content);
+            if(!parsed_ok||!geo_json_string(&parsed,geo_json_member(&parsed,0,"name"),name,sizeof name))ok=false;
+            geo_json_free(&parsed);
+        }else ok=false;
+    }else if(source->kind==ENG_APPLICATION)snprintf(name,sizeof name,"材料配置 %s",source->ref);
+    else ok=false;
+    bool resolved=eng_resolve((World*)world,override?override:source,&target,host,role,&effective,path,sizeof path);
+    if(!resolved)snprintf(error,sizeof error,"%s",g_engineering_error);
+    ok=ok&&resolved&&name[0];
+    printf("{\"source\":%s,\"override\":",encoded);fputs(override?over:"null",stdout);
+    fputs(",\"effective\":",stdout);if(resolved)printf("\"%lld\"",(long long)effective);else fputs("null",stdout);
+    fputs(",\"unit\":\"mm\",\"name\":",stdout);if(name[0])js_string(name);else fputs("null",stdout);
+    fputs(",\"cardName\":",stdout);if(card[0])js_string(card);else fputs("null",stdout);
+    fputs(",\"fieldName\":",stdout);if(label[0])js_string(label);else fputs("null",stdout);
+    fputs(",\"path\":",stdout);if(resolved)js_string(path);else fputs("null",stdout);
+    fputs(",\"error\":",stdout);if(!ok)js_string(error[0]?error:"I8a: source name or definition is unavailable");else fputs("null",stdout);
+    putchar('}');return ok;
+}
+static void pf6_ui_vector(Vector3 v)
+{printf("[\"%lld\",\"%lld\",\"%lld\"]",(long long)v.x,(long long)v.y,(long long)v.z);}
+static bool pf6_ui_member(const World *world,int index)
+{
+    if(index<0){fputs("null",stdout);return true;}
+    const Timber *timber=&world->wood.timbers[index];const TimberAnchor *anchor=&world->wood.anchors[index];
+    const PlacementSurface *host=world_find_placement(world,anchor->placement_id);SurfaceRegion2 rectangle;
+    bool ok=timber->placed&&host&&timber_a0_footprint_uv(host,timber,anchor,&rectangle);
+    fputs("{\"role\":",stdout);js_string(timber_role_name(timber->role));
+    for(int field=0;field<2;++field){EngTarget target={1,timber->id,0,field};
+        const EngBinding *binding=eng_binding((World*)world,&target);EngDimensionSource direct={0};
+        direct.kind=ENG_LITERAL;direct.value=field?timber->size_b:timber->size_a;
+        printf(",\"%c\":",field?'B':'A');
+        if(!pf6_ui_dimension(world,binding?&binding->source:&direct,binding&&binding->has_override?&binding->override_value:NULL,
+            timber->id,anchor->placement_id,timber->role,field))ok=false;
+    }
+    fputs(",\"geometry\":",stdout);
+    if(!timber->placed||!host||!timber_a0_footprint_uv(host,timber,anchor,&rectangle))fputs("null",stdout);
+    else{
+        bool along=anchor->length_direction==SURFACE_DIRECTION_POS_V||anchor->length_direction==SURFACE_DIRECTION_NEG_V;
+        Coord center=(along?rectangle.min_u:rectangle.min_v)+timber->size_a/2;
+        printf("{\"surface\":%u,\"centerline\":\"%lld\",\"length\":\"%lld\",\"u\":\"%lld\",\"v\":\"%lld\",\"dir\":\"%s\",\"side\":\"%s\",\"A\":\"%lld\",\"B\":\"%lld\",\"origin\":",
+            anchor->placement_id,(long long)center,(long long)timber->length,(long long)anchor->uv.u,(long long)anchor->uv.v,
+            length_dir_word(anchor->length_direction),depth_side_word(anchor->depth_side),(long long)timber->size_a,(long long)timber->size_b);
+        pf6_ui_vector((Vector3){timber->origin.x,timber->origin.y,timber->origin.z});
+        fputs(",\"axes\":[",stdout);pf6_ui_vector(timber->axis_length);putchar(',');
+        pf6_ui_vector(timber->axis_a);putchar(',');pf6_ui_vector(timber->axis_b);fputs("]}",stdout);
+    }
+    putchar('}');return ok;
+}
+static void pf6_json_app_view(const World *before,const World *after,const Pf6Proposal *proposal,
+    const char *phase,const char *const *selected,size_t selected_count,bool valid,const char *error)
+{
+    char saved[sizeof g_engineering_error];snprintf(saved,sizeof saved,"%s",g_engineering_error);
+    bool complete=valid;const DerivedPlacement *host=NULL;const ReferenceGrid *grid=NULL;
+    for(size_t i=0;i<after->wood.finish_surfaces.host_count;++i)
+        if(after->wood.finish_surfaces.hosts[i].fill_id==proposal->input.fill_id)host=&after->wood.finish_surfaces.hosts[i];
+    if(host)for(size_t i=0;i<after->wood.grid_applications.count;++i){const ReferenceGrid *item=&after->wood.grid_applications.items[i];
+        if(item->placement_id==host->id&&!item->is_subgrid&&item->from_fill&&item->fill_id==proposal->input.fill_id)grid=item;}
+    if(strcmp(phase,"NO_OP")&&(!host||!grid))complete=false;
+    printf(",\"appView\":{\"schema\":\"panel-fill-builder-workspace/1\",\"revision\":\"%llu\",\"setKey\":\"%s\",\"generation\":\"%llu\",\"phase\":",
+        (unsigned long long)proposal->revision,proposal->key,(unsigned long long)proposal->generation);js_string(phase);
+    fputs(",\"selected\":[",stdout);for(size_t i=0;i<selected_count;++i){if(i)putchar(',');js_string(selected[i]);}
+    printf("],\"input\":{\"fillId\":%u,\"primaryAlong\":\"%c\",\"A\":",proposal->input.fill_id,proposal->input.primary_axis?'v':'u');
+    if(!pf6_ui_dimension(after,&proposal->input.a,NULL,UINT32_MAX,host?host->id:UINT32_MAX,TIMBER_ROLE_PRIMARY,0))complete=false;
+    fputs(",\"B\":",stdout);
+    if(!pf6_ui_dimension(after,&proposal->input.b,NULL,UINT32_MAX,host?host->id:UINT32_MAX,TIMBER_ROLE_PRIMARY,1))complete=false;
+    fputs("},\"host\":{\"id\":",stdout);if(host)printf("%u",host->id);else fputs("null",stdout);
+    printf(",\"created\":%s,\"h\":",host&&!dp_find(before,host->id)?"true":"false");
+    if(host){if(!pf6_ui_dimension(after,&host->h,NULL,UINT32_MAX,host->id,TIMBER_ROLE_PRIMARY,1))complete=false;}else fputs("null",stdout);
+    fputs("},\"grid\":{\"id\":",stdout);if(grid)printf("%u",grid->id);else fputs("null",stdout);
+    printf(",\"created\":%s,\"mainAlong\":",grid&&!world_find_grid(before,grid->id)?"true":"false");
+    if(grid&&(grid->main_along==1||grid->main_along==2))js_string(grid->main_along==1?"u":"v");else fputs("null",stdout);
+    fputs("},\"timbers\":[",stdout);bool first=true;
+    for(int pass=0;pass<2;++pass){const World *world=pass?after:before;
+        for(size_t i=0;i<world->wood.timber_count;++i){const Timber *timber=&world->wood.timbers[i];
+            int old=reference_timber_index(before,timber->id),now=reference_timber_index(after,timber->id);
+            if(pass&&old>=0)continue;
+            if(!first)putchar(',');first=false;printf("{\"id\":%u,\"before\":",timber->id);
+            if(!pf6_ui_member(before,old))complete=false;fputs(",\"after\":",stdout);
+            if(!pf6_ui_member(after,now))complete=false;putchar('}');
+        }
+    }
+    putchar(']');
+    if(!json_panel_fill_ui_contract(before,after,proposal->revision,valid,FS_DIAGNOSTIC_INVALID,error))complete=false;
+    printf(",\"completeForScope\":%s}",complete?"true":"false");
+    snprintf(g_engineering_error,sizeof g_engineering_error,"%s",saved);
+}
 static void cmd_pf6_suggest(const char *path)
 {
     GeoJson j;char *text;if(!pf6_document(path,&j,&text))return;
@@ -342,7 +450,6 @@ static void cmd_pf6_suggest(const char *path)
     bool valid=app_world_candidate_evaluate(candidate,pf6_outer_evaluate,&call)==GEO_CANDIDATE_OK;
     proposal->analysis_valid=valid;
     char error[512];snprintf(error,sizeof error,"%s",valid?"":g_engineering_error[0]?g_engineering_error:call.report.error);
-    app_world_candidate_destroy(candidate);
     proposal->report=call.report;proposal->generation=++g_pf6_generation;
     pf6_pending_clear();pf6_proposal_free(g_pf6_proposal);g_pf6_proposal=proposal;proposal=NULL;
     printf("{\"ok\":true,\"schema\":\"panel-fill-builder-suggestions/1\",\"revision\":\"%llu\",\"setKey\":\"%s\",\"generation\":\"%llu\",\"confirmable\":false,\"token\":null,\"valid\":%s,\"complete\":false,\"entries\":",
@@ -350,7 +457,9 @@ static void cmd_pf6_suggest(const char *path)
     pf6_json_plan(&g_pf6_proposal->report,false);fputs(",\"omissions\":",stdout);pf6_json_plan(&g_pf6_proposal->report,true);
     fputs(",\"intent\":",stdout);fputs(g_pf6_proposal->intent,stdout);
     printf(",\"outerOperations\":{\"pre\":%zu,\"post\":%zu,\"postEvaluation\":\"after-selection\"},\"error\":",g_pf6_proposal->pre_count,g_pf6_proposal->post_count);
-    if(error[0])js_string(error);else fputs("null",stdout);fputs("}\n",stdout);
+    if(error[0])js_string(error);else fputs("null",stdout);
+    pf6_json_app_view(&candidate->before,&candidate->after,g_pf6_proposal,"ANALYSIS",NULL,0,valid,error);
+    fputs("}\n",stdout);app_world_candidate_destroy(candidate);
 done:pf6_proposal_free(proposal);geo_json_free(&j);free(text);
 }
 static void cmd_pf6_select(const char *path)
@@ -431,7 +540,9 @@ static void cmd_pf6_select(const char *path)
         printf("%s{\"timber\":%u,\"clause\":",!valid||i?",":"",issue->timber);js_string(issue->clause);
         fputs(",\"expected\":",stdout);js_string(issue->expected);fputs(",\"message\":",stdout);js_string(issue->actual);putchar('}');
     }
-    fputs("]}}\n",stdout);
+    putchar(']');
+    pf6_json_app_view(&transaction->before,&transaction->after,g_pf6_proposal,no_op?"NO_OP":"SELECTED",selected,(size_t)count,valid,error);
+    fputs("}}\n",stdout);
     free(before);free(after);pf6_report_free(&call.report);if(no_op)app_world_candidate_destroy(transaction);
 done:free(selected);geo_json_free(&j);free(text);
 }

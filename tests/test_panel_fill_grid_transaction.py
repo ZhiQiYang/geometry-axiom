@@ -74,8 +74,8 @@ class PanelFillGridTransaction(unittest.TestCase):
         self.host()
         reply = self.read()
         self.assertFalse(reply["complete"], "PF4A_NO_FULL_PRODUCT_CLAIM")
-        self.assertEqual(["read", "edit-definitions", "read-layout", "read-support",
-                          "create-from-fill-grid"], reply["uiContract"]["supportedActions"])
+        from tests.pf6_app_contract import assert_supported_actions
+        assert_supported_actions(self, reply["uiContract"]["supportedActions"], "PF6_PF4A_ACTIONS_EXACT")
         self.assertEqual([], self.grids(reply))
         self.assertEqual([], reply["uiContract"]["scope"]["fillGridIds"])
         self.assertNotIn("panel-fill/1", reply["capabilities"])

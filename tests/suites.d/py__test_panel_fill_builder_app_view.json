@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_panel_fill_builder_app_view.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_panel_fill_builder_app_view.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_panel_fill_builder_app_view.py"
+  ],
+  "name": "py:test_panel_fill_builder_app_view",
+  "order": "new/py__test_panel_fill_builder_app_view",
+  "schema": "geometry-native-suite/1"
+}
