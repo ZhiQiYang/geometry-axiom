@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-web/space_reconstruction_test.js",
+    "reason": "R13 independent space acceptance helper: trusted CDP interaction through space_model_test.js, not a product runtime or served application entry point.",
+    "sha256": "75d60dfd3917d94f89d2fd6b374a4b6e1997bb9d561ce4af9b7adb49fcd2a302"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

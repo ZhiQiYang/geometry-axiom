@@ -1071,8 +1071,8 @@
       "patches": [
         {
           "file": "geometry-web/project-store.js",
-          "before": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT].includes(manifest.format))",
-          "after": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT].includes(manifest.format) || !hasRoomCandidate && manifest.format === ROOM_CANDIDATE_FORMAT)"
+          "before": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT, RECONSTRUCTION_FORMAT, RC_DATA_FORMAT].includes(manifest.format))",
+          "after": "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT, RECONSTRUCTION_FORMAT, RC_DATA_FORMAT].includes(manifest.format) || !hasRoomCandidate && manifest.format === ROOM_CANDIDATE_FORMAT)"
         }
       ]
     },

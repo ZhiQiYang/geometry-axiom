@@ -7507,6 +7507,7 @@ function feUnderlayPaneHTML(bid) {
       (window.RoomCollectionWorkspace?.roomForBoundary(bid) ? "" : `<button class="btn" type="button" id="ulRemove">移除目前底圖</button>`) + `</details>`;
   }
   html += window.RoomCollectionWorkspace?.roomForBoundary(bid) ? RoomCollectionWorkspace.paneHTML(bid) : RoomOutlineWorkspace.paneHTML(bid) + ReferenceWorkspace.paneHTML(bid) + (window.RoomCollectionWorkspace?.paneHTML(bid) || "");
+  html += `<details class="ref-section rd-source-group" id="rdSourceGroup" open><summary>來源與補資料</summary>${window.ReconstructionWorkspace?.paneHTML(bid) || ""}</details>`;
   html += `</div></div>`;
   return html;
 }
@@ -7514,6 +7515,10 @@ function feBindUnderlayPane(pane, bid) {
   ReferenceWorkspace.bindPane(pane, bid);
   RoomOutlineWorkspace.bindPane(pane, bid);
   window.RoomCollectionWorkspace?.bindPane(pane, bid);
+  const reconstructionGroup = pane.querySelector('#rdSourceGroup');
+  const legacyRecords = pane.querySelector('#refRecordDetails');
+  if (reconstructionGroup && legacyRecords) reconstructionGroup.insertBefore(legacyRecords, reconstructionGroup.querySelector('#rdPanel'));
+  window.ReconstructionWorkspace?.bindPane(pane, bid);
   feSyncUnderlayReadonlyControls(pane);
   pane.querySelector("#refDrawOutline")?.addEventListener("click", () => {
     if (!feUnderlayEditable(bid)) return;

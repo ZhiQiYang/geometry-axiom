@@ -184,7 +184,11 @@
         if (!response.ok || result.ok !== true) throw Error(result.error || result.diagnostics?.[0]?.message || '隔離候選驗證失敗，未更新模型。');
         return result;
       },validateRecord:value => GeometryProject.validateSpaceModel(value),sha:bytes => GeometryProject.sha(bytes),
-      commit:(id, value) => ReferenceWorkspace.updateSpaceModel(id, value)});
+      commit:(id, value) => {
+        guard(current);
+        if(current.reconstructionReview&&!$('muReleaseReconstruction').checked)throw Error('這個模型帶有房間高度核對；未明選解除，這次更新沒有寫入。');
+        return ReferenceWorkspace.updateSpaceModel(id,value,{releaseReconstructionReview:!!current.reconstructionReview&&$('muReleaseReconstruction').checked});
+      }});
   }
 
   function ensureDialog() {
@@ -200,7 +204,7 @@
           <details class="mu-details"><summary>淨空計算的柱樑 <span id="muObstacleCount"></span></summary><div id="muObstacles" class="mu-choices"></div></details>
         </fieldset></section>
       <details class="mu-details" id="muSettings"><summary>沿用原模型設定（唯讀）</summary><dl id="muSavedSettings" class="mu-settings"></dl></details>
-      <section id="muReview" aria-labelledby="muReviewTitle" hidden><h3 id="muReviewTitle" tabindex="-1">2. 核對新舊差異</h3><p class="mu-note">確認後將完整替換同一模型的來源、輸入與結果；可一步復原完整舊模型。</p><div id="muDiff"></div><div id="muFullDetails"></div><label class="mu-confirm"><input id="muConfirmed" type="checkbox"><span>我已核對這次明選來源、新舊差異及完整結果，確認更新此模型</span></label></section>
+      <section id="muReview" aria-labelledby="muReviewTitle" hidden><h3 id="muReviewTitle" tabindex="-1">2. 核對新舊差異</h3><p class="mu-note">確認後將完整替換同一模型的來源、輸入與結果；可一步復原完整舊模型。</p><div id="muDiff"></div><div id="muFullDetails"></div><label id="muReleaseReconstructionWrap" class="mu-confirm" hidden><input id="muReleaseReconstruction" type="checkbox"><span>這次更新解除原房間高度核對；補資料保留，可一步復原模型與核對。</span></label><label class="mu-confirm"><input id="muConfirmed" type="checkbox"><span>我已核對這次明選來源、新舊差異及完整結果，確認更新此模型</span></label></section>
       </div><footer class="mu-footer"><p id="muStatus" role="status" aria-live="polite"></p><div class="mu-actions"><button id="muPreview" class="mu-button" type="button" disabled>預覽新舊差異</button><button id="muApply" class="mu-button mu-primary" type="button" disabled>確認更新模型</button></div></footer>`;
     document.body.append(dialog);
     $('muClose').addEventListener('click', close);
@@ -209,6 +213,7 @@
     $('muPlacement').addEventListener('change', choosePlacement);
     $('muChoices').addEventListener('change', selectionChanged);
     $('muConfirmed').addEventListener('change', actions);
+    $('muReleaseReconstruction').addEventListener('change', actions);
     $('muPreview').addEventListener('click', preview);
     $('muApply').addEventListener('click', confirm);
     $('muActivate').addEventListener('click', activateLedger);
@@ -315,10 +320,12 @@
   async function open(id) {
     ensureDialog(); close();
     const current = {id,stamp:hostState(),abort:new AbortController(),sequence:++serial,recordSignature:json(record(id)),
-      invalid:false,busy:true,committing:false,review:null,surface:null,sourcePin:null,projection:null,ledgerKnown:false,ledgerActive:false,judged:null,builtIdentity:null,returnFocus:document.activeElement};
+      invalid:false,busy:true,committing:false,review:null,surface:null,sourcePin:null,projection:null,ledgerKnown:false,ledgerActive:false,judged:null,builtIdentity:null,
+      reconstructionReview:!!window.ReconstructionWorkspace?.hasReview?.(id),returnFocus:document.activeElement};
     session = current;
     $('muPlacement').innerHTML = '<option value="">請選擇現行放置面</option>'; $('muPlacement').value = '';
     $('muChoices').hidden = true; $('muChoices').disabled = true; $('muReview').hidden = true; $('muConfirmed').checked = false;
+    $('muReleaseReconstructionWrap').hidden=!current.reconstructionReview;$('muReleaseReconstruction').checked=false;
     $('muFaceChoices').replaceChildren(); $('muEdges').replaceChildren(); $('muTimbers').replaceChildren(); $('muProfiles').replaceChildren(); $('muProfileUnavailable').textContent=''; $('muObstacles').replaceChildren();
     dialog.querySelector('#muDecisions')?.remove();
     $('muDiff').replaceChildren(); $('muFullDetails').replaceChildren(); $('muOutline').replaceChildren();
@@ -500,7 +507,7 @@
     if (current?.before?.input.mode === 'faces') {try {sourcesReady = !!selection();} catch (_) {sourcesReady = false;}}
     $('muPreview').disabled = !ready || !sourcesReady || identityBlocksPreview(current);
     if ($('muActivate')) $('muActivate').disabled = !current || current.invalid;
-    $('muApply').disabled = !ready || !current?.review || !$('muConfirmed').checked;
+    $('muApply').disabled = !ready || !current?.review || !$('muConfirmed').checked || !!current?.reconstructionReview&&!$('muReleaseReconstruction').checked;
     $('muClose').textContent = current?.busy ? '取消本次處理' : '取消更新';
     $('muPreview').textContent = current?.busy && !current.committing ? '正在產生隔離候選…' : '預覽新舊差異';
     $('muApply').textContent = current?.committing ? '正在重驗並更新…' : '確認更新模型';
@@ -585,12 +592,13 @@
         return [`${packageNames[kind]}\n完整包：${changed ? '已變更' : '相同'}`,text(before.result[kind])+`\nmanifest SHA: ${pin?.before || '—'}`,text(after.result[kind])+`\nmanifest SHA: ${pin?.after || '—'}`,changed];
       }));
     $('muFullDetails').replaceChildren(fullDetail('完整差異 JSON（含所有交換包摘要）',review.diff),fullDetail('舊模型完整來源／輸入／結果 JSON',before),fullDetail('候選模型完整來源／輸入／結果 JSON',after));
-    $('muConfirmed').checked = false; $('muReview').hidden = false;
+    $('muConfirmed').checked = false; $('muReleaseReconstruction').checked=false; $('muReview').hidden = false;
   }
   async function confirm() {
     const current = session; if (!current || $('muApply').disabled) return;
     try {
       guard(current); guardSelection(current); const reviewId = current.review.reviewId;
+      if(current.reconstructionReview&&!$('muReleaseReconstruction').checked)throw Error('請先明選這次更新解除原房間高度核對；補資料仍保留。');
       current.busy = true; current.committing = true; actions(); message('正在再次重驗現行來源、完整候選與執行版本…');
       await current.controller.confirm(reviewId);
       if (session !== current || !dialog.open) return;

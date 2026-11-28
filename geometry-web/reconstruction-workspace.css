@@ -1,0 +1,10 @@
+.rd-panel { min-width: 0; }
+.rd-panel .rd-label { display: grid; gap: .3rem; min-width: 0; margin: .65rem 0; }
+.rd-panel input, .rd-panel textarea, .rd-panel select { box-sizing: border-box; width: 100%; min-width: 0; }
+.rd-panel .rd-fields { display: grid; gap: .7rem; }
+.rd-panel .rd-field { padding: .65rem; border: 1px solid var(--border, #bbc4ce); border-radius: .45rem; min-width: 0; }
+.rd-panel .rd-note, .rd-panel .rd-status { line-height: 1.5; overflow-wrap: anywhere; font-size: .85rem; }
+.rd-panel .rd-status[data-kind="error"] { color: var(--danger, #b42318); }
+.rd-panel .rd-actions { display: flex; gap: .5rem; flex-wrap: wrap; margin: .6rem 0; }
+.rd-panel button { white-space: normal; max-width: 100%; min-height: 36px; }
+.rd-source-group { min-width: 0; }
