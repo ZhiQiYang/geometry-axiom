@@ -5,7 +5,8 @@
 #include "panel_layout.h"
 #define WOOD_PANEL_SUPPORT_MAX 32768
 #define WOOD_PANEL_SUPPORT_WORK_MAX 1048576
-typedef struct {GeoCoord lo[2],hi[2];} WoodPanelFootprint;
+/* Preserve the existing field/initializer contract without a copy. */
+typedef GeoAxisBox2 WoodPanelFootprint;
 typedef struct {size_t line;GeoCoord range[2],edges[2];} WoodPanelEffectiveSeam;
 typedef struct {size_t seam;GeoCoord range[2],left,right;bool supported;} WoodPanelSupportPart;
 typedef struct {WoodPanelEffectiveSeam *seams,*nonseams;size_t count,non_count;WoodPanelSupportPart *parts;size_t part_count;} WoodPanelSupport;

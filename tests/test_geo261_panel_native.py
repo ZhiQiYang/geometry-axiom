@@ -168,9 +168,33 @@ class PanelNativeSource(unittest.TestCase):
         renames = {"Coord": "GeoCoord", "SurfacePoint2": "GeoPoint2", "PfFragment": "WoodPanelFragment", "PfLoop": "WoodPanelLoop", "PfFootprint": "WoodPanelFootprint", "PfInterval": "PanelInterval", "coord_min": "support_min", "coord_max": "support_max", "sp_coord_compare": "support_coord_compare"}
         def tokens(source):
             return [renames.get(t, t) for t in re.findall(r"[A-Za-z_]\w*|\d+|[^\s]", source)]
+        kernel = (KERNEL / "geometry.c").read_text(encoding="utf-8")
+        moved = {"pf_interval_compare": "geo_interval_compare",
+                 "pf_support_union": "geo_rect_section_union",
+                 "pf_support_width": "geo_interval_edge_coverage"}
         for name in ("pf_component", "pf_interval_compare", "pf_support_enough", "pf_support_section", "pf_support_union", "pf_support_width"):
             with self.subTest(function=name):
-                self.assertEqual(tokens(definition(fixture(), name)), tokens(definition(current, name)))
+                old = definition(fixture(), name)
+                if name not in moved:
+                    self.assertEqual(tokens(old), tokens(definition(current, name)))
+                    continue
+                # Keep the frozen algorithm equality. Only the owner, exported
+                # name, neutral carrier and interval accessor spelling change.
+                # Rectangle lo/hi accessors are deliberately NOT normalized.
+                old = re.sub(r"\b(out|un)\[([^\]]+)\]\.(lo|hi)\b",
+                             lambda m: m[1]+"["+m[2]+"]."+{"lo":"start","hi":"end"}[m[3]], old)
+                old = re.sub(r"\b([xy])->(lo|hi)\b",
+                             lambda m: m[1]+"->"+{"lo":"start","hi":"end"}[m[2]], old)
+                old = old.strip()
+                if name != "pf_interval_compare":
+                    self.assertTrue(old.startswith("static "))
+                    old = old[len("static "):]
+                neutral = {"Coord":"GeoCoord", "PfInterval":"GeoInterval",
+                           "PfFootprint":"GeoAxisBox2", "coord_min":"geo_coord_min",
+                           "coord_max":"geo_coord_max", **moved}
+                expected = [neutral.get(t,t) for t in re.findall(r"[A-Za-z_]\w*|\d+|[^\s]", old)]
+                actual = re.findall(r"[A-Za-z_]\w*|\d+|[^\s]", definition(kernel,moved[name]))
+                self.assertEqual(expected,actual)
 
     def test_host_and_real_p103_client_use_the_extracted_evaluator(self):
         layout = (ROOT / "geometry-core/panel_fill_layout.inc").read_text(encoding="utf-8")
@@ -236,19 +260,19 @@ class PanelNative(unittest.TestCase):
             ("layout-odd", "panel_layout", "geo_alternating_shift(p->stagger_axis>=0,d->stagger,r)", "0", "layout", "layout-negative-odd-shift"),
             ("layout-frame", "panel_layout", "!geo_coord_in_range(world.x)||!geo_coord_in_range(world.y)||!geo_coord_in_range(world.z)", "false", "layout", "layout-world-range"),
             ("support-hole-cuts", "panel_support", "cuts[nc++]=pf_component(frag->loops[l].points[v],other);", "if(l==0)cuts[nc++]=pf_component(frag->loops[l].points[v],other);", "support", "support-fragment-vertices"),
-            ("support-union", "panel_support", "out[i].lo<=out[used-1].hi", "out[i].lo<out[used-1].hi", "support", "support-touching-union"),
+            ("support-union", "geometry", "out[i].start<=out[used-1].end", "out[i].start<out[used-1].end", "support", "support-touching-union"),
             ("support-round", "panel_support", "return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);", "return d>=x.num/x.den;", "support", "support-rational-not-rounded"),
             ("support-merge", "panel_support", "last->left==left&&last->right==right", "last->supported==(pf_support_enough(left,threshold)&&pf_support_enough(right,threshold))", "support", "support-widths-not-colours"),
         )
         for name, module, before, after, case, marker in controls:
             with self.subTest(mutation=name):
-                directory = build.kernel if module == "clip" else build.woodworking
+                directory = build.kernel if module in ("clip", "geometry") else build.woodworking
                 original = (directory / (module + ".c")).read_text(encoding="utf-8")
                 self.assertEqual(1, original.count(before), "Mutation must hit exactly once: " + name)
                 source = directory / (name + ".c")
                 source.write_text(original.replace(before, after), encoding="utf-8")
                 obj = build.compile(source, name)
-                attribute = "clip_object" if module == "clip" else "wood_" + module + "_object"
+                attribute = module + "_object" if module in ("clip", "geometry") else "wood_" + module + "_object"
                 exe = build.link(name, self.objects(attribute, obj))
                 result = self.case(case, exe)
                 self.assertEqual(1, result.returncode, "Surviving semantic guard: " + name)

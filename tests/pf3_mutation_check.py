@@ -23,6 +23,7 @@ ROOT=Path(__file__).resolve().parents[1]
 HOST="geometry-core/panel_fill_support.inc"
 REFERENCE="geometry-app/native/reference_sources.inc"
 SOURCE="geometry-templates/woodworking/native/panel_support.c"
+KERNEL="geometry-core/kernel/geometry.c"
 CASES=[
     ("effective-merge",[(SOURCE,"if(*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)","if(false&&*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo)")],"test_D43_stagger_band_identity_signed_and_T_point","D43_T_POINT"),
     ("unplaced",[(HOST,"if(!w->wood.timbers[i].placed)continue;uint32_t placement=w->wood.anchors[i].placement_id;","uint32_t placement=w->wood.anchors[i].placement_id;")],"test_R43_unplaced_timbers_on_zero_id_host_do_not_count","PF3_UNPLACED"),
@@ -32,8 +33,8 @@ CASES=[
     ("maximal-merge",[(SOURCE,"if(last->seam==seam&&last->range[1]==lo&&last->left==left&&last->right==right)","if(false&&last->seam==seam&&last->range[1]==lo&&last->left==left&&last->right==right)")],"test_PF24_E2_E3_legal_merge_identical_widths","PF24"),
     ("merge-colours",[(SOURCE,"last->left==left&&last->right==right","last->supported==(pf_support_enough(left,threshold)&&pf_support_enough(right,threshold))")],"test_PF23_E1_legal_five_actual_widths_and_threshold_only","PF23_LEGAL"),
     ("open-sample",[(SOURCE,"y2=lo+hi;","y2=2*lo;")],"test_PF23_E1_legal_five_actual_widths_and_threshold_only","PF23_LEGAL"),
-    ("footprint-union",[(SOURCE,"out[i].lo<=out[used-1].hi","out[i].lo<out[used-1].hi")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_UNION"),
-    ("continuous-width",[(SOURCE,"left&&un[i].lo<edge&&edge<=un[i].hi","left&&un[i].lo<edge")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_GAP"),
+    ("footprint-union",[(KERNEL,"out[i].start<=out[used-1].end","out[i].start<out[used-1].end")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_UNION"),
+    ("continuous-width",[(KERNEL,"left&&un[i].start<edge&&edge<=un[i].end","left&&un[i].start<edge")],"test_R43_union_continuity_and_ignore_isolated_cut_values","R43_GAP"),
     ("host-identity",[(HOST,"if(placement!=host->id)continue;",""),(REFERENCE,"!reference_member_anchor_read(ctx,index,id,&anchor)||anchor.placement_id!=placement_id||","!reference_member_anchor_read(ctx,index,id,&anchor)||")],"test_R43_no_host_and_other_coplanar_host_do_not_support","PF3_HOST_FILTER"),
     ("finish-reflection",[(HOST,"r->lo[1]=coord_min(finish->side*f.min_v,finish->side*f.max_v);","r->lo[1]=f.min_v;"),(HOST,"r->hi[1]=coord_max(finish->side*f.min_v,finish->side*f.max_v);","r->hi[1]=f.max_v;")],"test_R43_negative_structure_side_and_vertical_frame_real_footprints","R43_FRAME"),
     ("hidden-threshold",[(SOURCE,"return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);","return d>=8;")],"test_PF06_positive_rational_comparison_and_rename_reorder","PF06_RATIONAL"),
