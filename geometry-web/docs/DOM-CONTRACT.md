@@ -1187,6 +1187,7 @@ centerline, length, u, v, dir, side, A, B, origin, axes}}`(`json_reference_geome
 
 ## GEO-211 正式工程規格與缺口修补
 
+- D09 已套用覆寫摘要的首屏、來源計數與明示檢視契約見 [OVERRIDE-DISCOVERY.md](OVERRIDE-DISCOVERY.md)。`#ewOverrideOverview` 共用於套用及材料排格；原底部唯讀來源 disclosure 合併至頂部，未確認草稿不計為已套用。本輪真瀏覽器收據仍待執行，不以 DOM 有值宣稱首屏可見。
 - `#btnEngineeringSpecs` 與 `[data-engineering-open]` 開啟 `#ewWorkspace`；放置面／主格入口透過 `data-placement-id`／`data-grid-id` 對準本次物件。`#ewTitle` 與版號標示正式工作區身份。
 - `.ew-nav [data-ew-section]` 切換套用、材料、做法與工程包；`#ewPreview` 建立核心候選，`#ewReviewed` 核對完整影響，`#ewConfirm` 確認单次交易。`#ewCancelPreview` 保留表單但取消候選。
 - GEO-218 統一由 `#projectBar [data-project-action="save"]` 的原使用者手勢直接呼叫完整專案保存；未發布表單經 ReferenceWorkspace 草稿 API 保存，與原生 World 分開。單純表單輸入不造成核心 undo 步驟。
