@@ -7,6 +7,20 @@
   const DEFINITION_CHAIN=['finish-surface','panel-fill','derived-placement','from-fill','guide','timber','place'];
   const hash=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
   const fail=(code,message)=>Object.assign(new Error(code+'：'+message),{code});
+  // Generation admits only rectangle/L. Read can describe an unsupported
+  // orthogonal ring; keep contract damage distinct from this slice's scope.
+  function notchOuter(outer,allowUnsupported=false){
+    if(!Array.isArray(outer)||(allowUnsupported?outer.length<4:![4,6].includes(outer.length))||!outer.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isSafeInteger))||new Set(outer.map(p=>p.join(','))).size!==outer.length)return false;
+    const edges=outer.map((a,i)=>({a,b:outer[(i+1)%outer.length]}));
+    if(edges.some(({a,b},i)=>(a[0]===b[0])===(a[1]===b[1])||(a[1]===b[1])===(edges[(i+1)%edges.length].a[1]===edges[(i+1)%edges.length].b[1])))return false;
+    for(let i=0;i<edges.length;i++)for(let j=i+1;j<edges.length;j++){
+      if(j===i+1||(i===0&&j===edges.length-1))continue;
+      const a=edges[i],b=edges[j];
+      if([0,1].every(axis=>Math.max(Math.min(a.a[axis],a.b[axis]),Math.min(b.a[axis],b.b[axis]))<=Math.min(Math.max(a.a[axis],a.b[axis]),Math.max(b.a[axis],b.b[axis]))))return false;
+    }
+    return true;
+  }
+  const notchRole=m=>m.role==='boundary'?m.priority===1:m.role==='primary'?m.priority===2:m.role==='secondary'?m.priority===3:m.role==='custom'&&[3,4].includes(m.priority);
   class Session {
     constructor({host,transport,boundaryId,template=F.TEMPLATE}){this.host=host;this.transport=transport;this.boundaryId=boundaryId;this.template=clone(template);this.phase='idle';this.reason='先保存配方，再明選本次來源並預覽。';this.collection=F.empty();this.currentRecipe=null;this.selectedSource=null;this.readResult=null;this.candidate=null;this.ownerKey=null;this.lease=null;this.pendingCommand=null;this.retired=false;this.owner=this.stamp();}
     get recipes(){return clone(this.collection.recipes);}
@@ -27,14 +41,18 @@
       this.collection=clone(next);this.currentRecipe=clone(recipe);this.owner=this.stamp();this.selectedSource=null;this.phase='ready';this.reason='配方已保存為一筆專案紀錄，尚未新增骨架。';return clone(recipe);
     }
     remove(id){this.assertIdle();this.assertCurrent();this.host.assertEditable();const next=F.remove(this.collection,id);this.host.setFeatureAttachment(F.KIND,next,this.owner.contextToken);this.collection=clone(next);this.currentRecipe=null;this.selectedSource=null;this.owner=this.stamp();this.reason='配方已刪除；既有正式物件保持不變。';}
-    validateRead(r){
-      const version=this.template.version,scope=version===1?'rectangle-common-policy':'rectangle-fixed-jig-no-retreat';
-      return r?.ok===true&&r.schema==='framing-template-read-result/'+version&&typeof r.revision==='string'&&/^(0|[1-9]\d{0,19})$/.test(r.revision)&&hash(r.contextKey)&&hash(r.definitionFingerprint)&&r.source?.boundaryId===this.boundaryId&&Array.isArray(r.source.outer)&&r.source.outer.length===4&&r.source.outer.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isSafeInteger))&&r.source.holes===0&&Array.isArray(r.source.placements)&&r.source.placements.every(p=>Number.isSafeInteger(p.id)&&p.id>=0&&p.frame&&Array.isArray(p.frame.origin)&&p.frame.origin.length===3&&p.frame.origin.every(Number.isSafeInteger)&&['+x','-x','+y','-y','+z','-z'].includes(p.frame.u)&&['+x','-x','+y','-y','+z','-z'].includes(p.frame.v))&&same({id:r.generator?.id,version:r.generator?.version,policyFingerprint:r.generator?.policyFingerprint},this.template)&&r.generator.scope===scope&&same(r.generator.defaults,F.DEFAULTS)&&Array.isArray(r.sources?.panels)&&Array.isArray(r.sources?.parameters);
+    validateRead(r,allowUnsupported=false){
+      const version=this.template.version,scope=version===1?'rectangle-common-policy':version===2?'rectangle-fixed-jig-no-retreat':'rectangle-or-single-notch-l-centered-no-retreat';
+      return r?.ok===true&&r.schema==='framing-template-read-result/'+version&&typeof r.revision==='string'&&/^(0|[1-9]\d{0,19})$/.test(r.revision)&&hash(r.contextKey)&&hash(r.definitionFingerprint)&&r.source?.boundaryId===this.boundaryId&&(version===3?notchOuter(r.source.outer,allowUnsupported):Array.isArray(r.source.outer)&&r.source.outer.length===4&&r.source.outer.every(p=>Array.isArray(p)&&p.length===2&&p.every(Number.isSafeInteger)))&&(version===3&&allowUnsupported?Number.isSafeInteger(r.source.holes)&&r.source.holes>=0:r.source.holes===0)&&Array.isArray(r.source.placements)&&r.source.placements.every(p=>Number.isSafeInteger(p.id)&&p.id>=0&&p.frame&&Array.isArray(p.frame.origin)&&p.frame.origin.length===3&&p.frame.origin.every(Number.isSafeInteger)&&['+x','-x','+y','-y','+z','-z'].includes(p.frame.u)&&['+x','-x','+y','-y','+z','-z'].includes(p.frame.v))&&same({id:r.generator?.id,version:r.generator?.version,policyFingerprint:r.generator?.policyFingerprint},this.template)&&r.generator.scope===scope&&same(r.generator.defaults,F.DEFAULTS)&&Array.isArray(r.sources?.panels)&&Array.isArray(r.sources?.parameters);
     }
     async open(template=this.template){
       this.assertIdle();if(!F.availability({template}).canGenerate)throw fail('FT_GENERATOR_UNAVAILABLE','請明選目前可用的不可變模板版本。');this.template=clone(template);this.restore();this.host.assertEditable();this.phase='reading';this.reason='正在讀取本次封閉面與可明選框架。';
-      const request=this.template.version===1?{schema:'framing-template-read/1',boundaryId:this.boundaryId}:{schema:'framing-template-read/2',boundaryId:this.boundaryId,template:clone(this.template)};
-      try{const r=await this.transport.post('/framing-template/read',request);this.assertCurrent();if(!this.validateRead(r))throw fail(r?.code||'FT_READ_CONTRACT',r?.error||'來源或不可變模板契約不完整；未提供生成動作。');this.readResult=clone(r);this.phase='ready';this.reason=this.template.version===1?'矩形第一片：先保存配方，再明選本次框架與材料語意。':'政策 A 固定治具：先保存配方，再明選本次框架與材料語意；需退縫或貼邊移主支的排法仍拒絕。';return clone(r);}
+      const request=this.template.version===1?{schema:'framing-template-read/1',boundaryId:this.boundaryId}:{schema:'framing-template-read/'+this.template.version,boundaryId:this.boundaryId,template:clone(this.template)};
+      try{const r=await this.transport.post('/framing-template/read',request);this.assertCurrent();if(!this.validateRead(r)){
+        // R03B_SCOPE_REASON_FROM_READ: no lease, preview, candidate or World write.
+        if(this.template.version===3&&this.validateRead(r,true))throw fail('UNSUPPORTED_SCOPE',r.source.holes>0?'本面含孔；政策 A L 形第一片尚未支援孔，未提供生成動作。':'本面是 U 形或多凹角輪廓；政策 A L 形第一片只接受矩形或單一凹角 L 形，未提供生成動作。');
+        throw fail(r?.code||'FT_READ_CONTRACT',r?.error||'來源或不可變模板契約不完整；未提供生成動作。');
+      }this.readResult=clone(r);this.phase='ready';this.reason=this.template.version===1?'矩形第一片：先保存配方，再明選本次框架與材料語意。':this.template.version===3?'政策 A L 形第一片：只接受單一凹角且可沿用置中板縫與固定治具的排法；先保存配方，再明選本次來源。':'政策 A 固定治具：先保存配方，再明選本次框架與材料語意；需退縫或貼邊移主支的排法仍拒絕。';return clone(r);}
       catch(error){this.phase=error.code==='FT_STALE'?'stale':'rejected';this.reason=error.message;throw error;}
     }
     selectSource(on,material,sources){
@@ -53,7 +71,7 @@
       if(panel.width!==this.currentRecipe.defaults.panelWidth||panel.length!==this.currentRecipe.defaults.panelLength)throw fail('FT_PANEL_MISMATCH','配方板寬／板長與明選固定板材不同；請明設並保存符合來源的配方，不會自動換尺寸。');
       return {schema:'framing-template-generate/1',expectedRevision:this.readResult.revision,contextKey:this.readResult.contextKey,boundaryId:this.boundaryId,on:this.selectedSource.on,definitionFingerprint:this.readResult.definitionFingerprint,template:clone(this.currentRecipe.template),parameters:clone(this.currentRecipe.defaults),layout:clone(this.currentRecipe.preference),material:clone(this.selectedSource.material),sources:clone(this.selectedSource.sources)};
     }
-    validCandidate(r){const p=r?.preview;return r?.ok===true&&hash(r.ownerKey)&&p?.schema==='framing-template-preview/1'&&(this.template.version===1||same(p.template,this.currentRecipe?.template)&&hash(p.definitionFingerprint))&&Number.isInteger(p.token)&&p.token>0&&p.token<=4294967295&&p.valid===true&&p.revision===this.readResult?.revision&&Array.isArray(p.members)&&p.members.length>0&&p.members.every(m=>m&&typeof m.kind==='string'&&typeof m.role==='string'&&Array.isArray(m.rect)&&m.rect.length===4&&m.rect.every(Number.isSafeInteger)&&m.rect[0]<m.rect[2]&&m.rect[1]<m.rect[3]&&Number.isSafeInteger(m.length)&&m.length>0&&Number.isSafeInteger(m.A)&&m.A>0&&Number.isSafeInteger(m.B)&&m.B>0)&&Array.isArray(p.seams?.u)&&Array.isArray(p.seams?.v)&&Array.isArray(p.marks)&&same(p.definitionChain,DEFINITION_CHAIN)&&same(p.sources,this.selectedSource?.sources)&&p.supportComplete===true&&Array.isArray(p.support)&&p.support.every(s=>['u','v'].includes(s.axis)&&typeof s.k==='string'&&/^-?(0|[1-9]\d*)$/.test(s.k)&&Array.isArray(s.range)&&s.range.length===2&&s.range.every(Number.isSafeInteger)&&s.range[0]<s.range[1]&&Number.isSafeInteger(s.left)&&s.left>=0&&Number.isSafeInteger(s.right)&&s.right>=0&&s.supported===true);}
+    validCandidate(r){const p=r?.preview;return r?.ok===true&&hash(r.ownerKey)&&p?.schema==='framing-template-preview/1'&&(this.template.version===1||same(p.template,this.currentRecipe?.template)&&hash(p.definitionFingerprint))&&Number.isInteger(p.token)&&p.token>0&&p.token<=4294967295&&p.valid===true&&p.revision===this.readResult?.revision&&Array.isArray(p.members)&&p.members.length>0&&p.members.every(m=>m&&typeof m.kind==='string'&&typeof m.role==='string'&&(this.template.version!==3||notchRole(m))&&Array.isArray(m.rect)&&m.rect.length===4&&m.rect.every(Number.isSafeInteger)&&m.rect[0]<m.rect[2]&&m.rect[1]<m.rect[3]&&Number.isSafeInteger(m.length)&&m.length>0&&Number.isSafeInteger(m.A)&&m.A>0&&Number.isSafeInteger(m.B)&&m.B>0)&&Array.isArray(p.seams?.u)&&Array.isArray(p.seams?.v)&&Array.isArray(p.marks)&&same(p.definitionChain,DEFINITION_CHAIN)&&same(p.sources,this.selectedSource?.sources)&&p.supportComplete===true&&Array.isArray(p.support)&&p.support.every(s=>['u','v'].includes(s.axis)&&typeof s.k==='string'&&/^-?(0|[1-9]\d*)$/.test(s.k)&&Array.isArray(s.range)&&s.range.length===2&&s.range.every(Number.isSafeInteger)&&s.range[0]<s.range[1]&&Number.isSafeInteger(s.left)&&s.left>=0&&Number.isSafeInteger(s.right)&&s.right>=0&&s.supported===true);}
     release(){this.host.finishTimberPreview(this.lease);this.lease=null;this.candidate=null;this.ownerKey=null;this.pendingCommand=null;}
     async preview(){
       this.assertIdle();const payload=this.payload();this.lease=this.host.beginTimberPreview();this.phase='previewing';this.reason='正在生成並核對整組候選；尚未寫入。';

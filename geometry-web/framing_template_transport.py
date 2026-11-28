@@ -48,21 +48,23 @@ def request(body, ask_bridge, *, mode):
             raise ValueError('需 1 MiB 內完整 read／preview JSON')
         value = json.loads(body.decode('utf-8'), object_pairs_hook=_pairs, parse_constant=_constant)
         _strings(value)
-        version_two = mode == 'read' and type(value) is dict and value.get('schema') == 'framing-template-read/2'
-        keys = ({'schema', 'boundaryId', 'template'} if version_two else {'schema', 'boundaryId'}) if mode == 'read' else {
+        read_version = ({'framing-template-read/1': 1, 'framing-template-read/2': 2,
+                         'framing-template-read/3': 3}.get(value.get('schema'), 0)
+                        if mode == 'read' and type(value) is dict else 0)
+        keys = ({'schema', 'boundaryId', 'template'} if read_version in (2, 3) else {'schema', 'boundaryId'}) if mode == 'read' else {
             'schema', 'boundaryId', 'on', 'contextKey', 'definitionFingerprint',
             'expectedRevision', 'template', 'parameters', 'layout', 'material', 'sources'}
         if type(value) is not dict or set(value) != keys or not _u32(value['boundaryId']):
             raise ValueError('需完整明示欄位與 uint32 邊界識別')
-        schema = ('framing-template-read/2' if version_two else 'framing-template-read/1') if mode == 'read' else 'framing-template-generate/1'
-        if value['schema'] != schema:
+        schema = 'framing-template-read/' + str(read_version) if mode == 'read' else 'framing-template-generate/1'
+        if value['schema'] != schema or mode == 'read' and read_version not in (1, 2, 3):
             raise ValueError('不支援的配方資料版本')
-        if version_two:
+        if read_version in (2, 3):
             template = value['template']
             if (type(template) is not dict or set(template) != {'id', 'version', 'policyFingerprint'}
                     or template['id'] != 'flat-ceiling' or type(template['version']) is not int
-                    or template['version'] != 2 or not _key(template['policyFingerprint'])):
-                raise ValueError('read/2 需明選完整的 flat-ceiling/2 版本與政策指紋')
+                    or template['version'] != read_version or not _key(template['policyFingerprint'])):
+                raise ValueError(f'read/{read_version} 需明選完整的 flat-ceiling/{read_version} 版本與政策指紋')
         if mode == 'preview':
             revision = value['expectedRevision']
             if (not _u32(value['on']) or not _key(value['contextKey']) or not _key(value['definitionFingerprint'])

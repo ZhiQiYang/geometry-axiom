@@ -5,7 +5,8 @@
   const POLICY_FINGERPRINT='21d364e9cbc1d98bf7d3663d0878829c00adc17f43957127d6cea748b3cebd83';
   const TEMPLATE=Object.freeze({id:'flat-ceiling',version:1,policyFingerprint:POLICY_FINGERPRINT});
   const POLICY_A_TEMPLATE=Object.freeze({id:'flat-ceiling',version:2,policyFingerprint:'3641dec4060cfcf062e2f1d55f341ecb5ae5023da4a4d8a3aba2c3c4110b6d58'});
-  const TEMPLATES=Object.freeze([TEMPLATE,POLICY_A_TEMPLATE]);
+  const NOTCH_TEMPLATE=Object.freeze({id:'flat-ceiling',version:3,policyFingerprint:'8d734a5128ac6e9e7ed486dbd7f86fc22997bb9a0f38cefd2ad314ecf14f87fc'});
+  const TEMPLATES=Object.freeze([TEMPLATE,POLICY_A_TEMPLATE,NOTCH_TEMPLATE]);
   const DEFAULTS=Object.freeze({panelWidth:915,panelLength:1830,gap:2,timberWidth:27,timberDepth:33,maxSecondarySpacing:367});
   const SLOTS=Object.freeze(['boundary','frame','material-semantics','panel-version','support-threshold']);
   const CORNERS=Object.freeze(['min-min','max-min','min-max','max-max']);
@@ -50,5 +51,5 @@
   function upsert(value,recipe){const current=value||empty();validate(current);assertGeneratable(recipe);const previous=current.recipes.find(r=>r.id===recipe.id);if(previous)assertGeneratable(previous);const next=clone(current),index=next.recipes.findIndex(r=>r.id===recipe.id);if(index<0)next.recipes.push(clone(recipe));else next.recipes[index]=clone(recipe);return validate(next);}
   function remove(value,id){validate(value);if(!value.recipes.some(r=>r.id===id))fail('FT_RECIPE_MISSING','配方不存在。');return validate({...clone(value),recipes:value.recipes.filter(r=>r.id!==id).map(clone)});}
   function create(id,name,defaults={...DEFAULTS},preference={corner:'min-min',lengthAlong:'v'},version=1){const template=TEMPLATES.find(t=>t.version===version);if(!template)fail('FT_GENERATOR_UNAVAILABLE','請明選可用的不可變模板版本。');return validateRecipe({id,name,template:{...template},defaults:clone(defaults),preference:clone(preference),sourceSlots:[...SLOTS],sourceHints:[]});}
-  return Object.freeze({KIND,SCHEMA,CAPABILITY,POLICY_FINGERPRINT,TEMPLATE,POLICY_A_TEMPLATE,TEMPLATES,DEFAULTS,SLOTS,CORNERS,MAX_RECIPES,validate,validateRecipe,availability,assertGeneratable,empty,upsert,remove,create});
+  return Object.freeze({KIND,SCHEMA,CAPABILITY,POLICY_FINGERPRINT,TEMPLATE,POLICY_A_TEMPLATE,NOTCH_TEMPLATE,TEMPLATES,DEFAULTS,SLOTS,CORNERS,MAX_RECIPES,validate,validateRecipe,availability,assertGeneratable,empty,upsert,remove,create});
 });

@@ -1,0 +1,23 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/framing_template_notch_mutation_check.py"
+    ],
+    "extra_env": {},
+    "kind": "python-script",
+    "label": "tests/framing_template_notch_mutation_check.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/framing_template_notch_mutation_check.py"
+  ],
+  "name": "script:framing_template_notch_mutations",
+  "order": "new/script__framing_template_notch_mutations",
+  "schema": "geometry-native-suite/1"
+}
