@@ -7,9 +7,14 @@ name: OpenAI worker
 # 直接呼叫 Responses API（function calling），自己跑工具迴圈。
 # 安全設計、殘餘風險與限制見 .github/prompts/openai-worker.md 與建立本檔的 PR 說明。
 #
-# 只能由擁有者本人、從 main 手動觸發：
-#   gh workflow run openai-worker.yml --repo ZhiQiYang/geometry-axiom --ref main \
-#     -f task_issue=<issue 號> -f task_comment_id=<留言 id> [-f base_ref=main] [-f max_budget_usd=10] [-f model=gpt-6.2-astra]
+# 只有兩個入口，兩者都必須是 main 上的 workflow、github.actor 與 github.triggering_actor 都是擁有者本人：
+#   1. 擁有者從 main 手動觸發本檔（workflow_dispatch）：
+#      gh workflow run openai-worker.yml --repo ZhiQiYang/geometry-axiom --ref main \
+#        -f task_issue=<issue 號> -f task_comment_id=<留言 id> [-f base_ref=main] [-f max_budget_usd=10] [-f model=gpt-6.2-astra]
+#   2. main 上的 openai-dispatch.yml（schedule 或擁有者的 workflow_dispatch）以 workflow_call 呼叫本檔。
+#      被呼叫時 github context 屬於呼叫端：event_name 是 schedule／workflow_dispatch，
+#      github.workflow_ref 是 <repo>/.github/workflows/openai-dispatch.yml@refs/heads/main。
+#   其他事件、其他分支、其他呼叫端（github.workflow_ref 不符）一律不執行任何 job。
 #
 # 四個 job，權限各自最小：
 #   prepare（issues/contents 讀）：驗輸入、驗留言作者是擁有者、記內文 SHA-256、把 base 解析成完整 SHA。不含模型。
@@ -46,6 +51,37 @@ on:
         options:
           - gpt-6.2-astra
           - gpt-6.2-sol
+  # 只供 main 上的 openai-dispatch.yml 呼叫（見檔頭；各 job 的 if 核對 github.workflow_ref）。
+  # 輸入與 workflow_dispatch 相同，照樣由 prepare job 全部重新驗證；model 在這裡是字串，白名單仍在 prepare。
+  workflow_call:
+    inputs:
+      task_issue:
+        required: true
+        type: string
+      task_comment_id:
+        required: true
+        type: string
+      base_ref:
+        required: false
+        default: main
+        type: string
+      max_budget_usd:
+        required: false
+        default: "10"
+        type: string
+      model:
+        required: false
+        default: gpt-6.2-astra
+        type: string
+    secrets:
+      OPENAI_API_KEY:
+        required: false
+    outputs:
+      end_reason:
+        description: 模型迴圈的 end_reason（只含小寫英文與底線；派工依它判斷是否因點數用完而整批停止）
+        value: ${{ jobs.work.outputs.end_reason }}
+
+run-name: OpenAI worker 任務留言 ${{ inputs.task_comment_id }}
 
 # workflow 層級不給任何權限；只在各 job 上給最小權限。
 permissions: {}
@@ -55,17 +91,23 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  WORKER_BRANCH: openaiworker/${{ github.run_id }}
+  # 手動觸發：openaiworker/<run_id>。派工呼叫：同一個派工 run 會呼叫多次，分支加上任務留言 id 以免互撞：
+  # openaiworker/<run_id>-<留言 id>（留言 id 由 prepare 驗成純數字；push 前再以完整格式核對）。
+  WORKER_BRANCH: ${{ contains(github.workflow_ref, '/.github/workflows/openai-dispatch.yml@') && format('openaiworker/{0}-{1}', github.run_id, inputs.task_comment_id) || format('openaiworker/{0}', github.run_id) }}
 
 jobs:
   prepare:
     name: Validate task comment and base
-    # 只准 repo 擁有者本人、從 main 上的這份 workflow 觸發（與審查版相同）。
+    # 只准 repo 擁有者本人、從 main 上的這份 workflow 手動觸發，或由 main 上的 openai-dispatch.yml 呼叫（見檔頭）。
+    # 四個 job 的 if 相同；字串比較不分大小寫（GitHub expression 的 == 規則）。
     if: >-
-      github.event_name == 'workflow_dispatch' &&
       github.ref == 'refs/heads/main' &&
       github.actor == github.repository_owner &&
-      github.triggering_actor == github.repository_owner
+      github.triggering_actor == github.repository_owner &&
+      ((github.event_name == 'workflow_dispatch' &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-worker.yml@refs/heads/main', github.repository)) ||
+       ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-dispatch.yml@refs/heads/main', github.repository)))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -218,7 +260,7 @@ jobs:
       - name: Hand the task to the work job
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: openai-worker-task
+          name: openai-worker-task-${{ steps.task.outputs.comment_id }}
           path: ${{ runner.temp }}/task/
           if-no-files-found: error
           retention-days: 1
@@ -227,15 +269,20 @@ jobs:
     name: Model works on a local branch
     needs: prepare
     if: >-
-      github.event_name == 'workflow_dispatch' &&
       github.ref == 'refs/heads/main' &&
       github.actor == github.repository_owner &&
       github.triggering_actor == github.repository_owner &&
+      ((github.event_name == 'workflow_dispatch' &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-worker.yml@refs/heads/main', github.repository)) ||
+       ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-dispatch.yml@refs/heads/main', github.repository))) &&
       needs.prepare.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 200
     permissions:
       contents: read
+    outputs:
+      end_reason: ${{ steps.model.outputs.end_reason }}
     env:
       # 官方 openai Python SDK 的釘選版本；依賴全部釘版並驗 sha256（見「Install pinned openai SDK」）。
       OPENAI_SDK_VERSION: "3.56.0"
@@ -254,7 +301,7 @@ jobs:
       - name: Receive the validated task
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: openai-worker-task
+          name: openai-worker-task-${{ needs.prepare.outputs.comment_id }}
           path: ${{ runner.temp }}/task
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -665,6 +712,10 @@ jobs:
           echo "agent exit status: $status"
           jq '{is_error, end_reason, started, num_turns, api_calls, total_cost_usd, cost_is_estimate, error}' \
             "$out/result.json" || true
+          # 給派工的 end_reason：只放行小寫英文與底線（結果 JSON 視為不可信資料），其他一律空字串。
+          reason="$(jq -r '.end_reason // empty' "$out/result.json" 2>/dev/null || true)"
+          [[ "$reason" =~ ^[a-z_]{1,40}$ ]] || reason=""
+          echo "end_reason=$reason" >> "$GITHUB_OUTPUT"
 
       - name: Stop every leftover worker process (no API key)
         if: always()
@@ -739,7 +790,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: openai-worker-output
+          name: openai-worker-output-${{ needs.prepare.outputs.comment_id }}
           path: ${{ runner.temp }}/worker-out/
           if-no-files-found: ignore
           retention-days: 1
@@ -749,10 +800,13 @@ jobs:
     needs: [prepare, work]
     if: >-
       always() &&
-      github.event_name == 'workflow_dispatch' &&
       github.ref == 'refs/heads/main' &&
       github.actor == github.repository_owner &&
       github.triggering_actor == github.repository_owner &&
+      ((github.event_name == 'workflow_dispatch' &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-worker.yml@refs/heads/main', github.repository)) ||
+       ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-dispatch.yml@refs/heads/main', github.repository))) &&
       needs.prepare.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -779,7 +833,7 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: openai-worker-output
+          name: openai-worker-output-${{ needs.prepare.outputs.comment_id }}
           path: ${{ runner.temp }}/worker-out
 
       - name: Refusal checks (no token, no API key, no model)
@@ -954,7 +1008,7 @@ jobs:
           export PATH=/usr/sbin:/usr/bin:/sbin:/bin
           repo="$RUNNER_TEMP/check-repo"
           [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
-          case "$WORKER_BRANCH" in openaiworker/[0-9]*) ;; *) echo "::error::分支名不符" >&2; exit 1 ;; esac
+          [[ "$WORKER_BRANCH" =~ ^openaiworker/[1-9][0-9]{0,19}(-[1-9][0-9]{0,12})?$ ]] || { echo "::error::分支名不符" >&2; exit 1; }
           auth="$(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
           echo "::add-mask::$auth"
           echo "push_state=attempting" >> "$GITHUB_OUTPUT"
@@ -1007,10 +1061,13 @@ jobs:
     needs: [prepare, work, push]
     if: >-
       always() &&
-      github.event_name == 'workflow_dispatch' &&
       github.ref == 'refs/heads/main' &&
       github.actor == github.repository_owner &&
       github.triggering_actor == github.repository_owner &&
+      ((github.event_name == 'workflow_dispatch' &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-worker.yml@refs/heads/main', github.repository)) ||
+       ((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
+        github.workflow_ref == format('{0}/.github/workflows/openai-dispatch.yml@refs/heads/main', github.repository))) &&
       needs.prepare.outputs.task_issue != ''
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -1025,7 +1082,7 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: openai-worker-output
+          name: openai-worker-output-${{ needs.prepare.outputs.comment_id }}
           path: ${{ runner.temp }}/worker-out
 
       - name: Post one 【OpenAI worker】 comment (no API key, no model)
@@ -1255,10 +1312,13 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          # 只刪本任務的兩個 artifact（派工 run 裡其他任務各有自己的名稱）。
+          TASK_ART: openai-worker-task-${{ needs.prepare.outputs.comment_id }}
+          OUTPUT_ART: openai-worker-output-${{ needs.prepare.outputs.comment_id }}
         run: |
           set -euo pipefail
-          for id in $(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
-                        --jq '.artifacts[] | select(.name == "openai-worker-output" or .name == "openai-worker-task") | .id'); do
+          for id in $(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100" \
+                        --jq '.artifacts[] | select(.name == env.OUTPUT_ART or .name == env.TASK_ART) | .id'); do
             gh api --method DELETE "repos/$GITHUB_REPOSITORY/actions/artifacts/$id"
             echo "deleted artifact $id"
           done

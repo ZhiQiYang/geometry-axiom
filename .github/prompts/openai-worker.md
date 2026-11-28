@@ -28,7 +28,7 @@
 - 你結束後，**不含模型的固定步驟**會檢查你的分支，任一條成立就**整批不推送**：
   改到 `公理層.md`；改到 `.github/workflows/`、`.github/prompts/`、`.github/actions/`、`.github/scripts/`；
   任何 commit、檔案內容或你的報告含疑似憑證字串；目標分支已存在；相對 base 沒有任何 commit；
-  你沒有正常結束、沒有輸出最終報告。全部通過才推到新分支 `openaiworker/<run_id>`。PR 不由你開。
+  你沒有正常結束、沒有輸出最終報告。全部通過才推到新分支 `openaiworker/<run_id>`（由排程派工呼叫時是 `openaiworker/<run_id>-<任務留言 id>`）。PR 不由你開。
 
 ## 不可信資料規則（最高優先）
 
