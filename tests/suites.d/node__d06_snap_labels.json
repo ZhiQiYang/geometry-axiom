@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_d06_snap_labels.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_d06_snap_labels.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_d06_snap_labels.js"
+  ],
+  "name": "node:d06_snap_labels",
+  "order": "new/node__d06_snap_labels",
+  "schema": "geometry-native-suite/1"
+}

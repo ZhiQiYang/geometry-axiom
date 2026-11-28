@@ -123,6 +123,8 @@
     return `<g class="cx-tip" transform="translate(16,-34)"><rect width="${w}" height="20" rx="5" fill="#172033" fill-opacity=".94"/><text x="7" y="13.8" font-size="11" font-weight="600" fill="#fff" font-family="${FONT}" style="font-variant-numeric:tabular-nums">${txt}</text></g>`;
   }
   const SNAP_ZH = { vertex: "端點", mid: "中點", edge: "邊上", grid: "格點", cross: "交點", guide: "參考線" };
+  const SNAP_SOURCE_ZH = { "pdf-endpoint":"PDF 端點", "pdf-intersection":"PDF 閉合路徑交點",
+    "draft-alignment":"草稿對齊", "vertex-alignment":"頂點對齊", grid:"格點" };
   function snap(k, x, y, opts) {
     opts = opts || {};
     const c = T.accent;
@@ -135,7 +137,7 @@
     else if (k === "cross") o += `<path d="M${x - 4} ${y - 4}L${x + 4} ${y + 4}M${x + 4} ${y - 4}L${x - 4} ${y + 4}" stroke="#fff" stroke-width="3.8"/><path d="M${x - 4} ${y - 4}L${x + 4} ${y + 4}M${x + 4} ${y - 4}L${x - 4} ${y + 4}" stroke="${c}" stroke-width="1.7"/>`;
     else if (k === "guide") o += `<circle cx="${x}" cy="${y}" r="4.5" fill="#fff" stroke="${c}" stroke-width="1.6"/>`;
     if (opts.label !== false) {
-      const t = opts.label || SNAP_ZH[k] || "", w = textW(t, 10) + 10;
+      const t = opts.label || SNAP_SOURCE_ZH[opts.source] || SNAP_ZH[k] || "", w = textW(t, 10) + 10;
       o += `<g transform="translate(${x + 8},${y + 7})"><rect width="${w}" height="16" rx="4" fill="#fff" stroke="${c}" stroke-opacity=".55"/><text x="5" y="11.4" font-size="10" font-weight="650" fill="${T.accent}" font-family="${FONT}" data-label-halo="none">${t}</text></g>`;
     }
     return o;

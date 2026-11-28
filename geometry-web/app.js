@@ -4469,7 +4469,7 @@ function cxRender(h, x, y, alt, shift) {
   if (!res) { h.marks.textContent = ""; h.cur.innerHTML = ""; h.markHTML = h.glyphHTML = ""; return; }
   h.cur.setAttribute("transform", `translate(${x - r.left},${y - r.top})`);
   const marks = (res.marks || []).map(m => h === cxUI.fe && window.CursorV2
-    ? CursorV2.snap(m.k,m.x,m.y) : cxSnapMark(m.k, m.x, m.y)).join("");
+    ? CursorV2.snap(m.k,m.x,m.y,{source:m.source}) : cxSnapMark(m.k, m.x, m.y)).join("");
   let glyph = cxGlyphB(res.key) + (res.tip ? cxTip(res.tip) : "");
   if (h === cxUI.fe && window.CursorV2) {
     const keys = {edge:"edge-push", "resize-ew":"edge-push", "resize-ns":"edge-push",
@@ -4563,27 +4563,39 @@ function cxResolveFace(x, y, alt, shift) {
   const hit = hitN ? hitN.dataset.faceHit.split(":") : null;
   const marks = [];
   const snapOn = $("faceSnapToggle") && $("faceSnapToggle").checked;
-  /* 吸附標記:繪圖/編輯工具吸附開時,在吸附落點畫格點標記;
-     redraw 的吸附點由 PolyDraft 預覽給(頂點吸附對齊到草稿頂點座標 → vertex 標記)。 */
-  if (fe.tool === "redraw") {
+  /* 呈現取實際取樣來源，不由座標是否整格、顏色或草稿點數猜測。
+     軸向 guides 可分別來自不同頂點，只能稱對齊；平移不宣稱吸附。 */
+  const drawing = !fe.spaceDown && fe.tool !== "pan" && d?.kind !== "pan";
+  /* 只列實際以 feSnap 點作輸入的手勢。pinch / opHandle 還會依 zoom
+     二次取整、裁限或只改一軸，不把前一層格點冒稱最後採用點；保留真矩形預覽。 */
+  const fixedGridGesture = d ? ["guideNew", "holeRect", "vertex", "edge", "guide"].includes(d.kind)
+    : ["guide", "hole"].includes(fe.tool);
+  if (drawing && fe.tool === "redraw") {
     const pv = fe.draftPreview;
-    if (pv && pv.cur) {
+    const page = pv?.pdfTarget && oc.edit && ReferenceWorkspace.active(oc.edit.bid);
+    const fresh = pv && pv.snapDraft === fe.draft.pts && pv.snapOn === !!snapOn && (!pv.pdfTarget ||
+      (page === pv.pdfPage && fePdfSnapBasis(page) === pv.pdfBasis));
+    if (fresh && pv.cur && pv.snapSource) {
       const p = cxFeSceneToVp(pv.cur[0], pv.cur[1]);
-      const own = fe.draft.pts.length && (pv.guides || []).length;
-      marks.push({ k: own ? "vertex" : "grid", x: p.x, y: p.y });
+      const k = pv.snapSource === "pdf-endpoint" ? "vertex" :
+        pv.snapSource === "pdf-intersection" ? "cross" :
+        pv.snapSource === "draft-alignment" ? "guide" : "grid";
+      marks.push({ k, source:pv.snapSource, x:p.x, y:p.y });
     }
-  } else if (snapOn && (d || ["guide", "hole"].includes(fe.tool))) {
+  } else if (drawing && fixedGridGesture && (snapOn || d?.kind === "edge" && d.snapTo != null)) {
     const s = feSnap(pt);
+    let aligned = false;
     if (d?.kind === "edge" && d.snapTo != null) {
       const vs = fe.work?.[d.loop]?.verts;
       if (vs?.[d.index] && vs[(d.index+1)%vs.length]) {
         if (vs[d.index][1] === vs[(d.index+1)%vs.length][1]) s.y=d.snapTo;
         else s.x=d.snapTo;
+        aligned = true;
       }
     }
-    if (s.x !== pt.x || s.y !== pt.y) {
+    if (aligned || s.x !== pt.x || s.y !== pt.y) {
       const p = cxFeSceneToVp(s.x, s.y);
-      marks.push({ k: "grid", x: p.x, y: p.y });
+      marks.push({ k:aligned ? "guide" : "grid", source:aligned ? "vertex-alignment" : "grid", x:p.x, y:p.y });
     }
   }
   if (d) {
@@ -5576,7 +5588,7 @@ function drawFaceEditor() {
       .textContent = `${opRect[2] - opRect[0]} × ${opRect[3] - opRect[1]}`;
     /* GEO-192 B:四條可拖曳邊,只在 select 工具下畫出(其餘工具沒有 fe.op)。 */
     if (fe.tool === "select") {
-      const hw = window.FaceContextMenu?.open ? 14 : Math.max(10, 14 / z);
+      const hw = window.FaceContextMenu?.open ? 14 : Math.min(14, Math.max(10, 14 / z));
       el("line", { x1: opRect[0], y1: opRect[1], x2: opRect[0], y2: opRect[3],
         class: "fe-ghost-handle", "data-fe-handle": "left", "stroke-width": hw }, root);
       el("line", { x1: opRect[2], y1: opRect[1], x2: opRect[2], y2: opRect[3],
@@ -5913,7 +5925,10 @@ function feDraftPreviewMove(pt, defer = false) {
   if (fe.tool !== "redraw") return;
   const sample=feDraftSample(pt);
   fe.draftPreview = PolyDraft.previewMove(fe.draft, sample.point, sample.opts);
-  Object.assign(fe.draftPreview,{pdfTarget:sample.target,pdfPage:sample.page,pdfBasis:sample.basis});
+  Object.assign(fe.draftPreview,{pdfTarget:sample.target,pdfPage:sample.page,pdfBasis:sample.basis,
+    snapOn:!!sample.opts.snapOn,snapDraft:fe.draft.pts,
+    snapSource:sample.target ? `pdf-${sample.target.kind}` :
+      fe.draftPreview.guides.length ? "draft-alignment" : sample.opts.snapOn ? "grid" : null});
   const cur=fe.draftPreview.cur;
   const status=sample.target?`PDF ${sample.target.kind==='endpoint'?'端點':'閉合路徑交點'} · 第 ${sample.page.page} 頁（取整 mm）`:sample.status==='loading'?'PDF 端點讀取中':sample.status==='manual'?'無可用原始直線端點；人工描繪':sample.status==='unavailable'?'PDF 端點無法取得；人工描繪':'';
   const readout=`u ${cur[0]} v ${cur[1]} mm${status?' · '+status:''}`;

@@ -822,6 +822,8 @@ Esc 關單，以及 sheet 的 `home`／`fit`／`snap`／`grid`／`locate`／`cle
 
 ## GEO-190 面內底圖臨摹(cdp_test §P42)
 
+外環吸附的來源／游標標籤契約及獨立 390／1400 px `P1236` 段見 [D06-SNAP-LABELS.md](D06-SNAP-LABELS.md)；舊段計數不改，新增段由真 CI 量測導入。
+
 > 原本僅限本次工作階段；2026-09-26 使用者核准 GEO-198：底圖、校準及來源紀錄可隨 `.gcanvas` 保存。
 > `oc.underlays[bid]` 是目前場景作用中圖頁的投影；不寫 `.scene`/`localStorage`，`api("dump")` 不含底圖資訊。
 
