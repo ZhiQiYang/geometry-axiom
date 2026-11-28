@@ -777,4 +777,25 @@ bool geo_collinear_segment_overlap(GeoPoint2 a,GeoPoint2 b,GeoPoint2 c,GeoPoint2
     GeoCoord x=vertical?a.v:a.u,y=vertical?b.v:b.u,z=vertical?c.v:c.u,q=vertical?d.v:d.u;
     *lo=geo_coord_max(geo_coord_min(x,y),geo_coord_min(z,q));*hi=geo_coord_min(geo_coord_max(x,y),geo_coord_max(z,q));return *lo<*hi;
 }
+static int geo_interval_compare(const void *a,const void *b)
+{const GeoInterval *x=a,*y=b;return x->start!=y->start?(x->start<y->start?-1:1):x->end!=y->end?(x->end<y->end?-1:1):0;}
+size_t geo_rect_section_union(const GeoAxisBox2 *rects,size_t nr,int axis,GeoCoord y2,GeoInterval *out)
+{
+    size_t n=0;int other=1-axis;
+    for(size_t i=0;i<nr;++i)if(2*rects[i].lo[other]<y2&&y2<2*rects[i].hi[other])out[n++]=(GeoInterval){rects[i].lo[axis],rects[i].hi[axis]};
+    qsort(out,n,sizeof *out,geo_interval_compare);size_t used=0;
+    for(size_t i=0;i<n;++i){
+        if(used&&out[i].start<=out[used-1].end)out[used-1].end=geo_coord_max(out[used-1].end,out[i].end);
+        else out[used++]=out[i];
+    }
+    return used;
+}
+GeoCoord geo_interval_edge_coverage(const GeoInterval *un,size_t n,GeoCoord edge,GeoCoord stop,bool left)
+{
+    for(size_t i=0;i<n;++i){
+        if(left&&un[i].start<edge&&edge<=un[i].end)return edge-geo_coord_max(stop,un[i].start);
+        if(!left&&un[i].start<=edge&&edge<un[i].end)return geo_coord_min(stop,un[i].end)-edge;
+    }
+    return 0;
+}
 #endif

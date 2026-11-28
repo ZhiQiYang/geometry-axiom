@@ -20,6 +20,8 @@ typedef struct {GeoPoint3 vertices[4];} GeoQuad3;
 typedef struct {GeoPoint3 point;GeoVector3 normal;} GeoPlane3;
 typedef struct {GeoPoint3 origin;GeoVector3 axis_u,axis_v,normal;} GeoFrame;
 typedef struct {GeoCoord min_u,min_v,max_u,max_v;} GeoRect2;
+/* Axis-addressable bounds; same closed rectangle as GeoRect2. */
+typedef struct {GeoCoord lo[2],hi[2];} GeoAxisBox2;
 typedef struct {const GeoPoint2 *v;size_t count;} GeoLoop2View;
 typedef struct {GeoLoop2View outline;const GeoLoop2View *holes;size_t hole_count;} GeoRegionView;
 typedef struct {const GeoRegionView *regions;size_t count;} GeoRegionSetView;
@@ -99,4 +101,16 @@ void geo_aabb_project_interval(const GeoCoord lo[3],const GeoCoord hi[3],GeoPoin
 GeoCoord geo_loop_rect_intersection_area(const GeoLoop2View *,const GeoRect2 *);
 bool geo_loop_touches_rect(const GeoLoop2View *,const GeoRect2 *);
 bool geo_collinear_segment_overlap(GeoPoint2,GeoPoint2,GeoPoint2,GeoPoint2,GeoCoord *,GeoCoord *);
+/* Cross-section union of bounded, ordered rectangles. axis is 0 or 1;
+ * sample2 is twice the coordinate on the other axis. Rectangle boundaries
+ * are excluded from the sampled section. out has capacity >= count and is
+ * non-NULL (also for count == 0). The sorted output coalesces touching ranges.
+ * All storage is borrowed; there is no allocation or domain selection here.
+ * Edge coverage takes that union, an edge and a stop on the requested side;
+ * it returns only the contiguous covered distance from edge, clipped to stop.
+ * Coordinates (including edge/stop) obey the bounded geometry contract. */
+size_t geo_rect_section_union(const GeoAxisBox2 *rects,size_t count,int axis,
+    GeoCoord sample2,GeoInterval *out);
+GeoCoord geo_interval_edge_coverage(const GeoInterval *un,size_t count,
+    GeoCoord edge,GeoCoord stop,bool left);
 #endif

@@ -1,15 +1,12 @@
 #include "panel_support.h"
 #include <stdlib.h>
 #include <string.h>
-typedef struct {GeoCoord lo,hi;} PanelInterval;
 static GeoCoord support_min(GeoCoord a,GeoCoord b){return a<b?a:b;}
 static GeoCoord support_max(GeoCoord a,GeoCoord b){return a>b?a:b;}
 static int support_coord_compare(const void *a,const void *b){GeoCoord x=*(const GeoCoord*)a,y=*(const GeoCoord*)b;return x<y?-1:x>y?1:0;}
 void wood_panel_support_free(WoodPanelSupport *s)
 {free(s->seams);free(s->nonseams);free(s->parts);memset(s,0,sizeof *s);}
 static GeoCoord pf_component(GeoPoint2 p,int axis) {return axis?p.v:p.u;}
-static int pf_interval_compare(const void *a,const void *b)
-{const PanelInterval *x=a,*y=b;return x->lo!=y->lo?(x->lo<y->lo?-1:1):x->hi!=y->hi?(x->hi<y->hi?-1:1):0;}
 /* Compare a nonnegative integer width to positive num/den without overflow. */
 static bool pf_support_enough(GeoCoord d,GeoQuantity x)
 {return d>x.num/x.den||(d==x.num/x.den&&x.num%x.den==0);}
@@ -26,25 +23,6 @@ static size_t pf_support_section(const WoodPanelFragment *f,int axis,GeoCoord y2
     }
     qsort(xs,n,sizeof *xs,support_coord_compare);return n;
 }
-static size_t pf_support_union(const WoodPanelFootprint *rects,size_t nr,int axis,GeoCoord y2,PanelInterval *out)
-{
-    size_t n=0;int other=1-axis;
-    for(size_t i=0;i<nr;++i)if(2*rects[i].lo[other]<y2&&y2<2*rects[i].hi[other])out[n++]=(PanelInterval){rects[i].lo[axis],rects[i].hi[axis]};
-    qsort(out,n,sizeof *out,pf_interval_compare);size_t used=0;
-    for(size_t i=0;i<n;++i){
-        if(used&&out[i].lo<=out[used-1].hi)out[used-1].hi=support_max(out[used-1].hi,out[i].hi);
-        else out[used++]=out[i];
-    }
-    return used;
-}
-static GeoCoord pf_support_width(const PanelInterval *un,size_t n,GeoCoord edge,GeoCoord stop,bool left)
-{
-    for(size_t i=0;i<n;++i){
-        if(left&&un[i].lo<edge&&edge<=un[i].hi)return edge-support_max(stop,un[i].lo);
-        if(!left&&un[i].lo<=edge&&edge<un[i].hi)return support_min(stop,un[i].hi)-edge;
-    }
-    return 0;
-}
 static bool pf_support_append_seam(WoodPanelEffectiveSeam *out,size_t *count,size_t line,GeoCoord lo,GeoCoord hi,GeoCoord left,GeoCoord right,WoodPanelSupportStatus *status)
 {
     if(*count&&out[*count-1].line==line&&out[*count-1].range[1]==lo){out[*count-1].range[1]=hi;return true;}
@@ -59,7 +37,7 @@ WoodPanelSupportStatus wood_panel_support_evaluate(const WoodPanelLayout *d,cons
     if(nr>footprint_capacity)return WOOD_PANEL_SUPPORT_FOOTPRINT_LIMIT;
     size_t capacity=d->vertices+2*nr+2;
     GeoCoord *cuts=malloc(capacity*sizeof *cuts),*crossings=malloc((d->vertices+1)*sizeof *crossings);
-    PanelInterval *un=malloc((nr+1)*sizeof *un);
+    GeoInterval *un=malloc((nr+1)*sizeof *un);
     s->seams=calloc(WOOD_PANEL_SUPPORT_MAX,sizeof *s->seams);s->nonseams=calloc(WOOD_PANEL_SUPPORT_MAX,sizeof *s->nonseams);s->parts=calloc(WOOD_PANEL_SUPPORT_MAX,sizeof *s->parts);
     if(!cuts||!crossings||!un||!s->seams||!s->nonseams||!s->parts){status=WOOD_PANEL_SUPPORT_WORKSPACE;goto done;}
     size_t work=0;
@@ -91,8 +69,8 @@ WoodPanelSupportStatus wood_panel_support_evaluate(const WoodPanelLayout *d,cons
                 continue;
             }
             if(!pf_support_append_seam(s->seams,&s->count,line,lo,hi,edges[0],edges[1],&status))goto done;
-            size_t seam=s->count-1,n=pf_support_union(rects,nr,axis,y2,un);
-            GeoCoord left=pf_support_width(un,n,edges[0],stop[0],true),right=pf_support_width(un,n,edges[1],stop[1],false);
+            size_t seam=s->count-1,n=geo_rect_section_union(rects,nr,axis,y2,un);
+            GeoCoord left=geo_interval_edge_coverage(un,n,edges[0],stop[0],true),right=geo_interval_edge_coverage(un,n,edges[1],stop[1],false);
             if(s->part_count){WoodPanelSupportPart *last=&s->parts[s->part_count-1];
                 if(last->seam==seam&&last->range[1]==lo&&last->left==left&&last->right==right){last->range[1]=hi;continue;}}
             if(s->part_count==WOOD_PANEL_SUPPORT_MAX){status=WOOD_PANEL_SUPPORT_PART_LIMIT;goto done;}
