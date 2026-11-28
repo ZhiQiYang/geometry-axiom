@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/history_scan.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: history_scan.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "314c4654bd027050f11a6b73e28e9d715b573558ef8391d636903278db9e3a1a"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

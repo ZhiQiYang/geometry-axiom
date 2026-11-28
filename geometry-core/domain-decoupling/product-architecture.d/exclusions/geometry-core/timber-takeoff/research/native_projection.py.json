@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/native_projection.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: native_projection.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "8e97e8c17b82c71824f8bdf3b51350739cc82eacb603d77747a87d683cee1289"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

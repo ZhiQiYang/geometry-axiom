@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/native_root_probe.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: native_root_probe.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "40bdf728a34639bf337a311b929c02f971d953b51425bd153df97e77429943c4"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

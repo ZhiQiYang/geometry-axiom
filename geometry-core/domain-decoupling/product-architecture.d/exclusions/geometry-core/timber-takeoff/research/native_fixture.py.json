@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/native_fixture.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: native_fixture.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "a696b3741211b9f66d0fbb6ce30900ffd25b2d693a748eb41cb9c3b9a8da0575"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

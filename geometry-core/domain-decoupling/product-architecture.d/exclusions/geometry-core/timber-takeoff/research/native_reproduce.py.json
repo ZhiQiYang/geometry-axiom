@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/native_reproduce.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: native_reproduce.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "b540f4c648197fd9af0de3609a035bf73395f163892c084f0f2b32c86e6ffd05"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

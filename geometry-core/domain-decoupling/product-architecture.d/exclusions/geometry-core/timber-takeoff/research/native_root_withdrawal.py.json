@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/native_root_withdrawal.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: native_root_withdrawal.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "77eb3390966310bcd3da06d5f71ed81268fe1339cd16094f64b3bc9b89a59622"
+  },
+  "schema": "geometry-architecture-entry/1"
+}

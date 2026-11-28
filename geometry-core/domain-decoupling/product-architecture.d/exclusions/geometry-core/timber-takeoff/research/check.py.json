@@ -1,0 +1,10 @@
+{
+  "collection": "exclusions",
+  "entry": {
+    "hashMode": "lf",
+    "path": "geometry-core/timber-takeoff/research/check.py",
+    "reason": "U476 isolated executable research reference and acceptance tooling: check.py. Invoked only by the dedicated research suite or explicit offline reproduction; no product runtime imports it, no project attachment or cutting capability is registered, and pending S0 adoption is documented in README.md. This is a per-file source pin, not a directory exemption.",
+    "sha256": "662001ea000654bcfd8574a473c4cb8879fd8c4139b7bb0837d2d26cb616384f"
+  },
+  "schema": "geometry-architecture-entry/1"
+}
