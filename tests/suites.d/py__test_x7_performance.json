@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_x7_performance.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_x7_performance.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": true,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_x7_performance.py"
+  ],
+  "name": "py:test_x7_performance",
+  "order": "new/py__test_x7_performance",
+  "schema": "geometry-native-suite/1"
+}
