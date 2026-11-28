@@ -1,0 +1,23 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/oracles/r09b_model_carrier_edit.py"
+    ],
+    "extra_env": {},
+    "kind": "python-script",
+    "label": "tests/oracles/r09b_model_carrier_edit.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "exit-code-only"
+  },
+  "files": [
+    "tests/oracles/r09b_model_carrier_edit.py"
+  ],
+  "name": "script:r09b_model_carrier_oracle",
+  "order": "new/script__r09b_model_carrier_oracle",
+  "schema": "geometry-native-suite/1"
+}
