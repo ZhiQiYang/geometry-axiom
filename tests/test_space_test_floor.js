@@ -7,7 +7,8 @@ const path = require('node:path');
 const vm = require('node:vm');
 const {EXPECTED, FULL_SPACE_GROUPS, createGroupCensus} = require('../geometry-web/space_test_floor.js');
 const legacy = ['space-height-library', 'projection-lifecycle', 'projection-placement', 'font-layout', 'space-flow', 'projection-close'];
-const full = [...legacy, 'profile-space'];
+const priorFull = [...legacy, 'profile-space'];
+const full = [...priorFull, 'r13-reconstruction'];
 async function complete(census, name, count = EXPECTED[name]) {
   await census.run(name, async () => { for (let i = 0; i < count; i++) census.record(true); });
 }
@@ -16,10 +17,10 @@ async function finish(census, names) { for (const name of ['setup', ...names, 'b
 test('independent census preserves the original 242 and adds exactly 60 R12 cases without optional timber', async () => {
   assert.ok(Object.isFrozen(EXPECTED));
   assert.ok(Object.isFrozen(FULL_SPACE_GROUPS));
-  assert.deepEqual(FULL_SPACE_GROUPS, full);
+  assert.deepEqual(FULL_SPACE_GROUPS.slice(0, priorFull.length), priorFull);
   assert.throws(() => { EXPECTED['font-layout'] = 0; }, TypeError);
-  const census = createGroupCensus(full);
-  await finish(census, full);
+  const census = createGroupCensus(priorFull);
+  await finish(census, priorFull);
   const report = census.report(true);
   assert.equal(report.completed, true);
   assert.equal(EXPECTED['space-height-library'], 112);
@@ -28,6 +29,17 @@ test('independent census preserves the original 242 and adds exactly 60 R12 case
   assert.equal(EXPECTED['profile-space'], 60);
   assert.equal(Object.values(report.groups).reduce((n, g) => n + g.passed, 0), 302);
   assert.equal(Object.hasOwn(report.groups, 'timber-material'), false);
+});
+test('R13 appends an independent 21-assertion group without changing the previous 302 assertions', async () => {
+  assert.deepEqual(FULL_SPACE_GROUPS, full, 'R13_SPACE_GROUP_EXPLICIT_APPEND');
+  assert.equal(EXPECTED['r13-reconstruction'], 21, 'R13_SPACE_GROUP_AUTHORED_CENSUS');
+  const census = createGroupCensus(full);await finish(census, full);const report = census.report(true);
+  assert.equal(report.completed, true);
+  assert.equal(['setup', ...priorFull, 'browser-health'].reduce((n, name) => n + report.groups[name].passed, 0), 302, 'R13_PREVIOUS_COUNTS_UNCHANGED');
+  assert.equal(Object.values(report.groups).reduce((n, row) => n + row.passed, 0), 323, 'R13_SPACE_AUTHORED_TOTAL');
+  const missing=createGroupCensus(full);await finish(missing,priorFull);
+  assert.equal(missing.report(true).completed,false,'R13_SPACE_CANNOT_OMIT_NEW_GROUP');
+  assert.match(missing.report(true).completenessProblems.join('\n'), /Group r13-reconstruction did not complete/);
 });
 test('omitting a whole expected group fails even if every executed assertion passes', async () => {
   const census = createGroupCensus(full);
@@ -74,7 +86,7 @@ test('failed assertions and additional assertions both reject exact counts', asy
   assert.match(extra.report(true).completenessProblems.join('\n'), /got 20 passed/);
 });
 test('partial scopes require only their declared groups; timber and history counts remain distinct', async () => {
-  for (const names of [['space-flow'], ['projection-placement', 'font-layout'], ['font-layout'], ['timber-material', 'timber-source-guards', 'font-layout'], ['timber-source-guards'], ['timber-history-guard'], ['timber-material', 'timber-history-guard', 'font-layout'], ['profile-space']]) {
+  for (const names of [['space-flow'], ['projection-placement', 'font-layout'], ['font-layout'], ['timber-material', 'timber-source-guards', 'font-layout'], ['timber-source-guards'], ['timber-history-guard'], ['timber-material', 'timber-history-guard', 'font-layout'], ['profile-space'], ['r13-reconstruction']]) {
     const census = createGroupCensus(names);
     await finish(census, names);
     assert.equal(census.report(true).completed, true);
@@ -114,6 +126,7 @@ test('real configuration declares full scope separately from every existing part
     ['GEOMETRY_ASYNC_REPLY_ONLY', ['async-reply-ui']],
     ['GEOMETRY_SAVE_REOPEN_ONLY', ['save-reopen-grid']],
     ['GEOMETRY_SPACE_PROFILE_ONLY', ['profile-space']],
+    ['GEOMETRY_R13_SPACE_ONLY', ['r13-reconstruction']],
   ]) {
     const scope = configuration({...env, [flag]: '1'});
     assert.equal(scope.mode, 'partial');
@@ -132,6 +145,19 @@ test('real configuration keeps rejecting ambiguous filters, invalid flags and un
   assert.throws(() => configuration({...env, GEOMETRY_SPACE_STYLE_ONLY: '0'}), /only 1/);
   assert.throws(() => configuration({...env, GEOMETRY_TIMBER_HISTORY_ONLY: '1'}), /requires/);
   assert.throws(() => configuration({...env, GEOMETRY_SPACE_FLOW_ONLY: '1', GEOMETRY_TIMBER_HISTORY_ONLY: '1'}), /requires/);
+  assert.throws(() => configuration({...env, GEOMETRY_R13_SPACE_ONLY: '1', GEOMETRY_SPACE_PROFILE_ONLY: '1'}), /only one primary/);
+  assert.throws(() => configuration({...env, GEOMETRY_R13_SPACE_ONLY: '0'}), /only 1/);
+});
+
+test('R13 ordinary space helper has a reachable full and isolated route with an independently counted authored census', () => {
+  const helper=fs.readFileSync(path.join(__dirname,'../geometry-web/space_reconstruction_test.js'),'utf8');
+  assert.equal([...helper.matchAll(/\bcheck\('/g)].length,21,'R13_SPACE_HELPER_AUTHORED_CHECKS');
+  assert.match(source,/require\('\.\/space_reconstruction_test\.js'\)/,'R13_SPACE_HELPER_IMPORTED');
+  const helperInit=source.slice(source.indexOf('const runReconstructionSpace ='),source.indexOf('// Measure the largest'));
+  assert.match(helperInit,/openFaceModel:\(\)=>openFaceModel\(\)/,'R13_SPACE_LATE_DECLARED_ENTRY_IS_DEFERRED');
+  assert.equal([...source.matchAll(/await runGroup\('r13-reconstruction', runReconstructionSpace\)/g)].length,2,'R13_SPACE_FULL_AND_ISOLATED_EXECUTION');
+  assert.match(source,/if \(process\.env\.GEOMETRY_R13_SPACE_ONLY\) \{\s*await runGroup\('r13-reconstruction', runReconstructionSpace\);\s*return;/,'R13_SPACE_ISOLATED_RETURNS');
+  assert.match(source,/await runGroup\('profile-space', runProfileSpace\);\s*await runGroup\('r13-reconstruction', runReconstructionSpace\);/,'R13_SPACE_FULL_RETAINS_PREVIOUS_ORDER');
 });
 
 test('R430 timber driver uses the shipped candidate disclosure without changing its census', () => {

@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r13_space_entry.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r13_space_entry.js",
+    "needs": [],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r13_space_entry.js"
+  ],
+  "name": "node:r13_space_entry",
+  "order": "new/node__r13_space_entry",
+  "schema": "geometry-native-suite/1"
+}

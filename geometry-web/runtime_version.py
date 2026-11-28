@@ -19,6 +19,7 @@ def application_assets(root):
     """Fixed composition assets; no arbitrary template or repository routing."""
     return {
         '/kernel/interval-allocation.js': root / 'geometry-core/interval-allocation.js',
+        '/kernel/reconstruction-values.js': root / 'geometry-core/reconstruction-values.js',
         '/templates/woodworking.js': root / 'geometry-templates/woodworking/frontend.js',
         '/templates/woodworking-cutting.js': root / 'geometry-templates/woodworking/cutting.js',
         '/application.js': root / 'geometry-app/application.js',

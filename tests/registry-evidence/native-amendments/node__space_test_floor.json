@@ -1,0 +1,30 @@
+{
+  "after": {
+    "execution": {
+      "cmd": [
+        "--test",
+        "--test-reporter=spec",
+        "tests/test_space_test_floor.js"
+      ],
+      "extra_env": {},
+      "kind": "node-test",
+      "label": "tests/test_space_test_floor.js",
+      "needs": [],
+      "needs_node": true,
+      "timeout": 300
+    },
+    "expected": {
+      "count": 13,
+      "mode": "count",
+      "unit": "node test"
+    },
+    "files": [
+      "tests/test_space_test_floor.js"
+    ],
+    "order": "legacy/000291"
+  },
+  "before_sha256": "4e3e2b19cab770e2e7739c7f05494b59ea4feaf16a452c098eff58c4f31b124f",
+  "name": "node:space_test_floor",
+  "reason": "#461 R4 E1 v2: append two real regression tests for the independent 21-assertion R13 space group and deferred full/isolated dispatch; retain all previous group names, order and 302 assertions. Node suite 11 -> 13, original execution unchanged.",
+  "schema": "geometry-native-legacy-amendment/1"
+}

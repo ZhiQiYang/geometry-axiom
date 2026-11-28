@@ -70,6 +70,27 @@ python3 tests/r12_browser_evidence.py --out /tmp/r12-profile-browser-evidence --
 
 本群未新增 canvas 正常段，`geometry-web/cdp_sections.golden.json` 與 `geometry-web/canvas_shards.json` 保持原件；沒有手填 golden 或從失敗輸出重設段計數。partial 成功仍不能代替原完整 space suite 與完整 canvas 執行；真瀏覽器的執行狀態及產物需在交付證據另外列明。
 
+## R13 E1 v2：獨立追加群組（#461 R4）
+
+本片基底 `b3c4b981bb96b118c1c05b7a1bd98062d710c8b2`。前文 302 是 R12 時點的完整集合；其七個功能群組名稱、順序及全部斷言保持。新增 `space_reconstruction_test.js` 由原 harness 在 `profile-space` 之後執行，沒有把空間工作區責任移給 canvas。
+
+| 範圍 | 新增盤點 | 新的 authored 預期 |
+|---|---|---:|
+| `r13-reconstruction` | helper 明列 21 個唯一 `check` | 21 |
+| `GEOMETRY_R13_SPACE_ONLY=1` | setup 2 ＋新群組 21 ＋ browser-health 2 | 25 |
+| full-space-suite | 原 302 ＋新群組 21 | 323 |
+
+21 項涵蓋手動草稿不重用、未知基準可確認觀察但不得採用、單位明選、頂／底用途明選、已定子集同意、真 model producer 預覽、model 與 review 一步 undo／redo、保存與 ZIP reopen、非法小數拒絕以及既存模型保留／review stale。部分結果在預覽及核對摘要明列條件；漏跑、提前返回、非零例外仍由原 census 拒絕。新 primary filter 同樣與其他 primary filter 互斥，完整模式必含新群。
+
+本片的 `tests/test_space_test_floor.js` 增加兩個真測試，11→13 以 native 片段及具名 amendment 登錄；未改任何舊群組的數值。上述 21／25／323 來自源碼逐項盤點，不是 Chrome 成功收據，沒有用實測輸出重設 expected。
+
+```sh
+GEOMETRY_R13_SPACE_ONLY=1 node geometry-web/space_model_test.js
+node geometry-web/space_model_test.js
+```
+
+使用同一 exact checkout 的隔離服務、原生 binary 與專用 Chrome/CDP。保存 `SPACE_RESULT`、各群 expected／passed／failed／completed、完整 console／runtime 身分與來源 bytes。保存測試使用替代 OS picker 的 memory sink 並走真正 pack／open；不是原生 OS chooser、全新 Chrome 程序或實體 IME 驗收。本地 Node 與 source 檢查不能替代這兩次真 Chromium 實跑。
+
 ## 可重跑的公開反例與驗證
 
 先以同一 exact checkout 的 native bridge／model-base 啟動專用隔離服務，設定：

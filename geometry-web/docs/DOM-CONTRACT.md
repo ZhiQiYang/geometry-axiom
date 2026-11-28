@@ -1,5 +1,27 @@
 # DOM 合約(測試依賴清單)
 
+## R13 N1：人工 RC 資料（P4314，未量測候選）
+
+- 延續面內「底圖」→「來源與補資料」的 `#rdPanel`，標題改為「補資料紀錄」。`#rdKind` 只選新增種類 `room-height|rc-column|rc-beam`，`#rdAdd` 建所選模板；既有房間預設入口與 ID 不變。種類選擇不是數值預設，也不改已建立紀錄種類。
+- RC 柱欄位 `X/Y/Width/Depth/Bottom/Top/Height`；RC 樑欄位 `Start/End/Center/Width/Depth/Bottom/Top`，各保留 `rd<Stem>Raw/Unit/Basis/Note/State` 與 `rdConfirm<Stem>`。距離不顯示 Basis/Note。柱 X/Y 是負側起點；只有樑 Center 是橫向中線，禁止混稱中心。
+- `#rdAxis` 僅樑可見，空值或明選 x/y；修改後不替換正在使用的 select，保留原文字與原基準，取消 start/end/center 確認。`#rdSpaceId` 是空值或明選正 D5 id 的意圖，未核存在或身分；0 不當作已明選 D5。
+- RC 的 `#rdAdopt` 隱藏；偽造該事件仍被資料層的 room-only guard 拒絕，沒有正式 RC 採用入口。`#rdPlanStatus` 只報資料核對／研究用途，不能稱 World 合法。樑衝突顯示「樑底＋樑深＝樑頂」及三個人工來源和精確差額；原文完整保留。
+- 原 flush、busy/no-op、同 context 歷史、保留未保存原文及 IME 規則沿用現行 E1；新欄位使用相同的寫入通路。原文使用 textarea，保留 CR／CRLF 的未改顯示投影；切案保留舊 context 草稿並解除舊面板綁定，不阻擋新案保存或跨案回寫。P4314 三處 undo／redo 等待原資料條件與完整 owner idle；切換紀錄時用可信鍵盤輸入並逐步重新取得 render 後控制項。P4314 待真 Chrome，Node DOM seams 不稱 L4；新 document 重開不冒稱另啟 native/Chrome 程序。
+- 完整資料與版本範圍見 [RECONSTRUCTION-N1-CONTRACT.md](RECONSTRUCTION-N1-CONTRACT.md)。下節 E1 的四欄與房間採用語意繼續適用於 room-height；RC 是本節明列的新增分支。
+
+## R13 C／D 第一產品片 v2：人工房間高度（P4313，候選待真 Chrome）
+
+- 一般路徑：面內「底圖」→ `#rdSourceGroup`「來源與補資料」→ `#rdPanel`「房間高度補資料」。一般面原有可編輯的「來源紀錄與待補資訊」、D13 共用房間原有唯讀的「原頁歷史紀錄與核對」保持原義；有 `#refRecordDetails` 時保留其原節點，沒有歷史與 PDF 證據時不假造該節點。兩路都從 `feUnderlayPaneHTML`／`feBindUnderlayPane` 的共同外層接同一新編輯器；不增加主工具列或第二份保存鈕。
+- `#rdAdd` 只建立四欄空白、單位皆 null 的人工紀錄；`#rdSelect` 明選本次紀錄，冷開後不自動宣稱選中／核對。清單屬專案全域，不因進入哪個面而自動關聯或篩除紀錄。`#rdName` 是名稱；`#rdBottomRaw`、`#rdTopRaw`、`#rdHeightRaw`、`#rdWallThicknessRaw` 為可顯示換行的 `textarea`；回填到控制項時若換行被瀏覽器正規化，未改的文字仍以專案原文保存。各欄 `Unit` 初始「尚未選單位」，須明選 mm／cm；位置另有 `Basis`（unknown／world-z）及選填 `Note`。未完成原字串可保存，不把 type=number 的消毒結果當原件。
+- `#rdConfirmBottom/Top/Height/WallThickness` 逐欄確認。`#rdDerivation` 顯示唯一空白第三值候選，`#rdConfirmDerived` 是獨立確認。`#rdAdopt` 明選紀錄及目前已放置面，呼叫 `SpaceModelWorkspace.openReconstruction`；不能以圖面 z、舊手動草稿、3000 mm 或 100 mm 代填缺值。`#rdStatus` 解釋未確認、錯誤及未保存文字；IME 中可存 raw，但不能確認／帶入。
+- 直接確認只證明當下觀察原字、單位、基準及版本；unknown 基準的位置可先確認，但不能當 World 座標採用或推導。明選 world-z 後須重新確認；文字備註本身不建立轉換。推導的唯一空白目標也須明選單位。
+- `ReconstructionWorkspace.flush()` 由所有專案保存入口在取得保存 stamp 前收目前聚焦欄位；容量／舊 context／外部歷史衝突須傳出失敗。DOM 輸入事件缺最後一筆也要捕獲；不能因換頁後丟掉未保存的原字串。
+- `#rdPlanStatus` 逐項顯示衝突的原值、人工來源、關係式及實際差額。拒絕收集的文字保留在原 context；`#rdReload` 明示捨棄這份未保存文字後重讀，不能因切換、重畫或刪除紀錄而暗中丟棄／重建。合法的本機復原／重做只更新同一 context 的憑證；外部歷史仍拒絕舊憑證。保存先收文字再進入 busy；busy 中僅允許 context、版本、快照、原字串全相同的無寫入 flush，選檔等待期間新增文字必須拒絕該次保存。
+- R13 的 3D 入口沿用 `#smWorkspace`，只把本次有效底高／高度／選用牆厚交給既有 plan producer。供值欄鎖定；底面與頂面用途初始「尚未指定」，其他邊／孔／投影用途仍明選核對。`#smReconstructionEntry` 列供值、頂高的人工核對用途及逐欄未納入原因；有缺值／需複核欄位時須明選 `#smReconstructionSubset` 才能建立已定子集，預覽及結果皆標條件結果。實際預覽、prepare 及提交都再次驗資料、明選模式與 owner。`#smReleaseReconstruction`、`#muReleaseReconstruction` 只在修改已有核對模型時顯示，必須明示解除後才允許牆高／現行來源更新；模型與解除在同一筆歷史。模型庫及明細分開已定子集／明選範圍已核對與目前有效／過期／缺失，不稱整圖完整。
+- 模型與補資料核對紀錄的候選須通過原有模型雜湊、原生模型驗證與完整空間重放，且每個 await 後重核 owner；只有驗證完成的完整候選能一起提交。改頂點、重算表面雜湊、混入其他高度的合法模型皆須拒絕，零模型、零核對紀錄、零歷史寫入。
+- Node DOM seams 是合成事件測試；P4313 是待真 Chrome 的一般控制驗收，390×844 走 D13 共用底圖，1400×900 走一般底圖。保存冷開是新 browser document＋實際 ZIP 載入，不冒稱另啟 Chrome／原生程序。獨立 `space_model_test.js` 另接 `space_reconstruction_test.js` 的專屬群組；原群組順序／數值不變。真 pointer 可達性、原生 select、重開、undo／redo、實體 IME 及 exception 閘須由套用端實跑。
+- 完整資料、保存與互動契約見 [RECONSTRUCTION-E1-CONTRACT.md](RECONSTRUCTION-E1-CONTRACT.md)；機讀預期在 `tests/oracles/r13_e1_contract.json`，不是從 UI 實測回填的 expected。
+
 ## R17 host／App 第一片：兩支互頂（P335）
 
 - 沿面內「角材 T／新增角材」入口，`#tbPlacementMode` 在 `single` 與 `boundary-pair` 間切換；`#tbSinglePlacement` 與 `#tbBoundaryPair` 互斥顯示。沒有新增常駐工具列鈕、候選工作區或保存列。pair 模式合併原單支的位置／截面／角色說明，只有一段固定說明；GEO-219 減項見 BACKLOG。

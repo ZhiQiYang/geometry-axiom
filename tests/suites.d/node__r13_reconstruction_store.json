@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "--test",
+      "--test-reporter=spec",
+      "tests/test_r13_reconstruction_store.js"
+    ],
+    "extra_env": {},
+    "kind": "node-test",
+    "label": "tests/test_r13_reconstruction_store.js",
+    "needs": [
+      "model-base"
+    ],
+    "needs_node": true,
+    "timeout": 300
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_r13_reconstruction_store.js"
+  ],
+  "name": "node:r13_reconstruction_store",
+  "order": "new/node__r13_reconstruction_store",
+  "schema": "geometry-native-suite/1"
+}
