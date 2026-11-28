@@ -103,7 +103,7 @@ test('PF4_NATIVE_IMPACT: grid and guide before/after records are visible, includ
     return [...match[2].matchAll(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/g)].map(m=>text(m[1]));
   };
   const primary=html.split('<details data-pf-impact-full>')[0];
-  assert.deepEqual(row(primary,'hostId'),['宿主編號','不存在','0']);
+  assert.deepEqual(row(primary,'hostId'),['宿主編號','不存在','0'],'O467_PF4A_ZERO_IS_VALUE');
   assert.deepEqual(row(primary,'mainAlong'),['主支偏好','不存在','沿 u']);
   assert.deepEqual(row(primary,'geometryMode'),['幾何列舉方式','不存在','抽樣']);
   assert.deepEqual(row(primary,'geometryExact'),['完整幾何列舉','不存在','否']);
@@ -118,7 +118,7 @@ test('PF4_NATIVE_IMPACT: grid and guide before/after records are visible, includ
   const moved={before,after:changed,changes:[{record:'fill-grid',id:7,change:'modified'}],dependencies:{before:{geometry:{grids:[{id:7,surface:0,lattice:{v:before.fillGrids[0].derived.axes.v}}],guides:[{id:17,off:0,source:{index:'-1',band:'-2'}}],timbers:[]}},after:{geometry:{grids:[{id:7,surface:0,lattice:{v:changed.fillGrids[0].derived.axes.v}}],guides:[{id:17,off:-10,source:{index:'-1',band:'-2'}}],timbers:[]}}}};
   const pin=clone(moved),movedHTML=W._test.impact(moved);
   assert.deepEqual(row(movedHTML,'mainAlong'),['主支偏好','未設定','沿 v']);
-  assert.deepEqual(row(movedHTML,'lattice.v.baseCoordinate'),['週期基準 · v 軸 · 基準座標（mm）',exact,'-9007199254740992']);
+  assert.deepEqual(row(movedHTML,'lattice.v.baseCoordinate'),['週期基準 · v 軸 · 基準座標（mm）',exact,'-9007199254740992'],'O467_PF4A_EXACT_DECIMAL');
   assert.deepEqual(row(movedHTML,'off'),['位置（mm）','0','-10']);
   assert.deepEqual(row(movedHTML,'source.index'),['引用來源 · 格線索引 k','-1','-1']);
   assert.deepEqual(row(movedHTML,'source.band'),['引用來源 · 面材列索引 band','-2','-2']);
@@ -127,6 +127,12 @@ test('PF4_NATIVE_IMPACT: grid and guide before/after records are visible, includ
     assert.ok(raw);assert.deepEqual(JSON.parse(text(raw[1])),value,'PF4A_DISPLAY_FULL: complete native evidence remains available: '+attr);
   }
   assert.deepEqual(moved,pin,'PF4A_DISPLAY_READ_ONLY: rendering must not mutate native data');
+  const adversarial=clone(moved),payload='<img src=x onerror="unexpected()"> & exact';
+  adversarial.dependencies.after.geometry.guides[0].name=payload;
+  const adversarialPin=clone(adversarial),escaped=W._test.impact(adversarial);
+  assert.doesNotMatch(escaped,/<img\b/,'O467_PF4A_TEXT_NOT_MARKUP');
+  assert.match(escaped,/&lt;img src=x onerror=&quot;unexpected\(\)&quot;&gt; &amp; exact/,'O467_PF4A_TEXT_NOT_MARKUP');
+  assert.deepEqual(adversarial,adversarialPin,'O467_PF4A_RENDER_INPUT_UNCHANGED');
   // Formal results use the same shipped open/render entry, with a minimal DOM
   // sink. The browser suite separately measures real layout and hit targets.
   const env=environment();env.state.fillGrids.push(clone(before.fillGrids[0]));env.c.document={querySelector:()=>null};
