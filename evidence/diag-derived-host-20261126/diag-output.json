@@ -1,0 +1,427 @@
+{
+ "sourceLocations": {
+  "core.rect": "current_geometry.c:332",
+  "core.struct": "current_geometry.c:341",
+  "dp.write": "geometry-core/derived_placements.inc:15",
+  "bridge.objects.placement": "geometry-web/web_bridge.c:847",
+  "bridge.objects.rect": "geometry-web/web_bridge.c:860",
+  "bridge.surfaces": "geometry-web/web_bridge.c:669",
+  "bridge.parameterUses": "geometry-web/web_bridge.c:930",
+  "bridge.json_parameter_uses": "geometry-web/parameter_bridge.inc:6",
+  "core.parameter_uses.panel_fill": "geometry-core/parameters.inc:556",
+  "app.renderObjects.parameterUses": "geometry-web/app.js:2537",
+  "app.faceCard": "geometry-web/app.js:2308",
+  "app.faceCard.sub": "geometry-web/app.js:2322",
+  "app.faceCard.bw": "geometry-web/app.js:2352",
+  "app.faceCard.footer": "geometry-web/app.js:2379",
+  "app.inspector.bbox": "geometry-web/app.js:10025",
+  "app.inspector.enter": "geometry-web/app.js:10089",
+  "app.feSurf": "geometry-web/app.js:3318",
+  "app.feLoadGuides.timbers": "geometry-web/app.js:4733",
+  "app.feLoadGuides.grids": "geometry-web/app.js:4737",
+  "app.threeView.desc": "geometry-web/app.js:1105",
+  "params.usage": "geometry-web/parameters.js:53",
+  "params.usage.uses": "geometry-web/parameters.js:57",
+  "params.card": "geometry-web/parameters.js:69",
+  "app.objectRow.parameter": "geometry-web/app.js:9857"
+ },
+ "canvasFunctions": {
+  "function faceCard(f) {": {
+   "lines": "geometry-web/app.js:2308-2380",
+   "mentionsTimber": false
+  },
+  "async function renderObjects(": {
+   "lines": "geometry-web/app.js:2515-2571",
+   "mentionsTimber": false
+  },
+  "function drawObjects(": {
+   "lines": "geometry-web/app.js:2574-2685",
+   "mentionsTimber": false
+  }
+ },
+ "scenes": [
+  {
+   "scene": "evidence/diag-derived-host-20261126/ui-run/r03-fixed.export.scene",
+   "loaded": true,
+   "readOnly": true,
+   "dumpLines": 192,
+   "native": {
+    "objects.faces": [
+     {
+      "kind": "boundary",
+      "id": 1,
+      "bbox": [
+       266,
+       244,
+       4006,
+       3545
+      ]
+     },
+     {
+      "kind": "placement",
+      "id": 2,
+      "bbox": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "surfaces": [
+     {
+      "id": 1,
+      "boundary": 1
+     },
+     {
+      "id": 2,
+      "boundary": 0
+     }
+    ],
+    "references.timbersBySurface": {
+     "2": 53
+    },
+    "references.gridsBySurface": {
+     "2": 1
+    },
+    "objects.timbersBySurface": {
+     "2": 53
+    },
+    "objects.parameterUses": [],
+    "panel-fill-read.derivedPlacements": [
+     {
+      "id": 2,
+      "definition": {
+       "fillId": 1,
+       "h": 33,
+       "id": 2
+      },
+      "componentBboxes": [
+       [
+        266,
+        244,
+        4006,
+        3545
+       ]
+      ]
+     }
+    ],
+    "panel-fill-read.panelFillRefs": [
+     {
+      "id": 1,
+      "threshold": {
+       "fieldId": 1,
+       "parameterId": 1
+      }
+     }
+    ]
+   },
+   "symptoms": {
+    "S1 宿主卡尺寸（placement 2）": {
+     "ui": "1×1 mm",
+     "subtitle": "自帶矩形 · 無邊界",
+     "objects.bbox": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "derivedHost": true,
+     "truthComponentBbox": [
+      [
+       266,
+       244,
+       4006,
+       3545
+      ]
+     ]
+    },
+    "S2 檢查器外框尺寸（placement 2）": {
+     "ui": "0 × 0 mm",
+     "objects.bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "S6 進入面內工作區（placement 2）": {
+     "ui": "disabled（kind === \"placement\" 一律停用）"
+    },
+    "S3 面 1 面內角材／網格": {
+     "feSid": 1,
+     "uiTimbers": 0,
+     "uiGrids": 0,
+     "timbersElsewhere": {
+      "2": 53
+     },
+     "gridsElsewhere": {
+      "2": 1
+     }
+    },
+    "S5 參數卡 1「N 處使用」": {
+     "ui": 0,
+     "panelFillOrHostRefs": [
+      [
+       1,
+       "threshold"
+      ]
+     ]
+    },
+    "S4 物件畫布角材": {
+     "ui": 0,
+     "note": "物件畫布只畫卡片；見 canvasFunctions（三個繪製函式都沒有引用 timber）",
+     "objects.timbersBySurface": {
+      "2": 53
+     }
+    },
+    "S7 三視圖選取說明": {
+     "ui": "角材 <id>（app.threeView.desc 只用 owner 種類與 id）"
+    }
+   }
+  },
+  {
+   "scene": "evidence/diag-derived-host-20261126/minimal-derived-host.scene",
+   "loaded": true,
+   "readOnly": true,
+   "dumpLines": 20,
+   "native": {
+    "objects.faces": [
+     {
+      "kind": "boundary",
+      "id": 1,
+      "bbox": [
+       266,
+       244,
+       4006,
+       3545
+      ]
+     },
+     {
+      "kind": "placement",
+      "id": 2,
+      "bbox": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    ],
+    "surfaces": [
+     {
+      "id": 1,
+      "boundary": 1
+     },
+     {
+      "id": 2,
+      "boundary": 0
+     }
+    ],
+    "references.timbersBySurface": {
+     "2": 1
+    },
+    "references.gridsBySurface": {
+     "2": 1
+    },
+    "objects.timbersBySurface": {
+     "2": 1
+    },
+    "objects.parameterUses": [],
+    "panel-fill-read.derivedPlacements": [
+     {
+      "id": 2,
+      "definition": {
+       "fillId": 1,
+       "h": 33,
+       "id": 2
+      },
+      "componentBboxes": [
+       [
+        266,
+        244,
+        4006,
+        3545
+       ]
+      ]
+     }
+    ],
+    "panel-fill-read.panelFillRefs": [
+     {
+      "id": 1,
+      "threshold": {
+       "fieldId": 1,
+       "parameterId": 1
+      }
+     }
+    ]
+   },
+   "symptoms": {
+    "S1 宿主卡尺寸（placement 2）": {
+     "ui": "1×1 mm",
+     "subtitle": "自帶矩形 · 無邊界",
+     "objects.bbox": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "derivedHost": true,
+     "truthComponentBbox": [
+      [
+       266,
+       244,
+       4006,
+       3545
+      ]
+     ]
+    },
+    "S2 檢查器外框尺寸（placement 2）": {
+     "ui": "0 × 0 mm",
+     "objects.bbox": [
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "S6 進入面內工作區（placement 2）": {
+     "ui": "disabled（kind === \"placement\" 一律停用）"
+    },
+    "S3 面 1 面內角材／網格": {
+     "feSid": 1,
+     "uiTimbers": 0,
+     "uiGrids": 0,
+     "timbersElsewhere": {
+      "2": 1
+     },
+     "gridsElsewhere": {
+      "2": 1
+     }
+    },
+    "S5 參數卡 1「N 處使用」": {
+     "ui": 0,
+     "panelFillOrHostRefs": [
+      [
+       1,
+       "threshold"
+      ]
+     ]
+    },
+    "S4 物件畫布角材": {
+     "ui": 0,
+     "note": "物件畫布只畫卡片；見 canvasFunctions（三個繪製函式都沒有引用 timber）",
+     "objects.timbersBySurface": {
+      "2": 1
+     }
+    },
+    "S7 三視圖選取說明": {
+     "ui": "角材 <id>（app.threeView.desc 只用 owner 種類與 id）"
+    }
+   }
+  },
+  {
+   "scene": "demo-two-timbers.scene",
+   "loaded": true,
+   "readOnly": true,
+   "dumpLines": 23,
+   "native": {
+    "objects.faces": [
+     {
+      "kind": "boundary",
+      "id": 1,
+      "bbox": [
+       0,
+       0,
+       4000,
+       3000
+      ]
+     }
+    ],
+    "surfaces": [
+     {
+      "id": 1,
+      "boundary": 1
+     }
+    ],
+    "references.timbersBySurface": {
+     "1": 5
+    },
+    "references.gridsBySurface": {},
+    "objects.timbersBySurface": {
+     "1": 5
+    },
+    "objects.parameterUses": [],
+    "panel-fill-read.derivedPlacements": [],
+    "panel-fill-read.panelFillRefs": []
+   },
+   "symptoms": {
+    "S3 面 1 面內角材／網格": {
+     "feSid": 1,
+     "uiTimbers": 5,
+     "uiGrids": 0,
+     "timbersElsewhere": {},
+     "gridsElsewhere": {}
+    },
+    "S4 物件畫布角材": {
+     "ui": 0,
+     "note": "物件畫布只畫卡片；見 canvasFunctions（三個繪製函式都沒有引用 timber）",
+     "objects.timbersBySurface": {
+      "1": 5
+     }
+    },
+    "S7 三視圖選取說明": {
+     "ui": "角材 <id>（app.threeView.desc 只用 owner 種類與 id）"
+    }
+   }
+  }
+ ],
+ "uiComparison": {
+  "evidence/diag-derived-host-20261126/ui-run/r03-fixed.export.scene": {
+   "S1 卡片文字含重算值": [
+    true,
+    "1×1 mm",
+    "承載面 2自帶矩形 · 無邊界無邊界1×1 mm · 4 頂點檢查 ›"
+   ],
+   "S1 卡片副標": [
+    true,
+    "自帶矩形 · 無邊界"
+   ],
+   "S2 檢查器文字含重算值": [
+    true,
+    "0 × 0 mm"
+   ],
+   "S3 面 1 feSid 與 UI 相同": [
+    true,
+    1,
+    1
+   ],
+   "S3 面 1 角材數與 UI 相同": [
+    true,
+    0,
+    0
+   ],
+   "S4 物件畫布角材元素": [
+    true,
+    0
+   ],
+   "S5 參數列文字": [
+    true,
+    0,
+    "鋪排承接門檻1 個欄位 · 0 處使用"
+   ],
+   "S6 進入鈕停用": [
+    true,
+    {
+     "disabled": true,
+     "title": "placement 面沒有邊界可編輯"
+    }
+   ],
+   "S7 三視圖說明": [
+    true,
+    "角材 3"
+   ]
+  }
+ },
+ "ok": true
+}

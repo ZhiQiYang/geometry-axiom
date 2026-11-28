@@ -1,0 +1,192 @@
+requires parameters/1
+parameters begin
+parameters card eyJpZCI6MSwibmFtZSI6IumLquaOkuaJv+aOpemWgOaquyIsIm5leHRGaWVsZElkIjoyfQ==
+parameters field eyJwYXJhbWV0ZXJJZCI6MSwiaWQiOjEsIm5hbWUiOiJYIiwidHlwZSI6MCwiZXhwcmVzc2lvbiI6eyJkZW4iOiIxIiwibnVtIjoiOCIsIm9wIjoibGl0ZXJhbCIsInVuaXQiOiJtbSJ9fQ==
+parameters end
+requires engineering-spec/1
+engineering material eyJmaW5nZXJwcmludCI6IjNiNDNiYjc0YjkxNDYyYmRmMGUzYjdkMjkzOWZkZTU2NWY3ODBhMmY0MTNiZjM3YzNkMzJhYTEzZWI1MTU0MmUiLCJ2YWx1ZSI6eyJicmFuZCI6bnVsbCwiaWQiOiJtYXRlcmlhbC0zNTUxMzllNy03NzgzLTQxZDItYTM4Mi1hZjI3ZTZiNjZhNzEiLCJraW5kIjoicGFuZWwiLCJsZW5ndGgiOjE4MzAsIm1vZGVsIjpudWxsLCJuYW1lIjoiVDYg6Z2i5p2QIDkxNcOXMTgzMCIsIm5vdGVzIjpudWxsLCJ0aGlja25lc3MiOiI2IiwidmVyc2lvbiI6MSwid2lkdGgiOjkxNX19
+boundary 1 outline 266,244 4006,244 4006,3545 266,3545
+placement 1 on boundary 1 origin 0 0 2500 u +x v +y
+spec r03_mark_1_0 -1468
+spec r03_mark_2_0 -1101
+spec r03_mark_3_0 -734
+spec r03_mark_4_0 -367
+spec r03_mark_5_0 367
+spec r03_mark_6_0 734
+spec r03_mark_7_0 1101
+spec r03_mark_8_0 1286
+requires panel-fill/1
+finish-surface 1 on boundary 1 origin 0 0 2500 u +x v +y n +z side +n name-hex 523033206365696c696e67
+panel-fill 1 definition-hex 7b2266696e697368537572666163654964223a312c22676170223a322c226964223a312c226c656e677468416c6f6e67223a2276222c226f726967696e223a5b3236362c3234345d2c2270616e656c223a7b226964223a226d6174657269616c2d33353531333965372d373738332d343164322d613338322d616632376536623636613731222c2276657273696f6e223a317d2c227061747465726e223a227374726169676874222c227468726573686f6c64223a7b226669656c644964223a312c22706172616d657465724964223a317d7d
+derived-placement 2 definition-hex 7b2266696c6c4964223a312c2268223a33332c226964223a327d
+grid 1 on 2 from-fill 1 main-along v
+timber 1 27 33 role boundary
+timber 2 27 33 role boundary
+timber 3 27 33 role primary
+timber 4 27 33 role primary
+timber 5 27 33 role primary
+timber 6 27 33 role primary
+timber 7 27 33 role primary
+timber 8 27 33 role primary
+timber 9 27 33 role secondary
+timber 10 27 33 role secondary
+timber 11 27 33 role secondary
+timber 12 27 33 role secondary
+timber 13 27 33 role secondary
+timber 14 27 33 role secondary
+timber 15 27 33 role secondary
+timber 16 27 33 role secondary
+timber 17 27 33 role secondary
+timber 18 27 33 role secondary
+timber 19 27 33 role secondary
+timber 20 27 33 role secondary
+timber 21 27 33 role secondary
+timber 22 27 33 role secondary
+timber 23 27 33 role secondary
+timber 24 27 33 role secondary
+timber 25 27 33 role secondary
+timber 26 27 33 role secondary
+timber 27 27 33 role secondary
+timber 28 27 33 role secondary
+timber 29 27 33 role secondary
+timber 30 27 33 role secondary
+timber 31 27 33 role secondary
+timber 32 27 33 role secondary
+timber 33 27 33 role secondary
+timber 34 27 33 role secondary
+timber 35 27 33 role secondary
+timber 36 27 33 role secondary
+timber 37 27 33 role secondary
+timber 38 27 33 role secondary
+timber 39 27 33 role secondary
+timber 40 27 33 role secondary
+timber 41 27 33 role secondary
+timber 42 27 33 role secondary
+timber 43 27 33 role secondary
+timber 44 27 33 role secondary
+timber 45 27 33 role secondary
+timber 46 27 33 role secondary
+timber 47 27 33 role secondary
+timber 48 27 33 role secondary
+timber 49 27 33 role secondary
+timber 50 27 33 role secondary
+timber 51 27 33 role secondary
+timber 52 27 33 role secondary
+timber 53 27 33 role secondary
+guide 1 2 u grid:1:v:0+spec:r03_mark_1_0
+guide 2 2 u grid:1:v:0+spec:r03_mark_2_0
+guide 3 2 u grid:1:v:0+spec:r03_mark_3_0
+guide 4 2 u grid:1:v:0+spec:r03_mark_4_0
+guide 5 2 u grid:1:v:0+spec:r03_mark_5_0
+guide 6 2 u grid:1:v:0+spec:r03_mark_6_0
+guide 7 2 u grid:1:v:0+spec:r03_mark_7_0
+guide 8 2 u grid:1:v:0+spec:r03_mark_8_0
+place 1 on 2 at-face key-hex:5b5b226530222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d +u +n
+# R18 角材 1: onBoundary=true coversEdge=true boundaryEdge=[["e0",0,1]]
+place 2 on 2 at-face key-hex:5b5b226532222c302c315d5d between key-hex:5b5b226533222c302c315d5d key-hex:5b5b226531222c302c315d5d -u +n
+# R18 角材 2: onBoundary=true coversEdge=true boundaryEdge=[["e2",0,1]]
+place 3 on 2 at-line grid 1 u 0 between t1 t2 +v +n
+# R18 角材 3: onBoundary=false coversEdge=false boundaryEdge=null
+place 4 on 2 at-line grid 1 u 1 between t1 t2 +v +n
+# R18 角材 4: onBoundary=false coversEdge=false boundaryEdge=null
+place 5 on 2 at-line grid 1 u 2 between t1 t2 +v +n
+# R18 角材 5: onBoundary=false coversEdge=false boundaryEdge=null
+place 6 on 2 at-line grid 1 u 3 between t1 t2 +v +n
+# R18 角材 6: onBoundary=false coversEdge=false boundaryEdge=null
+place 7 on 2 at-face key-hex:5b5b226533222c302c315d5d between t1 t2 -v +n
+# R18 角材 7: onBoundary=true coversEdge=false boundaryEdge=[["e3",0,1]]
+place 8 on 2 at-face key-hex:5b5b226531222c302c315d5d between t1 t2 +v +n
+# R18 角材 8: onBoundary=true coversEdge=false boundaryEdge=[["e1",0,1]]
+place 9 on 2 at-line guide 1 between t7 t3 +u +n
+# R18 角材 9: onBoundary=false coversEdge=false boundaryEdge=null
+place 10 on 2 at-line guide 2 between t7 t3 +u +n
+# R18 角材 10: onBoundary=false coversEdge=false boundaryEdge=null
+place 11 on 2 at-line guide 3 between t7 t3 +u +n
+# R18 角材 11: onBoundary=false coversEdge=false boundaryEdge=null
+place 12 on 2 at-line guide 4 between t7 t3 +u +n
+# R18 角材 12: onBoundary=false coversEdge=false boundaryEdge=null
+place 13 on 2 at-line guide 5 between t7 t3 +u +n
+# R18 角材 13: onBoundary=false coversEdge=false boundaryEdge=null
+place 14 on 2 at-line guide 6 between t7 t3 +u +n
+# R18 角材 14: onBoundary=false coversEdge=false boundaryEdge=null
+place 15 on 2 at-line guide 7 between t7 t3 +u +n
+# R18 角材 15: onBoundary=false coversEdge=false boundaryEdge=null
+place 16 on 2 at-line guide 8 between t7 t3 +u +n
+# R18 角材 16: onBoundary=false coversEdge=false boundaryEdge=null
+place 17 on 2 at-line guide 1 between t3 t4 +u +n
+# R18 角材 17: onBoundary=false coversEdge=false boundaryEdge=null
+place 18 on 2 at-line guide 2 between t3 t4 +u +n
+# R18 角材 18: onBoundary=false coversEdge=false boundaryEdge=null
+place 19 on 2 at-line guide 3 between t3 t4 +u +n
+# R18 角材 19: onBoundary=false coversEdge=false boundaryEdge=null
+place 20 on 2 at-line guide 4 between t3 t4 +u +n
+# R18 角材 20: onBoundary=false coversEdge=false boundaryEdge=null
+place 21 on 2 at-line guide 5 between t3 t4 +u +n
+# R18 角材 21: onBoundary=false coversEdge=false boundaryEdge=null
+place 22 on 2 at-line guide 6 between t3 t4 +u +n
+# R18 角材 22: onBoundary=false coversEdge=false boundaryEdge=null
+place 23 on 2 at-line guide 7 between t3 t4 +u +n
+# R18 角材 23: onBoundary=false coversEdge=false boundaryEdge=null
+place 24 on 2 at-line guide 8 between t3 t4 +u +n
+# R18 角材 24: onBoundary=false coversEdge=false boundaryEdge=null
+place 25 on 2 at-line guide 1 between t4 t5 +u +n
+# R18 角材 25: onBoundary=false coversEdge=false boundaryEdge=null
+place 26 on 2 at-line guide 2 between t4 t5 +u +n
+# R18 角材 26: onBoundary=false coversEdge=false boundaryEdge=null
+place 27 on 2 at-line guide 3 between t4 t5 +u +n
+# R18 角材 27: onBoundary=false coversEdge=false boundaryEdge=null
+place 28 on 2 at-line guide 4 between t4 t5 +u +n
+# R18 角材 28: onBoundary=false coversEdge=false boundaryEdge=null
+place 29 on 2 at-line guide 5 between t4 t5 +u +n
+# R18 角材 29: onBoundary=false coversEdge=false boundaryEdge=null
+place 30 on 2 at-line guide 6 between t4 t5 +u +n
+# R18 角材 30: onBoundary=false coversEdge=false boundaryEdge=null
+place 31 on 2 at-line guide 7 between t4 t5 +u +n
+# R18 角材 31: onBoundary=false coversEdge=false boundaryEdge=null
+place 32 on 2 at-line guide 8 between t4 t5 +u +n
+# R18 角材 32: onBoundary=false coversEdge=false boundaryEdge=null
+place 33 on 2 at-line guide 1 between t5 t6 +u +n
+# R18 角材 33: onBoundary=false coversEdge=false boundaryEdge=null
+place 34 on 2 at-line guide 2 between t5 t6 +u +n
+# R18 角材 34: onBoundary=false coversEdge=false boundaryEdge=null
+place 35 on 2 at-line guide 3 between t5 t6 +u +n
+# R18 角材 35: onBoundary=false coversEdge=false boundaryEdge=null
+place 36 on 2 at-line guide 4 between t5 t6 +u +n
+# R18 角材 36: onBoundary=false coversEdge=false boundaryEdge=null
+place 37 on 2 at-line guide 5 between t5 t6 +u +n
+# R18 角材 37: onBoundary=false coversEdge=false boundaryEdge=null
+place 38 on 2 at-line guide 6 between t5 t6 +u +n
+# R18 角材 38: onBoundary=false coversEdge=false boundaryEdge=null
+place 39 on 2 at-line guide 7 between t5 t6 +u +n
+# R18 角材 39: onBoundary=false coversEdge=false boundaryEdge=null
+place 40 on 2 at-line guide 8 between t5 t6 +u +n
+# R18 角材 40: onBoundary=false coversEdge=false boundaryEdge=null
+place 41 on 2 at-line guide 1 between t6 t8 +u +n
+# R18 角材 41: onBoundary=false coversEdge=false boundaryEdge=null
+place 42 on 2 at-line guide 2 between t6 t8 +u +n
+# R18 角材 42: onBoundary=false coversEdge=false boundaryEdge=null
+place 43 on 2 at-line guide 3 between t6 t8 +u +n
+# R18 角材 43: onBoundary=false coversEdge=false boundaryEdge=null
+place 44 on 2 at-line guide 4 between t6 t8 +u +n
+# R18 角材 44: onBoundary=false coversEdge=false boundaryEdge=null
+place 45 on 2 at-line guide 5 between t6 t8 +u +n
+# R18 角材 45: onBoundary=false coversEdge=false boundaryEdge=null
+place 46 on 2 at-line guide 6 between t6 t8 +u +n
+# R18 角材 46: onBoundary=false coversEdge=false boundaryEdge=null
+place 47 on 2 at-line guide 7 between t6 t8 +u +n
+# R18 角材 47: onBoundary=false coversEdge=false boundaryEdge=null
+place 48 on 2 at-line guide 8 between t6 t8 +u +n
+# R18 角材 48: onBoundary=false coversEdge=false boundaryEdge=null
+place 49 on 2 at-line grid 1 v 0 between t7 t3 +u +n
+# R18 角材 49: onBoundary=false coversEdge=false boundaryEdge=null
+place 50 on 2 at-line grid 1 v 0 between t3 t4 +u +n
+# R18 角材 50: onBoundary=false coversEdge=false boundaryEdge=null
+place 51 on 2 at-line grid 1 v 0 between t4 t5 +u +n
+# R18 角材 51: onBoundary=false coversEdge=false boundaryEdge=null
+place 52 on 2 at-line grid 1 v 0 between t5 t6 +u +n
+# R18 角材 52: onBoundary=false coversEdge=false boundaryEdge=null
+place 53 on 2 at-line grid 1 v 0 between t6 t8 +u +n
+# R18 角材 53: onBoundary=false coversEdge=false boundaryEdge=null
+canvas-pos boundary 1 266 244
+canvas-pos parameter 1 60 660
+canvas-pos placement 2 357 724
