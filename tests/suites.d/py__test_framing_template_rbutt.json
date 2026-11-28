@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_framing_template_rbutt.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_framing_template_rbutt.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_framing_template_rbutt.py"
+  ],
+  "name": "py:test_framing_template_rbutt",
+  "order": "new/py__test_framing_template_rbutt",
+  "schema": "geometry-native-suite/1"
+}
