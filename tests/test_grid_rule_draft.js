@@ -62,9 +62,9 @@ test('format and required-capability guards refuse every downgrade, false declar
   assert.deepEqual(P.formatPolicy('geometry-canvas/19'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
   assert.deepEqual(P.formatPolicy('geometry-canvas/20'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
   assert.ok(P.supportedFormats.includes('geometry-canvas/21'),'R13_GRID_READER_21_REGISTERED');
-  assert.deepEqual(P.supportedFormats,Array.from({length:21},(_,index)=>'geometry-canvas/'+(index+1)),'R13_GRID_READER_EXACT_SEQUENCE');
+  assert.deepEqual(P.supportedFormats,Array.from({length:22},(_,index)=>'geometry-canvas/'+(index+1)),'R13_GRID_READER_EXACT_SEQUENCE');
   assert.deepEqual(P.formatPolicy('geometry-canvas/21'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true},'R13_GRID_READER_21_POLICY');
-  for(const format of ['geometry-canvas/22','geometry-canvas/999','__proto__',null,13])assert.throws(()=>P.formatPolicy(format),'R13_GRID_READER_UNKNOWN_FORMAT');
+  for(const format of ['geometry-canvas/23','geometry-canvas/999','__proto__',null,13])assert.throws(()=>P.formatPolicy(format),'R13_GRID_READER_UNKNOWN_FORMAT');
   const bytes=await P.pack(scene,{...manifest(),featureAttachments:envelope(draft())},new Map(),zip);
   for(const change of [m=>m.requiredCapabilities=[],m=>m.requiredCapabilities=[F.GRID_RULE_SCHEMA,F.GRID_RULE_SCHEMA],
     m=>m.requiredCapabilities=['grid-editor-draft/3'],m=>delete m.featureAttachments,

@@ -102,7 +102,7 @@ test('R13_H01 registered reader owner is host-only and /21 is exactly additive',
  const r=R();assert.equal(r.CAPABILITY,'reconstruction-data/1');assert.deepEqual(P.Features.capabilities(envelope(r.empty())),[r.CAPABILITY]);
  assert.ok(P.readerCapabilities([]).includes(r.CAPABILITY),'R13_HOST_CAPABILITY');assert.throws(()=>P.sceneCapabilities('requires '+r.CAPABILITY+'\n'));assert.throws(()=>P.validateProjectCapabilities([r.CAPABILITY]));
  assert.deepEqual(P.supportedFormats.slice(0,20),Array.from({length:20},(_,i)=>'geometry-canvas/'+(i+1)));
- assert.deepEqual(P.supportedFormats.slice(20),['geometry-canvas/21']);
+ assert.deepEqual(P.supportedFormats.slice(20),['geometry-canvas/21','geometry-canvas/22']);
  const alias=r.empty();assert.throws(()=>P.Features.validate({schema:P.Features.SCHEMA,records:[P.Features.record(r.KIND,alias),{kind:P.Features.CASE_KIND,schema:P.Features.CASE_SCHEMA,value:alias}]}),'R13_OWNER_CACHE_ISOLATION');
 });
 test('R13_H02 real ZIP preserves incomplete raw strings without defaults and old projects stay old',async()=>{

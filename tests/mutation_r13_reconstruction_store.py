@@ -23,8 +23,8 @@ import binaries
 ROOT = Path(__file__).resolve().parents[1]
 BASE = "b3c4b981bb96b118c1c05b7a1bd98062d710c8b2"
 HOST_TEST = "tests/test_r13_reconstruction_store.js"
-K1 = "![GRID_DRAFTS_FORMAT,CARD_FORMAT, ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT, RECONSTRUCTION_FORMAT].includes(manifest.format)"
-R06 = "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT, RECONSTRUCTION_FORMAT].includes(manifest.format))"
+K1 = "![GRID_DRAFTS_FORMAT,CARD_FORMAT, ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT, RECONSTRUCTION_FORMAT, RC_DATA_FORMAT].includes(manifest.format)"
+R06 = "if (hasRoomCandidate !== declaresRoomCandidate || hasRoomCandidate && ![ROOM_CANDIDATE_FORMAT, PROFILE_RUN_FORMAT, RECONSTRUCTION_FORMAT, RC_DATA_FORMAT].includes(manifest.format))"
 FAULTS = (
     ("R13_K1_STALE_FORMAT_DEFINITION", "tests/mutate_k1_frontend.py", K1,
      K1.replace(", RECONSTRUCTION_FORMAT", ""), "R13_H23", HOST_TEST, "R13_K1_FORMAT_WITHDRAWAL_ANCHOR"),

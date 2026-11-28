@@ -94,11 +94,11 @@ test('Q38JB native profile and timber packages roundtrip in the dedicated format
   assert.deepEqual(loaded.manifest.models[0].result.timbers,record.result.timbers,'Q38JB_TIMBERS');
   assert.deepEqual(P.formatPolicy(P.PROFILE_RUN_FORMAT),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
   assert.deepEqual(P.supportedFormats.slice(0,20),Array.from({length:20},(_,i)=>'geometry-canvas/'+(i+1)),'Q38JB_MAIN_19_FORMAT_SET');
-  assert.deepEqual(P.supportedFormats.slice(20),['geometry-canvas/21'],'R13_ONLY_FORMAT_APPEND');
+  assert.deepEqual(P.supportedFormats.slice(20),['geometry-canvas/21','geometry-canvas/22'],'R13_ONLY_FORMAT_APPEND');
   assert.deepEqual(P.formatPolicy('geometry-canvas/19'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
-  // /21 is the explicitly adopted reconstruction host capability; /22 is still unknown.
+  // /21 room records and /22 manual RC are explicit; /23 remains unknown.
   assert.deepEqual(P.formatPolicy('geometry-canvas/21'),{modelCollections:true,engineeringCandidate:true,canonicalScene:true});
-  assert.throws(()=>P.formatPolicy('geometry-canvas/22'),/版本不支援/,'R13_NEXT_UNKNOWN_FORMAT_REJECTED');
+  assert.throws(()=>P.formatPolicy('geometry-canvas/23'),/版本不支援/,'R13_NEXT_UNKNOWN_FORMAT_REJECTED');
 });
 
 test('R430 source receipt hashes are checked before a model can be committed',async()=>{

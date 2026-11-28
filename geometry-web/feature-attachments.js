@@ -389,7 +389,7 @@
   function capabilities(envelope) { validate(envelope,true); return [...new Set(envelope.records.flatMap(record => record.kind === GRID_KIND ?
     [...(record.schema === GRID_DRAFTS_SCHEMA ? [GRID_DRAFTS_SCHEMA,...record.value.drafts.map(d=>d.schema)] : [record.schema]),
       ...((record.schema === GRID_DRAFTS_SCHEMA ? record.value.drafts : [record.value]).some(gridCardDraft) ? [GRID_CARD_CAPABILITY] : [])] :
-    record.kind === Evidence.KIND ? [record.schema] : record.kind === CASE_KIND ? [CASE_SCHEMA] : record.kind === Cutting.KIND ? [Cutting.CAPABILITY] : record.kind === Framing.KIND ? [Framing.CAPABILITY] : record.kind === Reconstruction.KIND ? [Reconstruction.CAPABILITY] :
+    record.kind === Evidence.KIND ? [record.schema] : record.kind === CASE_KIND ? [CASE_SCHEMA] : record.kind === Cutting.KIND ? [Cutting.CAPABILITY] : record.kind === Framing.KIND ? [Framing.CAPABILITY] : record.kind === Reconstruction.KIND ? [Reconstruction.CAPABILITY,...(record.value.records.some(item=>item.kind!=="room-height")?[Reconstruction.RC_CAPABILITY]:[])] :
     record.kind === ROOM_CANDIDATE_KIND ? [ROOM_CANDIDATE_CAPABILITY] :
     [ROOM_CAPABILITY,...(record.schema===ROOM_DISPLAY_SCHEMA?[ROOM_DISPLAY_CAPABILITY]:[]),
       ...((record.schema===ROOM_HISTORY_SCHEMA||record.value.legacyHistory?.length)?[ROOM_HISTORY_CAPABILITY]:[])]))].sort(); }

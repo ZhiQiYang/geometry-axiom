@@ -1,5 +1,5 @@
-/* D51a-c / I63a-c / R58a-b: host records and the room-height template.
- * This first slice accepts explicit manual observations only. It creates no World object. */
+/* D51a-c / I63a-c / R58a-b: bounded manual room and RC draft records.
+ * RC confirmation is observation data, never a World object or an adoption. */
 (function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('../geometry-core/reconstruction-values.js'):root.GeometryReconstructionValues);if(typeof module==='object'&&module.exports)module.exports=api;else root.GeometryReconstructionData=api;})(typeof globalThis!=='undefined'?globalThis:this,K=>{
   'use strict';
   if(!K)throw new Error('缺少精確數值模組。');
@@ -7,6 +7,14 @@
   const REVIEW_SCHEMA='reconstruction-model-review/1';
   const FIELD_NAMES=Object.freeze(['bottom','top','height','wallThickness']);
   const RELATION_FIELDS=Object.freeze(['bottom','height','top']);
+  const RC_CAPABILITY='reconstruction-rc-data/1';
+  const KINDS=Object.freeze(['room-height','rc-column','rc-beam']);
+  const RC_FIELDS=Object.freeze({'rc-column':Object.freeze(['x','y','width','depth','bottom','top','height']),
+    'rc-beam':Object.freeze(['start','end','center','width','depth','bottom','top'])});
+  const fieldsFor=record=>record.kind==='room-height'?FIELD_NAMES:RC_FIELDS[record.kind];
+  const relationFor=record=>record.kind==='rc-beam'?['bottom','depth','top']:RELATION_FIELDS;
+  const positiveField=key=>['height','wallThickness','width','depth'].includes(key);
+  const positionField=key=>['bottom','top','x','y','start','end','center'].includes(key);
   const SETTINGS=Object.freeze({bottom:'bottom',height:'height',wallThickness:'wall_thickness'});
   const MAX_RECORDS=256,MAX_RECORD_BYTES=16*1024,MAX_REVIEWS=64,MAX_REVIEW_BYTES=64*1024,MAX_BYTES=1024*1024;
   const HASH=/^[a-f0-9]{64}$/;
@@ -70,16 +78,21 @@
   function fieldInput(field){return {raw:field.raw,unit:field.unit,basis:clone(field.basis),source:clone(field.source)};}
   function validateBasis(basis,key){
     if(!exact(basis,['kind','note'])||!text(basis.note,256))fail('R13_DATUM','基準說明格式不合法。');
-    const position=key==='bottom'||key==='top';
-    if(position?!['unknown','world-z'].includes(basis.kind):basis.kind!=='distance')
-      fail('R13_DATUM','位置與距離使用不同基準；本片位置只接受明選世界 Z。');
+    const choices=key==='x'?['unknown','world-x']:key==='y'?['unknown','world-y']:
+      ['bottom','top'].includes(key)?['unknown','world-z']:['start','end','center'].includes(key)?['unknown','world-x','world-y']:['distance'];
+    if(!choices.includes(basis.kind))fail('R13_DATUM','位置與距離使用不同基準；位置須明選相符的世界軸。');
   }
-  function assertDatum(field,key){
-    if((key==='bottom'||key==='top')&&field.basis.kind!=='world-z')
-      fail('R13_DATUM_ADOPTION','位置採用或推導須明選世界 Z；觀察確認及說明文字不建立座標轉換。');
+  function assertDatum(field,key,record=null){
+    let expected=['bottom','top'].includes(key)?'world-z':['x','y'].includes(key)?'world-'+key:null;
+    if(['start','end','center'].includes(key)){
+      if(!['x','y'].includes(record?.axis))fail('R13_AXIS','樑的水平走向須明選 x 或 y。');
+      expected='world-'+(key==='center'?(record.axis==='x'?'y':'x'):record.axis);
+    }
+    if(expected!==null&&field.basis.kind!==expected)
+      fail('R13_DATUM_ADOPTION',`位置採用或推導須明選世界 ${expected.slice(-1).toUpperCase()}；觀察確認及說明文字不建立座標轉換。`);
   }
-  function directValue(field,key){return K.decimal(field.raw,field.unit,key==='height'||key==='wallThickness');}
-  function validateField(field,key,recordRevision){
+  function directValue(field,key){return K.decimal(field.raw,field.unit,positiveField(key));}
+  function validateField(field,key,recordRevision,record){
     if(!exact(field,['raw','unit','basis','source','revision','confirmation'])||!text(field.raw,64)||![null,'mm','cm'].includes(field.unit)||
         !positiveInteger(field.revision)||field.revision>recordRevision||!exact(field.source,['kind'])||field.source.kind!=='manual')
       fail('R13_FIELD','欄位只能保存原字串、單位、明示基準、人工來源、修訂與確認。');
@@ -90,14 +103,14 @@
       if(!exact(c,['kind','value','revision','input'])||!exact(c.input,['raw','unit','basis','source'])||!same(c.input,fieldInput(field))||c.value!==directValue(field,key))
         fail('R13_DIRECT_CONFIRMATION','直接確認的原文、基準、來源、修訂或精確值不相符。');
     }else if(c.kind==='derived'){
-      if(!exact(c,['kind','value','revision','relation','inputs'])||c.relation!=='sum/1'||!RELATION_FIELDS.includes(key)||field.raw!==''||
-          !array(c.inputs)||c.inputs.length!==2||c.inputs.some(input=>!exact(input,['field','revision','value'])||!RELATION_FIELDS.includes(input.field)||!positiveInteger(input.revision)))
+      if(!exact(c,['kind','value','revision','relation','inputs'])||c.relation!=='sum/1'||!relationFor(record).includes(key)||field.raw!==''||
+          !array(c.inputs)||c.inputs.length!==2||c.inputs.some(input=>!exact(input,['field','revision','value'])||!relationFor(record).includes(input.field)||!positiveInteger(input.revision)))
         fail('R13_DERIVED_CONFIRMATION','推導確認必須保留唯一空白目標及兩個直接確認的版本依據。');
-      K.integer(c.value,key==='height');assertDatum(field,key);
+      K.integer(c.value,positiveField(key));assertDatum(field,key,record);
     }else fail('R13_CONFIRMATION','不支援此確認種類。');
   }
   function candidate(record,target=null){
-    const names=RELATION_FIELDS,blanks=names.filter(key=>record.fields[key].raw==='');
+    const names=relationFor(record),blanks=names.filter(key=>record.fields[key].raw==='');
     if(blanks.length!==1||target!==null&&blanks[0]!==target)return null;
     const field=blanks[0],others=names.filter(key=>key!==field);
     if(others.some(key=>record.fields[key].confirmation?.kind!=='direct'))return null;
@@ -107,16 +120,21 @@
     const inputs=others.map(key=>({field:key,revision:record.fields[key].revision,value:directValue(record.fields[key],key)}));
     const values=names.map(key=>key===field?null:directValue(record.fields[key],key)),result=K.solve(...values);
     if(!result||names[result.index]!==field)return null;
-    K.integer(result.value,field==='height');
+    K.integer(result.value,positiveField(field));
     return {field,value:result.value,inputs,relation:'sum/1'};
   }
   function validateRecord(record){
     jsonData(record);
-    if(!exact(record,['id','kind','name','revision','fields'])||record.kind!=='room-height'||!positiveInteger(record.revision)||!exact(record.fields,FIELD_NAMES))
-      fail('R13_RECORD','本片只支援完整的房間高度待補紀錄。');
+    if(!plain(record)||!KINDS.includes(record.kind)||!exact(record,['id','kind','name','revision','fields',
+        ...(record.kind!=='room-height'?['spaceId']:[]),...(record.kind==='rc-beam'?['axis']:[])])||
+        !positiveInteger(record.revision)||!exact(record.fields,fieldsFor(record)))
+      fail('R13_RECORD','只接受完整且封閉的房間高度／RC 待補紀錄。');
+    if(record.kind!=='room-height'&&record.spaceId!==null&&(!Number.isInteger(record.spaceId)||record.spaceId<1||record.spaceId>4294967295))
+      fail('R13_SPACE_INTENT','空間意圖只可未指定或明選正整數 D5 id；尚未驗其存在。');
+    if(record.kind==='rc-beam'&&![null,'x','y'].includes(record.axis))fail('R13_AXIS','樑的水平走向只可未指定、x 或 y。');
     identifier(record.id);name(record.name);
-    for(const key of FIELD_NAMES)validateField(record.fields[key],key,record.revision);
-    for(const key of RELATION_FIELDS){
+    for(const key of fieldsFor(record))validateField(record.fields[key],key,record.revision,record);
+    for(const key of relationFor(record)){
       const c=record.fields[key].confirmation;if(c?.kind!=='derived')continue;
       const expected=candidate(record,key);
       if(!expected||c.value!==expected.value||!same(c.inputs,expected.inputs))
@@ -125,7 +143,7 @@
     capacity(record,MAX_RECORD_BYTES,'R13_RECORD_CAPACITY');return record;
   }
   function relationCheck(record){
-    const values=RELATION_FIELDS.map(key=>{
+    const values=relationFor(record).map(key=>{
       const field=record.fields[key];
       if(field.raw!=='')return directValue(field,key);
       return field.confirmation?.kind==='derived'?field.confirmation.value:null;
@@ -135,6 +153,7 @@
     if(values.every(value=>value!==null)&&['bottom','top'].every(key=>record.fields[key].basis.kind==='world-z'))K.solve(...values);
   }
   function planRecord(record){
+    if(record.kind!=='room-height')fail('R13_ROOM_ONLY','RC 待補資料沒有正式採用或房間建模入口。');
     relationCheck(record);
     const uses=[];
     for(const key of ['bottom','height']){
@@ -195,7 +214,7 @@
       fail('R13_SCHEMA','補資料附件的版本、封閉欄位或容量不合法。');
     const ids=new Set(),models=new Set();
     const water=record=>{
-      if(identifier(record.id)>=value.nextId||record.revision>=value.nextRevision||FIELD_NAMES.some(key=>record.fields[key].revision>=value.nextRevision))
+      if(identifier(record.id)>=value.nextId||record.revision>=value.nextRevision||fieldsFor(record).some(key=>record.fields[key].revision>=value.nextRevision))
         fail('R13_HIGHWATER','識別或修訂高水位低於已保存紀錄，不能重用歷史版本。');
     };
     for(const record of value.records){validateRecord(record);if(ids.has(record.id))fail('R13_DUPLICATE_RECORD','紀錄識別重複。');ids.add(record.id);water(record);}
@@ -214,16 +233,26 @@
     const before=value===null||value===undefined?empty():validate(value);jsonData(action);
     const next=clone(before);
     if(action?.type==='create'){
-      assertAction(action,['type'],['name']);name(action.name===undefined?'房間高度':action.name);
+      assertAction(action,['type'],['name','kind']);const kind=action.kind===undefined?'room-height':action.kind;
+      if(!KINDS.includes(kind))fail('R13_RECORD','不支援此待補資料模板。');
+      const title=action.name===undefined?{'room-height':'房間高度','rc-column':'RC 柱','rc-beam':'RC 樑'}[kind]:action.name;name(title);
       if(next.records.length>=MAX_RECORDS)fail('R13_RECORD_CAPACITY','已達 256 筆；原資料保留。');
       const id='rd-'+allocate(next,'nextId'),revision=allocate(next,'nextRevision'),fields={};
-      for(const key of FIELD_NAMES)fields[key]={raw:'',unit:null,basis:{kind:key==='bottom'||key==='top'?'unknown':'distance',note:''},source:{kind:'manual'},revision,confirmation:null};
-      next.records.push({id,kind:'room-height',name:action.name===undefined?'房間高度':action.name,revision,fields});
+      for(const key of fieldsFor({kind}))fields[key]={raw:'',unit:null,basis:{kind:positionField(key)?'unknown':'distance',note:''},source:{kind:'manual'},revision,confirmation:null};
+      next.records.push({id,kind,name:title,revision,fields,...(kind!=='room-height'?{spaceId:null}:{}),...(kind==='rc-beam'?{axis:null}:{})});
     }else if(action?.type==='edit'){
-      assertAction(action,['type','id'],['name','fields']);const record=find(next,action.id),affected=new Set();
+      assertAction(action,['type','id'],['name','fields','spaceId','axis']);const record=find(next,action.id),affected=new Set();let inputChanged=false;
       if(Object.hasOwn(action,'name')){name(action.name);record.name=action.name;}
+      if(Object.hasOwn(action,'spaceId')){
+        if(record.kind==='room-height')fail('R13_ACTION','房間資料沒有 RC 的 D5 意圖欄位。');
+        if(record.spaceId!==action.spaceId){record.spaceId=action.spaceId;inputChanged=true;}
+      }
+      if(Object.hasOwn(action,'axis')){
+        if(record.kind!=='rc-beam')fail('R13_ACTION','只有樑有水平走向。');
+        if(record.axis!==action.axis){record.axis=action.axis;inputChanged=true;for(const key of ['start','end','center'])affected.add(key);}
+      }
       if(Object.hasOwn(action,'fields')){
-        if(!plain(action.fields)||Object.keys(action.fields).some(key=>!FIELD_NAMES.includes(key)))fail('R13_ACTION','未知的房間高度欄位。');
+        if(!plain(action.fields)||Object.keys(action.fields).some(key=>!fieldsFor(record).includes(key)))fail('R13_ACTION','未知的模板欄位。');
         for(const key of Object.keys(action.fields)){
           const patch=action.fields[key];
           if(!plain(patch)||Object.keys(patch).some(part=>!['raw','unit','basis'].includes(part)))fail('R13_ACTION','只能編輯原字串、單位與基準。');
@@ -231,11 +260,11 @@
           if(!same(fieldInput(field),fieldInput(merged))){record.fields[key]=merged;affected.add(key);}
         }
       }
-      for(const key of FIELD_NAMES){const c=record.fields[key].confirmation;if(c?.kind==='derived'&&c.inputs.some(input=>affected.has(input.field)))affected.add(key);}
-      if(affected.size){const revision=allocate(next,'nextRevision');record.revision=revision;for(const key of affected){record.fields[key].revision=revision;record.fields[key].confirmation=null;}}
+      for(const key of fieldsFor(record)){const c=record.fields[key].confirmation;if(c?.kind==='derived'&&c.inputs.some(input=>affected.has(input.field)))affected.add(key);}
+      if(affected.size||inputChanged){const revision=allocate(next,'nextRevision');record.revision=revision;for(const key of affected){record.fields[key].revision=revision;record.fields[key].confirmation=null;}}
     }else if(action?.type==='confirm'||action?.type==='confirm-derived'){
       assertAction(action,['type','id','field']);const record=find(next,action.id),key=action.field;
-      if(!FIELD_NAMES.includes(key))fail('R13_ACTION','未知的確認欄位。');
+      if(!fieldsFor(record).includes(key))fail('R13_ACTION','未知的確認欄位。');
       const field=record.fields[key];
       if(action.type==='confirm'){
         const value=directValue(field,key);
@@ -248,7 +277,7 @@
         const revision=allocate(next,'nextRevision');record.revision=revision;field.revision=revision;
         field.confirmation={kind:'derived',value:derived.value,revision,relation:derived.relation,inputs:derived.inputs};
       }
-      for(const other of FIELD_NAMES){
+      for(const other of fieldsFor(record)){
         const dependency=record.fields[other].confirmation;
         if(other!==key&&dependency?.kind==='derived'&&dependency.inputs.some(input=>input.field===key)){
           record.fields[other].revision=record.revision;record.fields[other].confirmation=null;
@@ -262,11 +291,22 @@
   }
   function derivation(record){
     validateRecord(record);
-    const blanks=RELATION_FIELDS.filter(key=>record.fields[key].raw==='');
+    const blanks=relationFor(record).filter(key=>record.fields[key].raw==='');
     if(blanks.length!==1||record.fields[blanks[0]].confirmation!==null)return null;
     return candidate(record);
   }
   function plan(value,id){validate(value);return planRecord(find(value,id));}
+  function rcValues(record){
+    validateRecord(record);
+    if(!RC_FIELDS[record.kind])fail('R13_RC_ONLY','研究障礙只接明選 RC 柱或樑資料。');
+    relationCheck(record);
+    const values={};for(const key of fieldsFor(record)){
+      const field=record.fields[key];if(!field.confirmation)fail('R13_RC_CONFIRMATION','RC 研究幾何須逐欄有效確認；不猜補缺值。');
+      assertDatum(field,key,record);values[key]=K.integer(field.confirmation.value,positiveField(key));
+    }
+    if(record.kind==='rc-beam')K.integer(values.end-values.start,true);
+    return values;
+  }
   function preserveHighwater(value,observed){
     if(value===null||value===undefined){if(observed===null||observed===undefined)return null;value=empty();}
     validate(value);
@@ -351,6 +391,6 @@
     });
     return validate(next);
   }
-  return Object.freeze({KIND,SCHEMA,CAPABILITY,REVIEW_SCHEMA,FIELD_NAMES,RELATION_FIELDS,MAX_RECORDS,MAX_RECORD_BYTES,MAX_REVIEWS,MAX_REVIEW_BYTES,MAX_BYTES,
-    empty,validate,validateRecord,edit,derivation,plan,preserveHighwater,makeReview,verifyReviews,reviewStatus,reconcileModels,jsonBytes,canonical,missingReserve});
+  return Object.freeze({KIND,SCHEMA,CAPABILITY,RC_CAPABILITY,KINDS,REVIEW_SCHEMA,FIELD_NAMES,RELATION_FIELDS,MAX_RECORDS,MAX_RECORD_BYTES,MAX_REVIEWS,MAX_REVIEW_BYTES,MAX_BYTES,
+    empty,validate,validateRecord,edit,derivation,plan,rcValues,preserveHighwater,makeReview,verifyReviews,reviewStatus,reconcileModels,jsonBytes,canonical,missingReserve});
 });

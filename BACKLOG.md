@@ -1,5 +1,13 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-28 R13 N1 補交重驗（#43，ChatGPT 實作 v4 候選）
+
+- 基底固定 PR #468 E1 `366365b89528809e0a33e9cc7f7e76691e72990a`。承接 #43 7230545802 的 v3 原件，保留目前 E1 的 textarea／原文投影、跨案草稿及歷史等待修正，對柱樑動態欄位補回歸與具名撤回。本次實跑另封存，不把舊工作樹、舊原件的輸出或 195 項報告冒充本次證據。
+- **具體拿掉／合併（GEO-219）**：原「新增房間高度資料」專用鈕合併為一個「資料種類」選擇與「新增資料」，房間、RC 柱、RC 樑共用既有 `#rdPanel`、逐欄確認、狀態及刪除列；不並排三套編輯器，也不增加常駐說明塊或頂層入口。RC 模式隱藏房間的「帶入 3D」鈕；兩段原說明在同位置依模板替換。
+- 只接人工 RC 待補原文、單位、世界軸基準、確認、有限推導與既有保存／歷史。研究 G adapter 是純資料函式，不載入 App，也不建立 World RC 或模型障礙。R10 活來源、正式採用及 D07 多筆範圍仍屬 N2–N4。
+- `/1`–`/21` 政策逐值保留，含 RC 的主案或方案使用 `/22` 並保留兩項宿主能力；未知 `/23` 仍拒絕。舊格式與 reader 能力精確清單、E1 oracle 的當前版本欄位及原 K1/R06 撤回 anchor 同步移轉，沒有減計數、歷史例外或改舊 canvas golden。
+- 新四套 Node suite 維持 pending-ci-census；P4314 為未量測候選，P4313 與全 CI／ME／架構收據依原流程重產。沒有產品 PR，這份補丁不宣稱 L2/L3/L4；實體觸控、IME、Windows 與檔案對話框待真實裝置核對。
+
 ## 2026-11-26 R13 C／D 第一產品片 v2（#461 R4，ChatGPT 候選）
 
 - 基底 `b3c4b981bb96b118c1c05b7a1bd98062d710c8b2`；承接 [issue #43](https://github.com/ZhiQiYang/geometry-axiom/issues/43)，本 v2 回應 [#455 預審 7171270204](https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7171270204)，取代未套用的 v1。依已採納 D51a–c／I63a–c／R58a–b／D63，接人工房間高度原文、精確確認／有限推導、完整 `.gcanvas/21`、歷史及明選供值進 D07；未改公理層。明確資料契約與可執行 oracle 見 `geometry-web/docs/RECONSTRUCTION-E1-CONTRACT.md` 與 `tests/oracles/r13_e1_contract.json`。

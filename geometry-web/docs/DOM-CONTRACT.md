@@ -1,5 +1,14 @@
 # DOM 合約(測試依賴清單)
 
+## R13 N1：人工 RC 資料（P4314，未量測候選）
+
+- 延續面內「底圖」→「來源與補資料」的 `#rdPanel`，標題改為「補資料紀錄」。`#rdKind` 只選新增種類 `room-height|rc-column|rc-beam`，`#rdAdd` 建所選模板；既有房間預設入口與 ID 不變。種類選擇不是數值預設，也不改已建立紀錄種類。
+- RC 柱欄位 `X/Y/Width/Depth/Bottom/Top/Height`；RC 樑欄位 `Start/End/Center/Width/Depth/Bottom/Top`，各保留 `rd<Stem>Raw/Unit/Basis/Note/State` 與 `rdConfirm<Stem>`。距離不顯示 Basis/Note。柱 X/Y 是負側起點；只有樑 Center 是橫向中線，禁止混稱中心。
+- `#rdAxis` 僅樑可見，空值或明選 x/y；修改後不替換正在使用的 select，保留原文字與原基準，取消 start/end/center 確認。`#rdSpaceId` 是空值或明選正 D5 id 的意圖，未核存在或身分；0 不當作已明選 D5。
+- RC 的 `#rdAdopt` 隱藏；偽造該事件仍被資料層的 room-only guard 拒絕，沒有正式 RC 採用入口。`#rdPlanStatus` 只報資料核對／研究用途，不能稱 World 合法。樑衝突顯示「樑底＋樑深＝樑頂」及三個人工來源和精確差額；原文完整保留。
+- 原 flush、busy/no-op、同 context 歷史、保留未保存原文及 IME 規則沿用現行 E1；新欄位使用相同的寫入通路。原文使用 textarea，保留 CR／CRLF 的未改顯示投影；切案保留舊 context 草稿並解除舊面板綁定，不阻擋新案保存或跨案回寫。P4314 三處 undo／redo 等待原資料條件與完整 owner idle；切換紀錄時用可信鍵盤輸入並逐步重新取得 render 後控制項。P4314 待真 Chrome，Node DOM seams 不稱 L4；新 document 重開不冒稱另啟 native/Chrome 程序。
+- 完整資料與版本範圍見 [RECONSTRUCTION-N1-CONTRACT.md](RECONSTRUCTION-N1-CONTRACT.md)。下節 E1 的四欄與房間採用語意繼續適用於 room-height；RC 是本節明列的新增分支。
+
 ## R13 C／D 第一產品片 v2：人工房間高度（P4313，候選待真 Chrome）
 
 - 一般路徑：面內「底圖」→ `#rdSourceGroup`「來源與補資料」→ `#rdPanel`「房間高度補資料」。一般面原有可編輯的「來源紀錄與待補資訊」、D13 共用房間原有唯讀的「原頁歷史紀錄與核對」保持原義；有 `#refRecordDetails` 時保留其原節點，沒有歷史與 PDF 證據時不假造該節點。兩路都從 `feUnderlayPaneHTML`／`feBindUnderlayPane` 的共同外層接同一新編輯器；不增加主工具列或第二份保存鈕。
