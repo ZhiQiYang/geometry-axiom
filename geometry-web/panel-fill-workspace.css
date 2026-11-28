@@ -26,4 +26,20 @@
 .pf-workspace .pf-readable-table tbody th{font-weight:400;word-break:normal;overflow-wrap:normal}
 .pf-readable-table td{vertical-align:top;font-variant-numeric:tabular-nums}
 .pf-workspace pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:18rem;overflow:auto;font-size:.75rem}
+.pf5-spatial{min-width:0;max-width:100%;border-block:1px solid var(--border,#c7ccd1);padding-block:.5rem}
+.pf5-views{display:grid;grid-template-columns:1fr;gap:.65rem;min-width:0}
+.pf5-views figure{margin:0;min-width:0;max-width:100%}.pf5-views figcaption{font-size:.8rem;line-height:1.5;margin-bottom:.2rem}
+.pf5-projection{display:block;width:100%;height:12rem;max-width:100%;border:1px solid #c6cbd0;background:#fff}
+.pf5-projection path,.pf5-projection line,.pf5-projection rect{vector-effect:non-scaling-stroke;stroke-width:1.5}
+.pf5-projection [data-pf5-layer=panel]{fill:#2c69a522;stroke:#235f9a}
+.pf5-projection [data-pf5-layer=timber]{fill:#b65b0b0a;stroke:#9a4908;stroke-dasharray:5 3}
+.pf5-projection [data-pf5-depth=far]{fill:none}.pf5-projection [data-pf5-connector=panel]{stroke:#235f9a}
+.pf5-projection [data-pf5-connector=timber]{stroke:#9a4908;stroke-dasharray:5 3}
+.pf5-projection [data-pf5-rc]{fill:#70778122;stroke:#616974;stroke-dasharray:2 3}
+.pf5-finish,.pf5-junction{min-width:0;max-width:100%;border-top:1px solid #d8dde2;padding:.4rem 0}
+.pf5-values{display:grid;grid-template-columns:1fr;gap:.35rem;margin:.4rem 0;font-size:.8rem}
+.pf5-values>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:.4rem;min-width:0}
+.pf5-values dt,.pf5-values dd{margin:0;min-width:0;overflow-wrap:anywhere}.pf5-values dd{font-variant-numeric:tabular-nums}
+.pf5-pair-layers span{font-variant-numeric:tabular-nums;white-space:nowrap}
+.pf5-spatial p,.pf5-spatial li{overflow-wrap:anywhere;line-height:1.55}.pf5-spatial ul{padding-left:1.2rem;font-size:.8rem}
 @media(max-width:560px){.pf-heading{align-items:flex-start;flex-direction:column}.pf-fields{grid-template-columns:1fr}.pf-workspace{padding:.1rem}.pf-actions{grid-template-columns:1fr}.pf-actions button:last-child{grid-column:auto}}

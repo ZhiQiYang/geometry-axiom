@@ -22,6 +22,14 @@
   const positiveId=v=>id(v)&&v>0;
   const d1=v=>Number.isSafeInteger(v)&&Math.abs(v)<=100000000;
   const parameter=v=>!!v&&id(v.parameterId)&&id(v.fieldId);
+  const spatialUnavailable=message=>({status:'unavailable',error:{code:'PF5_SPATIAL_WIRE',message}});
+  function spatial(value,state) {
+    if(value===undefined)return null; // Older services retain their existing PF scope.
+    try {
+      wire(root.PanelFillSpatial&&typeof root.PanelFillSpatial.contract==='function','空間診斷呈現能力');
+      return root.PanelFillSpatial.contract(value,state);
+    }catch(error){return spatialUnavailable(error.message);} // Diagnostic failure is not a new World rejection rule.
+  }
   function sameDefinition(a,b,kind){
     const normalized=v=>kind==='finish'&&v?{...v,obstacles:[...v.obstacles].sort()}:v;
     return canonical(normalized(a))===canonical(normalized(b));
@@ -226,7 +234,7 @@
       const last=checked(await apiRequest('panel-fill-read'));this.assertCurrent(generation);
       const final=contract(last);if(final.revision!==c.revision)throw new Error('讀取期間原生來源已變更，請重新開啟。');
       if(!id(ids.finishSurface)||!id(ids.panelFill)||!id(ids.placement))throw new Error('目前服務未提供完成面、鋪排與宿主的正式識別。');
-      this.snapshot=final.state;this.snapshotFresh=true;this.contract=final;this.revision=last.revision;
+      this.snapshot=final.state;this.spatial=spatial(last.spatial,final.state);this.snapshotFresh=true;this.contract=final;this.revision=last.revision;
       this.owner.nativeRevision=workspace().getEvidenceState?.().nativeRevision??null;
       this.sources=engineering.state;this.objects=objects;this.ids=ids;
       this.phase='editing';this.reason=final.completeForScope?'請設定完成面與鋪排，再由原生預覽。':'來源不完整；可檢視及修正定義，尚不可確認。';
@@ -259,12 +267,15 @@
         if(!result||typeof result.valid!=='boolean')throw new Error('原生預覽資料不完整。');
         if(!this.current(generation)){if(result.token)await apiRequest('panel-fill-cancel '+token(result.token));return null;}
         const c=contract(result,true);if(c.revision!==String(this.revision))throw new Error('預覽來源版本已變更。');
+        const spatialBefore=spatial(result.spatial?.before,c.before);let spatialAfter=spatial(result.spatial?.after,c.after);
+        if(this.spatial?.schema&&(!spatialBefore?.schema||!spatialAfter?.schema||canonical(spatialBefore)!==canonical(this.spatial)))
+          spatialAfter=spatialUnavailable('空間診斷候選前後來源閉包不一致；這份診斷不可呈現。'); // PF5_SPATIAL_CANDIDATE_OWNER
         if(operations.some(op=>op.op==='create-from-fill-grid')||this.snapshot.fillGrids?.length)
           wire(c.supportedActions.includes('create-from-fill-grid'),'來源主格候選缺少必要能力'); // PF4_CREATE_CANDIDATE_CAPABILITY
         requestScope({...result,before:c.before,after:c.after},this.snapshot,operations);
         impactContract({...result,before:c.before,after:c.after});
         const required=['edit-definitions','read-layout','read-support'];
-        this.candidate={...result,before:c.before,after:c.after,uiContract:c,generation};
+        this.candidate={...result,before:c.before,after:c.after,uiContract:c,spatial:spatialAfter?{before:spatialBefore,after:spatialAfter}:null,generation};
         this.phase=result.valid && c.completeForScope && !c.errors.length && required.every(a=>c.supportedActions.includes(a)) ? 'confirmable':'invalid';
         this.reason=this.phase==='confirmable'?'候選尚未套用；請核對原生結果後確認。':'候選不完整或違反條件，禁止確認；請依診斷修正。';this.emit();return this.candidate;
       } catch(error) {
@@ -290,7 +301,7 @@
         await this.refreshPresentation(); // PF_UI05_CONFIRM_SCENE_SYNC
         this.owner=owner(this.boundaryId);const official=checked(await apiRequest('panel-fill-read'));
         this.assertCurrent();const currentContract=contract(official);
-        this.snapshot=currentContract.state;this.snapshotFresh=true;this.contract=currentContract;this.revision=official.revision;
+        this.snapshot=currentContract.state;this.spatial=spatial(official.spatial,currentContract.state);this.snapshotFresh=true;this.contract=currentContract;this.revision=official.revision;
         this.ids=checked(await apiRequest('newid'));this.assertCurrent();
         this.phase='committed';this.reason=reply.history_changed===false?'原生確認定義未變更；零新增歷史。':'已確認；正式定義已重新讀取。此確認只新增一筆共用歷史。';this.emit();return reply;
       }catch(error){
@@ -323,7 +334,7 @@
       this.owner=owner(this.boundaryId);
       try {
         const official=checked(await apiRequest('panel-fill-read'));this.assertCurrent();const c=contract(official);
-        this.snapshot=c.state;this.snapshotFresh=true;this.contract=c;this.revision=official.revision;
+        this.snapshot=c.state;this.spatial=spatial(official.spatial,c.state);this.snapshotFresh=true;this.contract=c;this.revision=official.revision;
         this.ids=checked(await apiRequest('newid'));this.assertCurrent();
       }catch(error){this.reason+=' 畫面重讀失敗，請重新開啟：'+error.message;}
       this.emit();return true;

@@ -1,0 +1,24 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_pf5_mutation_evidence.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_pf5_mutation_evidence.py",
+    "needs": [],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_pf5_mutation_evidence.py"
+  ],
+  "name": "py:test_pf5_mutation_evidence",
+  "order": "new/py__test_pf5_mutation_evidence",
+  "schema": "geometry-native-suite/1"
+}

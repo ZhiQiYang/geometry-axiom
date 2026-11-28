@@ -1,0 +1,26 @@
+{
+  "execution": {
+    "cmd": [
+      "{python}",
+      "{root}/tests/_unittest_runner.py",
+      "{root}/tests/test_pf5_spatial_native.py"
+    ],
+    "extra_env": {},
+    "kind": "unittest",
+    "label": "tests/test_pf5_spatial_native.py",
+    "needs": [
+      "bridge"
+    ],
+    "needs_node": false,
+    "timeout": 1200
+  },
+  "expected": {
+    "mode": "pending-ci-census"
+  },
+  "files": [
+    "tests/test_pf5_spatial_native.py"
+  ],
+  "name": "py:test_pf5_spatial_native",
+  "order": "new/py__test_pf5_spatial_native",
+  "schema": "geometry-native-suite/1"
+}

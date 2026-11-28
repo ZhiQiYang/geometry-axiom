@@ -203,6 +203,7 @@ static void json_panel_fill_changes(const World *before,const World *after)
     }
     putchar(']');
 }
+#include "panel_fill_spatial_bridge.inc"
 static void json_panel_fill_preview(void)
 {
     /* Derived-state serialization must not replace the failed operation's classification. */
@@ -229,7 +230,9 @@ static void json_panel_fill_preview(void)
             printf(",{\"status\":\"INVALID\",\"code\":\"PANEL_FILL_DEPENDENCY\",\"timber\":%u,\"clause\":",issue->timber);js_string(issue->clause);
             fputs(",\"message\":",stdout);js_string(issue->actual);putchar('}');}
     }
-    putchar(']');json_panel_fill_ui_contract(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.revision,g_preview.valid,failure_kind,error);putchar('}');
+    putchar(']');json_panel_fill_ui_contract(&g_preview.transaction->before,&g_preview.transaction->after,g_preview.revision,g_preview.valid,failure_kind,error);
+    fputs(",\"spatial\":{\"before\":",stdout);json_panel_fill_spatial(&g_preview.transaction->before,true,NULL);
+    fputs(",\"after\":",stdout);json_panel_fill_spatial(&g_preview.transaction->after,g_preview.valid,error);fputs("}}",stdout);
 }
 static void cmd_panel_fill_read(void)
 {
@@ -239,7 +242,8 @@ static void cmd_panel_fill_read(void)
     json_engineering_capabilities(&g_world);
     fputs(",\"layerJudgement\":",stdout);fs_json_layer_pending();
     fputs(",\"state\":",stdout);json_panel_fill_state(&g_world);
-    json_panel_fill_ui_contract(&g_world,NULL,g_definition_revision,true,FS_DIAGNOSTIC_INVALID,"");fputs("}\n",stdout);
+    json_panel_fill_ui_contract(&g_world,NULL,g_definition_revision,true,FS_DIAGNOSTIC_INVALID,"");
+    fputs(",\"spatial\":",stdout);json_panel_fill_spatial(&g_world,true,NULL);fputs("}\n",stdout);
 }
 static bool pf_actions_operation(World *candidate,GeoJson *j,int t)
 {
