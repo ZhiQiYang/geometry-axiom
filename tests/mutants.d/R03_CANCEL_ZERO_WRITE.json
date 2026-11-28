@@ -1,0 +1,13 @@
+{
+  "id": "R03_CANCEL_ZERO_WRITE",
+  "desc": "complete native bridge: cancel publishes the candidate and records history",
+  "binary": "bridge",
+  "file": "geometry-web/framing_template_bridge.inc",
+  "old": "if(cancel){ /* R03_CANCEL_ZERO_WRITE */",
+  "new": "if(cancel){ /* withdrawn cancel isolation */\n        history_record(&g_world);\n        if(app_world_candidate_revalidate(g_preview.transaction,&g_world) && app_world_candidate_publish(g_preview.transaction,&g_world,true)){identity_commit_serials();++g_definition_revision;}",
+  "tests": [
+    "tests.test_framing_template.FramingTemplateNative.test_N03_cancel_leaves_every_formal_value_unchanged"
+  ],
+  "expected_assertion": "R03_CANCEL_ZERO_WRITE",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

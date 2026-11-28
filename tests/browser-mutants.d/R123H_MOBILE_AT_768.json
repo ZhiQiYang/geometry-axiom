@@ -1,0 +1,19 @@
+{
+  "id": "R123H_MOBILE_AT_768",
+  "case": "P1231",
+  "assertions": [
+    "R123H_HEIGHT"
+  ],
+  "meaning": "Incorrectly apply the 96px mobile header budget at the requested 768px desktop width.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_BREAKPOINT_BEGIN */\n@media (max-width: 560px) {\n  :root { --r123h-header: 96px; }\n}\n/* R123H_BREAKPOINT_END */",
+      "after": "/* R123H_BREAKPOINT_BEGIN */\n@media (max-width: 768px) {\n  :root { --r123h-header: 96px; }\n}\n/* R123H_BREAKPOINT_END */"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18947,
+  "afterSha256": "bcc4d54f363cf1060e0f6ba9c3e77f9bb59b328d8a145e1e76ad0af1115d29a6"
+}

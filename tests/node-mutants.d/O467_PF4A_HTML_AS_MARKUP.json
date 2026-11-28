@@ -1,0 +1,29 @@
+{
+  "id": "O467_PF4A_HTML_AS_MARKUP",
+  "file": "geometry-web/panel-fill-workspace.js",
+  "old": "'<td>'+esc(states[i]===null||states[i]===undefined?'不存在':c.get(key)?.value??'未提供')+'</td>'",
+  "new": "'<td>'+(states[i]===null||states[i]===undefined?'不存在':c.get(key)?.value??'未提供')+'</td>'",
+  "test": "tests/test_panel_fill_grid_ui.js",
+  "environment": "PF_GRID_WORKSPACE_PATH",
+  "expected_assertion": "O467_PF4A_TEXT_NOT_MARKUP",
+  "expected_tests": 13,
+  "reason": "Native display text is injected as markup instead of escaped cell content.",
+  "expected_cases": [
+    "PF4_CREATE_FORM_WIRE: existing host zero emits native create without a fabricated grid id",
+    "PF4_CREATE_EXPLICIT_PREFERENCE: blank preference and unsaved host are rejected",
+    "PF4_CREATE_NOOP: the same source and preference is a frontend no-op",
+    "PF4_CREATE_CONFLICT: an existing preference is not silently put or replaced",
+    "PF4_CREATE_EXPLICIT_NONE: none is null in the native action, not an implicit default",
+    "PF4_SCOPE_WIRE: declared grid scope requires every exact native record and its source closure",
+    "PF4_NEGATIVE_STAGGER_WIRE: signed lattice and panel-row values are exact and not renumbered",
+    "PF4_REQUEST_SCOPE: real preview accepts one native allocated grid and rejects missing, extra or misbound grids",
+    "PF4_DEPENDENCY_SCOPE: missing native grid or guide dependency arrays cannot confirm",
+    "PF4_UNREQUESTED_GRID: an internally valid extra source grid still cannot enter this candidate",
+    "PF4_CREATE_CANDIDATE_CAPABILITY: a response cannot revoke the required action and bypass grid validation",
+    "PF4_DEPENDENCY_GRID_IDENTITY: omitted or rebound native dependency records cannot claim complete impact",
+    "PF4_NATIVE_IMPACT: grid and guide before/after records are visible, including unchanged identities"
+  ],
+  "expected_failures": {
+    "PF4_NATIVE_IMPACT: grid and guide before/after records are visible, including unchanged identities": "O467_PF4A_TEXT_NOT_MARKUP"
+  }
+}

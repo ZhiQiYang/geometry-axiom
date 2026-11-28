@@ -1,0 +1,19 @@
+{
+  "id": "R123H_RESTORE_STATUSBAR_BREAKPOINT_GAP",
+  "case": "P1231",
+  "assertions": [
+    "R123H_STATUSBAR_CONTAINS_COMMAND"
+  ],
+  "meaning": "Restore the old 560px-only status row: the 561px composition falls back to 26px and its command button overlaps the canvas by 0.5px.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_STATUSBAR_ROW_BEGIN: the adopted 32px row contains the existing\n * 28px command button and 1px top border at every composition width.\n */\nbody.canvas-composition { --statusbar-h: 32px; }\n/* R123H_STATUSBAR_ROW_END */",
+      "after": "@media (max-width: 560px) { body.canvas-composition { --statusbar-h: 32px; } }"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18800,
+  "afterSha256": "4f5bace21abc5b5f74d0681305f4ac5b4055dba5466f026e52d7e7ef23bd4ddc"
+}

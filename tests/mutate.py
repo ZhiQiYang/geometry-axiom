@@ -851,6 +851,13 @@ MUTANTS += [
 ]
 
 
+# O467: preserve the complete original table verbatim and append strict fragments.
+# Full fragment bytes enter tool_hash; the original mutant_key stays unchanged.
+from mutation_fragments import load_fragments, fragment_material
+LEGACY_MUTANTS = tuple(MUTANTS)
+MUTANTS = [*LEGACY_MUTANTS, *load_fragments(ROOT, LEGACY_MUTANTS)]
+
+
 def run_cmd(cmd, cwd, timeout=120):
     return subprocess.run(cmd, cwd=cwd, capture_output=True,
                           text=True, encoding="utf-8", errors="replace",
@@ -1420,6 +1427,9 @@ def tool_hash():
     backend = HERE / "mutation_bridge.py"
     if backend.is_file():
         body += b"\0mutation_bridge.py\0" + backend.read_bytes().replace(b"\r\n", b"\n")
+    loader = HERE / "mutation_fragments.py"
+    body += b"\0mutation_fragments.py\0" + loader.read_bytes().replace(b"\r\n", b"\n")
+    body += fragment_material(HERE.parent)
     return _sha(body)
 
 

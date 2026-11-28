@@ -1,0 +1,13 @@
+{
+  "id": "R03_NOT_CENTERED",
+  "desc": "production C generation: translate the starting edge by half the panel remainder",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/flat_ceiling.h",
+  "old": "p->origin[axis]=v->start_max[axis]?hi-size:lo;",
+  "new": "p->origin[axis]=v->start_max[axis]?hi-size:lo; lo+=(D%pitch)/2; hi+=(D%pitch)/2;",
+  "tests": [
+    "tests.test_framing_template.FramingTemplateNative.test_N07_first_full_panel_not_centered"
+  ],
+  "expected_assertion": "R03_NOT_CENTERED",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

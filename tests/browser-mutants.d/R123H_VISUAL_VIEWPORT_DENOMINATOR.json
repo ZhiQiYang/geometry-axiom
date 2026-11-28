@@ -1,0 +1,19 @@
+{
+  "id": "R123H_VISUAL_VIEWPORT_DENOMINATOR",
+  "case": "P1231",
+  "assertions": [
+    "R123H_DENOMINATOR"
+  ],
+  "meaning": "Use visualViewport for V; the real page-scale/resize probe must expose the mismatch.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.js",
+      "before": "document.documentElement.style.setProperty('--r123h-layout-height', window.innerHeight+'px');",
+      "after": "document.documentElement.style.setProperty('--r123h-layout-height', window.visualViewport.height+'px');"
+    }
+  ],
+  "beforeBytes": 4228,
+  "beforeSha256": "f010e04425f966a0dfcb9c006a0e60b2759262f90d9f5f9fde03915f897cb181",
+  "afterBytes": 4238,
+  "afterSha256": "4b75f471406a7e1372ee8aa82f978b289c1418aaba78cd68cc2ea47143dfbcb0"
+}

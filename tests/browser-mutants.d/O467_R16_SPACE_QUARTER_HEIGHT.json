@@ -1,0 +1,19 @@
+{
+  "id": "O467_R16_SPACE_QUARTER_HEIGHT",
+  "case": "P1231",
+  "assertions": [
+    "R123H_HEIGHT"
+  ],
+  "meaning": "Shrink the active plan/projection pane to one quarter of the adopted drawing height.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": ".space-workspace-stage > .ss-pane { grid-area: 1 / 1; height: 100%; min-width: 0; }",
+      "after": ".space-workspace-stage > .ss-pane { grid-area: 1 / 1; height: 25%; min-width: 0; }"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18946,
+  "afterSha256": "91bceecde5015ae35ebc6960d65a1811e5aa0067267fb9da5dd9a16956e5a5c0"
+}

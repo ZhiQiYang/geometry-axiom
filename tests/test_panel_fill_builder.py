@@ -5,6 +5,7 @@ These tests deliberately do not claim the subsequent App/L4 workflow.
 """
 import base64
 import copy
+import hashlib
 import json
 import sys
 import unittest
@@ -456,7 +457,12 @@ class PanelFillBuilder(unittest.TestCase):
         suggestion = self.suggest(pre=pre)
         preview = self.select(suggestion, self.all_keys(suggestion))
         self.assertTrue(preview["valid"], "PF6_ZERO_HOST_NOT_MISSING: " + str(preview))
-        self.confirm(preview)
+        expected_reused = [{"tempKey": "r45:host", "kind": "placement", "id": 0}]
+        self.assertEqual(expected_reused, preview["reusedDefinitions"],
+                         "PF6_O_REUSED_ID: preview reuses the authored zero host")
+        receipt = self.confirm(preview)
+        self.assertEqual(expected_reused, receipt["actionReceipt"]["reusedDefinitions"],
+                         "PF6_O_REUSED_ID: confirmation reuses the same authored host")
         hosts = self.read()["state"]["derivedPlacements"]
         self.assertEqual([0], [row["definition"]["id"] for row in hosts], "PF6_ZERO_HOST_REUSED")
         self.assertTrue(all(row["geometry"]["surface"] == 0
@@ -499,8 +505,10 @@ class PanelFillBuilder(unittest.TestCase):
                               B={"kind": "spec", "name": "r45depth"})
         suggestion = self.suggest(value)
         preview = self.select(suggestion, self.all_keys(suggestion))
-        self.confirm(preview)
+        receipt = self.confirm(preview)
         saved = self.command("dump")["text"]
+        self.assertEqual(hashlib.sha256(saved.encode("utf-8")).hexdigest(),
+                         receipt["definition_sha256"], "PF6_O_RECEIPT_FINAL_HASH")
         before_state = self.read()["uiContract"]["state"]
         before_refs = self.command("references")
         self.assertIn("requires panel-fill/1", saved)
@@ -512,7 +520,11 @@ class PanelFillBuilder(unittest.TestCase):
                          "PF6_SAVE_COMPLETE_D7_ANCHORS")
         self.assertEqual(1, sum(line.startswith("grid ") and "from-fill 1" in line
                                 for line in saved.splitlines()), "PF6_SAVE_FROM_FILL_GRID")
+        self.assertTrue(all(isinstance(row.get("A"), dict) and "source" in row["A"]
+                            for row in timber_records), "PF6_SAVE_LIVE_A_SOURCE")
         self.assertTrue(all(row["A"]["source"] == value["A"] for row in timber_records), "PF6_SAVE_LIVE_A_SOURCE")
+        self.assertTrue(all(isinstance(row.get("B"), dict) and "source" in row["B"]
+                            for row in timber_records), "PF6_SAVE_LIVE_B_SOURCE")
         self.assertTrue(all(row["B"]["source"] == value["B"] for row in timber_records), "PF6_SAVE_LIVE_B_SOURCE")
         for forbidden in ("pf6-suggest", "panel-fill-builder-suggestions", "setKey", "candidateId", "duplicateOf"):
             self.assertNotIn(forbidden, saved, "PF6_SAVE_HAS_NO_TRANSIENT_PLAN")

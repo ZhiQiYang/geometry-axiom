@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_LENGTH_PAINT",
+  "case": "P1231",
+  "assertions": [
+    "R123H_LENGTH_DISPLAY"
+  ],
+  "meaning": "Restore the old readonly segment-buffer stacking below the decorative cursor layer.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_LENGTH_PAINT_BEGIN */\n#faceEditorViewport > #feLenInput { z-index: 61; }\n/* R123H_LENGTH_PAINT_END */",
+      "after": "/* R123H_WITHDRAW_LENGTH_PAINT: original readonly-buffer stacking applies. */"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18914,
+  "afterSha256": "8b30ba02ce19524bd2997355f47fd0365118d35776f5165c5eb9a3cee62515d5"
+}

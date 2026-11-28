@@ -135,6 +135,12 @@ RESTORED += ["tests.test_builder_token_owners.BuilderTokenOwners." + name for na
 ]]
 
 
+from mutation_fragments import load_fragments, fragment_material
+LEGACY_RESTORED = tuple(RESTORED)
+RESTORED = list(dict.fromkeys([*LEGACY_RESTORED, *(method for row in
+    load_fragments(Path(__file__).resolve().parents[1]) for method in row['tests'])]))
+
+
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 
@@ -150,7 +156,8 @@ def oracle_hash(m, root):
     files = sorted([*root.glob("tests/*.py"), *root.glob("tests/*.c"),
                     *root.glob("tests/fixtures/**/*.scene"), *root.glob("*.scene")])
     rows = [(p.relative_to(root).as_posix(), sha(p.read_bytes().replace(b"\r\n", b"\n"))) for p in files]
-    return sha(json.dumps([m["tests"], RESTORED, rows], ensure_ascii=False, separators=(",", ":")).encode())
+    body = json.dumps([m["tests"], RESTORED, rows], ensure_ascii=False, separators=(",", ":")).encode()
+    return sha(body + fragment_material(root))
 
 
 # What a closed bridge says in a failure's text.  Sources: tests/_bridge.py (BridgeSession.command and run_once,

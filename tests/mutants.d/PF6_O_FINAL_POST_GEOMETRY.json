@@ -1,0 +1,13 @@
+{
+  "id": "PF6_O_FINAL_POST_GEOMETRY",
+  "desc": "確認前須揭露 outer post 已作用後的每支最終幾何；撤回最後 footprint 重算必須被具名裁判拒絕。",
+  "binary": "bridge",
+  "file": "geometry-web/panel_fill_builder_bridge.inc",
+  "old": "if(entry->selected&&entry->valid&&entry->id&&!pf6_footprint(candidate,&call->report,entry,entry->id)){",
+  "new": "if(false&&entry->selected&&entry->valid&&entry->id&&!pf6_footprint(candidate,&call->report,entry,entry->id)){",
+  "tests": [
+    "tests.test_panel_fill_builder.PanelFillBuilder.test_PF6_post_change_reports_final_rebuilt_geometry_before_confirmation"
+  ],
+  "expected_assertion": "PF6_PLAN_MUST_SHOW_FINAL_POST_GEOMETRY",
+  "reason": "確認前須揭露 outer post 已作用後的每支最終幾何；撤回最後 footprint 重算必須被具名裁判拒絕。"
+}

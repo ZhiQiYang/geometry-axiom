@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_DOCK_WHEEL_OWNER",
+  "case": "P1231",
+  "assertions": [
+    "R123H_DOCK_SCROLL"
+  ],
+  "meaning": "Let dock wheel events bubble into face-canvas zoom; the camera must change and fail.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.js",
+      "before": "['pointerdown', 'pointermove', 'pointerup', 'wheel', 'contextmenu']",
+      "after": "['pointerdown', 'pointermove', 'pointerup', 'contextmenu']"
+    }
+  ],
+  "beforeBytes": 4228,
+  "beforeSha256": "f010e04425f966a0dfcb9c006a0e60b2759262f90d9f5f9fde03915f897cb181",
+  "afterBytes": 4219,
+  "afterSha256": "02d8ab7224f751de231c89bc804ef84b04cc96acf73a4efbd036d77e332bc14c"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "R123H_DOCK_BACK_OVER_CANVAS",
+  "case": "P1231",
+  "assertions": [
+    "R123H_UNOBSCURED"
+  ],
+  "meaning": "Withdraw the physical separation of face controls from the drawable rectangle.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "#faceCanvasDock { left: 100%; }",
+      "after": "#faceCanvasDock { left: 0; }"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18944,
+  "afterSha256": "78890570b0330fba7ff1658770ca330d223352d681ef145f99f0b5e5174f79f5"
+}

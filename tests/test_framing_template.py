@@ -279,7 +279,8 @@ class FramingTemplateNative(FramingTemplateHarness):
                 params = dict(PARAMETERS, gap=gap)
                 result = self.preview(along=along, parameters=params)
                 self.assertFalse(result.get('ok'), 'R03_ONLY_OPPOSITE_WALL_TRIM')
-                self.assertEqual('POLICY_RULE_CONFLICT', result.get('code'), result)
+                self.assertEqual('POLICY_RULE_CONFLICT', result.get('code'),
+                                 ('R03_ONLY_OPPOSITE_WALL_TRIM', result))
                 self.assertEqual(before, self.snapshot())
 
     def test_N09_ceil_marks_and_policy_difference(self):

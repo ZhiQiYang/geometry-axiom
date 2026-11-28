@@ -1,0 +1,22 @@
+{
+  "id": "O467_R11_MULTI_RATIO",
+  "file": "geometry-web/touch-gestures.js",
+  "old": "zoom*p.distance/g.origin.distance",
+  "new": "zoom*g.origin.distance/p.distance",
+  "test": "tests/test_o467_touch_controller.js",
+  "environment": "R433_TOUCH_SOURCE",
+  "expected_assertion": "O467_R11_MULTI_CAMERA",
+  "expected_tests": 6,
+  "reason": "Pinch ratio is inverted while midpoint math still executes.",
+  "expected_cases": [
+    "O467_R11_HOLD_500MS: no menu at 499ms, exactly one at 500ms",
+    "O467_R11_RING_150MS: ring starts at 150ms and never opens the menu itself",
+    "O467_R11_MOVE_CANCELS_HOLD: 8px remains eligible; 9px becomes one single tool gesture",
+    "O467_R11_MULTI_CAMERA: ratio and midpoint preserve the captured camera anchor",
+    "O467_R11_MULTI_DRAIN_NO_SINGLE: the remaining finger cannot replay a single gesture",
+    "O467_R11_STALE_SINGLE_CANCELLED: ownership changes retire a pending tool before pointerup"
+  ],
+  "expected_failures": {
+    "O467_R11_MULTI_CAMERA: ratio and midpoint preserve the captured camera anchor": "O467_R11_MULTI_CAMERA"
+  }
+}

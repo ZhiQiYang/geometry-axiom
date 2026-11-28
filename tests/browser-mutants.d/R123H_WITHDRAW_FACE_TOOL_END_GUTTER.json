@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_FACE_TOOL_END_GUTTER",
+  "case": "P1231",
+  "assertions": [
+    "R123H_CONTROLS"
+  ],
+  "meaning": "Remove the physical trailing scroll extent; retain all five hit points and the original narrow face-tool controls.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_FACE_TOOL_END_GUTTER_BEGIN: scroll-padding changes alignment but\n * adds no scrollable extent. Keep an actual end gutter after the final tool\n * so its right-hand hit point can leave the rounded/clipped scrollport edge.\n */\n.workspace-tools-row #faceWorkspaceTools::after { content: ''; flex: 0 0 8px; }\n/* R123H_FACE_TOOL_END_GUTTER_END */",
+      "after": "/* R123H_WITHDRAW_FACE_TOOL_END_GUTTER: old end-of-scroll extent applies. */"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18674,
+  "afterSha256": "1bfe6c06e0c0062d7309b482170e4282cd1625e54221f3c6e0f8931025c49890"
+}

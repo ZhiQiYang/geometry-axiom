@@ -1,0 +1,19 @@
+{
+  "id": "O467_R16_NORMAL_200PX",
+  "case": "P1231",
+  "assertions": [
+    "R123H_HEIGHT"
+  ],
+  "meaning": "Constrain ordinary canvas and face canvas to 200px regardless of viewport.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "#canvasViewport, #faceEditorViewport { overflow: visible; }",
+      "after": "#canvasViewport, #faceEditorViewport { overflow: visible; height: 200px; max-height: 200px; }"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18981,
+  "afterSha256": "80d49013734bbf057d468528cf9f02fef2c483c1d74f2ed4c1fd3baee274bcfd"
+}

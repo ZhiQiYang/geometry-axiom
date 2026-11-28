@@ -1,0 +1,25 @@
+{
+  "id": "O467_R03_PREVIEW_LENGTH_FROM_A",
+  "case": "P2052",
+  "assertions": [
+    "PREVIEW_TABLE"
+  ],
+  "meaning": "Bind the member length column to its section width; use the unchanged P2052 value oracle.",
+  "changes": [
+    {
+      "file": "geometry-web/framing-template-workspace.js",
+      "before": "<td>${m.length}</td>",
+      "after": "<td>${m.A}</td>"
+    }
+  ],
+  "beforeBytes": 21429,
+  "beforeSha256": "fc27290f71fe19fc9309d50947aa538e6bd17148775895de57e68af8e661ba8f",
+  "afterBytes": 21424,
+  "afterSha256": "651cb289c26238207ee6025578d11b9639bcdb4db017e6734c8ca90d00ccdcca",
+  "legacyPlan": {
+    "selector": "GEOMETRY_FRAMING_JIG_ONLY=1",
+    "test": "node geometry-web/cdp_test.js",
+    "status": "unrun-real-Chromium-required",
+    "resultContract": "original full section and golden; no generic per-case receipt exists"
+  }
+}

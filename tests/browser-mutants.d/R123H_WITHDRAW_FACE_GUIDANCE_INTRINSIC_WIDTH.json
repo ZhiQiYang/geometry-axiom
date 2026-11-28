@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_FACE_GUIDANCE_INTRINSIC_WIDTH",
+  "case": "P1231",
+  "assertions": [
+    "R123H_CONTROLS"
+  ],
+  "meaning": "Restore the 29px guidance button at 390px; its overflowing text intercepts the pan tool's unchanged right-hand hit point.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height.css",
+      "before": "/* R123H_FACE_GUIDANCE_WIDTH_BEGIN: these original buttons have full text,\n * not icons. The global 29/34px .tool-button width lets their text hit area\n * overflow onto the preceding pan tool. Keep intrinsic width in this nav.\n */\n#faceWorkspaceTools > .guidance-help { width: auto; min-width: 44px; }\n/* R123H_FACE_GUIDANCE_WIDTH_END */",
+      "after": "/* Original icon-sized .tool-button width applies to the full guidance label. */"
+    }
+  ],
+  "beforeBytes": 18947,
+  "beforeSha256": "17c1bdde8f61803a49747ddf8fc56ab61a17a60c6f8c399c10348332872816fb",
+  "afterBytes": 18690,
+  "afterSha256": "099f5a4504cbc968d8a241c90a1827771618c4ae9c47bff605296a55dc15675a"
+}

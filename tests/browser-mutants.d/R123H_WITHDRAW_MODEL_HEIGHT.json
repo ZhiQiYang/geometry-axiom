@@ -1,0 +1,19 @@
+{
+  "id": "R123H_WITHDRAW_MODEL_HEIGHT",
+  "case": "P1231",
+  "assertions": [
+    "R123H_HEIGHT"
+  ],
+  "meaning": "Withdraw only the new full-height 3D stage declarations.",
+  "changes": [
+    {
+      "file": "geometry-web/workspace-height-dialogs.css",
+      "before": "/* R123H_MODEL_HEIGHT_BEGIN: the actual model canvas fills the stage's free space.\n   The original setup remains its desktop peer and its mobile alternate. */\n#smWorkspace[open] {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) var(--r123h-dialog-dock);\n  grid-template-rows: var(--r123h-dialog-header) minmax(0, 1fr);\n}\n#smWorkspace > .sm-header {\n  grid-column: 1 / -1;\n  grid-row: 1;\n  height: var(--r123h-dialog-header);\n  min-height: var(--r123h-dialog-header);\n  box-sizing: border-box;\n}\n#smWorkspace > #smMain,\n#smWorkspace > #smLibraryPanel {\n  grid-column: 1;\n  grid-row: 2;\n  min-width: 0;\n  min-height: 0;\n  height: 100%;\n}\n#smWorkspace > #smMain { margin: 0; padding: 0; border: 0; gap: 0; }\n#smWorkspace .sm-stage {\n  min-width: 0;\n  min-height: 0;\n  overflow: hidden;\n  margin: 0;\n  padding: 0;\n  border: 0;\n}\n#smWorkspace .sm-canvas-wrap {\n  flex: 1 1 auto;\n  min-width: 0;\n  min-height: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  padding: 0;\n  border: 0;\n}\n#smWorkspace .sm-canvas-wrap > canvas { display: block; width: 100%; height: 100%; }\n#smWorkspace .sm-setup { min-width: 0; }\n/* R123H_MODEL_HEIGHT_END */",
+      "after": "/* R123H_WITHDRAW_MODEL_HEIGHT: original model layout declarations apply. */"
+    }
+  ],
+  "beforeBytes": 7743,
+  "beforeSha256": "827a3f4b7e75198e5a3406d7b8b8bd8ecfc0586d1e0b0b4ced3c61ba6178081d",
+  "afterBytes": 6676,
+  "afterSha256": "4ab824ac45c44116e475771b3415d61bf63291e594861b8fbb5e904902f5f432"
+}

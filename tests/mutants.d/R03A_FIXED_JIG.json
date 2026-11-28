@@ -1,0 +1,13 @@
+{
+  "id": "R03A_FIXED_JIG",
+  "desc": "Replace the ratified fixed jig with the old per-cell ceil split.",
+  "binary": "bridge",
+  "file": "geometry-templates/woodworking/native/flat_ceiling_jig.h",
+  "old": "int64_t requested=anchor+dir*distance; /* R03A_LAST_TWO_STEPS_SPLIT */",
+  "new": "int64_t requested=anchor+dir*((L+n-1)/n)*j; /* withdrawn: per-cell equal split */",
+  "tests": [
+    "tests.test_framing_template.FramingTemplatePolicyA.test_A03_same_jig_and_last_two_step_collision_split"
+  ],
+  "expected_assertion": "R03A_FIXED_JIG",
+  "reason": "Preserve the existing dedicated withdrawal exactly; execute its actual native bridge judge in formal ME."
+}

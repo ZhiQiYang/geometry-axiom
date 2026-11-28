@@ -1,0 +1,13 @@
+{
+  "id": "R03_MARK_GUIDE_FREEZES_GRID_SOURCE",
+  "desc": "Persist an accepted grid-backed mark as a fixed spec coordinate.",
+  "binary": "bridge",
+  "file": "geometry-web/framing_template_bridge.inc",
+  "old": "if(c->plan.seams[b][q]==c->plan.mark_anchor[k])anchored=true;",
+  "new": "if(c->plan.seams[b][q]==c->plan.mark_anchor[k])anchored=false;",
+  "tests": [
+    "tests.test_r03_mutation_coverage.R03MutationCoverage.test_mark_guides_follow_live_fill_sources_axes_starts_versions_and_cold_replay"
+  ],
+  "expected_assertion": "R03_MARK_GUIDE_LIVE_SOURCE",
+  "reason": "The original N14 changes gap 2 to 3 but only checks main members. Gap 2 to 4 must move guides and secondary members by one millimetre, preserve IDs/history and cold-replay without searching."
+}

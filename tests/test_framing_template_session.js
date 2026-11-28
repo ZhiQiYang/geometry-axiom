@@ -41,7 +41,7 @@ test('FT_H12 current source and material semantics require explicit selection ea
 });
 test('FT_H13 context or revision changes invalidate a candidate before confirm',async()=>{
  const {s,w,state}=await ready();await s.preview();w.observe('line boundary 1 outline 0,0 4000,0 4000,3000 0,3000',{ok:true,history_changed:true});
- await assert.rejects(()=>s.confirm(),/FT_STALE/);assert.equal(state.commits,0);await s.cancel();
+ await assert.rejects(()=>s.confirm(),/FT_STALE/);assert.equal(state.commits,0);await assert.doesNotReject(()=>s.cancel(),'O467_FT_H13_STALE_CANCEL_SETTLES');
 });
 test('FT_H14 policy conflict is explicit and cannot confirm or write',async()=>{
  const {s,w,state}=await ready({preview:()=>({ok:false,code:'POLICY_RULE_CONFLICT',error:'退縫與只裁對牆規則不相容'})}),before=w.history.undo.length;
@@ -52,7 +52,7 @@ test('FT_H15 unavailable recipe stays readable and cannot silently change genera
  const before=state.previews;await assert.rejects(()=>s.preview(),/FT_GENERATOR_UNAVAILABLE/);assert.equal(state.previews,before);assert.equal(s.currentRecipe.template.version,999);assert.equal(s.currentRecipe.template.policyFingerprint,'f'.repeat(64));
 });
 test('FT_H16 late preview after source revision change cancels its exact native token',async()=>{
- let release;const delayed=new Promise(resolve=>{release=resolve;});const {s,w,state,calls}=await ready({preview:()=>delayed});const pending=s.preview();w.observe('line boundary 1 outline 0,0 4000,0 4000,3000 0,3000',{ok:true,history_changed:true});release(candidate());await assert.rejects(()=>pending,/FT_STALE/);assert.equal(state.commits,0);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));assert.equal(s.phase,'stale');
+ let release;const delayed=new Promise(resolve=>{release=resolve;});const {s,w,state,calls}=await ready({preview:()=>delayed});const pending=s.preview();w.observe('line boundary 1 outline 0,0 4000,0 4000,3000 0,3000',{ok:true,history_changed:true});release(candidate());await assert.rejects(()=>pending,/FT_STALE/,'O467_FT_H16_STALE_REASON');assert.equal(state.commits,0);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));assert.equal(s.phase,'stale');
 });
 test('FT_H17 uncertain confirmation is never resent and only matching receipt settles it',async()=>{
  const {s,calls}=await ready({command:()=>({ok:false,transport:true,error:'receipt pending'})});await s.preview();await s.confirm();assert.equal(s.phase,'unknown');await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);assert.equal(calls.filter(([cmd])=>cmd.startsWith('framing-template-confirm ')).length,1);
@@ -61,17 +61,17 @@ test('FT_H17 uncertain confirmation is never resent and only matching receipt se
 test('FT_H19 panel and X are explicit live sources, not hidden literals or automatic versions',async()=>{
  const {s,calls}=await ready();assert.throws(()=>s.selectSource(2,{boundary:'rc',timber:'literal'},{}),/FT_ENGINEERING_SOURCE_REQUIRED/);
  assert.throws(()=>s.selectSource(2,{boundary:'rc',timber:'literal'},{panel:{id:'ft-board',version:2},threshold:{parameterId:90,fieldId:1}}),/FT_ENGINEERING_SOURCE_REQUIRED/);
- s.selectSource(2,{boundary:'rc',timber:'literal'},sources());await s.preview();const request=calls.find(([path])=>path==='/framing-template/preview')[1];assert.deepEqual(request.sources,sources());assert.ok(!Object.hasOwn(request.parameters,'supportMinimum'));await s.cancel();
+ s.selectSource(2,{boundary:'rc',timber:'literal'},sources());await s.preview();const request=calls.find(([path])=>path==='/framing-template/preview')[1];assert.deepEqual(request.sources,sources(),'O467_FT_H19_EXPLICIT_SOURCES');assert.ok(!Object.hasOwn(request.parameters,'supportMinimum'));await s.cancel();
 });
 test('FT_H20 missing definition chain, changed source or incomplete support cannot be confirmed',async()=>{
  for(const corrupt of [p=>delete p.definitionChain,p=>p.sources.panel.version=2,p=>p.supportComplete=false,p=>p.support.push({axis:'u',k:'0',range:[0,100],left:1,right:8,supported:false})]){
-  const r=candidate();corrupt(r.preview);const {s,state,calls}=await ready({preview:()=>r});await assert.rejects(()=>s.preview(),/FT_PREVIEW_CONTRACT/);assert.equal(state.commits,0);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);
+  const r=candidate();corrupt(r.preview);const {s,state,calls}=await ready({preview:()=>r});await assert.rejects(()=>s.preview(),/FT_PREVIEW_CONTRACT/,'O467_FT_H20_REJECT_CORRUPT_PREVIEW');assert.equal(state.commits,0);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);
  }
 });
 test('FT_H21 unknown preview settles only its receipt and cancels exact owner without retry',async()=>{
  const error=Object.assign(new Error('lost preview'),{transport:true,command:'framing-template-preview exact-request'}),{s,calls,state}=await ready({preview:()=>{throw error;}});
  await assert.rejects(()=>s.preview(),/lost preview/);assert.equal(s.phase,'unknown');await assert.rejects(()=>s.preview(),/FT_PENDING/);
- assert.equal(await s.settlePreviewReceipt('framing-template-preview other-request',candidate()),false);assert.equal(await s.settlePreviewReceipt('framing-template-preview exact-request',candidate()),true);assert.equal(s.phase,'stale');assert.equal(state.previews,1);assert.equal(state.commits,0);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));
+ assert.equal(await s.settlePreviewReceipt('framing-template-preview other-request',candidate()),false);let settled;await assert.doesNotReject(async()=>{settled=await s.settlePreviewReceipt('framing-template-preview exact-request',candidate());},'O467_FT_H21_RECOVERED_PREVIEW_CANCEL_SETTLES');assert.equal(settled,true);assert.equal(s.phase,'stale');assert.equal(state.previews,1,'O467_FT_H21_NO_PREVIEW_RETRY');assert.equal(state.commits,0);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));
 });
 
 // Policy A is the second immutable version of this same Session.
@@ -108,7 +108,7 @@ test('R03A_H02 both known versions reject wrong fingerprints; unknown versions r
  const unknown=recipe();unknown.template.version=999;unknown.template.policyFingerprint='f'.repeat(64);F.validateRecipe(unknown);assert.equal(F.availability(unknown).canGenerate,false);assert.throws(()=>F.assertGeneratable(unknown),/FT_GENERATOR_UNAVAILABLE/);assert.equal(unknown.template.version,999);
 });
 test('R03A_H03 source read and generation bind the explicitly selected immutable version',async()=>{
- const {s,calls}=await ready();assert.deepEqual(calls[0],['/framing-template/read',{schema:'framing-template-read/2',boundaryId:1,template:TEMPLATE}]);
+ const {s,calls}=await ready();assert.deepEqual(calls[0],['/framing-template/read',{schema:'framing-template-read/2',boundaryId:1,template:TEMPLATE}],'O467_R03A_H03_EXPLICIT_SOURCE_READ');
  await s.preview();const request=calls.find(([url])=>url==='/framing-template/preview')[1];assert.deepEqual(request.template,TEMPLATE);assert.deepEqual(request.sources,SOURCES);assert.deepEqual(request.layout,{corner:'min-min',lengthAlong:'u'});await s.cancel();
 });
 test('R03A_H04 v1 or unknown read metadata cannot supply a v2 candidate',async()=>{
@@ -118,7 +118,7 @@ test('R03A_H04 v1 or unknown read metadata cannot supply a v2 candidate',async()
 });
 test('R03A_H05 wrong preview template is cancelled and never becomes confirmable',async()=>{
  for(const corrupt of [p=>delete p.template,p=>p.template.version=1,p=>p.template.policyFingerprint='0'.repeat(64),p=>delete p.definitionFingerprint,p=>p.definitionFingerprint='invalid']){
-  const result=candidate();corrupt(result.preview);const {s,state,calls}=await ready({preview:()=>result});await assert.rejects(()=>s.preview(),/FT_PREVIEW_CONTRACT/);assert.equal(state.commits,0);assert.equal(state.world,SCENE);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);
+  const result=candidate();corrupt(result.preview);const {s,state,calls}=await ready({preview:()=>result});await assert.rejects(()=>s.preview(),/FT_PREVIEW_CONTRACT/,'O467_R03A_H05_REJECT_WRONG_TEMPLATE');assert.equal(state.commits,0);assert.equal(state.world,SCENE);assert.ok(calls.some(([cmd])=>cmd==='framing-template-cancel 41 '+'e'.repeat(64)));await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);
  }
 });
 test('R03A_H06 rejected generation cannot write World, attachment or history',async()=>{
@@ -126,7 +126,7 @@ test('R03A_H06 rejected generation cannot write World, attachment or history',as
  await assert.rejects(()=>s.preview(),/NATIVE_INVALID/);await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);assert.equal(state.world,before.world);assert.equal(state.commits,0);assert.equal(w.getProjectState().revision,before.revision);assert.equal(w.history.undo.length,before.history);assert.deepEqual(w.readFeatureAttachment(F.KIND),before.attachment);
 });
 test('R03A_H07 cancellation and confirmation use their exact preview token without a second search',async()=>{
- const {s,w,state,calls}=await ready();const before=w.history.undo.length;await s.preview();await s.cancel();assert.equal(state.commits,0);assert.equal(state.world,SCENE);assert.equal(w.history.undo.length,before);
+ const {s,w,state,calls}=await ready();const before=w.history.undo.length;await s.preview();await s.cancel();assert.equal(state.commits,0,'O467_R03A_H07_CANCEL_NO_COMMIT');assert.equal(state.world,SCENE);assert.equal(w.history.undo.length,before);
  await s.preview();const searches=state.previews;await s.confirm();assert.equal(state.previews,searches);assert.equal(state.commits,1);assert.equal(w.history.undo.length,before+1);assert.deepEqual(calls.filter(([cmd])=>cmd.startsWith('framing-template-confirm ')),[['framing-template-confirm 41 '+'e'.repeat(64)]]);await assert.rejects(()=>s.confirm(),/FT_NOT_CONFIRMABLE/);
 });
 test('R03A_HOST_COLD_OPEN_NO_SEARCH v2 real ZIP and restoration do not read, preview or silently migrate',async()=>{
