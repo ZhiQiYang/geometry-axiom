@@ -868,9 +868,10 @@ static bool reference_rebuild(World *w)
     if(!persistent)reference_sources_dispose(ctx);return ok;
 }
 
-/* GEO-300: only the scene-file replay frame sets this, for one buffered
- * timber/place line at a time; the run is validated as a whole before any
- * other line, any reported failure and the end of the file. */
+/* Scoped H staging only: the scene-file replay frame buffers timber/place
+ * lines; the framing-template adapter batches its fresh spec/guide marks.
+ * Both validate the complete run and replay its original per-line path on
+ * failure. The caller restores this flag before leaving its staging scope. */
 static bool g_reference_validation_deferred;
 static bool reference_checked(const char *p,int n,World *w)
 {

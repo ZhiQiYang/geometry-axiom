@@ -176,6 +176,82 @@ static bool framing_template_edge_key(const World *w,uint32_t host,int edge,char
 }
 static int64_t framing_template_k(const FramingTemplateCall *c,int axis,Coord coordinate)
 {return (coordinate-c->plan.origin[axis]-c->parameters.panel[axis]-c->parameters.gap/2)/(c->parameters.panel[axis]+c->parameters.gap);}
+/* H stages the generator's new named marks in their original order. The
+ * ordinary path keeps each parser's full validation; only the bounded batch
+ * below lends this helper a deferred scope. No flag escapes this call. */
+static bool framing_template_marks_stage(World *w,FramingTemplateCall *c,bool defer)
+{
+    char text[4096];bool ok=true,previous_deferred=g_reference_validation_deferred;
+    g_reference_validation_deferred=defer; /* X7_MARKS_DEFER_SCOPE */
+    for(size_t k=0;k<c->plan.mark_count&&ok;++k){
+        WORLD_NEXT_ID(c->guides[k],geo_guides_values(&w->geo.guide_lines),geo_guides_count(&w->geo.guide_lines),false);
+        int b=c->parameters.length_axis;bool anchored=false;
+        for(size_t q=0;q<c->plan.seam_count[b];++q)if(c->plan.seams[b][q]==c->plan.mark_anchor[k])anchored=true;
+        /* D6a accepts references, never naked numeric offsets. These ordinary
+         * D6b sources preserve each accepted mark's fixed construction input;
+         * the grid term stays live, without rerunning the template on load. */
+        char name[64];unsigned suffix=0;
+        do{snprintf(name,sizeof name,"r03_mark_%u_%u",c->guides[k],suffix++);}while(geo_named_values_find(&w->geo.named_values,name)&&suffix);
+        if(!suffix){ok=eng_fail("CAPACITY: no unclaimed mark source name");break;}
+        snprintf(text,sizeof text,"spec %s %lld",name,(long long)(anchored?c->plan.mark_delta[k]:c->plan.marks[k]));
+        if(!(ok=framing_template_line(w,text)))break;
+        if(anchored)snprintf(text,sizeof text,"guide %u %u %c grid:%u:%c:%lld+spec:%s",c->guides[k],c->host,b?'u':'v',c->grid,b?'v':'u',(long long)framing_template_k(c,b,c->plan.mark_anchor[k]),name);
+        else snprintf(text,sizeof text,"guide %u %u %c spec:%s",c->guides[k],c->host,b?'u':'v',name);
+        ok=framing_template_line(w,text);
+    }
+    g_reference_validation_deferred=previous_deferred;
+    return ok;
+}
+static bool framing_template_marks(World *w,FramingTemplateCall *c)
+{
+    AppWorldCandidate *candidate=g_active_app_candidate;
+    bool previous_deferred=g_reference_validation_deferred;
+    if(!c->plan.mark_count||previous_deferred||g_reference_active||!candidate||
+       w!=&candidate->after||geo_candidate_state(app_candidate_core(candidate->control))!=GEO_CANDIDATE_EVALUATING)
+        return framing_template_marks_stage(w,c,previous_deferred); /* X7_MARKS_BATCH_SCOPE */
+    /* Repeat planning has candidate-only reports and retired identities outside
+     * World. Retain its ordinary per-line path rather than snapshotting or
+     * reusing those operation facts in this narrow marks optimization. */
+    for(size_t i=0;i<w->wood.assembly.instance_count;++i)
+        if(w->wood.assembly.instances[i].bay_repeat)return framing_template_marks_stage(w,c,previous_deferred);
+    WorldSnapshot snapshot={NULL};World *checkpoint=world_snapshot_take(&snapshot,w);
+    if(!checkpoint)return framing_template_marks_stage(w,c,previous_deferred); /* X7_MARKS_SNAPSHOT_FALLBACK */
+    char scene_error_before[sizeof g_scene_last_error],revalidate_error_before[sizeof g_revalidate_error];
+    char engineering_error_before[sizeof g_engineering_error],parameter_error_before[sizeof g_parameter_error];
+    char rule_error_before[sizeof g_rule_reference_error];
+    memcpy(scene_error_before,g_scene_last_error,sizeof scene_error_before);
+    memcpy(revalidate_error_before,g_revalidate_error,sizeof revalidate_error_before);
+    memcpy(engineering_error_before,g_engineering_error,sizeof engineering_error_before);
+    memcpy(parameter_error_before,g_parameter_error,sizeof parameter_error_before);
+    memcpy(rule_error_before,g_rule_reference_error,sizeof rule_error_before);
+    size_t issues_before=g_reference_issue_count;
+    ParameterRef dimension_error_before=g_parameter_dimension_error;
+    AsmDiagnostic assembly_diagnostic_before=g_asm_diagnostic;
+    FsDiagnosticKind finish_diagnostic_before=g_fs_diagnostic;
+    bool previous_muted=g_scene_error_muted;
+    g_scene_error_muted=true; /* X7_MARKS_MUTED_ATTEMPT */
+    bool ok=framing_template_marks_stage(w,c,true);
+    if(ok)ok=world_revalidate(w); /* X7_MARKS_COMPLETE_VALIDATION */
+    if(ok){g_scene_error_muted=previous_muted;world_snapshot_release(&snapshot);return true;}
+    /* Failed speculative providers must not observe the restored definitions.
+     * The replay will construct a fresh graph by its ordinary full validation. */
+    GeoEvalContext *sources=geo_candidate_sources(app_candidate_core(candidate->control));
+    app_candidate_set_evaluation_state(candidate->control,NULL,NULL);
+    bool reset=sources&&geo_eval_reset(sources); /* X7_MARKS_SOURCE_RESET */
+    memcpy(w,checkpoint,sizeof *w); /* X7_MARKS_WORLD_ROLLBACK */
+    g_validated_target=NULL;
+    memcpy(g_scene_last_error,scene_error_before,sizeof scene_error_before);
+    memcpy(g_revalidate_error,revalidate_error_before,sizeof revalidate_error_before);
+    memcpy(g_engineering_error,engineering_error_before,sizeof engineering_error_before);
+    memcpy(g_parameter_error,parameter_error_before,sizeof parameter_error_before);
+    memcpy(g_rule_reference_error,rule_error_before,sizeof rule_error_before);
+    g_reference_issue_count=issues_before; /* X7_MARKS_DIAGNOSTIC_RESTORE */
+    g_parameter_dimension_error=dimension_error_before;g_asm_diagnostic=assembly_diagnostic_before;g_fs_diagnostic=finish_diagnostic_before;
+    g_scene_error_muted=previous_muted;
+    world_snapshot_release(&snapshot);
+    if(!reset)return eng_fail("I8: framing mark source reset failed; candidate unchanged");
+    return framing_template_marks_stage(w,c,previous_deferred); /* X7_MARKS_FALLBACK_REPLAY */
+}
 static bool framing_template_evaluate(void *after,GeoEvalContext *sources,void *opaque)
 {
     (void)sources;FramingTemplateCall *c=opaque;World *w=after;const PlacementSurface *source=world_find_placement(c->before,c->on);
@@ -197,22 +273,7 @@ static bool framing_template_evaluate(void *after,GeoEvalContext *sources,void *
     if(!(ok=world_revalidate(w)))goto done;
     snprintf(text,sizeof text,"grid %u on %u from-fill %u main-along %c",c->grid,c->host,c->fill,c->parameters.length_axis?'v':'u');
     if(!(ok=framing_template_line(w,text)))goto done;
-    for(size_t k=0;k<c->plan.mark_count&&ok;++k){
-        WORLD_NEXT_ID(c->guides[k],geo_guides_values(&w->geo.guide_lines),geo_guides_count(&w->geo.guide_lines),false);
-        int b=c->parameters.length_axis;bool anchored=false;
-        for(size_t q=0;q<c->plan.seam_count[b];++q)if(c->plan.seams[b][q]==c->plan.mark_anchor[k])anchored=true;
-        /* D6a accepts references, never naked numeric offsets. These ordinary
-         * D6b sources preserve each accepted mark's fixed construction input;
-         * the grid term stays live, without rerunning the template on load. */
-        char name[64];unsigned suffix=0;
-        do{snprintf(name,sizeof name,"r03_mark_%u_%u",c->guides[k],suffix++);}while(geo_named_values_find(&w->geo.named_values,name)&&suffix);
-        if(!suffix){ok=eng_fail("CAPACITY: no unclaimed mark source name");break;}
-        snprintf(text,sizeof text,"spec %s %lld",name,(long long)(anchored?c->plan.mark_delta[k]:c->plan.marks[k]));
-        if(!(ok=framing_template_line(w,text)))break;
-        if(anchored)snprintf(text,sizeof text,"guide %u %u %c grid:%u:%c:%lld+spec:%s",c->guides[k],c->host,b?'u':'v',c->grid,b?'v':'u',(long long)framing_template_k(c,b,c->plan.mark_anchor[k]),name);
-        else snprintf(text,sizeof text,"guide %u %u %c spec:%s",c->guides[k],c->host,b?'u':'v',name);
-        ok=framing_template_line(w,text);
-    }
+    if(!(ok=framing_template_marks(w,c)))goto done;
     for(size_t k=0;k<c->plan.count&&ok;++k){
         const WoodFlatMember *m=&c->plan.members[k];int axis=m->axis,cross=1-axis;char anchor[256],stop0[256],stop1[256];
         WORLD_NEXT_ID(c->ids[k],w->wood.timbers,w->wood.timber_count,false);

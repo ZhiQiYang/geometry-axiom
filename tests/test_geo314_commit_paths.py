@@ -79,6 +79,9 @@ PUBLISH_SITES = (
     ("geometry-core/model_base.c", "model_parse_scene", 1, "isolated replay"),
 )
 REVALIDATE_SITES = (
+    # X7: bounded fresh marks, still inside framing_template_evaluate's exact
+    # H candidate and c->before baseline; no new publication/replay route.
+    ("geometry-web/framing_template_bridge.inc", "framing_template_marks", 1),
     ("current_geometry.c", "world_replace_object", 1),
     ("current_geometry.c", "app_boundary_replace", 1),
     ("current_geometry.c", "app_placement_replace", 1),
