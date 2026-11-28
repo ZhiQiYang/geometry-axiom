@@ -25,7 +25,7 @@
 | [21 超過 64 支的房間](../../docs/L5-acceptance.md#card-21)：開 110 支檔 → 雙擊面 1 → 構件／角材 → 點料單 | 走通；[支數](screens/21-1400-count.jpg)・[定位](screens/21-1400-locate.jpg) | 走通；[支數](screens/21-390-count.jpg)・[定位](screens/21-390-locate.jpg) | 範圍是承載面 1（`surface`），狀態明寫 **110 支正式角材**，確有 110 個可點料單列；點第一列選中角材 1。只驗載入與選取，不推論大量建料速度。 |
 | [26 不相接互頂組](../../docs/L5-acceptance.md#card-26)：開矩形場景 → e0/e2 兩支各 27×20、+u/+n → 預覽、取消 | 走通；[拒絕](screens/26-1400-reject.jpg) | 走通；[拒絕](screens/26-390-reject.jpg) | D16a 的預期條件是中文；「確認套用」停用，**拒絕才是此卡要看的結果**。按「返回修改」離開預覽；正式角材仍是 0。 |
 
-**卡 01／03 的窄版證據界線：**390 px 已點選、選取結果字串已讀回；原走查未展開檢查器，結果文字的可見性未驗。[原走查](walk.cjs)的 `three()` 讀取 `#v3PickInfo.innerText`，不是檢查畫面可見性；兩張 390 px 點料圖都沒有顯示右欄「選取結果」。
+**卡 01／03 的窄版證據界線：**390 px 已點選、選取結果字串已讀回；原走查未展開檢查器，結果文字的可見性未驗。[走查程式](walk.cjs)預設的 `three()` 讀取 `#v3PickInfo.innerText`，不是檢查畫面可見性；兩張原 390 px 點料圖都沒有顯示右欄「選取結果」。[後續補驗](#t56)才核對展開後的畫面。
 
 ### 建議修正（不回寫導覽原文）
 
@@ -116,3 +116,42 @@ node tests/test_room_collection.js
 首次同時啟兩個 `start_local.py` 時，18748 服務未啟動：`啟動失敗：另一個「build」正在執行`（節錄）。上述三個 CDP 命令首輪各為 1，導覽請求回 `net::ERR_CONNECTION_REFUSED`，`FATAL: UI condition timed out at connecting to isolated test browser: typeof api==='function' && typeof oc==='object' && connection.phase==='ready'`。這是進場失敗，不是產品紅燈。單獨啟動並用 `--probe 18748` 驗到 `fresh: true` 後，原命令重跑得到上表，未改測試。房間集合測試兩輪均為 0。沒有跑整個 CI、golden 或具名撤回。
 
 **未驗：**其餘卡、其他確認前範例、R22 的復原提示、卡 01 的一般畫布可視性與表格折行缺口、Windows、實體手機觸控／輸入法、作業系統選檔視窗與一分鐘目標。卡 04 實際順序是先勾鋪排才填原點；卡 10 兩寬這次都是第一房不用縮小、第二房開描後縮小五次。不把這些準備動作當成使用者可以省略。未取得使用者的接受意見，沒有任何一項因此升為 L5。
+
+<a id="t56"></a>
+
+## T56 補驗：點到哪支角材，檢查器就顯示哪支
+
+依 [PR #482 審查](https://github.com/ZhiQiYang/geometry-axiom/pull/482#issuecomment-7234834276)另跑卡 01、03。產品基底 `227fb8cd98bf30b70e180888c06ee9fc7da03637`；專用 Linux App 的 `--probe 18756` 回 `fresh: true`，Playwright 1.56.1 驅動系統 Chrome 158.0.8127.36，UID 1002。卡 01 從未生成副本起步，卡 03 重開已保存的 53 支。下表是**新截圖與新輸出**，不取代原九卡紀錄。
+
+| 卡 | 390×844：點料 → 展開頂列「檢查器」 | 1400×900 對照：點料，不切換右欄 | 整卡結束碼（390／1400） |
+|---|---|---|---|
+| 01 | [補步後顯示角材 16](screens/01-390-inspector.jpg) | [右欄顯示角材 2](screens/01-1400-inspector.jpg) | **1／1**：原第 5 步切不到三視圖，須先回物件畫布。 |
+| 03 | [展開後顯示角材 16](screens/03-390-inspector.jpg) | [右欄顯示角材 2](screens/03-1400-inspector.jpg) | **0／0**：點料後仍能回面查配方；窄版讀完以同一頂列按鈕收欄。 |
+
+補驗用滑鼠點仰視圖的一支料，以點擊座標實際命中的角材編號與 `#v3PickInfo` 文字比對。390 px 點完時結果欄不可見；展開後才驗文字與編號相符、文字範圍在視窗內且中心未被遮擋，再截圖。1400 px 結果欄原已顯示。兩寬點到的料不同，不要求編號相同。
+
+輸出原文（兩卡各自實跑，以下節錄相同的兩行）：
+
+```text
+點料命中角材 16 讀回 角材 16 展開前欄位可見 false
+選取結果 角材 16 文字在視窗內且中心未遮擋 true
+```
+
+```text
+點料命中角材 2 讀回 角材 2 展開前欄位可見 true
+選取結果 角材 2 文字在視窗內且中心未遮擋 true
+```
+
+卡 01 兩寬仍報 `原步驟 5 卡住： TimeoutError: locator.click: Timeout 5500ms exceeded.`，補走後仍報 `停在 5 返回面設定 → 三視圖 Error: 原步驟 5 少了返回物件畫布；補步後已核對三視圖。` 卡 03 收尾各為 `走至最後一步 03 390`、`走至最後一步 03 1400`。初次補驗卡 03／390 已看到結果，但點抽屜內「關閉 ×」時 `TimeoutError: locator.click: Timeout 5500ms exceeded.`（`#fbButton` 攔到點擊），結束碼 1；改以頂列「檢查器」收欄後重跑才是表中的 0。
+
+重走時照上方「重走方法」先開專用服務、備妥 Playwright 與新的 `OUT`。下列是本次補驗的參數；不加 `--check-inspector` 仍走原步驟。
+
+```bash
+export NODE_PATH=/tmp/t56/node_modules APP_URL=http://127.0.0.1:18756/ OUT=/tmp/t56/check
+node evidence/l5-guide-check-20261128/walk.cjs 03 390 --check-inspector
+node evidence/l5-guide-check-20261128/walk.cjs 01 390 --check-inspector
+node evidence/l5-guide-check-20261128/walk.cjs 01 1400 --check-inspector
+node evidence/l5-guide-check-20261128/walk.cjs 03 1400 --check-inspector
+```
+
+另於專用服務跑既有 CDP 固定治具（P2052：28 個通過斷言）與參數流程（P76：89 個通過斷言），兩者各為 0 失敗、0 略過群組、結束碼 0，均為部分模式。參數流程不是卡 35 的逐步實跑；以上不是使用者 L5 驗收。

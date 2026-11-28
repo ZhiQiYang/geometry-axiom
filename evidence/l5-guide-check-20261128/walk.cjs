@@ -9,7 +9,7 @@ assert.ok(
   process.env.APP_URL && /^http:\/\/(?:127\.0\.0\.1|localhost):\d+\/$/.test(process.env.APP_URL),
   '須指定獨立回環測試服務 APP_URL',
 );
-const [id, size] = process.argv.slice(2),
+const [id, size, followup] = process.argv.slice(2),
   width = Number(size),
   height = width === 390 ? 844 : 900;
 const here = __dirname,
@@ -256,6 +256,30 @@ async function sourcePicks() {
   note('來源', await option(F('panel'), /915 × 1830 × 6/), await option(F('threshold'), /8\/1 mm/));
   await checked(F('materials'));
 }
+// T56 補驗只在明選 --check-inspector 時執行；原走查的步驟、截圖與判準不變。
+async function checkInspector(timberId) {
+  const result = loc('#v3PickInfo');
+  const before = await result.isVisible();
+  note('點料命中角材', timberId, '讀回', await result.innerText(), '展開前欄位可見', before);
+  assert.equal(before, width !== 390);
+  const toggle = p.getByRole('button', { name: '檢查器', exact: true });
+  if (width === 390) await toggle.click();
+  await result.waitFor({ state: 'visible' });
+  assert.equal((await result.innerText()).trim(), `角材 ${timberId}`);
+  // 不只查 DOM 字串：量文字本身，確認在視窗內且中央沒有被其他圖層遮住。
+  const onScreen = await result.evaluate((el) => {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const r = range.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && r.left >= 0 && r.right <= innerWidth &&
+      r.top >= 0 && r.bottom <= innerHeight &&
+      el.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2));
+  });
+  note('選取結果', await result.innerText(), '文字在視窗內且中心未遮擋', onScreen);
+  assert.ok(onScreen);
+  await shot('inspector');
+  if (width === 390) await toggle.click();
+}
 async function three() {
   await click('#btnObj', 800);
   await wait('[data-owner-kind="timber"]');
@@ -286,11 +310,14 @@ async function three() {
   note('三視圖', data);
   assert.equal(data[0], 53);
   assert.ok(data[1], '仰視圖沒有可點的角材');
+  const timberId = followup && await p.evaluate(({ x, y }) =>
+    document.elementFromPoint(x, y).closest('[data-owner-kind="timber"]').dataset.ownerId, data[1]);
   await p.mouse.click(data[1].x, data[1].y);
   await pause();
   note(await text('#v3PickInfo'));
   await shot('pick');
   assert.match(await text('#v3PickInfo'), /角材\s*\d+/);
+  if (followup) await checkInspector(timberId);
 }
 async function card01() {
   await openFile(input('01'));
@@ -480,6 +507,7 @@ async function card06() {
 async function main() {
   assert.notEqual(process.getuid(), 0);
   assert.ok([1400, 390].includes(width));
+  assert.ok(!followup || (followup === '--check-inspector' && ['01', '03'].includes(id)));
   ({ p, b } = await L.start());
   p.setDefaultTimeout(5500);
   await p.setViewportSize({ width, height });
