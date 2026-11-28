@@ -34,7 +34,10 @@
 ## 注意
 
 - 各 `runs/` 的 `replay.py` 版本不同。harness 在各輪之間有增修：新增情境、故障注入、每情境重置。
-  只有 `runs/green-r2` 對應這裡的 `harness/replay.py`；較早幾輪的 harness 差異，見 PR #456 的留言 7173365615、7175299588 與本分支所在的留言。
+  對應關係以上表為準：`harness/replay.py`（sha256 `89f8d146…`）產生 `runs/red-r3b`、`runs/green-r3b`；
+  `harness/replay.3ddc9001.py` 產生 `runs/red-r3`、`runs/green-r3`；`harness/replay.56db0239.py` 產生 `runs/red-r2b`、`runs/green-r2`。
+  `runs/red9`、`runs/green`、`runs/red-r2` 所用的更早版本沒有另存原檔，差異見 PR #456 的留言 7173365615、7175299588 與本分支所在的留言。
+  （本段於 2026-11-28 依 ChatGPT 第四輪審查 7238778162 的文件記錄修正；先前版本誤寫為「只有 `runs/green-r2` 對應 `harness/replay.py`」。）
 - `replay exit=0` 只是重演程式的結束碼，不代表每個安全斷言都通過。斷言結果要看各情境的 `reasons`、遠端分支、sentinel、貼出的留言。
 - 重演環境：Ubuntu 24.04.5 容器、sudo 1.9.15p5。以非 root 的 `runner` 使用者（有 NOPASSWD sudo）逐 step 執行 YAML 的 `run:` 原文。
   GitHub 換成本機 bare repo 加假 `gh`；Anthropic API 換成 `fake_api.py`，配合真 Claude Code CLI 2.1.330。
