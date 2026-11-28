@@ -1,0 +1,42 @@
+name: R13 H15 單獨對照原生路徑
+on:
+  push:
+    branches: [codex/r468-model-base-h15-control-20261128]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: 簽出定向工具
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: tools
+          persist-credentials: false
+          sparse-checkout: |
+            .github/scripts
+      - name: 簽出原測試提交
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: d7fd78cebfa9baea47eca39110d1a6f1cf333f79
+          path: product
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: 固定程式及二進位執行三次原 H15
+        run: |
+          ulimit -s 16384
+          python3 -B tools/.github/scripts/r468_h15_model_base_control.py product "$RUNNER_TEMP/h15-receipt"
+      - name: 保存逐次原始輸出
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: r468-h15-model-base-control
+          path: ${{ runner.temp }}/h15-receipt/
+          if-no-files-found: error
+          retention-days: 14
