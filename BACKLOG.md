@@ -1,5 +1,12 @@
 # BACKLOG — current_geometry.c 工單庫
 
+## 2026-11-28 R02／PF-5 V1 原生空間診斷與表單三視圖（候選）
+
+- 固定 main `48d5f3887e8cb8d222307db62dbdea287fda8442`，依 issue #476 工作包 V、#454 共同規則交付於 issue #128。沿既有完成面／鋪排定義與 R41 原生裁切，讀取及預覽新增唯讀 `panel-fill-spatial/1`：完整兩層、明選障礙、板背宿主、所有孔／分量與面對共同邊／間隙／四組層交界。接法未選，不自動補高度、側封或施工接法；詳見 [PF5-SPATIAL.md](geometry-web/docs/PF5-SPATIAL.md)。
+- **拿掉／合併（GEO-219）**：沿原「物件面 → 屬性 → 面設定… → 完成面／鋪排」及同一預覽／確認／取消列。有空間資料時，以一份雙層摘要及三視圖合併舊完成面 frame／障礙、宿主 h／frame 的分散 JSON 展示，原兩組來源 details 收為單一「完整完成面與宿主來源」disclosure。沒有新增全域按鈕、頂層分頁、確認入口或常駐操作教學；圖例屬結果說明。舊服務未提供 spatial 時保留原結果路徑。
+- 工作包 A 承接一般物件卡、面內、typed 導覽、縮圖／尺寸／參數使用處。本片不採入 A 的未合併產品欄位，不改 WorkspaceView 的 roots 或 owner；PF 專屬三視圖不等於 A 一般呈現完成。PF-6 App #469 的 adapter／workspace／bridge／index 接線與此片同檔，採用前須正常合流及重驗兩片。
+- 不改 SSOT、World／scene／gcanvas 格式、需求帳層級。native／Node 與來源撤回實跑見交付索引；Chromium `P1285` 390／1400 px、正式量測導入、完整 native 六片／canvas 兩片及正式 App 冷開仍待套用端。沒有 push、PR 或合併。
+
 ## 2026-11-15 R12／Q38j(a/b/c) App 接線（ChatGPT 實作候選）
 
 - 固定基底 `11eddfdb4d7b1f76aedfe001e084a3840790bedc`。承接 issue #43 的既定 Q38j 契約，補齊 plan 明選同源已定位拉伸件、獨立 `/3` 材料包、一般 App 預覽／取消／確認、完整 `/20` 保存重開及 F1b 整筆採用現行來源；沿既有 native 斷面指令與 R39，不新增幾何求解器。逐檔／函式、DOM、資料與操作路徑見 [Q38J-APP.md](geometry-web/docs/Q38J-APP.md)。

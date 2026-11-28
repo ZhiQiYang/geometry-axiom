@@ -1,5 +1,14 @@
 # DOM 合約(測試依賴清單)
 
+## R02／PF-5 V1：同一候選的雙層與交界（P1285 候選）
+
+- 入口、草稿欄位及 `[data-pf-action]` 預覽／取消／確認沿現有 PF 表單；沒有新增全域工作區或 WorkspaceView root。`panel-fill-spatial.js` 先於 adapter／workspace 載入，只驗證及呈現原生空間 wire，不生成幾何。
+- `[data-pf5-spatial="panel-fill-spatial/1"]` 是目前正式讀取或目前候選 after 的唯讀結果。`[data-pf5-finish="fillId"]` 保留正式 fill／finish／host 身分；`[data-pf5-field]` 的 `[data-pf5-value]` 保留原生十進位字串。缺 h 明列尚未求值，不顯示 0 或預設值。
+- `[data-pf5-view="top"|"front"|"side"]` 各含 `.pf5-projection`，座標軸分別 X/Y、X/Z、Y/Z；`[data-pf5-layer="panel"|"timber"]`、`[data-pf5-component]`、`[data-pf5-depth="near"|"far"]` 保留全部原生投影輪廓與孔，`[data-pf5-connector]` 連同一原生頂點的近／遠面。明選障礙用 `[data-pf5-rc]`。不能只畫 bbox 或首分量，也不把角材包絡說成實際角材。
+- `[data-pf5-junction="firstFill:secondFill"]` 列共同邊、可見接觸維度、L1 間隙及四組 `[data-pf5-pair-layer]`。`[data-pf5-join-policy="unselected"]` 保留接法未選；空間結果不自動補側封或決定退讓。
+- `[data-pf5-native-details]` 收合完整精確原文；原完成面／宿主兩組來源展示合併一份來源 disclosure。未提供 spatial 的舊服務保留原結果。缺值／unsupported／診斷失敗只顯示理由；malformed wire 用 `[data-pf5-unavailable]`，不把唯讀診斷不完整變成合法 World 的新拒絕規則。confirm 仍只沿既有原生 valid／uiContract／候選 owner 守門。
+- `P1285` 為獨立 module，使用既有 CDP dispatcher／fixture 隔離，測 1400×900 與 390×844 的真輸入路徑。新面經 bridge `newid` 配發，先處理手機物件庫／屬性欄的可見狀態，再點面設定進入，不能用會覆寫既有 boundary／placement 的固定 surface id。正式 count／cost 由原 measurement／import 取得；此文件不手填 golden，不宣稱本機跑過 Chromium。
+
 ## R17 host／App 第一片：兩支互頂（P335）
 
 - 沿面內「角材 T／新增角材」入口，`#tbPlacementMode` 在 `single` 與 `boundary-pair` 間切換；`#tbSinglePlacement` 與 `#tbBoundaryPair` 互斥顯示。沒有新增常駐工具列鈕、候選工作區或保存列。pair 模式合併原單支的位置／截面／角色說明，只有一段固定說明；GEO-219 減項見 BACKLOG。
