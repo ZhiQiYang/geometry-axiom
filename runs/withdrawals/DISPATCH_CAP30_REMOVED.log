@@ -1,0 +1,113 @@
+
+===== 情境 cap：上限超過 30／缺上限 =====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 0 件；執行中 0 件；待派 3 件
+  │ 第 1 件：派任務 7300000001
+  │ output go=true
+  │ output comment_id=7300000001
+  │ output base_ref=main
+  │ output max_budget_usd=45
+  │ output model=gpt-6.2-astra
+[dispatch] job run1
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "45", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900030-7300000001
+  ┌ step prepare/validate → exit 1
+  │ ::error::max_budget_usd 必須是 0 到 30 之間的數字
+  worker job prepare → failure
+  worker job work：skipped
+  worker job push：skipped
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000005
+  ┌ step report/Delete artifacts（原文） → exit 0
+  worker job report → failure
+[dispatch] job run1 → failure outputs={"end_reason": ""}
+[dispatch] job claim2
+  ┌ step claim2/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 1 件；執行中 0 件；待派 2 件
+  │ 任務 7300000002 不派工：第一行沒有「上限 US$N」
+  │ 第 2 件：派任務 7300000003
+  │ output go=true
+  │ output comment_id=7300000003
+  │ output base_ref=main
+  │ output max_budget_usd=12
+  │ output model=gpt-6.2-astra
+[dispatch] job run2
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000003", "base_ref": "main", "max_budget_usd": "12", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900030-7300000003
+  ┌ step prepare/validate → exit 0
+  │ task comment 7300000003 by owner, 59 bytes, sha256 747d955d35b24cf9778f18585bdbd5372b56e8b8b24db207dfab6843e5e1822b
+  │ {
+  │   "task_issue": 455,
+  │   "comment_id": 7300000003,
+  │   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000003",
+  │   "comment_author": "ZhiQiYang",
+  │   "comment_updated_at": "2026-11-28T12:00:03Z",
+  │   "comment_sha256": "747d955d35b24cf9778f18585bdbd5372b56e8b8b24db207dfab6843e5e1822b",
+  │   "comment_bytes": 59,
+  │   "refs": [],
+  │   "base_ref": "main",
+  │   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  │   "model": "gpt-6.2-astra",
+  │   "max_budget_usd": "12"
+  │ }
+  upload-artifact openai-worker-task-7300000003
+  worker job prepare → success
+  [work] openai_agent.py（真 SDK、假 Responses API）exit 0 end_reason=completed api_calls=1 假 API 本次收到 1 個請求
+  ┌ step work/end_reason 段落（原文） → exit 0
+  upload-artifact openai-worker-output-7300000003
+  worker job work → success
+  ┌ step push/分支名核對（原文那一行） → exit 0
+  │ branch-ok openaiworker/900030-7300000003
+  [push] 模擬：假模型沒有 commit → 固定檢查拒推
+  worker job push → failure
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000010
+  ┌ step report/Delete artifacts（原文） → exit 0
+  │ deleted artifact 7300000008
+  │ deleted artifact 7300000009
+  worker job report → failure
+[dispatch] job run2 → failure outputs={"end_reason": "completed"}
+[dispatch] job claim3
+  ┌ step claim3/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 3 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+FAIL  cap: US$45 與缺上限各貼一則「不派工」標記
+FAIL  cap: US$45 的標記寫明不得超過 30
+FAIL  cap: 合法的 T9 照派（同一個 claim 內跳過不合格的再往下找）
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 3 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+PASS  cap: 第二次 schedule 不再重貼不派工標記
+--- 第二層：worker prepare 也拒絕 45
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "45", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900032-7300000001
+  ┌ step prepare/validate → exit 1
+  │ ::error::max_budget_usd 必須是 0 到 30 之間的數字
+  worker job prepare → failure
+  worker job work：skipped
+  worker job push：skipped
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000011
+  ┌ step report/Delete artifacts（原文） → exit 0
+  worker job report → failure
+PASS  cap: worker prepare 拒絕 max_budget_usd=45，模型沒有啟動
+
+===== 摘要 =====
+PASS 2／5；FAIL 3

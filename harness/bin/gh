@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""gh 替身：只實作 workflow 用到的 `gh api`，轉送到假 GitHub（FAKE_GH_URL）。--jq 交給真的 jq。"""
+import json
+import os
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+
+args = sys.argv[1:]
+if not args or args[0] != "api":
+    sys.exit("gh 替身只支援 gh api")
+args = args[1:]
+method, path, fields, jq, paginate = "GET", None, {}, None, False
+i = 0
+while i < len(args):
+    a = args[i]
+    if a in ("--method", "-X"):
+        method = args[i + 1]; i += 2; continue
+    if a in ("-F", "-f", "--field", "--raw-field"):
+        k, v = args[i + 1].split("=", 1)
+        if v.startswith("@"):
+            v = open(v[1:], encoding="utf-8").read()
+        fields[k] = v; i += 2; continue
+    if a in ("--jq", "-q"):
+        jq = args[i + 1]; i += 2; continue
+    if a == "--paginate":
+        paginate = True; i += 1; continue
+    path = a; i += 1
+base = os.environ["FAKE_GH_URL"]
+url = base + "/" + path.lstrip("/")
+data = json.dumps(fields).encode() if fields else None
+req = urllib.request.Request(url, data=data, method=method)
+req.add_header("Authorization", "token " + os.environ.get("GH_TOKEN", ""))
+if data:
+    req.add_header("Content-Type", "application/json")
+try:
+    with urllib.request.urlopen(req) as r:
+        raw = r.read().decode()
+except urllib.error.HTTPError as e:
+    sys.stderr.write(f"gh: HTTP {e.code} {e.read().decode()[:200]}\n")
+    sys.exit(1)
+if jq:
+    p = subprocess.run(["jq", "-r", jq], input=raw or "null", capture_output=True, text=True)
+    sys.stdout.write(p.stdout)
+    sys.stderr.write(p.stderr)
+    sys.exit(p.returncode)
+if raw:
+    sys.stdout.write(raw + "\n")

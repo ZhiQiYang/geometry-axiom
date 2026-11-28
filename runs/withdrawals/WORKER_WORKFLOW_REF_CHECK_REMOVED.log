@@ -1,0 +1,103 @@
+
+===== 情境 triggers：觸發者與呼叫端 =====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 1
+  │ event=schedule ref=refs/heads/main actor=mallory triggering_actor=mallory owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ ::error::只接受擁有者本人、main 上的本 workflow（schedule 或 workflow_dispatch）；這次不派任何任務
+PASS  triggers: schedule 的 actor 不是擁有者（別人最後改了 cron）→ gate 失敗、claim 全部 skipped、沒有留言
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 1
+  │ event=workflow_dispatch ref=refs/heads/main actor=ZhiQiYang triggering_actor=mallory owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ ::error::只接受擁有者本人、main 上的本 workflow（schedule 或 workflow_dispatch）；這次不派任何任務
+PASS  triggers: 別人重跑擁有者的派工 run（triggering_actor 不同）→ 不派
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 1
+  │ event=workflow_dispatch ref=refs/heads/feature actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/feature
+  │ ::error::只接受擁有者本人、main 上的本 workflow（schedule 或 workflow_dispatch）；這次不派任何任務
+PASS  triggers: 從非 main 分支手動觸發派工 → 不派
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900053
+  ┌ step prepare/validate → exit 0
+  │ task comment 7300000001 by owner, 59 bytes, sha256 6a5c55ae07fee3e64286775449a896987775d0d869317bef840fed27c1c40ebc
+  │ {
+  │   "task_issue": 455,
+  │   "comment_id": 7300000001,
+  │   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000001",
+  │   "comment_author": "ZhiQiYang",
+  │   "comment_updated_at": "2026-11-28T12:00:01Z",
+  │   "comment_sha256": "6a5c55ae07fee3e64286775449a896987775d0d869317bef840fed27c1c40ebc",
+  │   "comment_bytes": 59,
+  │   "refs": [],
+  │   "base_ref": "main",
+  │   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  │   "model": "gpt-6.2-astra",
+  │   "max_budget_usd": "5"
+  │ }
+  upload-artifact openai-worker-task-7300000001
+  worker job prepare → success
+  [work] openai_agent.py（真 SDK、假 Responses API）exit 0 end_reason=completed api_calls=1 假 API 本次收到 1 個請求
+  ┌ step work/end_reason 段落（原文） → exit 0
+  upload-artifact openai-worker-output-7300000001
+  worker job work → success
+  ┌ step push/分支名核對（原文那一行） → exit 0
+  │ branch-ok openaiworker/900053
+  [push] 模擬：假模型沒有 commit → 固定檢查拒推
+  worker job push → failure
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000004
+  ┌ step report/Delete artifacts（原文） → exit 0
+  │ deleted artifact 7300000002
+  │ deleted artifact 7300000003
+  worker job report → failure
+FAIL  triggers: main 上其他 workflow 以 workflow_call 呼叫 worker（workflow_ref 不符）→ 四個 job 全 skipped
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900054-7300000001
+  worker job prepare：skipped
+  worker job work：skipped
+  worker job push：skipped
+  worker job report：skipped
+FAIL  triggers: 呼叫端事件是 issue_comment（即使 workflow_ref 是派工）→ 全 skipped
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900055
+  ┌ step prepare/validate → exit 0
+  │ task comment 7300000001 by owner, 59 bytes, sha256 6a5c55ae07fee3e64286775449a896987775d0d869317bef840fed27c1c40ebc
+  │ {
+  │   "task_issue": 455,
+  │   "comment_id": 7300000001,
+  │   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000001",
+  │   "comment_author": "ZhiQiYang",
+  │   "comment_updated_at": "2026-11-28T12:00:01Z",
+  │   "comment_sha256": "6a5c55ae07fee3e64286775449a896987775d0d869317bef840fed27c1c40ebc",
+  │   "comment_bytes": 59,
+  │   "refs": [],
+  │   "base_ref": "main",
+  │   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  │   "model": "gpt-6.2-astra",
+  │   "max_budget_usd": "5"
+  │ }
+  upload-artifact openai-worker-task-7300000001
+  worker job prepare → success
+  [work] openai_agent.py（真 SDK、假 Responses API）exit 0 end_reason=completed api_calls=1 假 API 本次收到 1 個請求
+  ┌ step work/end_reason 段落（原文） → exit 0
+  upload-artifact openai-worker-output-7300000001
+  worker job work → success
+  ┌ step push/分支名核對（原文那一行） → exit 0
+  │ branch-ok openaiworker/900055
+  [push] 模擬：假模型沒有 commit → 固定檢查拒推
+  worker job push → failure
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000007
+  ┌ step report/Delete artifacts（原文） → exit 0
+  │ deleted artifact 7300000005
+  │ deleted artifact 7300000006
+  worker job report → failure
+FAIL  triggers: 原本的入口（擁有者在 main 手動觸發 worker）照常：模型啟動、分支 openaiworker/<run_id>
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900056
+  worker job prepare：skipped
+  worker job work：skipped
+  worker job push：skipped
+  worker job report：skipped
+FAIL  triggers: 從暫時分支手動觸發 worker → 全 skipped（與合併前相同）
+
+===== 摘要 =====
+PASS 3／7；FAIL 4

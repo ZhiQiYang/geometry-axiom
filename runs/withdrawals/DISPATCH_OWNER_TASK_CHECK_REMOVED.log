@@ -1,0 +1,144 @@
+
+===== 情境 non-owner：非擁有者的任務留言 =====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 0 件；執行中 0 件；待派 3 件
+  │ 第 1 件：派任務 7300000001
+  │ output go=true
+  │ output comment_id=7300000001
+  │ output base_ref=main
+  │ output max_budget_usd=5
+  │ output model=gpt-6.2-astra
+[dispatch] job run1
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900020-7300000001
+  ┌ step prepare/validate → exit 1
+  │ ::error::任務留言 7300000001 的作者 mallory 不是 repo 擁有者，拒絕執行（未讀取內文）
+  worker job prepare → failure
+  worker job work：skipped
+  worker job push：skipped
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000007
+  ┌ step report/Delete artifacts（原文） → exit 0
+  worker job report → failure
+[dispatch] job run1 → failure outputs={"end_reason": ""}
+[dispatch] job claim2
+  ┌ step claim2/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 1 件；執行中 0 件；待派 2 件
+  │ 第 2 件：派任務 7300000002
+  │ output go=true
+  │ output comment_id=7300000002
+  │ output base_ref=main
+  │ output max_budget_usd=6
+  │ output model=gpt-6.2-astra
+[dispatch] job run2
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000002", "base_ref": "main", "max_budget_usd": "6", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900020-7300000002
+  ┌ step prepare/validate → exit 0
+  │ task comment 7300000002 by owner, 58 bytes, sha256 5eec4ba3da8609d6a29f8ebe8ef880cd419c5fadf71134eb43bc9de9b811c954
+  │ {
+  │   "task_issue": 455,
+  │   "comment_id": 7300000002,
+  │   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000002",
+  │   "comment_author": "ZhiQiYang",
+  │   "comment_updated_at": "2026-11-28T12:00:02Z",
+  │   "comment_sha256": "5eec4ba3da8609d6a29f8ebe8ef880cd419c5fadf71134eb43bc9de9b811c954",
+  │   "comment_bytes": 58,
+  │   "refs": [],
+  │   "base_ref": "main",
+  │   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  │   "model": "gpt-6.2-astra",
+  │   "max_budget_usd": "6"
+  │ }
+  upload-artifact openai-worker-task-7300000002
+  worker job prepare → success
+  [work] openai_agent.py（真 SDK、假 Responses API）exit 0 end_reason=completed api_calls=1 假 API 本次收到 1 個請求
+  ┌ step work/end_reason 段落（原文） → exit 0
+  upload-artifact openai-worker-output-7300000002
+  worker job work → success
+  ┌ step push/分支名核對（原文那一行） → exit 0
+  │ branch-ok openaiworker/900020-7300000002
+  [push] 模擬：假模型沒有 commit → 固定檢查拒推
+  worker job push → failure
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000011
+  ┌ step report/Delete artifacts（原文） → exit 0
+  │ deleted artifact 7300000009
+  │ deleted artifact 7300000010
+  worker job report → failure
+[dispatch] job run2 → failure outputs={"end_reason": "completed"}
+[dispatch] job claim3
+  ┌ step claim3/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 2 件；執行中 0 件；待派 1 件
+  │ 第 3 件：派任務 7300000004
+  │ output go=true
+  │ output comment_id=7300000004
+  │ output base_ref=main
+  │ output max_budget_usd=6
+  │ output model=gpt-6.2-astra
+[dispatch] job run3
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000004", "base_ref": "main", "max_budget_usd": "6", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900020-7300000004
+  ┌ step prepare/validate → exit 0
+  │ task comment 7300000004 by owner, 58 bytes, sha256 46eb2eee263645d11e5c7d916fdea63b0e4bdbcadd84e5c7066f915c68a04eb2
+  │ {
+  │   "task_issue": 455,
+  │   "comment_id": 7300000004,
+  │   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000004",
+  │   "comment_author": "ZhiQiYang",
+  │   "comment_updated_at": "2026-11-28T12:00:04Z",
+  │   "comment_sha256": "46eb2eee263645d11e5c7d916fdea63b0e4bdbcadd84e5c7066f915c68a04eb2",
+  │   "comment_bytes": 58,
+  │   "refs": [],
+  │   "base_ref": "main",
+  │   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  │   "model": "gpt-6.2-astra",
+  │   "max_budget_usd": "6"
+  │ }
+  upload-artifact openai-worker-task-7300000004
+  worker job prepare → success
+  [work] openai_agent.py（真 SDK、假 Responses API）exit 0 end_reason=completed api_calls=1 假 API 本次收到 1 個請求
+  ┌ step work/end_reason 段落（原文） → exit 0
+  upload-artifact openai-worker-output-7300000004
+  worker job work → success
+  ┌ step push/分支名核對（原文那一行） → exit 0
+  │ branch-ok openaiworker/900020-7300000004
+  [push] 模擬：假模型沒有 commit → 固定檢查拒推
+  worker job push → failure
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000015
+  ┌ step report/Delete artifacts（原文） → exit 0
+  │ deleted artifact 7300000013
+  │ deleted artifact 7300000014
+  worker job report → failure
+[dispatch] job run3 → failure outputs={"end_reason": "completed"}
+[dispatch] job claim4
+  ┌ step claim4/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 3 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+FAIL  non-owner: 非擁有者的任務沒有派、沒有標記
+FAIL  non-owner: 非擁有者假造的結果／派工標記不算數，T5、T6 照派：標記 [7300000001, 7300000002, 7300000004]
+FAIL  non-owner: 只記 id 與作者，未讀內文
+--- 第二層：就算派工被繞過、直接把非擁有者留言交給 worker（workflow_call）
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900021-7300000001
+  ┌ step prepare/validate → exit 1
+  │ ::error::任務留言 7300000001 的作者 mallory 不是 repo 擁有者，拒絕執行（未讀取內文）
+  worker job prepare → failure
+  worker job work：skipped
+  worker job push：skipped
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000016
+  ┌ step report/Delete artifacts（原文） → exit 0
+  worker job report → failure
+PASS  non-owner: worker prepare 拒絕（作者不是擁有者），模型沒有啟動
+
+===== 摘要 =====
+PASS 1／4；FAIL 3

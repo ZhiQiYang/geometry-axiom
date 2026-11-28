@@ -1,0 +1,33 @@
+
+===== 情境 non-owner：非擁有者的任務留言 =====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 略過非擁有者的任務形留言 7300000001（作者 mallory，未讀內文）
+  │ 任務 2 件；已處理 2 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+PASS  non-owner: 非擁有者的任務沒有派、沒有標記
+FAIL  non-owner: 非擁有者假造的結果／派工標記不算數，T5、T6 照派：標記 []
+PASS  non-owner: 只記 id 與作者，未讀內文
+--- 第二層：就算派工被繞過、直接把非擁有者留言交給 worker（workflow_call）
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900021-7300000001
+  ┌ step prepare/validate → exit 1
+  │ ::error::任務留言 7300000001 的作者 mallory 不是 repo 擁有者，拒絕執行（未讀取內文）
+  worker job prepare → failure
+  worker job work：skipped
+  worker job push：skipped
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000006
+  ┌ step report/Delete artifacts（原文） → exit 0
+  worker job report → failure
+PASS  non-owner: worker prepare 拒絕（作者不是擁有者），模型沒有啟動
+
+===== 摘要 =====
+PASS 3／4；FAIL 1

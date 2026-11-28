@@ -1,0 +1,63 @@
+
+===== 情境 pending：有未處理任務（schedule）=====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 4 件；已處理 2 件；執行中 0 件；待派 2 件
+  │ 第 1 件：派任務 7300000005
+  │ output go=true
+  │ output comment_id=7300000005
+  │ output base_ref=feat/x
+  │ output max_budget_usd=10
+  │ output model=gpt-6.2-astra
+[dispatch] job run1
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000005", "base_ref": "feat/x", "max_budget_usd": "10", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900001-7300000005
+  worker job prepare：skipped
+  worker job work：skipped
+  worker job push：skipped
+  worker job report：skipped
+[dispatch] job run1 → success outputs={"end_reason": ""}
+[dispatch] job claim2
+  ┌ step claim2/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 4 件；已處理 3 件；執行中 0 件；待派 1 件
+  │ 第 2 件：派任務 7300000006
+  │ output go=true
+  │ output comment_id=7300000006
+  │ output base_ref=main
+  │ output max_budget_usd=8
+  │ output model=gpt-6.2-sol
+[dispatch] job run2
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000006", "base_ref": "main", "max_budget_usd": "8", "model": "gpt-6.2-sol"} WORKER_BRANCH=openaiworker/900001-7300000006
+  worker job prepare：skipped
+  worker job work：skipped
+  worker job push：skipped
+  worker job report：skipped
+[dispatch] job run2 → success outputs={"end_reason": ""}
+[dispatch] job claim3
+  ┌ step claim3/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 4 件；已處理 4 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+PASS  pending: 依序派出 T2、T3，各一則派工標記：標記 [7300000005, 7300000006]
+FAIL  pending: T2、T3 各有一則【OpenAI worker】結果（原文 report step 貼出）：結果 [7300000001]
+PASS  pending: 已有結果的 T1（OpenAI）與 T4（API）沒有再派
+PASS  pending: 第 3 件認領時沒有待派，停止
+FAIL  pending: 情境執行出錯 StopIteration: 
+
+===== 摘要 =====
+PASS 3／5；FAIL 2
+Traceback (most recent call last):
+  File "/tmp/claude-0/replay/scenarios.py", line 264, in <module>
+    ALL[n]()
+  File "/tmp/claude-0/replay/scenarios.py", line 86, in scenario_pending
+    body2 = next(c["body"] for c in gh.comments if c["body"].startswith(f"【OpenAI worker】任務留言 {t2}"))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration

@@ -1,0 +1,45 @@
+base head 2d21d5a6aa74ba1b90ed9fed779834cfeae85825
+=== DISPATCH_OWNER_TASK_CHECK_REMOVED（情境 non-owner）exit 1；PASS 1／4；FAIL 3
+   FAIL  non-owner: 非擁有者的任務沒有派、沒有標記
+   FAIL  non-owner: 非擁有者假造的結果／派工標記不算數，T5、T6 照派：標記 [7300000001, 7300000002, 7300000004]
+   FAIL  non-owner: 只記 id 與作者，未讀內文
+=== DISPATCH_TRUSTED_RESULT_AUTHOR_REMOVED（情境 non-owner）exit 1；PASS 3／4；FAIL 1
+   FAIL  non-owner: 非擁有者假造的結果／派工標記不算數，T5、T6 照派：標記 []
+=== DISPATCH_CAP30_REMOVED（情境 cap）exit 1；PASS 2／5；FAIL 3
+   FAIL  cap: US$45 與缺上限各貼一則「不派工」標記
+   FAIL  cap: US$45 的標記寫明不得超過 30
+   FAIL  cap: 合法的 T9 照派（同一個 claim 內跳過不合格的再往下找）
+=== DISPATCH_HANDLED_REMOVED（情境 all-done）exit 1；PASS 0／3；FAIL 3
+   FAIL  all-done: claim1 回報沒有待派
+   FAIL  all-done: 失敗結果、API worker 結果、派工標記、擁有者貼的結果都算已處理；沒有新留言
+   FAIL  all-done: 沒有呼叫 worker、沒有 OpenAI 請求
+=== DISPATCH_CREDIT_HALT_REMOVED（情境 credit）exit 1；PASS 4／6；FAIL 2
+   FAIL  credit: schedule 看到最新結果是點數用完 → 不派、不標記、不呼叫 OpenAI
+   FAIL  credit: 手動觸發第 1 件越過停止，T11 完成；第 2 件 T12 照派
+=== DISPATCH_CREDIT_HALT_AND_YAML_STOP_REMOVED（情境 credit）exit 1；PASS 1／6；FAIL 5
+   FAIL  credit: 第 1 件 T10 派出，worker end_reason=credit_balance_exhausted
+   FAIL  credit: 整批停止：claim2 起全部 skipped，T11、T12 沒有標記
+   FAIL  credit: 假 OpenAI 只收到 1 個請求：3
+   FAIL  credit: schedule 看到最新結果是點數用完 → 不派、不標記、不呼叫 OpenAI
+   FAIL  credit: 手動觸發第 1 件越過停止，T11 完成；第 2 件 T12 照派
+=== WORKER_WORKFLOW_REF_CHECK_REMOVED（情境 triggers）exit 1；PASS 3／7；FAIL 4
+   FAIL  triggers: main 上其他 workflow 以 workflow_call 呼叫 worker（workflow_ref 不符）→ 四個 job 全 skipped
+   FAIL  triggers: 呼叫端事件是 issue_comment（即使 workflow_ref 是派工）→ 全 skipped
+   FAIL  triggers: 原本的入口（擁有者在 main 手動觸發 worker）照常：模型啟動、分支 openaiworker/<run_id>
+   FAIL  triggers: 從暫時分支手動觸發 worker → 全 skipped（與合併前相同）
+=== WORKER_OWNER_IF_LEFT_AS_DISPATCH_ONLY（情境 pending）exit 1；PASS 3／5；FAIL 2
+   FAIL  pending: T2、T3 各有一則【OpenAI worker】結果（原文 report step 貼出）：結果 [7300000001]
+   FAIL  pending: 情境執行出錯 StopIteration: 
+=== WORKER_BRANCH_AND_ARTIFACT_SUFFIX_REMOVED（情境 pending）exit 1；PASS 7／8；FAIL 1
+   FAIL  pending: 兩件的分支名不同（openaiworker/<run_id>-<留言 id>）
+=== WORKER_END_REASON_OUTPUT_REMOVED_ALONE（預期仍綠：claim 端的留言檢查補上）（情境 credit）exit 1；PASS 3／6；FAIL 3
+   FAIL  credit: 第 1 件 T10 派出，worker end_reason=credit_balance_exhausted
+   FAIL  credit: 整批停止：claim2 起全部 skipped，T11、T12 沒有標記
+   FAIL  credit: 手動觸發第 1 件越過停止，T11 完成；第 2 件 T12 照派
+=== WORKER_END_REASON_OUTPUT_REMOVED_AND_DISPATCH_CREDIT_HALT_REMOVED（情境 credit）exit 1；PASS 1／6；FAIL 5
+   FAIL  credit: 第 1 件 T10 派出，worker end_reason=credit_balance_exhausted
+   FAIL  credit: 整批停止：claim2 起全部 skipped，T11、T12 沒有標記
+   FAIL  credit: 假 OpenAI 只收到 1 個請求：3
+   FAIL  credit: schedule 看到最新結果是點數用完 → 不派、不標記、不呼叫 OpenAI
+   FAIL  credit: 手動觸發第 1 件越過停止，T11 完成；第 2 件 T12 照派
+exit=0

@@ -1,0 +1,207 @@
+worker c12862c0 sha256 16ed8ae51c34117a6554b0f48503b5e6e69effb7b1dfe128667a51696875fd8f
+$ WORKER_YML=openai-worker.c12862c0.yml python3 scenarios.py <root> pending credit triggers
+
+===== 情境 pending：有未處理任務（schedule）=====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 4 件；已處理 2 件；執行中 0 件；待派 2 件
+  │ 第 1 件：派任務 7300000005
+  │ output go=true
+  │ output comment_id=7300000005
+  │ output base_ref=feat/x
+  │ output max_budget_usd=10
+  │ output model=gpt-6.2-astra
+[dispatch] job run1
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+[dispatch] job run1 → failure outputs={}
+[dispatch] job claim2
+  ┌ step claim2/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 4 件；已處理 3 件；執行中 0 件；待派 1 件
+  │ 第 2 件：派任務 7300000006
+  │ output go=true
+  │ output comment_id=7300000006
+  │ output base_ref=main
+  │ output max_budget_usd=8
+  │ output model=gpt-6.2-sol
+[dispatch] job run2
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+[dispatch] job run2 → failure outputs={}
+[dispatch] job claim3
+  ┌ step claim3/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 4 件；已處理 4 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+PASS  pending: 依序派出 T2、T3，各一則派工標記：標記 [7300000005, 7300000006]
+FAIL  pending: T2、T3 各有一則【OpenAI worker】結果（原文 report step 貼出）：結果 [7300000001]
+PASS  pending: 已有結果的 T1（OpenAI）與 T4（API）沒有再派
+PASS  pending: 第 3 件認領時沒有待派，停止
+Traceback (most recent call last):
+  File "/tmp/claude-0/replay/scenarios.py", line 264, in <module>
+    ALL[n]()
+  File "/tmp/claude-0/replay/scenarios.py", line 86, in scenario_pending
+    body2 = next(c["body"] for c in gh.comments if c["body"].startswith(f"【OpenAI worker】任務留言 {t2}"))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+FAIL  pending: 情境執行出錯 StopIteration: 
+
+===== 情境 credit：OpenAI 點數用完（429 credit_balance_exhausted）=====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 0 件；執行中 0 件；待派 3 件
+  │ 第 1 件：派任務 7300000001
+  │ output go=true
+  │ output comment_id=7300000001
+  │ output base_ref=main
+  │ output max_budget_usd=5
+  │ output model=gpt-6.2-astra
+[dispatch] job run1
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+[dispatch] job run1 → failure outputs={}
+[dispatch] job claim2
+  ┌ step claim2/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 1 件；執行中 0 件；待派 2 件
+  │ 第 2 件：派任務 7300000002
+  │ output go=true
+  │ output comment_id=7300000002
+  │ output base_ref=main
+  │ output max_budget_usd=5
+  │ output model=gpt-6.2-astra
+[dispatch] job run2
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+[dispatch] job run2 → failure outputs={}
+[dispatch] job claim3
+  ┌ step claim3/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 2 件；執行中 0 件；待派 1 件
+  │ 第 3 件：派任務 7300000003
+  │ output go=true
+  │ output comment_id=7300000003
+  │ output base_ref=main
+  │ output max_budget_usd=5
+  │ output model=gpt-6.2-astra
+[dispatch] job run3
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+[dispatch] job run3 → failure outputs={}
+[dispatch] job claim4
+  ┌ step claim4/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 3 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+FAIL  credit: 第 1 件 T10 派出，worker end_reason=credit_balance_exhausted
+FAIL  credit: 結果留言寫明點數用完
+FAIL  credit: 整批停止：claim2 起全部 skipped，T11、T12 沒有標記
+FAIL  credit: 假 OpenAI 只收到 1 個請求：0
+--- 之後的 schedule：點數仍未恢復
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=schedule ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 3 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+FAIL  credit: schedule 看到最新結果是點數用完 → 不派、不標記、不呼叫 OpenAI
+--- 擁有者手動觸發（點數已恢復）
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 0
+  │ event=workflow_dispatch ref=refs/heads/main actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ trigger ok
+[dispatch] job claim1
+  ┌ step claim1/Pick the next task and post the dispatch marker (no API key, no model) → exit 0
+  │ output task_issue=455
+  │ 任務 3 件；已處理 3 件；執行中 0 件；待派 0 件
+  │ 不派：沒有待派的任務
+  │ output go=false
+  │ output stop_reason=沒有待派的任務
+FAIL  credit: 手動觸發第 1 件越過停止，T11 完成；第 2 件 T12 照派
+
+===== 情境 triggers：觸發者與呼叫端 =====
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 1
+  │ event=schedule ref=refs/heads/main actor=mallory triggering_actor=mallory owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ ::error::只接受擁有者本人、main 上的本 workflow（schedule 或 workflow_dispatch）；這次不派任何任務
+PASS  triggers: schedule 的 actor 不是擁有者（別人最後改了 cron）→ gate 失敗、claim 全部 skipped、沒有留言
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 1
+  │ event=workflow_dispatch ref=refs/heads/main actor=ZhiQiYang triggering_actor=mallory owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/main
+  │ ::error::只接受擁有者本人、main 上的本 workflow（schedule 或 workflow_dispatch）；這次不派任何任務
+PASS  triggers: 別人重跑擁有者的派工 run（triggering_actor 不同）→ 不派
+[dispatch] job gate
+  ┌ step gate/Refuse anything but the owner on main → exit 1
+  │ event=workflow_dispatch ref=refs/heads/feature actor=ZhiQiYang triggering_actor=ZhiQiYang owner=ZhiQiYang
+  │ workflow_ref=ZhiQiYang/geometry-axiom/.github/workflows/openai-dispatch.yml@refs/heads/feature
+  │ ::error::只接受擁有者本人、main 上的本 workflow（schedule 或 workflow_dispatch）；這次不派任何任務
+PASS  triggers: 從非 main 分支手動觸發派工 → 不派
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+FAIL  triggers: main 上其他 workflow 以 workflow_call 呼叫 worker（workflow_ref 不符）→ 四個 job 全 skipped
+  worker：沒有 on.workflow_call，GitHub 會拒絕這個呼叫（呼叫端 job 失敗）
+FAIL  triggers: 呼叫端事件是 issue_comment（即使 workflow_ref 是派工）→ 全 skipped
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900055
+  ┌ step prepare/validate → exit 0
+  │ task comment 7300000001 by owner, 59 bytes, sha256 6a5c55ae07fee3e64286775449a896987775d0d869317bef840fed27c1c40ebc
+  │ {
+  │   "task_issue": 455,
+  │   "comment_id": 7300000001,
+  │   "comment_url": "https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000001",
+  │   "comment_author": "ZhiQiYang",
+  │   "comment_updated_at": "2026-11-28T12:00:01Z",
+  │   "comment_sha256": "6a5c55ae07fee3e64286775449a896987775d0d869317bef840fed27c1c40ebc",
+  │   "comment_bytes": 59,
+  │   "refs": [],
+  │   "base_ref": "main",
+  │   "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  │   "model": "gpt-6.2-astra",
+  │   "max_budget_usd": "5"
+  │ }
+  upload-artifact openai-worker-task
+  worker job prepare → success
+  [work] openai_agent.py（真 SDK、假 Responses API）exit 0 end_reason=completed api_calls=1 假 API 本次收到 1 個請求
+  [work] 模型 step 沒有 end_reason 輸出段落
+  upload-artifact openai-worker-output
+  worker job work → success
+  ┌ step push/分支名核對（原文那一行） → exit 0
+  │ branch-ok openaiworker/900055
+  [push] 模擬：假模型沒有 commit → 固定檢查拒推
+  worker job push → failure
+  ┌ step report/Post one 【OpenAI worker】 comment（原文） → exit 2
+  │ https://github.com/ZhiQiYang/geometry-axiom/issues/455#issuecomment-7300000004
+  ┌ step report/Delete artifacts（原文） → exit 0
+  │ deleted artifact 7300000002
+  │ deleted artifact 7300000003
+  worker job report → failure
+PASS  triggers: 原本的入口（擁有者在 main 手動觸發 worker）照常：模型啟動、分支 openaiworker/<run_id>
+  worker inputs={"task_issue": "455", "task_comment_id": "7300000001", "base_ref": "main", "max_budget_usd": "5", "model": "gpt-6.2-astra"} WORKER_BRANCH=openaiworker/900056
+  worker job prepare：skipped
+  worker job work：skipped
+  worker job push：skipped
+  worker job report：skipped
+PASS  triggers: 從暫時分支手動觸發 worker → 全 skipped（與合併前相同）
+
+===== 摘要 =====
+PASS 8／18；FAIL 10
+exit=1
