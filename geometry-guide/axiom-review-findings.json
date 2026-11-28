@@ -1,0 +1,262 @@
+{
+  "findings": [
+    {
+      "clause_sha256": {
+        "I63a": "e08ff4181630a1f3646c7c8b4eab1349afdadbeadf03c55dce7973d9257a38f7",
+        "I63b": "75e397cf4c1b4339bdc8e710b192b61b6ed5ba200f873dd5f0c390a9cb377867",
+        "I63c": "886297344aeb59e9ef06a70077a8f1a673e7697e8738bcd6e8e0f2187ffc51f7",
+        "R58a": "3e13b8b1044f543c5a8966f60d3429d79b9e57bbba17509666e4a77b23cf0e38",
+        "R58b": "7793f0f0f0abcbf8a0bf3f093e471354c80a9491c906172e0d33b8ae7125509d"
+      },
+      "clauses": [
+        "I63a",
+        "I63b",
+        "I63c",
+        "R58a",
+        "R58b"
+      ],
+      "decision": "change_tool",
+      "evidence": [
+        {
+          "anchor": "def parse_clauses(text):",
+          "kind": "context",
+          "path": "geometry-guide/axiom_matrix.py",
+          "source_sha256": "6fa4ddc1d17d38c4bea7597d1d319c5f037ec0fe9cfe53fb6492174880828bf0"
+        }
+      ],
+      "id": "X4-F01",
+      "kind": "traceability_defect",
+      "reason": "舊 matrix 只辨識粗體 D／普通 I/R，漏列五條且吞進上一條。與正典 reader 的標題文法對齊，不改公理；裸 D 仍是正文參照。",
+      "state": "fixed_in_this_slice"
+    },
+    {
+      "clause_sha256": {
+        "D10a": "1baae4bb2b9012db2ed9c226151b04dc86f07522a430de129b04392bd7c69c97"
+      },
+      "clauses": [
+        "D10a"
+      ],
+      "decision": "change_test",
+      "evidence": [
+        {
+          "anchor": "grid 1 on 1 u panel 400 gap 21",
+          "kind": "test",
+          "path": "_edge_grid_panel_odd_gap.scene",
+          "source_sha256": "c4ad6bbea3c09d8b27df7a4fac6d6c07947655ad8e356618cb8d724ae3f6c79f"
+        },
+        {
+          "anchor": "GeoCoord geo_period_center(GeoCoord anchor,GeoCoord body,GeoCoord gap,int64_t k)",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid.c",
+          "source_sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+        }
+      ],
+      "id": "X4-F02",
+      "kind": "test_spec_mismatch",
+      "reason": "舊 odd-gap 夾具說應拒、accept case 帶無作用 error，且只驗空 lengths。修說明與死欄，增加八條正式 grid→guide 的精確端點。floor→ceil 撤回使每線偏移 1 mm，裁判紅；不改接受語義、時限或既有斷言。",
+      "state": "fixed_in_this_slice"
+    },
+    {
+      "clause_sha256": {
+        "D7": "09ba172035c04062e41cc3c7a8546b9256df88fda70e595c8c3ee074de45034c",
+        "I12": "d8c8665e3ebcadc35b86176e98b743c2077c8ed55a72d653ddf1dfe86b2d746a"
+      },
+      "clauses": [
+        "D7",
+        "I12"
+      ],
+      "decision": "change_test",
+      "evidence": [
+        {
+          "anchor": "{'scene': '_ax_i12_explicit_with_atgrid.scene', 'expect': 'reject', 'error': 'D7'}",
+          "kind": "test",
+          "path": "tests/run_tests.py",
+          "source_sha256": "e2f6199225af7347505874eaea5ce95d28f2b16cf3e2d83d13e7768b6b1ef1c5"
+        },
+        {
+          "anchor": "{'scene': '_ax_i12_auto_with_at.scene', 'expect': 'reject', 'error': 'I12'}",
+          "kind": "test",
+          "path": "tests/run_tests.py",
+          "source_sha256": "e2f6199225af7347505874eaea5ce95d28f2b16cf3e2d83d13e7768b6b1ef1c5"
+        }
+      ],
+      "id": "X4-F03",
+      "kind": "test_spec_mismatch",
+      "reason": "兩份舊 I12 夾具的說明仍描述固定長度／at 合法。實跑固定長度在 timber 行以 D7/I18 拒絕、舊 at 在 place 行以 I12 拒絕。更正測點說明，保留兩個具名拒絕斷言；不聲稱前者測到了後續 at-line。",
+      "state": "fixed_in_this_slice"
+    },
+    {
+      "clause_sha256": {
+        "R5": "7839b59fa70d7d350fa2070762e1e117aa3d64d738cdcf854d4e00ba0f667002"
+      },
+      "clauses": [
+        "R5"
+      ],
+      "decision": "change_tool",
+      "evidence": [
+        {
+          "anchor": "R5 declaration arrays",
+          "kind": "context",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "X4-F04",
+      "kind": "traceability_defect",
+      "reason": "cutting 測試的 R5 是局部審查編號，不能當作公理 R5 已被驗。新表僅把文字命中放在未審候選，永不自動升成實作／測試覆蓋。保留原測試名稱，避免抹掉原審查脈絡。",
+      "state": "fixed_in_this_slice"
+    },
+    {
+      "clause_sha256": {
+        "D51a": "391a55d88fb496965da3968c1ec6a400131760d97471b82ac42e2c82bf5fc97f",
+        "D51b": "abb3c03f871229598e69e7ba8a470483556499c9ca5467838750964a61c9475c",
+        "D51c": "ac27c922b4dcd147c821b492528f0027c7b9f247b89660a6ba9be2c803c8f3f9",
+        "I63a": "e08ff4181630a1f3646c7c8b4eab1349afdadbeadf03c55dce7973d9257a38f7",
+        "I63b": "75e397cf4c1b4339bdc8e710b192b61b6ed5ba200f873dd5f0c390a9cb377867",
+        "I63c": "886297344aeb59e9ef06a70077a8f1a673e7697e8738bcd6e8e0f2187ffc51f7",
+        "R58a": "3e13b8b1044f543c5a8966f60d3429d79b9e57bbba17509666e4a77b23cf0e38",
+        "R58b": "7793f0f0f0abcbf8a0bf3f093e471354c80a9491c906172e0d33b8ae7125509d"
+      },
+      "clauses": [
+        "D51a",
+        "D51b",
+        "D51c",
+        "I63a",
+        "I63b",
+        "I63c",
+        "R58a",
+        "R58b"
+      ],
+      "decision": "change_implementation",
+      "evidence": [
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        }
+      ],
+      "id": "X4-F05",
+      "kind": "implementation_spec_mismatch",
+      "reason": "R13 C/D 已採納而 main 尚未登記新補資料／模型核對能力。應沿 R13 產品片補交易、版本閉包與正向驗收；既有 UNSUPPORTED 邊界須保留到真支援，不改公理。未合 PR #468 不算 main。",
+      "state": "open"
+    },
+    {
+      "clause_sha256": {
+        "D65": "888904171f9f45aa3207b4dd398a5267907501cae53879034613f204418ed07c",
+        "D66": "30208a9dabfb12c002c0fb30a5bc5ffa1c5e64950afde7716241d779d4ee13f6",
+        "D67": "865d207e4cb06a74feccc6de0971af28a2155aa9ab262c08bcbba0d79d7f6e13",
+        "I75": "88f10421c371b1e892ac63a05e84ff67908f0508e6a52d69ae37f629755201c3",
+        "I76": "861405399fe13f7a64e5136c7f79fe1e1d47dffb6bcc99444a2afe7ac992f77c",
+        "I77": "6346f6cd3a12cc618fd8143d2f9136d345035696bcd2c80fd08ebc42aee3f8ad",
+        "R61": "329cf66e6933a89ccef7a2585a82de453e921c8e24fd3999841d151427a8fd55",
+        "R62": "642b13a4965374f1c52fc8c976f2fe9012bd5e6c945d57843f178be2ccec2f15"
+      },
+      "clauses": [
+        "D65",
+        "D66",
+        "D67",
+        "I75",
+        "I76",
+        "I77",
+        "R61",
+        "R62"
+      ],
+      "decision": "change_implementation",
+      "evidence": [
+        {
+          "anchor": "    if face_mode and len(selection['uses']) != len(record['input']['uses']):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        }
+      ],
+      "id": "X4-F06",
+      "kind": "implementation_spec_mismatch",
+      "reason": "R09b 新 SourceSlot、歷史見證、重關聯計畫、faces 可增減／重排與新格式未完整落地。原 identity-ledger/1 與固定數量更新仍有效。應補產品及正向／回滾裁判，不能刪未支援分支充作完成；未合 #466/#484 不算 main。",
+      "state": "open"
+    },
+    {
+      "clause_sha256": {
+        "R58": "8bd95306547e5f9e3028d2c2b5a1babb5583935294c98d1f0725f90de6252da3",
+        "R63": "d96bd293b51d955ed9825ad4c6024ba77a207c0479b955951ef2783deba601e1"
+      },
+      "clauses": [
+        "R58",
+        "R63"
+      ],
+      "decision": "change_implementation",
+      "evidence": [
+        {
+          "anchor": "    async function rebindLedger(evidenceId,target){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        }
+      ],
+      "id": "X4-F07",
+      "kind": "implementation_spec_mismatch",
+      "reason": "舊 evidence rebind 會清除 adoption；不可說已滿足新 R63 的歷史保留。新格式需保留歷史核對／採用而讓新目標未核對，並連同收據版本與測試遷移。不能先刪舊清空斷言、也不改公理。",
+      "state": "legacy_scope_pending_new_capability"
+    },
+    {
+      "clause_sha256": {
+        "I23": "79f1077c0d127d8b4c46ff07607202f8b3b48ba744c2301b185b584c0bc40b52",
+        "I8a": "37492148ee4ba677de9704d625e3ef2813f5b60966f2c9410c692cc095c05992"
+      },
+      "clauses": [
+        "I8a",
+        "I23"
+      ],
+      "decision": "change_test",
+      "evidence": [
+        {
+          "anchor": "# → I23(a) 拒絕(V_GRID_LOCKED),World 留在舊狀態。",
+          "kind": "test",
+          "path": "_edge_grid_locked.scene",
+          "source_sha256": "d3f8f26e0bf99ab982950393dbcc3cca6ad612bb8920f272b04637603700294e"
+        }
+      ],
+      "id": "X4-F08",
+      "kind": "test_spec_mismatch",
+      "reason": "_edge_grid_locked.scene 的舊說明聲稱 I23(a)/V_GRID_LOCKED 不准移動；實跑是 I8a 產生 valid preview（中心 1000→1500、長度 2960 不變），因未確認拒絕。產品預覽方向正確，需在後續測試小片校正說明並釘未確認／確認兩相；此首片先修三個更明確夾具，不刪現有拒絕。",
+      "state": "open"
+    },
+    {
+      "clause_sha256": {
+        "D38": "55a3009b9c783b84cfbd2b7fe315c31bc57b7fa6a3d403d2d1e12036040b44c6",
+        "R38": "90e174eddfd86ccd9138195889e7fe06e24965b90b1a0d1962e050d0cecdb7c8"
+      },
+      "clauses": [
+        "D38",
+        "R38"
+      ],
+      "decision": "change_tool",
+      "evidence": [
+        {
+          "anchor": "def error_codes(clauses, src_text):",
+          "kind": "context",
+          "path": "geometry-guide/axiom_matrix.py",
+          "source_sha256": "6fa4ddc1d17d38c4bea7597d1d319c5f037ec0fe9cfe53fb6492174880828bf0"
+        }
+      ],
+      "id": "X4-F09",
+      "kind": "traceability_defect",
+      "reason": "legacy error_codes 將所有 V_* 視為錯誤碼，因而把公理框架向量 V_H 誤報為來源缺碼。新三方表不使用這種診斷推論；legacy CLI 的舊提示尚待獨立的具名錯誤碼宣告設計，不應新增產品錯誤碼或改公理來迎合它。--strict 原契約只因紅燈非0，不把錯誤碼提示當阻擋。",
+      "state": "open"
+    }
+  ],
+  "schema": "geometry-axiom-findings/1"
+}

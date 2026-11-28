@@ -1,0 +1,2726 @@
+{
+  "entries": [
+    {
+      "body_sha256": "183295cd8ab4b52a1c4cdf8a163a73f9458b09e56614b9db60c219e131493f87",
+      "evidence": [],
+      "id": "D1",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "5dddfc1662d34c9e7cdb5748237ab682ab2889dc0c8cc2ecf78e1e673ed6fa43",
+      "evidence": [],
+      "id": "D2",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "27908fd63ee9b5d510cc2be980b86568ea3d16aeb0cfb624d200356b7863c5e5",
+      "evidence": [],
+      "id": "D3",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a5b710a574bb07e219bc93f59ad0bbd058793319c9361004c9e792c99ceaf08a",
+      "evidence": [],
+      "id": "D4",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "7fe863d03691d002ea78c7163ef9470df92d234e9a51672e79e7f7c84d99fca9",
+      "evidence": [],
+      "id": "D5",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "388a6bbb3e908d16cc31781244ac42fb20957513f3d5d90916fb74e59852040d",
+      "evidence": [],
+      "id": "D12",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a823bb1dd38f990f648b6a2f67634a917af78a580abd3904a44fbc225d720f7a",
+      "evidence": [],
+      "id": "D6",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e821e085b7f2b9cf5867c464025ba5ce2eb4d234b453d97689d59be91cee191c",
+      "evidence": [],
+      "id": "D6a",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "24e0747485fec5343be74a56555020a741e4877bd76dc533f076a055f1afcef7",
+      "evidence": [],
+      "id": "D6b",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "22d8a93540014677ba74d4afa98bdcbb0d09aa955c27226907fab6087c2a9f4c",
+      "evidence": [],
+      "id": "D6c",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "09ba172035c04062e41cc3c7a8546b9256df88fda70e595c8c3ee074de45034c",
+      "evidence": [
+        {
+          "anchor": "static bool apply_timber_line(const char *path,int line_no,char *tokens[],int count,World *world)",
+          "kind": "implementation",
+          "path": "current_geometry.c",
+          "source_sha256": "898708e9c88bb2bda92e29713a181d0f288ca7d69c6d9fae24d924f591741317"
+        },
+        {
+          "anchor": "{'scene': '_ax_i12_explicit_with_atgrid.scene', 'expect': 'reject', 'error': 'D7'}",
+          "kind": "test",
+          "path": "tests/run_tests.py",
+          "source_sha256": "e2f6199225af7347505874eaea5ce95d28f2b16cf3e2d83d13e7768b6b1ef1c5"
+        }
+      ],
+      "id": "D7",
+      "reason": "正式 timber parser 拒絕舊 timber id L A B；基底夾具確實在 timber 宣告行收到 D7/I18，尚未執行 place。舊夾具聲稱 I12 長度/錨法配對的說明與實際測點不一致。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：只實跑廢除固定長度的入口；掃掠體全部頂點、來源重算與衍生承載面契約未在本子任務重驗。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "568d1143c4daa681fa910fe1cccac9003118b5db5702d8ca7b3f48a1d5994281",
+      "evidence": [],
+      "id": "D8",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "8b68b6b1071fe5c9dfd8be1ce5d41595479ee71794095b81d0a3c5dd456fcc35",
+      "evidence": [],
+      "id": "D9",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e8689276434ed8d35de53ba4efd283947cb414ce2de10578df49a736c1f5b069",
+      "evidence": [],
+      "id": "D10",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "1baae4bb2b9012db2ed9c226151b04dc86f07522a430de129b04392bd7c69c97",
+      "evidence": [
+        {
+          "anchor": "GeoCoord geo_period_center(GeoCoord anchor,GeoCoord body,GeoCoord gap,int64_t k)",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid.c",
+          "source_sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+        },
+        {
+          "anchor": "out[n++] = geo_period_center(def->anchor,def->body,def->gap,(int64_t)k);",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid.c",
+          "source_sha256": "88cc8d880f50856e43a2f362a179649de2f9c8583827227cdced45a2024d8b9f"
+        },
+        {
+          "anchor": "REQUIRE(lines[0]==31&&lines[1]==64&&lines[2]==97,\"panel-odd-gap-centers\");",
+          "kind": "test",
+          "path": "tests/geo261_grid_cells_harness.c",
+          "source_sha256": "07ade1dde6a28abbffb04ce0ff57b5ffc5dff21a0a622aca019e6e082be6ff91"
+        },
+        {
+          "anchor": "def test_odd_panel_gap_and_anchor_freezing(self):",
+          "kind": "test",
+          "path": "tests/test_reference_contract.py",
+          "source_sha256": "b2d09d081ee987b67552417dd25144be23dd5e3f34e3ce6637084e287833e75c"
+        }
+      ],
+      "id": "D10a",
+      "reason": "有限 PANEL_LAYOUT 實作明確呼叫整數縫中心公式；基底 odd-gap scene 原生接受。舊 scene 註解反向且原 runner 不驗格線座標，是追溯及局部測試弱點，不能因此宣稱本條無實作或全域無測試。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：本次沒有跑原生 grid-cells 全 suite，也沒有重跑整個 bridge reference suite。；未對 D10a 全部容量、重宣告、工程來源分支做窮盡驗證。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9702871893be330ac982f26a6c1a544fdf729c993a431cc8375fb96ecb5c070b",
+      "evidence": [],
+      "id": "D11",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "dcb1d47a843f1d77bfbca94506dc259a0fe1b6f70fa6dc3e482e1f43b2e0092d",
+      "evidence": [],
+      "id": "D13",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "dd7619db4651afc6c5d8821c50ef8170688d57445018c0a59cf994e878e4d8fd",
+      "evidence": [],
+      "id": "D14",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "75bbf9cd8b13b14596d152ddaead2f4ace629263fdfb39fd0509b859723ea6d3",
+      "evidence": [],
+      "id": "D15",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "10023811e9f4c22daa8fc552bcd7fb2848c812168b6fa6a4257c069c8df03c65",
+      "evidence": [],
+      "id": "D16",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a73f2da28f6fdffa22a50a18233020481f86bd7fdaa6868c265588542e27a7a9",
+      "evidence": [],
+      "id": "D16a",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "208189ab44d9e4101c3287986a9d334605a169b9134b1f4f4170688e301f41d9",
+      "evidence": [],
+      "id": "D17",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a8550e8202d702aff3076797285eee1caaea8a65522e34fe076478fbe9b1b5bb",
+      "evidence": [],
+      "id": "D18",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "03cad56ff49ccde5e6e7620d407654f807674c58518d964ac5ff66aeabc43de2",
+      "evidence": [],
+      "id": "D19",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "72a7acbf49e1de82c28843eaf797cf0090e9485511ac8a437baff147c087888c",
+      "evidence": [
+        {
+          "anchor": "bool geo_grid_rules_validate(const GeoGridSystem *system, GeoGridStoreError *error)",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid_store.c",
+          "source_sha256": "89e26432540328ed1c127c4a0dffce92d7371b8ae73e17f9c1efb9e626738d1d"
+        },
+        {
+          "anchor": "bool wood_grid_rules_world_valid_direct(const WoodGridContext *ctx,char *err,size_t cap)",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/native/grid_rules.c",
+          "source_sha256": "d3c00ea20d13eaeaf2100bd4c26911da111751a4490009ae4b2dd4b3bfd07737"
+        },
+        {
+          "anchor": "static const char *grid_rules_scene_integrity_error(const World *w)",
+          "kind": "implementation",
+          "path": "geometry-core/grid_subdivision.inc",
+          "source_sha256": "731050d0b0f9e119310d2401b0e379e60e46e802dfb232b71e0cc96c73a45c03"
+        },
+        {
+          "anchor": "  function ruleUnsupported(s){",
+          "kind": "implementation",
+          "path": "geometry-web/grid-system-workspace.js",
+          "source_sha256": "aa0ab9434823fe79c39271f302ccf97214f2006381539aa2fc85dbc0651943d7"
+        },
+        {
+          "anchor": "    def test_01_literal_mixed_dual_panel_phase_anchor_and_inner_lines(self):",
+          "kind": "test",
+          "path": "tests/test_r14_repeat_panel.py",
+          "source_sha256": "aa15d5aa634b0bb65fd6681b52b9e996612d655a7db019604c262b8c1b1fcf6c"
+        }
+      ],
+      "id": "D19a",
+      "reason": "main 原生 /2 已支援無 stagger 的兩軸 REPEAT/REPEAT_PANEL，來源持有穩定 ruleKey 與高水位、完整 pitch 精確分份；App 及完整專案已有接線。本列限已採納一層來源規則，不包含條文仍排除的巢狀、by_span 等未定案行為。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "f98578c9b5bacc0cdd922b5b481d0a1f8aee82b8f7ffad42196c60e439d9a508",
+      "evidence": [],
+      "id": "D20",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e184df6781bc83cdc2158d5e50a598310ca1ff43f9b95c41088cd3e9a63cefc7",
+      "evidence": [],
+      "id": "D21",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e767bda4d28c4c41850c61b1fff9f6c757e5e80173fdadf91895d2b16e4b99d6",
+      "evidence": [],
+      "id": "D22",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d60373b904ff831e3a650d8ef4abaf02927068f918aa6d53107c715d8ec2ed18",
+      "evidence": [],
+      "id": "D23",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "8a60cc61b81e454c2ad1abfaab9d57b73eba3717be3d84707575173be70888ec",
+      "evidence": [],
+      "id": "D24",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "bede50a47e6e512ab478f18eced2560dc8f00502b54fd5e24a14dd6e3bce25e9",
+      "evidence": [],
+      "id": "D25",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9925dbacd8fa46e90ad6e81b843cf247578db86e4e0da1d213b9f8adab03ddf0",
+      "evidence": [],
+      "id": "D26",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "8382239a74e5c3c9e9ac2d3bb5825658100b0ff6554048f0667000b97bec85e9",
+      "evidence": [],
+      "id": "D27",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "17a343d4cab4a12c01a0dc2c11288d4c999d3d5daec7f62f201829f23615669e",
+      "evidence": [],
+      "id": "D28",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "27392e2114412e9b2dbabb7e551f91b0595945cc433956ed02c60515dabffd44",
+      "evidence": [],
+      "id": "D29",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "da71096811b4b7931c6ac9ed69258cd24d6014c6f5793647180170ec50819c64",
+      "evidence": [],
+      "id": "D10b",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a8dc690a4bde6f28ffe691ad59bad7f19c267c57040735f07636cfc3d20de2f4",
+      "evidence": [],
+      "id": "D30",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "5c0ab1d89ea227919894227e3e050bd9a2a2c6b84881cd5072fe92c0a2a0a9e4",
+      "evidence": [],
+      "id": "D31",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a2803794d6475806349b6536c83ba18a68c983c1032b5b878390e2f76b9c1944",
+      "evidence": [],
+      "id": "D32",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "99c945288916149c89dcae18999be3b23c075fbf7860278ab2a96c57586419a0",
+      "evidence": [],
+      "id": "D33",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "43c19c23c553c64d0b5b8743975e023e51631b919809803b51c4f32fc8f7c91f",
+      "evidence": [],
+      "id": "D34",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "ed95e5681b1185c5d8caa6672c7f7cfda29f510bd95f83c7edeb46e3c78df852",
+      "evidence": [],
+      "id": "D35",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "45fd67b8566c0381159a2b881d543bb16b41ae4ce010222d849e088f4328bcf3",
+      "evidence": [],
+      "id": "D36",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "00c38c89cfbb144d8c1db117e03da58dcda6461f76a0a163c9f7f35d7b332675",
+      "evidence": [],
+      "id": "D37",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "55a3009b9c783b84cfbd2b7fe315c31bc57b7fa6a3d403d2d1e12036040b44c6",
+      "evidence": [],
+      "id": "D38",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "1533dd55e2abc45fef10a2ca337b6696adebc3e6ea1b2da7abe6dfe2557b75eb",
+      "evidence": [],
+      "id": "D39",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d70e89643466fa0b1e4b20a693cb0bc2e6e5a5b0950b49ae603bfb54f01a2214",
+      "evidence": [],
+      "id": "D40",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "92bf9dad3833f06aa7583f5c86d5df3723536bfe26b4643dbb4aa3e02523ef5e",
+      "evidence": [],
+      "id": "D41",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "eb9f1a960457845db1bce9d7524f6d612f99d68716eaead3358a130be9c54423",
+      "evidence": [],
+      "id": "D42",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "ad3ddfc054828f059146bfdacc6558dd92fbe9f6859339d137e018aa48c88b67",
+      "evidence": [],
+      "id": "D43",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "3477ce4ce5baea60b4bf1523ad1949e504f24fd9846d9b90f74bd280a86d4055",
+      "evidence": [],
+      "id": "D44",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9b486a557b695d04ac93d49c85afdb8b289cffe37198b0d95382b70da6236bce",
+      "evidence": [],
+      "id": "D45",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "0e5aca19d313e354acdaa5559d0a2c75e24b1f7bdaee4893577c291f17ccc001",
+      "evidence": [],
+      "id": "D46",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f73bac7e4b251ce5b4b69a508cbc0ed52a1a981948a3eff077466ccbe55d0861",
+      "evidence": [],
+      "id": "D47",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "ef4d6d169f5f58022122a5b7558d078d7515828caf10bd3b459b6be7ef9826ba",
+      "evidence": [],
+      "id": "D48",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "16b88c0ddda88472737c577ed8e9fbae7fbd5e8392a3f9a318951d5726b1b207",
+      "evidence": [],
+      "id": "D49",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "b0738140024b3ae3b09a91ae66213c561e0d95a0b8daf9390ca146a4bb11ff59",
+      "evidence": [],
+      "id": "D50",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d838cce86ca0fad599f7decb5cf5c0e6affe9a36849f188fd267a9ebac476875",
+      "evidence": [],
+      "id": "D51",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "391a55d88fb496965da3968c1ec6a400131760d97471b82ac42e2c82bf5fc97f",
+      "evidence": [
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "  function validateReconstructionReviews(records, faces) {",
+          "kind": "unsupported",
+          "path": "geometry-web/source-plane.js",
+          "source_sha256": "caed8443df9fb3d7ab1caafc1952208bc839a2072c7126b529041eced19ca30b"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "D51a",
+      "reason": "R13 C/D 的具名 ReconstructionRecord、逐欄原始輸入／單位／座標基準／來源版本與有限關係模板在 main 沒有登記的產品資料型別；現有 source-plane 輪廓核對收據只存 bid/pageId/basis/geometry，不能充作本條紀錄。必須實作新的 H 紀錄與 K 精確關係，不改公理。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "abb3c03f871229598e69e7ba8a470483556499c9ca5467838750964a61c9475c",
+      "evidence": [
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "  function planAdoption(link,live,field){",
+          "kind": "unsupported",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "D51b",
+      "reason": "新資料紀錄的採用收據與模型核對範圍／實際供值／排除原因／有效過期狀態尚無產品型別。既有證據 adoption 是參數欄位專用，模型 closed schema 不接受新核對附件，不能冒充 D51b。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "ac27c922b4dcd147c821b492528f0027c7b9f247b89660a6ba9be2c803c8f3f9",
+      "evidence": [
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "D51c",
+      "reason": "房間高度、RC 柱、RC 樑三種補資料模板（精確 mm/cm、具名基準、top/bottom/height/depth 有限關係與明選採用）尚無 main 產品入口。原手動 RC 與模型設定不是本模板；reconstruction-data/1 仍拒絕。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "b77a3c7971a2f89e5a5df6bf6d4887d590f7720dc6a135ba42096ba24b523455",
+      "evidence": [],
+      "id": "D52",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "bc2a8f521cd407db427a16864ca70b73e7e28a69dee1967b8902d6f71088bbdc",
+      "evidence": [],
+      "id": "D53",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d66c3c0c9c1dd4226d9bee83678a6caec0b745f7c2ade5a3bdad512296413436",
+      "evidence": [],
+      "id": "D54",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "dbf2b661cbb45742133c9d53559995b9e25efba1369c40fa0d8701ab926c91ce",
+      "evidence": [],
+      "id": "D55",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "319e829223bade3432dec042b7abce1f097055d29f388b96e0ed860a3afd032f",
+      "evidence": [],
+      "id": "D56",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "4e199fa31a07a60676e301be3db7a1dff09902d803704a8f4a7b25dbd066d39f",
+      "evidence": [],
+      "id": "D57",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "7b286945f3464747309a54cdce97fe44f40d38936b8bf7326a4e145d11082913",
+      "evidence": [],
+      "id": "D58",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "56398eeff7442d2c88ea1d8eaf2ba26915a6255858018e5d24f07f3cf43ccba7",
+      "evidence": [
+        {
+          "anchor": "static bool identity_collect(const World *w, AppIdentityKey *keys, size_t *count)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "static bool identity_table_ok(const AppIdentityKey *keys, size_t key_count, const AppIdentityMark *marks, size_t mark_count, char *err, size_t cap)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "    def test_B1_zero_ids_save_and_reopen_in_a_new_process(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        },
+        {
+          "anchor": "    def test_L19_generated_owned_timbers_have_no_marks(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        }
+      ],
+      "id": "D59",
+      "reason": "原身分帳已有 typed key 集合、組構所有 timber 排除、固定排序與唯一 128-bit epoch:uint64 serial。此列只確認既有 identity-ledger/1；R09b 新來源重新關聯不由此升級。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "71ec677e8d0ceaecf8d85e9c0f10ad25e6d3bfd163f5a73b0247857d80bc6157",
+      "evidence": [
+        {
+          "anchor": "static bool identity_prepare(const World *before, World *after, const AppIdentityKey *explicit_keys, size_t explicit_count, bool explicit_overflow)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "    def test_L21_engineering_same_key_rebuild(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        },
+        {
+          "anchor": "    def test_L10_L21_parameter_import_reuses_id_but_not_mark(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        }
+      ],
+      "id": "D60",
+      "reason": "原生結算根據 before World 與 explicit-delete 集合保留或重配 incarnation，單純同值不能沿用被明刪的存在期。真 bridge 測試包含相同鍵重建、匯入、群組及導出配置；不能以此宣稱 D66 沿革鏈已實作。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "b7aeb89b46915281ca0a9f09c3abd4f2e6a1a604179e6c0fd2910d486636c163",
+      "evidence": [
+        {
+          "anchor": "def _write_epoch(native) -> None:",
+          "kind": "implementation",
+          "path": "geometry-web/serve.py",
+          "source_sha256": "751b98128e9ac089d39b0e6e01263174ab33ba36aea9f0a74048b85fd4f521aa"
+        },
+        {
+          "anchor": "static void identity_commit_serials(void)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "    def test_S1_whole_replacement_clears_epoch_only_on_success(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        },
+        {
+          "anchor": "    def test_L04_group_order_and_failed_group_keep_consumed_serials(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        }
+      ],
+      "id": "D61",
+      "reason": "H 以 secrets.token_hex(16) 設定配號區段，原生只成功提交才推進序號；整體取代、undo、群組失敗的區段與序號語意已有原生測試。此輪執行了 IdentityLedgerReview 的相關 case。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "48b7ced3a99d4009eb33150282d8eefe3567d4e443be26cec1f5f77588be133f",
+      "evidence": [
+        {
+          "anchor": "  function identityStatusFromGraph(target,graph,projectScope){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function judgeRoots(identity, live) {",
+          "kind": "implementation",
+          "path": "geometry-web/identity-ledger.js",
+          "source_sha256": "3bcf673afb2a2e63263945762604c07deb90f131686417ac290c071bcc4c6c9b"
+        },
+        {
+          "anchor": "  function deidentifiedBase(scene) {",
+          "kind": "implementation",
+          "path": "geometry-web/identity-ledger.js",
+          "source_sha256": "3bcf673afb2a2e63263945762604c07deb90f131686417ac290c071bcc4c6c9b"
+        },
+        {
+          "anchor": "    def test_L12_activation_keeps_D25_packages_and_summary_byte_identical(self):",
+          "kind": "test",
+          "path": "tests/test_identity_content_contract.py",
+          "source_sha256": "385d31dd19f6d933a82e3ee4c22dcbad90e7a944c1eeeb7118107a2fb0555dd7"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        }
+      ],
+      "id": "D62",
+      "reason": "既有外部證據／模型根分別保存 incarnation 與內容指紋，模型來源去身分，原生內部仍使用 id。R09b 附加段所需 D65–D67/新歷史引用尚未實作，不能把舊五態比較當成完整重新關聯。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "a82cc7ffe0e0de0c5dca263980922ad67b9e5a5f4f180afa9c3d4efa69e1faad",
+      "evidence": [
+        {
+          "anchor": "def prepare_update(data, *, base_executable=None, bridge_executable=None, max_cells=200000):",
+          "kind": "implementation",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    async function confirm(reviewId) {",
+          "kind": "implementation",
+          "path": "geometry-web/model-update.js",
+          "source_sha256": "21cad50a5ee5a9e1c3ce61eb292deaf00484b91333cd816dbf83cf98c4f205d3"
+        },
+        {
+          "anchor": "    if face_mode and len(selection['uses']) != len(record['input']['uses']):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    def test_faces_full_replay_keeps_order_orientation_purpose_and_model_id(self):",
+          "kind": "test",
+          "path": "tests/test_model_update_identity_faces.py",
+          "source_sha256": "2216fb622d3d47f08746619891087ab1a1076b71245a7a4b92e8480ddcfddb6d"
+        }
+      ],
+      "id": "D63",
+      "reason": "既有模型保存單一來源快照，producer 完整重算，JS 最終同步原子替換；已有 plan 拉伸件快照。R13 的模型核對附件及 R09b 的 SourceSlot 穩定列鍵／可變載體尚無產品；faces 仍明拒改數量。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "b6dfb5e919187067e17cc17eb3f19f2b8000e9b387006e3501c30f3ba4f3ec7b",
+      "evidence": [
+        {
+          "anchor": "static bool geo_grid_card_resolve(GeoGridSystem *system,",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid_store.c",
+          "source_sha256": "89e26432540328ed1c127c4a0dffce92d7371b8ae73e17f9c1efb9e626738d1d"
+        },
+        {
+          "anchor": "static bool grid_card_operation(World *w,GeoJson *j,int t,const char *op)",
+          "kind": "implementation",
+          "path": "geometry-core/card_reference.inc",
+          "source_sha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0"
+        },
+        {
+          "anchor": "    def test_CR07_CARD_SHAPE_DISTINCT_FIELDS_SAME_CARD(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        },
+        {
+          "anchor": "    def test_CR03_SWAP_MAPPING_ONLY(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        }
+      ],
+      "id": "D64",
+      "reason": "K 以單張 cardReference 保存 parameterId 與不同的兩個欄位 id，分別供應 REPEAT step／REPEAT_PANEL body；H 支援整組交換與解除，未把值相同當欄位身分相同。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "888904171f9f45aa3207b4dd398a5267907501cae53879034613f204418ed07c",
+      "evidence": [
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "D65",
+      "reason": "main faces input.uses 的 closed schema 只有 placement_id/orientation/purpose，沒有新 SourceSlot/carrierId 穩定列鍵；source-reassociation/1、model-carrier-edit/1 未登記。舊陣列索引與 placement id 不是本條列鍵。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "30208a9dabfb12c002c0fb30a5bc5ffa1c5e64950afde7716241d779d4ee13f6",
+      "evidence": [
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "D66",
+      "reason": "尚無本條 immutable、bounded、versioned 的直接操作端點見證與每 consumer/row 的明示改綁決定紀錄。既有 identity token 與定義匯入收據不足以代替新歷史證明；新能力仍拒絕。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "865d207e4cb06a74feccc6de0971af28a2155aa9ab262c08bcbba0d79d7f6e13",
+      "evidence": [
+        {
+          "anchor": "    if face_mode and len(selection['uses']) != len(record['input']['uses']):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "D67",
+      "reason": "尚無包含完整 consumer 簽章、列鍵、舊五態／現行 token、新來源及 D66 見證的重新關聯計畫。舊模型更新候選只涵蓋固定數量使用列，不能標為新 ReassociationPlan 已交付。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "0a667a2f2a9b0a09b77e893ed1e2549dfc8ee771733e415b7714cb3a23dcf02e",
+      "evidence": [],
+      "id": "I1",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d48ccf86023d807bf151aa3bea99632ea197987786b73bfb3b2bfd88417fe008",
+      "evidence": [],
+      "id": "I2",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "aff6a9560130f9bc7bd6f3f3354f8f50817672770f8d5801c2b1f26eb463243d",
+      "evidence": [],
+      "id": "I3",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "0c0482ba62d5a86b2998c04147472df71a94a259fbbd63ceb3ad475dc1ac7b68",
+      "evidence": [],
+      "id": "I4",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "60c14a443ff8a643763e20ad01111a2acdeb2f50f9595cb045b20026adcd90a0",
+      "evidence": [],
+      "id": "I5",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e17d90828082d02062add5da56ae83122ae539e5474d3dd05eee88a91906313d",
+      "evidence": [],
+      "id": "I6",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "dc32a763001cf8c723c33c4f0433dfcf2658ed2fb53426378608a4ab07eb6445",
+      "evidence": [],
+      "id": "I7",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "2e2d7d9e02faee424d2d95352c8abb8a3a621a382492691d3e5844d1b949efcb",
+      "evidence": [],
+      "id": "I7a",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "064ad3c58e0b3e84201b2cbde0d4361d0736657b072c7c00492a0e2df79e4135",
+      "evidence": [],
+      "id": "I8",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "37492148ee4ba677de9704d625e3ef2813f5b60966f2c9410c692cc095c05992",
+      "evidence": [],
+      "id": "I8a",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "c8133f44864b53186e1823ce99b4bc2341d76efebca9f2ae2b204ec744e73406",
+      "evidence": [],
+      "id": "I9",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "72b3036ff63a7fd12f900b7db176fd04c4d1fcc12a0cea19c526647ec841d581",
+      "evidence": [],
+      "id": "I10",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "bb8c8875c1b89bf5d26cc951feb169efa1dcd94991c3b1539a769f7bf905f79f",
+      "evidence": [],
+      "id": "I11",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d8c8665e3ebcadc35b86176e98b743c2077c8ed55a72d653ddf1dfe86b2d746a",
+      "evidence": [
+        {
+          "anchor": "I12: 只允許 at-line / at-face；at、at-guides、at-grid、at-edge 已廢除",
+          "kind": "implementation",
+          "path": "geometry-core/references.inc",
+          "source_sha256": "10f2f841c688c728643a6ad7ce9959592fc199ad860e93712c3f5e2b6ab46127"
+        },
+        {
+          "anchor": "{'scene': '_ax_i12_auto_with_at.scene', 'expect': 'reject', 'error': 'I12'}",
+          "kind": "test",
+          "path": "tests/run_tests.py",
+          "source_sha256": "e2f6199225af7347505874eaea5ce95d28f2b16cf3e2d83d13e7768b6b1ef1c5"
+        }
+      ],
+      "id": "I12",
+      "reason": "公開 parser 僅接受 at-line/at-face 並明列廢除四種舊錨法；合法 timber 後使用舊 at 的基底夾具在 place 行正確收到 I12。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：本次只動態抽驗 at 的廢除；其他三個舊 token 的拒絕定位到同一分支，但未逐一動態重跑。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "4f6ed6606090080a849045161d6bcd9ee4764fae86b9948f250f2af277f51222",
+      "evidence": [],
+      "id": "I13",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d65548a90e57dae522271fba2029662a9e10d265ca405d56fcabff58d8f14c85",
+      "evidence": [],
+      "id": "I14",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "ec75f9e33e17e9ae70625921a1183d6a43e5d18ada5cfbd95f6add2e9414c16a",
+      "evidence": [],
+      "id": "I15",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "3039114503a22440c437bc280b536b5f1cc5eb70f86b573cd1679e3b769c8e0d",
+      "evidence": [],
+      "id": "I16",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "0345f3f0d07fb0525866a9c35ea189f85d84cf08f039311e82572a8dbc3b85d4",
+      "evidence": [],
+      "id": "I17",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "84a898b3d55aa0277ad04c74b98d0c065030d5b7ebf98f42484d30599bfaac1f",
+      "evidence": [],
+      "id": "I18",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "8bd513bb6990dc974b44a25a78ece232fe4f4ac9a869336ac97fa68e6653ee41",
+      "evidence": [],
+      "id": "I19",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "adb592ec2f7afbd6e26782369c4628b36e678016e7594fa31ae7e07cb268d141",
+      "evidence": [],
+      "id": "I20",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f14eaf28a0b6fcc2af9fce85466655c4507da06595105429183278b848cbbffc",
+      "evidence": [],
+      "id": "I21",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "1912ca890c8aa1ce182bcb69a03ef16f8a59795f93093f0e30ab73b99a23347e",
+      "evidence": [],
+      "id": "I22",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "79f1077c0d127d8b4c46ff07607202f8b3b48ba744c2301b185b584c0bc40b52",
+      "evidence": [],
+      "id": "I23",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "fbd258812a4b568f054f242bcb002d72b584048af59817ba985b572730d51f37",
+      "evidence": [],
+      "id": "I24",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "daa5cb4470aed78d1ec40be1d415458e541e791c8813a1cbc86059ef33e5dd7b",
+      "evidence": [],
+      "id": "I25",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "6fc59421fef179597cb5eabdde9e5430f3087035c814d4db44300b8bffce9c24",
+      "evidence": [
+        {
+          "anchor": "bool geo_grid_rules_validate(const GeoGridSystem *system, GeoGridStoreError *error)",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid_store.c",
+          "source_sha256": "89e26432540328ed1c127c4a0dffce92d7371b8ae73e17f9c1efb9e626738d1d"
+        },
+        {
+          "anchor": "bool wood_grid_rules_world_valid_direct(const WoodGridContext *ctx,char *err,size_t cap)",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/native/grid_rules.c",
+          "source_sha256": "d3c00ea20d13eaeaf2100bd4c26911da111751a4490009ae4b2dd4b3bfd07737"
+        },
+        {
+          "anchor": "  function ruleUnsupported(s){",
+          "kind": "implementation",
+          "path": "geometry-web/grid-system-workspace.js",
+          "source_sha256": "aa0ab9434823fe79c39271f302ccf97214f2006381539aa2fc85dbc0651943d7"
+        },
+        {
+          "anchor": "    def test_04_nonintegral_full_pitch_never_rounds_or_allocates_remainder(self):",
+          "kind": "test",
+          "path": "tests/test_r14_repeat_panel.py",
+          "source_sha256": "aa15d5aa634b0bb65fd6681b52b9e996612d655a7db019604c262b8c1b1fcf6c"
+        },
+        {
+          "anchor": "    def test_12_parameter_and_card_sources_resolve_before_exactness_and_are_not_flattened(self):",
+          "kind": "test",
+          "path": "tests/test_r14_repeat_panel.py",
+          "source_sha256": "aa15d5aa634b0bb65fd6681b52b9e996612d655a7db019604c262b8c1b1fcf6c"
+        }
+      ],
+      "id": "I25a",
+      "reason": "K 先驗來源型別／無 stagger／規則 key／整除／重疊，W 驗手動子格衝突與使用中保護，H 保留缺 /2 的明確拒絕；真原生測試涵蓋未配置來源也驗整除、上游失效整筆回滾及參數／整卡有效值順序。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "e47ef72506add0768a9111b5ef2a13d54c0f76f443fc6d652653f539b9d088c8",
+      "evidence": [],
+      "id": "I26",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "cf63475409fc73ddc70b5d7cb86d99885cd8587bf1df461ad0511d63f6b5f3a5",
+      "evidence": [],
+      "id": "I27",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f63fdd51dbe24d20f5f8fd3e788bdba430f9716eb4b039283f963a28b7557397",
+      "evidence": [],
+      "id": "I28",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e5875a3fb2c97179a65faff9c6f0536d855481c9f7f18ab68ae32c8a531ab39b",
+      "evidence": [],
+      "id": "I29",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "308c807161436a80b7bd13556450a4ee96afeec7559321402955d1052b157deb",
+      "evidence": [],
+      "id": "I30",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a01c98e4f88895eda1cacbac3e936d66420e650000b0a8a77aedb7fd5fc8050d",
+      "evidence": [],
+      "id": "I31",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "13e709aa4c0dc65a0bbcd8ceec5b62193008f66286b9657de5322b8b6883b2fc",
+      "evidence": [],
+      "id": "I32",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "18adab0ae202b19eb73cb3f7ab118bc7e441ab8d917f454d36f09cc006710d90",
+      "evidence": [],
+      "id": "I33",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "0f46518f47a79beebb81009ff132d1a252e641b2b9b4648d6f2543dd25b02371",
+      "evidence": [],
+      "id": "I34",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "7574513038ba2ced0c398553dffd389531aaa89b9bd224d5f7f940db5f4abdad",
+      "evidence": [],
+      "id": "I35",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f524f8b4992d7a9097a5caca3570d4a99148ecb727043c529ee5e8f3646d2ed1",
+      "evidence": [],
+      "id": "I36",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "c487dc052fea2f3976ed9d89d637a77d2b4a46dcec375f28d3cca37cc3d434e0",
+      "evidence": [],
+      "id": "I37",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "712cf539399a383a26b797e9d5afba2c3991138de58ff079dd070f3ec6e262d6",
+      "evidence": [],
+      "id": "I38",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "8479966d9bd34b285136fd86ab83064315e447baac361d38923bcd69fbdba8f3",
+      "evidence": [],
+      "id": "I39",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "157ba33552d1533aca1a5769158e7c2e1f24e394a827f734c65a31fb48b11cc9",
+      "evidence": [],
+      "id": "I40",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d963b9b05dfb7f4fa70fc7573424a1816c141146388d95e6bdf9593b2f2a453e",
+      "evidence": [],
+      "id": "I41",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a118689d62cf53de52089535025439785f4d0f31ebb5e6106783f2e8bdd777bc",
+      "evidence": [],
+      "id": "I42",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "fa9d24113a560e22ff459641ffb6c2378905b810fad17cae2f1a11bab9291998",
+      "evidence": [],
+      "id": "I43",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "6d5a1aa6e63dca9961319eeb874198d9fce976251ce5ac8b3385126907a348c2",
+      "evidence": [],
+      "id": "I44",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "ce40dfba0c6345bf8cb5dcca3e4a72f34e68e40790601c95d938b8d458cfdf78",
+      "evidence": [],
+      "id": "I45",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "198c1125dcd694cf5dc1c4dcef11d8d96f02d5f82361badb5a1b72b075ddc6b7",
+      "evidence": [],
+      "id": "I46",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "96c539c5f983350cfba511e2e36a303310776ea71a38adcf81b305f99735b889",
+      "evidence": [],
+      "id": "I47",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "fb4d2f20bdf8451a5e993aa1b5567936531034ff89684de95e9f35e84000398b",
+      "evidence": [],
+      "id": "I48",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "3c97f66d78a83a8b6b8d88b2b7fe4af395ddb5ffef456fe933b62a3b8eab4323",
+      "evidence": [],
+      "id": "I49",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "696e06b4dee932f6450be1e713362e4fd153fbe33740d15c6ad68c04e1ba7587",
+      "evidence": [],
+      "id": "I50",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e3264d728b49e6653da8a5760aa29dfdf328a94b6d3e2c7fd8f897e1c1a36955",
+      "evidence": [],
+      "id": "I51",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "5bc91040867811e33653e69a24ff3c3e34b3f58c3254d60c4ed9b5cfa89b04f9",
+      "evidence": [],
+      "id": "I52",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "bb4318791d9c3cd2c5b728c6067f0a7a83efcd795f20dcdeea628e9e6de329fe",
+      "evidence": [],
+      "id": "I53",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "c3948e3c9b76071df201b465ecfc3e98ca921fcb6f6a8cd67475358ffab85f4a",
+      "evidence": [],
+      "id": "I54",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "bc5fe6e38d2bcc0590f1afbcc8e23c1d383b83d66b0d9d420c83d541f8127833",
+      "evidence": [],
+      "id": "I55",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "fa92f5b6e4b0d6ed25c92b05bb308050436868f9420a5bb0f007c4c7ee6e8be1",
+      "evidence": [],
+      "id": "I56",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "ef2136bb6c5a808eb1b48c9239dac0b11131a91b48ed872c8c811bfbd09ef8f4",
+      "evidence": [],
+      "id": "I57",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e08f218af361580611be5b5a9dd0385eb3af60293e7df244251230d4291d40ff",
+      "evidence": [
+        {
+          "anchor": "function validateDeclarations(stockTypes,declaredRemnants){",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "function transition(previous,value){",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-settings.js",
+          "source_sha256": "e04ea4d5b4f3242d80dfe04bab7f2f4c5a30ac2901428aa84a95a6886d1f7c92"
+        },
+        {
+          "anchor": "test('T8 T8b T9 material triplets and unordered section determine stock, never path',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "I58",
+      "reason": "固定木工模板有原材/餘料容量、欄位、精確整數、材料指紋、重複與引用驗證；宿主設定模組另驗高水位與重用。已找到實作，不能因 C include 條號掃描沒有命中而列為未實作。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：此輪 Node 套件主要走合法設定及方案語義；未重跑全部無效宣告、同次編輯/復原高水位與專案保存測試。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "374511403aab27d7e4b76d09fe85ebb7eedf70781a024f8aa4232ff719b3fc2c",
+      "evidence": [
+        {
+          "anchor": "async function evaluate(references,settings,request){",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-plan.js",
+          "source_sha256": "54b57e2e515b7baeaeb08e08d797f3541d5ba561ee21fb8f754f29a211b65c89"
+        },
+        {
+          "anchor": "function evaluateRows(rows,settings,p){",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "test('T6 T6b union uses timber identity including zero, never dimensions',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        },
+        {
+          "anchor": "test('T10 T10b T10c unresolved, mixed and missing terminal remain distinct',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "I59",
+      "reason": "請求驗一個 live 世界、範圍/需求容量與過期 id；方案核心依 typed timber id 去重、具型別 terminal 與完整材料三元組配料，診斷分別有直接測試。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：輸入 references 在這個 Node suite 是測試 fixture；未在真 App 重跑原生讀取與使用者明選範圍。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9b6018b4ce71f7c93f6dd67a87c3a3950d52a81ead5f0020034e669cb911782c",
+      "evidence": [
+        {
+          "anchor": "function verify(plan,expectedIds=null){",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "test('conservation detects corrupted positions and repeated demand identity',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "I60",
+      "reason": "逐支料的精確區間、鋸縫、端修整、末刀、餘料與需求實例唯一性均有 verifier；本次執行過既有精確座標及故意破壞位置/重複需求的斷言。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：未把這次 20 個測試當作對全部 I60 數值邊界的形式證明。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "89371a63cc05eaedeacba3477d58dba16905ccbffc48c4f24a2fbc65a1cad55b",
+      "evidence": [
+        {
+          "anchor": "const C=row.L+(settings.allowance??0),maximum=Math.max(",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "async calculate(){const before=capture(),request={world:{kind:'live'},scopes:copy(scopes)},settings=copy(host.settings()||Settings.empty());",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-workspace.js",
+          "source_sha256": "960f55f3f2ac7832cf3e07877b055d0f523614df4d01d86f48e202e11436972f"
+        },
+        {
+          "anchor": "test('T23 T23b exhaustion is per-group first failure, and overlength considers every remnant',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        },
+        {
+          "anchor": "test('T14 plan, display and export are read-only; a single references response determines all scopes',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_session.js",
+          "source_sha256": "7c7485d29296470c36389f389488710abe06b86c0a54e33462083ada88ed3b45"
+        }
+      ],
+      "id": "I61",
+      "reason": "排料不改輸入且以可用最大料長判 OVER_LENGTH、已占餘料判 REMNANT_EXHAUSTED；宿主 session 的求方案/匯出唯讀及一次讀取也已動態抽驗。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：本次宿主是受控 fixture，未動態重驗 App dirty、真專案 undo/redo 與實物宣告編輯。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "5eeeffd8f021bade4383a28119565943fa9fecaa9aea97913ea755dce9a55f5e",
+      "evidence": [
+        {
+          "anchor": "CAPABILITY='cutting-plan/1'",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-settings.js",
+          "source_sha256": "e04ea4d5b4f3242d80dfe04bab7f2f4c5a30ac2901428aa84a95a6886d1f7c92"
+        },
+        {
+          "anchor": "const uint=n=>Number.isSafeInteger(n)&&n>=0&&n<=4294967295,rank={INCOMPLETE:1,UNSUPPORTED:2,INVALID:3};",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-plan.js",
+          "source_sha256": "54b57e2e515b7baeaeb08e08d797f3541d5ba561ee21fb8f754f29a211b65c89"
+        },
+        {
+          "anchor": "test('T19 T28 missing settings follow overlength diagnostics and severity',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        },
+        {
+          "anchor": "assert.equal(loaded.manifest.format,P.CUTTING_FORMAT);assert.deepEqual(loaded.manifest.requiredCapabilities,['cutting-plan/1']);",
+          "kind": "test",
+          "path": "tests/test_cutting_project_store.js",
+          "source_sha256": "664ba7ed0dcef71ed4befed82128421c59df348b1f4067b39b83a25f7e7756bb"
+        }
+      ],
+      "id": "I62",
+      "reason": "cutting-plan/1 能力常數、EMPTY/診斷嚴重度/COMPLETE 才能匯出的程式都存在；本次抽驗了方案狀態與非 COMPLETE 匯出拒絕。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：cutting_project_store 的能力/完整專案保存測試只定位，這一輪未執行；不宣稱已核全部 schema 或冷開路徑。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "19b5d3309b1a4c6364a2b246aef29ee45429dec6e5db11fc495415237ee05f16",
+      "evidence": [],
+      "id": "I63",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e08ff4181630a1f3646c7c8b4eab1349afdadbeadf03c55dce7973d9257a38f7",
+      "evidence": [
+        {
+          "anchor": "  function planAdoption(link,live,field){",
+          "kind": "unsupported",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "I63a",
+      "reason": "本條補資料紀錄的精確唯一關係求解、直接輸入版本確認及失效傳播尚無可接受的 reconstruction-data/1 紀錄。舊 parameter-field 採用可換算有理數，不能覆蓋本條跨欄關係與版本圖。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "75e397cf4c1b4339bdc8e710b192b61b6ed5ba200f873dd5f0c390a9cb377867",
+      "evidence": [
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "I63b",
+      "reason": "ReconstructionRecord/field revision 高水位、來源版本失效、undo 分支不重用版本，以及模型資料缺失標記尚未登記。既有 World incarnation 與一般專案 revision 是不同身分，不能當本條實作。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "886297344aeb59e9ef06a70077a8f1a673e7697e8738bcd6e8e0f2187ffc51f7",
+      "evidence": [
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "I63c",
+      "reason": "main 的有限附件登記、專案格式及 manifest capability 列表不含 reconstruction-data/1；新能力由相容測試明確以 UNSUPPORTED/CAPABILITY/I32 拒絕。尚無 256 records、64 reviews、1 MiB closure 與儲存前沖刷等新格式生命週期。這是已採納但未實作，不是既有功能已驗收。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "f5bae43547004c98cf54a17256963aeb47a20320508b977915cd28e8b19693bf",
+      "evidence": [],
+      "id": "I64",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "c1952e9d202a88bce9e02a45925fa8245c4086488fe44307495d577e14257fa9",
+      "evidence": [],
+      "id": "I65",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "96496109801ddb8efd3f0cc2476bcd53c01856e2b4fa5793e934ac2f163b1a94",
+      "evidence": [],
+      "id": "I66",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "2dea3f1ee911211c28decd1204eb59c493508d5d2c1b7f30e7947d3ff9af99e4",
+      "evidence": [],
+      "id": "I67",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "b7ba2db07d71aeefe317911f0831e68cb2188ef716b75b78ee2b56aca1f07e71",
+      "evidence": [],
+      "id": "I68",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "5ec5dc496e63040db4ce4dbf3dc9e2fedfb6163282af9faf7bd2b3f69520dfd7",
+      "evidence": [],
+      "id": "I69",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "8ee70fae3b35fd1d64657433acf7e34be5fced9c2403edb767121d202e1e62f4",
+      "evidence": [
+        {
+          "anchor": "static bool identity_table_ok(const AppIdentityKey *keys, size_t key_count, const AppIdentityMark *marks, size_t mark_count, char *err, size_t cap)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "static bool identity_finish_load(const char *path, int line_no, World *w)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "static void emit_dump_text(bool deidentified)",
+          "kind": "implementation",
+          "path": "geometry-web/web_bridge.c",
+          "source_sha256": "9bc2872488250a30a421788ff8aae2b312c6661b47b66bc25f905490e787d771"
+        },
+        {
+          "anchor": "    def test_L20_incomplete_world_refuses_full_dump_but_can_export_and_undo(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_faults.py",
+          "source_sha256": "9901c36b81c5c7af47c01318979cedd7f00285e7a5192250f08be660b0da59a9"
+        }
+      ],
+      "id": "I70",
+      "reason": "原生逐鍵檢查完整性、唯一性與格式，載入整份拒絕；完整 dump 再檢查而去身分 dump 附診斷。此次額外用原 repo fault harness 刪除一個記號，後續正常新增也拒絕、序號與 revision 不變，未發現補發修復繞過。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "5dbcc415e00818103492083b69a972aa388c576404c273fa19709662cad75df3",
+      "evidence": [
+        {
+          "anchor": "static bool identity_prepare(const World *before, World *after, const AppIdentityKey *explicit_keys, size_t explicit_count, bool explicit_overflow)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "static bool apply_identity_ledger_line(const char *path, int line_no, char *tokens[], int count, World *world)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "    def test_L16_activation_expires_every_candidate_route(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        }
+      ],
+      "id": "I71",
+      "reason": "啟用只允許設定 epoch 後的獨立提交；原生預留容量及固定順序配號，場景 activate 與互動 identity 宣告拒絕；測試核實啟用使既有候選過期。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "779e79b3ee548a285df1a3830b1195c94cb23d16d653c1e76c09a9422d08e3d6",
+      "evidence": [
+        {
+          "anchor": "static bool identity_finish_load(const char *path, int line_no, World *w)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "  function stripIdentityLedger(text) {",
+          "kind": "implementation",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def test_L12_complete_scenario_retains_marks_and_verified_model_is_deidentified(self):",
+          "kind": "test",
+          "path": "tests/test_identity_content_contract.py",
+          "source_sha256": "385d31dd19f6d933a82e3ee4c22dcbad90e7a944c1eeeb7118107a2fb0555dd7"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "I72",
+      "reason": "既有 identity-ledger/1 的場景保存／重開／去身分與交換隔離已實作。附加的 source-reassociation/1、model-carrier-edit/1 專案能力未登記，不能把舊 I72 通過當作新格式已支援。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "0e013dc59590b412b77ed59bb010533e64ecf16f66c693cfedd96e328514beb4",
+      "evidence": [
+        {
+          "anchor": "def _profile_runs(value, base, options):",
+          "kind": "implementation",
+          "path": "geometry-web/space_modeling.py",
+          "source_sha256": "6a851292e2f25ca382555d1cf1c95eb4a89c22a0b8c95e16cb732625f1c4d874"
+        },
+        {
+          "anchor": "        _fail(\"SPACE_PROFILE_RUNS_MODE\", \"第一版只在由平面輪廓建立空間時納入拉伸件。\",",
+          "kind": "unsupported",
+          "path": "geometry-web/space_modeling.py",
+          "source_sha256": "6a851292e2f25ca382555d1cf1c95eb4a89c22a0b8c95e16cb732625f1c4d874"
+        },
+        {
+          "anchor": "\"space_preview_schemas\": [\"geometry-space-preview/1\", \"geometry-space-preview/2\", \"geometry-space-preview/3\"],",
+          "kind": "implementation",
+          "path": "geometry-web/serve.py",
+          "source_sha256": "751b98128e9ac089d39b0e6e01263174ab33ba36aea9f0a74048b85fd4f521aa"
+        },
+        {
+          "anchor": "    def test_q05_native_failure_preserves_status_diagnostic_and_rejects_whole_preview(self):",
+          "kind": "test",
+          "path": "tests/test_space_profile_runs.py",
+          "source_sha256": "c33d254fbae85770161ea6624322709c8bf6aed6f7790528da433a7026932b44"
+        },
+        {
+          "anchor": "    def test_q15_faces_rejects_profile_selection_explicitly(self):",
+          "kind": "test",
+          "path": "tests/test_space_profile_runs.py",
+          "source_sha256": "c33d254fbae85770161ea6624322709c8bf6aed6f7790528da433a7026932b44"
+        }
+      ],
+      "id": "I73",
+      "reason": "plan 空間模型已實作明選、去重、世界定位、整包求值／重播與獨立宣告 geometry-space-preview/3；只有 section-profile/1 不代表該輸出。faces＋profile_runs 仍明確 UNSUPPORTED，是宣告範圍缺口，不是靜默省略。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "76ebd6a4e6f999d2530745e83a3ba6275f26a466defc58957e83517f2b22398b",
+      "evidence": [
+        {
+          "anchor": "static bool geo_grid_card_resolve(GeoGridSystem *system,",
+          "kind": "implementation",
+          "path": "geometry-core/kernel/grid_store.c",
+          "source_sha256": "89e26432540328ed1c127c4a0dffce92d7371b8ae73e17f9c1efb9e626738d1d"
+        },
+        {
+          "anchor": "static bool grid_card_operation(World *w,GeoJson *j,int t,const char *op)",
+          "kind": "implementation",
+          "path": "geometry-core/card_reference.inc",
+          "source_sha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0"
+        },
+        {
+          "anchor": "    def test_CR27_EXPLICIT_POST_DELETE_REBIND(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        },
+        {
+          "anchor": "    def test_CR28_ORDERED_REFERENCE_PROTECTION(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        }
+      ],
+      "id": "I74",
+      "reason": "K/參數候選守門驗同卡、不同 dimension 欄位、完整映射、受控槽唯一與精確正值；同候選刪除重建須在最後刪除後完整重宣告使用者。既有 CR27/CR28 用真原生覆蓋次序與使用保護。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "88f10421c371b1e892ac63a05e84ff67908f0508e6a52d69ae37f629755201c3",
+      "evidence": [
+        {
+          "anchor": "  function identityStatusFromGraph(target,graph,projectScope){",
+          "kind": "unsupported",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "I75",
+      "reason": "既有 R57 完整圖／五態可供讀取，但新重新關聯執行器、可驗證直接 D66 端點候選及 unknown/conflict 的具名新關聯審批流程未登記；不能憑舊 manual rebind 當本條全套守門。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "861405399fe13f7a64e5136c7f79fe1e1d47dffb6bcc99444a2afe7ac992f77c",
+      "evidence": [
+        {
+          "anchor": "    async function confirm(reviewId) {",
+          "kind": "implementation",
+          "path": "geometry-web/model-update.js",
+          "source_sha256": "21cad50a5ee5a9e1c3ce61eb292deaf00484b91333cd816dbf83cf98c4f205d3"
+        },
+        {
+          "anchor": "def prepare_update(data, *, base_executable=None, bridge_executable=None, max_cells=200000):",
+          "kind": "implementation",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    if face_mode and len(selection['uses']) != len(record['input']['uses']):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "    def test_faces_invalid_count_duplicates_and_injected_orientation_are_rejected(self):",
+          "kind": "test",
+          "path": "tests/test_model_update_identity_faces.py",
+          "source_sha256": "2216fb622d3d47f08746619891087ab1a1076b71245a7a4b92e8480ddcfddb6d"
+        }
+      ],
+      "id": "I76",
+      "reason": "舊模型更新已有全部 package 同一快照、確認重讀、同步原子寫入與失敗零替換等基礎；新穩定列鍵、增刪重排、逐列設定與 D66 見證／新引用／稽核的有限批次不存在。舊 faces 固定數量路徑不是 model-carrier-edit/1。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "6346f6cd3a12cc618fd8143d2f9136d345035696bcd2c80fd08ebc42aee3f8ad",
+      "evidence": [
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "I77",
+      "reason": "新重新關聯／可變載體的版本化格式、見證閉包及首次確認局部升級尚未登記；現有 reader 正確拒未知能力，這只證明不冒充舊格式，不證明新保存與重開功能已實作。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "24dcd6fbf5d9a542a65601b534085ed0d9f7224566baecada67a65c5ea7ec87b",
+      "evidence": [],
+      "id": "R1",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "4f1b4920b45609da0c95ed0224f522ecfed0b56502c2717e4e8509ba98e56325",
+      "evidence": [],
+      "id": "R2",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d7eb1aca645e926819ad7e3e984d5bcb317b294b58eab5c1169b3d341110fd26",
+      "evidence": [],
+      "id": "R3",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d039d224b3823f2febca1ad44d65e80d8322759121a5f34a85f144d2f15089ed",
+      "evidence": [],
+      "id": "R4",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "7839b59fa70d7d350fa2070762e1e117aa3d64d738cdcf854d4e00ba0f667002",
+      "evidence": [],
+      "id": "R5",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "b6d81c7ef00fbed31d4167b6ff76dd2a887dbcc49e8ab7d8f62fb11dfaef8f6d",
+      "evidence": [],
+      "id": "R6",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "30b508d6de3af4eb21ef4ce555b86e68516ffad0ffcc5dccb6c4fead627dd5a7",
+      "evidence": [],
+      "id": "R7",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "90fb729e80ff73d2836ef53bde7d10b6c53d5ab8c4c6d2b84ade5e9389c6ab11",
+      "evidence": [],
+      "id": "R8",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "be8fe0f733a99a11e1fd7694717caa03cb0635eebfd8d721a4f64e169d9ccacf",
+      "evidence": [],
+      "id": "R9",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "702896ff4ad9acd3872f85c3d4b983992fc257118d4c010126bcde3f51ed3288",
+      "evidence": [],
+      "id": "R10",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "6a2b201e28d90f11890f5b6b6b348894684e7518c4e1458a16fdf2e28c4ab081",
+      "evidence": [],
+      "id": "R11",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9607347de9909a05c3f06f6190ba7adea713ccbb63c2c2b0768a65ecd07061d7",
+      "evidence": [],
+      "id": "R12",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "dc29ea34e47cafca10ca01b166896cf16bdd564b54ce4f3fcdc85520a4ea0c02",
+      "evidence": [],
+      "id": "R13",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "dd4010fb4a9e3ca5db1837542e1e63e6549ab5164685e5403e3db2ce320e94b8",
+      "evidence": [],
+      "id": "R14",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "2d6af8d5f84137c4f38151551879be3fab34455401e37ae74f19e63057972d2b",
+      "evidence": [],
+      "id": "R15",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "c4a3cb651b9429095624bbbedd7493445d2b29afb9629f81b0a1538ca5251d0d",
+      "evidence": [],
+      "id": "R16",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9dbc537199c1905dc15a3c83aff2508891692b8388b1ddc9bc2052481b99e594",
+      "evidence": [],
+      "id": "R17",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9fc3cda65434f873e0b65c6ffec4e03eb12f009202ee2f3922e16938ff96245b",
+      "evidence": [],
+      "id": "R18",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "5b82fce29d789dd81798195453902fb7e5efb2bfd0f3aacbbf1e7cc2fa05d917",
+      "evidence": [],
+      "id": "R19",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "4ffd7a3895b5b0160e504f82d85163945509070a65318665393e769d5366e9fe",
+      "evidence": [],
+      "id": "R20",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "4bc64b23e12b7f51fec120ced5678c42801fa209e38d2a0ed5a51086979ddd48",
+      "evidence": [],
+      "id": "R21",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "b4701e584ab5184e2c389a92e63f0b523c47f19136112a65b5d1faf1df4dd590",
+      "evidence": [],
+      "id": "R22",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "63d3c8234828325715160bc690d259232a45484b322990f631f710944a49fa4f",
+      "evidence": [],
+      "id": "R23",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "2961c642bf96d23741526f2ab6e19c8ad0d2f7b3485ed626605c1737a5806198",
+      "evidence": [],
+      "id": "R24",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "e0b649abffad474485eb67ddadc0c016b7aeeddc31a2122dd1b30ced5b80f522",
+      "evidence": [],
+      "id": "R25",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "33a1fb52165272c2f3771e9f2fd8386ca11120c3b56b661c499fe129cdef4020",
+      "evidence": [],
+      "id": "R26",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "41fc279e0b01d6b94247cc9397a8d466813729811ea5558dd64a1899882a1a43",
+      "evidence": [],
+      "id": "R27",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "50d80376783992454c975e027656121540aeec065d791c980d082f2fccecb842",
+      "evidence": [],
+      "id": "R28",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "9cb80f10cd6efe24bb0e4d62783b5eee9825bccb7ff8814d75ccaea9d0fcdbbb",
+      "evidence": [],
+      "id": "R29",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f3da2ffb18660263eeec73a9a73986a1b7eb4f4b582dc43d7e8a6246f3b8d39e",
+      "evidence": [],
+      "id": "R30",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "a7ffeb95ace9b192733965ddb69493370c9f362557f1516d6072c95b061655e9",
+      "evidence": [],
+      "id": "R31",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f98392d77870768682fdd01a60fc9bcb5a74172f625e9156adf2f6c13bbecafe",
+      "evidence": [
+        {
+          "anchor": "static const char *grid_rules_scene_integrity_error(const World *w)",
+          "kind": "implementation",
+          "path": "geometry-core/grid_subdivision.inc",
+          "source_sha256": "731050d0b0f9e119310d2401b0e379e60e46e802dfb232b71e0cc96c73a45c03"
+        },
+        {
+          "anchor": "  function sceneCapabilities(scene) {",
+          "kind": "implementation",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "static void grid_rules_dump(const GridSystem *s,FILE *out)",
+          "kind": "implementation",
+          "path": "geometry-core/grid_subdivision.inc",
+          "source_sha256": "731050d0b0f9e119310d2401b0e379e60e46e802dfb232b71e0cc96c73a45c03"
+        },
+        {
+          "anchor": "    def test_07_v2_scene_roundtrip_missing_or_downgraded_marker_is_atomic(self):",
+          "kind": "test",
+          "path": "tests/test_r14_repeat_panel.py",
+          "source_sha256": "aa15d5aa634b0bb65fd6681b52b9e996612d655a7db019604c262b8c1b1fcf6c"
+        },
+        {
+          "anchor": "    def test_08_replay_encountered_panel_rule_requires_v2_after_source_delete(self):",
+          "kind": "test",
+          "path": "tests/test_r14_repeat_panel.py",
+          "source_sha256": "aa15d5aa634b0bb65fd6681b52b9e996612d655a7db019604c262b8c1b1fcf6c"
+        }
+      ],
+      "id": "R32",
+      "reason": "已核對本次相關的一層來源子規則 /2：完整來源與參數映射保存、規則／高水位先於引用、查詢由原生求值、刪除／reset 後仍不能抹去 replay 曾使用 PANEL 規則所需 /2。R32 其他既有網格部分本輪不新增驗收宣稱；Python D25 模型 producer 未宣告 /2 是另一執行器範圍。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "82913526039abeb167914e60028d873546c7949ab4b21ed029f00529e212dbfd",
+      "evidence": [],
+      "id": "R33",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "600e1663a83826d542a134cbcce7d56227448b6359e2d36a13de1de782aa20de",
+      "evidence": [],
+      "id": "R34",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "cf0519b145ca6987f5f2cc3d15c80e6aa4dd467bd86e3f7e42099ee1d0345136",
+      "evidence": [],
+      "id": "R35",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "90109a6ecb0e87779d975b2c65bd0291d1834d94cf53fdbd7bace67d39838975",
+      "evidence": [],
+      "id": "R36",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "762c6444464e9d067f3cbc077238227bba422d9094139c6a0b2670296603019e",
+      "evidence": [],
+      "id": "R37",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "90e174eddfd86ccd9138195889e7fe06e24965b90b1a0d1962e050d0cecdb7c8",
+      "evidence": [],
+      "id": "R38",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d20c434d26b4daf503a07683a0f3f1444e69dae8b655ecf0d4ec183cc61ba31e",
+      "evidence": [],
+      "id": "R39",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "32bab644e92d7880a5f9e0b4ac71056623c2bf7908597b6b684603ffdaf0ca29",
+      "evidence": [],
+      "id": "R40",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "94fa6a4e658b4798acc09a56f01d89ad8e199c0891d0c6fa09f06b538c6e9f66",
+      "evidence": [],
+      "id": "R41",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "4f22b8b8ee8ec7d80057338c00ab0d7dec32efd35fd787c053bd0b01f5e41b18",
+      "evidence": [],
+      "id": "R42",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "7daf60f92eed5466f23e4e216126b4e36db4cedcc7722c9464c150e5b17924dc",
+      "evidence": [],
+      "id": "R43",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "522805fae527b1d8146baaa9b8a832b27950f9e09c0db8021b25e81098fccca9",
+      "evidence": [],
+      "id": "R44",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "04138a10f5fd7fd17ab9a969b9ac8fc939a5bc818f5dbb9355277ac664a985c7",
+      "evidence": [],
+      "id": "R45",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "64e2f278034993aef62fd3316e91ac1fbc58ee2064635719021f95bd6e266ea9",
+      "evidence": [],
+      "id": "R46",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "b6e252daa6f8eac5679374c0435b7ea808c8689db70ea7186f2d00925392445b",
+      "evidence": [
+        {
+          "anchor": "async function evaluate(references,settings,request){",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-plan.js",
+          "source_sha256": "54b57e2e515b7baeaeb08e08d797f3541d5ba561ee21fb8f754f29a211b65c89"
+        },
+        {
+          "anchor": "for(const detail of overlength)diagnose('INVALID','OVER_LENGTH',detail);",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "test('R47 material diagnostics precede overlength and missing-setting phases',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        },
+        {
+          "anchor": "test('T14 plan, display and export are read-only; a single references response determines all scopes',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_session.js",
+          "source_sha256": "7c7485d29296470c36389f389488710abe06b86c0a54e33462083ada88ed3b45"
+        }
+      ],
+      "id": "R47",
+      "reason": "求值先核世界與範圍，再求列/材料、過長與缺設定；既有測試明驗 NO_STOCK→OVER_LENGTH→MISSING_SETTING 次序及宿主一次 references 回覆。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：未在本輪真 App 連線時故意注入所有原生讀取失敗與跨請求時序。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "bd0146d5b00d42ad03bf5f76e805b9ae9bb06359f5c77ddbd37c85feee870988",
+      "evidence": [
+        {
+          "anchor": "for(const demand of Array.from(pieces).sort((a,b)=>b.C-a.C||a.timberId-b.timberId)){",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "test('T15 T15b canonical settings, candidate order and CSV ignore input/view ordering',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "R48",
+      "reason": "程式依原材 key、C 遞減/id 遞增、餘料 U/key、新料開啟順序做先適配；精確放置及變更輸入集合順序不改結果已通過。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：這證明特定已列案例的確定性，不宣稱最少用料或窮盡所有排料集合。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "1175f049aaa1abf33cd41a86fb723d3197ac9c65072a60da5dc9796d5d3d5df7",
+      "evidence": [
+        {
+          "anchor": "const y=s.pieces.at(-1).end,trim=y===s.length-s.tailTrim;",
+          "kind": "implementation",
+          "path": "geometry-templates/woodworking/cutting.js",
+          "source_sha256": "b2d032b7340c68ebf272c8f08dd476a0097aaa63427eb80757b337df963e187a"
+        },
+        {
+          "anchor": "test('T5 T5b smallest usable remnant first; unused remnants have no cuts or CSV rows',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "R49",
+      "reason": "模板計算末刀/修整、可用餘料分類、S/R 標記與互斥損耗彙總；精確 FFD、收尾及未用餘料不輸出已實跑。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：未在真 App 驗每一顯示欄與列序；此輪為方案與 CSV 的 Node 行為抽驗。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f5cf05e3d80a28b106db8be4921467765c2011938bf531a8c6ca78290d11729e",
+      "evidence": [
+        {
+          "anchor": "async exportCSV(){if(exporting)return false;exporting=true;try{",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-workspace.js",
+          "source_sha256": "960f55f3f2ac7832cf3e07877b055d0f523614df4d01d86f48e202e11436972f"
+        },
+        {
+          "anchor": "function csv(plan){",
+          "kind": "implementation",
+          "path": "geometry-web/cutting-plan.js",
+          "source_sha256": "54b57e2e515b7baeaeb08e08d797f3541d5ba561ee21fb8f754f29a211b65c89"
+        },
+        {
+          "anchor": "for(const mode of ['world','settings','context','revision','scope'])test('T16 '+mode+' invalidates export without producing a Blob',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_session.js",
+          "source_sha256": "7c7485d29296470c36389f389488710abe06b86c0a54e33462083ada88ed3b45"
+        },
+        {
+          "anchor": "test('CSV fixed 30 columns, empty end/piece cells, mm, escaping; all computation is read-only',async()=>{",
+          "kind": "test",
+          "path": "tests/test_cutting_plan.js",
+          "source_sha256": "692f9d4e5384cc084b713f0cd23ba8b4ddd5edc2195718d5cc81b4d5701514c2"
+        }
+      ],
+      "id": "R50",
+      "reason": "宿主匯出前重讀世界並守住 context/revision/範圍/設定，雙擊鎖保證單次下載；Node 測試分別改五種來源使匯出拒絕且下載零次，CSV 精確 mm/跳脫/空欄亦通過。 已定位實作並抽驗所列範圍，整條語義尚待核對。未驗：未測 OS 原生另存視窗或真瀏覽器下載；Node download spy 的一次下載不等於完成 L4/L5 驗收。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "d47f42c4a565b7b1cad53aa64090bb68ab6885fbea9a28a071f45a6e95f1b54e",
+      "evidence": [],
+      "id": "R51",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "1e66e6f099e63b96825e017c1c1479d5698eb8afc9ac05195879ff48f76b521c",
+      "evidence": [],
+      "id": "R52",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "344ab4984e93c3cea257508470369ea13598cfa55e54bf2c84a477d6f6f62d64",
+      "evidence": [],
+      "id": "R53",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "f87035622a57be9926ae31634c5d498bca397ba9fa453a6128a6c7e23c74ddc9",
+      "evidence": [],
+      "id": "R54",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "3bb6b62492b3ffe53c6d48616e6f39f650cda08a4241790451ddea0e4a370b60",
+      "evidence": [],
+      "id": "R55",
+      "reason": "尚未完成逐項語義審查；自動文字連結只列為候選，不能推定 L0 或測試覆蓋。",
+      "status": "unreviewed"
+    },
+    {
+      "body_sha256": "934a35a0e5b265c775fef60d68f394d4cd6d47ed9b7a7db0ea2b083d4ff3449b",
+      "evidence": [
+        {
+          "anchor": "static bool identity_prepare(const World *before, World *after, const AppIdentityKey *explicit_keys, size_t explicit_count, bool explicit_overflow)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "static void identity_commit_serials(void)",
+          "kind": "implementation",
+          "path": "geometry-app/native/identity_ledger.inc",
+          "source_sha256": "76ddb9d372c6b856ffed9b7852f02d335ae1454e060b88cf2277076dd62f5d0a"
+        },
+        {
+          "anchor": "    def test_L04_group_order_and_failed_group_keep_consumed_serials(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        },
+        {
+          "anchor": "    def test_L21_generation_same_key_rebuild(self):",
+          "kind": "test",
+          "path": "tests/test_identity_ledger_review.py",
+          "source_sha256": "28eecff10a66695fa868a4f2a03784d528065bbe949556cea4da2dd9c81701c4"
+        }
+      ],
+      "id": "R56",
+      "reason": "原生提交保留 before 的既有身分、記錄明刪、候選先預留後驗證，最後只推進一次；群組失敗不歸還前面已成功提交序號，失敗候選不消耗。此次真 bridge 群組及多路候選測試通過。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "2533c3831e38f8ebba7de5717ac338e640f2bc7bf9776f2bc287b2f41f06ddc9",
+      "evidence": [
+        {
+          "anchor": "  function judgeRoots(identity, live) {",
+          "kind": "implementation",
+          "path": "geometry-web/identity-ledger.js",
+          "source_sha256": "3bcf673afb2a2e63263945762604c07deb90f131686417ac290c071bcc4c6c9b"
+        },
+        {
+          "anchor": "  function identityStatusFromGraph(target,graph,projectScope){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function confirmIdentity(reviewed, live) {",
+          "kind": "implementation",
+          "path": "geometry-web/identity-ledger.js",
+          "source_sha256": "3bcf673afb2a2e63263945762604c07deb90f131686417ac290c071bcc4c6c9b"
+        },
+        {
+          "anchor": "test('R362_CURRENT_MARK: replaced to replaced with a different current mark is stale',()=>{",
+          "kind": "test",
+          "path": "tests/test_model_identity_review.js",
+          "source_sha256": "5ab6cb08faaa17c67f1ce3acd0e1560fdae4ad77ac3b77d445882165f53b2eb7"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        }
+      ],
+      "id": "R57",
+      "reason": "原有 unknown→conflict→absent→replaced→continuous 優先序及確認時 current mark 改變過期已實作；本條後增指向 R61 的新提案／正式歷史引用部分仍未實作。舊五態成功不等於新 R09b 完成。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "8bd95306547e5f9e3028d2c2b5a1babb5583935294c98d1f0725f90de6252da3",
+      "evidence": [
+        {
+          "anchor": "  function planAdoption(link,live,field){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function sealAdoption(link,receipt){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "    async function rebindLedger(evidenceId,target){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "test('adoption refuses the cases that must leave the world unchanged',()=>{",
+          "kind": "test",
+          "path": "tests/test_evidence_ledger_links.js",
+          "source_sha256": "575e6bac41a9781eadb102a66a8c5a79e666c35baa962bcd2b97fb968f31c8eb"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "R58",
+      "reason": "既有外部觀察值只採用到連續存在的 dimension parameter-field，精確 mm/cm 與預覽／確認已實作。R13 的獨立補資料採用入口尚無；R09b 改綁須保留舊核對／採用為歷史的新增要求也尚缺（舊 rebindLedger 直接清除 adoption）。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "3e13b8b1044f543c5a8966f60d3429d79b9e57bbba17509666e4a77b23cf0e38",
+      "evidence": [
+        {
+          "anchor": "  function planAdoption(link,live,field){",
+          "kind": "unsupported",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "R58a",
+      "reason": "從 D51a/c 確認資料採用到正式 RC 或模型設定的交易、資料收據同歷史提交、遺失回覆後依 operationId 結算尚未實作；既有 R58 參數採用不擴大成此入口。修正方向是產品實作與有牙齒測試。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "7793f0f0f0abcbf8a0bf3f093e471354c80a9491c906172e0d33b8ae7125509d",
+      "evidence": [
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "  function validateRecord(record, stored = false, checkedCases = new Map()) {",
+          "kind": "unsupported",
+          "path": "geometry-web/feature-attachments.js",
+          "source_sha256": "6ffa64e69656abb37e52c731924164e44f1defc0203c4bada86c8479c600fc78"
+        },
+        {
+          "anchor": "    def check_r13_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "R58b",
+      "reason": "依補資料紀錄明選範圍、逐項供值或排除、條件式 partial 3D 與模型核對同候選尚未實作。現有手動 plan/faces producer 可產生 D24 結果，但沒有本條的資料審查範圍與供值證明，不可冒充完成。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "2417d0eed7a9e45aab15a29d36851f21c8f3c4562ad74d0e80c87b8e967ec827",
+      "evidence": [
+        {
+          "anchor": "def _profile_runs(value, base, options):",
+          "kind": "implementation",
+          "path": "geometry-web/space_modeling.py",
+          "source_sha256": "6a851292e2f25ca382555d1cf1c95eb4a89c22a0b8c95e16cb732625f1c4d874"
+        },
+        {
+          "anchor": "        _fail(\"SPACE_PROFILE_RUNS_MODE\", \"第一版只在由平面輪廓建立空間時納入拉伸件。\",",
+          "kind": "unsupported",
+          "path": "geometry-web/space_modeling.py",
+          "source_sha256": "6a851292e2f25ca382555d1cf1c95eb4a89c22a0b8c95e16cb732625f1c4d874"
+        },
+        {
+          "anchor": "    def test_q01_exact_native_members_reference_and_material_summary(self):",
+          "kind": "test",
+          "path": "tests/test_space_profile_runs.py",
+          "source_sha256": "c33d254fbae85770161ea6624322709c8bf6aed6f7790528da433a7026932b44"
+        },
+        {
+          "anchor": "    def test_q01b_all_selected_roots_are_sorted_in_one_request(self):",
+          "kind": "test",
+          "path": "tests/test_space_profile_runs.py",
+          "source_sha256": "c33d254fbae85770161ea6624322709c8bf6aed6f7790528da433a7026932b44"
+        }
+      ],
+      "id": "R59",
+      "reason": "plan 已按 id 排序，使用同一 base_scene 發一次 geometry/solid-set/allow_partial=false 的原生拉伸件請求，材料量與零材料包絡分開且完整核對。faces 納入拉伸件仍明拒，未宣稱完成該擴充。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "c8b43dc3f3664d37e7bfaee27411144251886a3636046d0a1ca41de8013f2c6c",
+      "evidence": [
+        {
+          "anchor": "static bool grid_card_operation(World *w,GeoJson *j,int t,const char *op)",
+          "kind": "implementation",
+          "path": "geometry-core/card_reference.inc",
+          "source_sha256": "6e6016c6479ccf85276f6c9ada1f253a976a33ad035f43198a0fe3b5844183c0"
+        },
+        {
+          "anchor": "    def test_CR13_EXPLICIT_UNBIND_ORDERED_CAPTURE(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        },
+        {
+          "anchor": "    def test_CR19_CARD_SAVE_ROUNDTRIP(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        },
+        {
+          "anchor": "    def test_CR29_D25_CARD_CLOSURE(self):",
+          "kind": "test",
+          "path": "tests/test_grid_card_reference.py",
+          "source_sha256": "b30f7541e87517364981a8bd7907349db9675f292075b10fc8801019e09e768f"
+        }
+      ],
+      "id": "R60",
+      "reason": "整卡建立／交換／解除以同一候選處理兩軸；direct 模式在該有序步驟讀取當時有效值，沒有預存刪除值或讀未來 final World。現有保存、能力及雙軸來源閉包由原生 CR19/CR20/CR29 與專案守門覆蓋。",
+      "status": "implemented"
+    },
+    {
+      "body_sha256": "329cf66e6933a89ccef7a2585a82de453e921c8e24fd3999841d151427a8fd55",
+      "evidence": [
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "def _record(record):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    async function rebindLedger(evidenceId,target){",
+          "kind": "unsupported",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "    def check_r09b_cross_pairs_and_unsupported_capabilities(self):",
+          "kind": "test",
+          "path": "tests/test_engineering_model_compatibility.py",
+          "source_sha256": "0a8a7dd52e8b276a84747917a3e66c27be3fd9f5e3efcf65f189d6577a448c85"
+        }
+      ],
+      "id": "R61",
+      "reason": "沒有新能力承載的逐消費者／列鍵提案、D66 直接見證、每批明示確認與保留舊關聯歷史流程。既有證據或模型手動改指沒有這些新紀錄，不能當新來源重新關聯產品。",
+      "status": "unimplemented"
+    },
+    {
+      "body_sha256": "642b13a4965374f1c52fc8c976f2fe9012bd5e6c945d57843f178be2ccec2f15",
+      "evidence": [
+        {
+          "anchor": "def prepare_update(data, *, base_executable=None, bridge_executable=None, max_cells=200000):",
+          "kind": "implementation",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    if face_mode and len(selection['uses']) != len(record['input']['uses']):",
+          "kind": "unsupported",
+          "path": "geometry-web/model_update.py",
+          "source_sha256": "2a9ef42fbe27d5298e89fb3d9153901b7dd877fd47e64f69a307a122ddad1647"
+        },
+        {
+          "anchor": "    async function confirm(reviewId) {",
+          "kind": "implementation",
+          "path": "geometry-web/model-update.js",
+          "source_sha256": "21cad50a5ee5a9e1c3ce61eb292deaf00484b91333cd816dbf83cf98c4f205d3"
+        },
+        {
+          "anchor": "    def test_faces_invalid_count_duplicates_and_injected_orientation_are_rejected(self):",
+          "kind": "test",
+          "path": "tests/test_model_update_identity_faces.py",
+          "source_sha256": "2216fb622d3d47f08746619891087ab1a1076b71245a7a4b92e8480ddcfddb6d"
+        }
+      ],
+      "id": "R62",
+      "reason": "既有 producer 支援完整模型快照重算與原 id 原子替換，但 faces 更新硬性保留原數量、順序，並按陣列位置複製 orientation/purpose；可新增／移除／重排載體與穩定列鍵仍 L0。應增產品與測試，不放寬固定版測試後聲稱新契約成立。",
+      "status": "partial"
+    },
+    {
+      "body_sha256": "d96bd293b51d955ed9825ad4c6024ba77a207c0479b955951ef2783deba601e1",
+      "evidence": [
+        {
+          "anchor": "    async function rebindLedger(evidenceId,target){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function assessBound(link,current,options={}){",
+          "kind": "implementation",
+          "path": "geometry-web/evidence-links.js",
+          "source_sha256": "09101ccae2c69340d4bc1d6492514caf81e2d9790ed43a3d0021b3485e4ca721"
+        },
+        {
+          "anchor": "  function validateManifestCapabilities(capabilities) {",
+          "kind": "unsupported",
+          "path": "geometry-web/project-store.js",
+          "source_sha256": "044e321913bbefcc386b712cc56d5d2be2c200b91a92101bde91c11321c8bbc4"
+        },
+        {
+          "anchor": "test('replaced target blocks confirmation until rebind',async()=>{",
+          "kind": "test",
+          "path": "tests/test_evidence_ledger_links.js",
+          "source_sha256": "575e6bac41a9781eadb102a66a8c5a79e666c35baa962bcd2b97fb968f31c8eb"
+        }
+      ],
+      "id": "R63",
+      "reason": "舊 evidence rebind 保留 document/region/observations 並讓新目標未核對，來源頁變動仍擋住；但直接覆寫 target 且將 adoption 清為 null，沒有 D66 舊核對／採用歷史，新匯入端點見證亦未登記。新增要求未完成；修實作／新契約測試，不改 SSOT。",
+      "status": "partial"
+    }
+  ],
+  "schema": "geometry-axiom-status/1"
+}

@@ -35,8 +35,7 @@ MUTATE = os.path.join(ROOT, "tests", "mutate.py")
 
 
 def read_text(path):
-    """current_geometry.c 是 CRLF 且含一個合法的嵌入 NUL byte,
-    所以一律以二進位讀進來再寬鬆解碼,不讓工具鏈自作主張。"""
+    """二進位讀取保留 current_geometry.c 的 CRLF；只解碼，不改寫來源。"""
     with open(path, "rb") as f:
         return f.read().decode("utf-8", "replace")
 
@@ -50,9 +49,9 @@ def parse_clauses(text):
     marks = []
 
     for i, ln in enumerate(lines):
-        # I/R 類原本沒開字母後綴,導致 I8a 這種子條文被整條漏掉(D 類一直有)。
-        # 2026-09-18 補齊,兩邊一致。
-        m = re.match(r"\*\*(D\d+[a-z]?)\s", ln) or re.match(r"^([IR]\d+[a-z]?)\s", ln)
+        # 與正典 reader 同一標題文法：D 必須粗體，I/R 可普通或粗體。
+        # 裸 D 是正文參照；單字母後綴與 ## 章節界線都須保留。
+        m = re.match(r"\*\*([DIR]\d+[a-z]?)\s", ln) or re.match(r"^([IR]\d+[a-z]?)\s", ln)
         if m:
             marks.append((m.group(1), i))
         elif re.match(r"^## ", ln) and marks:
@@ -263,6 +262,9 @@ def error_codes(clauses, src_text):
 
 
 def main():
+    if "--traceability" in sys.argv:
+        from axiom_traceability import main as traceability_main
+        return traceability_main([arg for arg in sys.argv[1:] if arg != "--traceability"])
     strict = "--strict" in sys.argv
 
     axiom_text = read_text(AXIOM)
