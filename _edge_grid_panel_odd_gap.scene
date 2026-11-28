@@ -1,3 +1,13 @@
-# GEO-100:縫寬 21 是奇數 → 中心線不是整數 → 拒絕不猜(D1、R3、D10a)。
+# 公理:D10a：PANEL_LAYOUT 的奇數縫寬合法，中心採 panel + floor(gap/2)，不拒絕也不猜。
+# panel=400、gap=21、anchor=0、hi=3600：k=0..7 的中心為 410、831、1252、1673、2094、2515、2936、3357。
+# 下列 guide 只引用各個正式格線索引，供 CLI 印出真實求值端點；不另填格線座標。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 3600,0 3600,3000 0,3000
 grid 1 on 1 u panel 400 gap 21
+guide 1 1 v grid:1:u:0
+guide 2 1 v grid:1:u:1
+guide 3 1 v grid:1:u:2
+guide 4 1 v grid:1:u:3
+guide 5 1 v grid:1:u:4
+guide 6 1 v grid:1:u:5
+guide 7 1 v grid:1:u:6
+guide 8 1 v grid:1:u:7

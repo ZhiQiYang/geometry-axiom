@@ -119,7 +119,7 @@ TESTS = [
  {'scene': '_edge_grid_panel_empty.scene', 'expect': 'accept', 'lengths': []},
  {'scene': '_edge_grid_panel_index8.scene', 'expect': 'reject', 'error': '本軸共 8 條'},
  {'scene': '_edge_grid_panel_empty_place.scene', 'expect': 'reject', 'error': '本軸共 0 條'},
- {'scene': '_edge_grid_panel_odd_gap.scene', 'expect': 'accept', 'error': '縫寬必須是偶數', 'lengths': [],
+ {'scene': '_edge_grid_panel_odd_gap.scene', 'expect': 'accept', 'lengths': [],
   'contains': [
    '參考線 1：(410, 0) -> (410, 3000)',
    '參考線 2：(831, 0) -> (831, 3000)',

@@ -1,6 +1,6 @@
-# 公理:I12:語法配對——auto 角材(timber id A B,不寫長度)只能用 at-line grid / at-edge。
-# 這裡角材 1 是 auto,卻用了明寫角材專屬的 at u v → 拒絕。
-# 理由:at u v 只給得出起點,給不出跨距,auto 的長度就推不出來。
+# 公理:I12：舊 at／at-guides／at-grid／at-edge 全部廢除；正式錨法只允許 at-line／at-face。
+# 本例使用合法截面宣告，然後以舊 at 自由座標放置，必須拒絕。
+# 拒絕原因是來源錨法已廢除，不是依明寫／推導長度做配對。
 surface 1 origin 0 0 2500 u +x v +y outline 0,0 4000,0 4000,3000 0,3000
 timber 1 20 20 role primary
 place 1 on 1 at 500 500 +u +n
